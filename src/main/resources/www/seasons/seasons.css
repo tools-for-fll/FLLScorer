@@ -1,0 +1,68 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+.seasons_container
+{
+  margin: 1em 1em;
+}
+
+.seasons_tile
+{
+  float: left;
+  width: 20em;
+  height: 23em;
+  margin: 0.375em;
+  border: 0.1em solid var(--border-color);
+  border-radius: 0.75em;
+  padding: 0.375em;
+  display: grid;
+  grid-template-rows: 20em 3em;
+  grid-gap: 0px 0px;
+  grid-auto-flow: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.seasons_tile:hover:not(.active):not(.disabled)
+{
+  border: 0.1em solid var(--color);
+}
+
+.seasons_tile.active
+{
+  background-color: var(--menu-background-color);
+  border: 0.1em solid var(--link-color);
+}
+
+.seasons_tile.disabled
+{
+  border: 0.1em solid var(--menu-background-color);
+}
+
+.seasons_tile img
+{
+  grid-row: 1;
+  max-width: 19em;
+  max-height: 19em;
+}
+
+.seasons_tile.disabled img
+{
+  opacity: 0.25;
+}
+
+.seasons_tile p
+{
+  grid-row: 2;
+  font-size: 1.25em;
+  text-align: center;
+}
+
+.seasons_tile.disabled p
+{
+  opacity: 0.25;
+}

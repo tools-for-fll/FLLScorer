@@ -1,0 +1,132 @@
+// Copyright (c) 2024 Brian Kircher
+//
+// Open Source Software; you can modify and/or share it under the terms of BSD
+// license file in the root directory of this project.
+
+// String for use in multiple places
+str_button_cancel:Cancel
+str_button_delete:Delete
+str_button_ok:OK
+str_connect_error:Could not connect to the server!
+str_title:FLL Scoring System
+
+// Strings for the main page
+str_main_title:<!--#str_title--> | Admin
+str_menu_about:About
+str_menu_events:Events
+str_menu_judging:Judging
+str_menu_links:Links
+str_menu_passwords:Passwords
+str_menu_scores:Scores
+str_menu_seasons:Seasons
+str_menu_standings:Standings
+str_menu_teams:Teams
+str_status_event:Event
+str_status_season:Season
+str_status_teams:Teams
+
+// Strings for the about popup
+str_about_copyright:Copyright &copy; 2024 Brian Kircher
+str_about_reserved:All rights reserved.
+str_about_title:FLL Scoring System
+str_about_version:Version <!--#version-->
+
+// Strings for the links page
+str_links_judge:Judge
+str_links_referee:Referee
+str_links_scoreboard:Scoreboard
+str_links_timekeeper:Time Keeper
+str_links_timer:Timer
+
+// Strings for the scoreboard page
+str_scoreboard_high:High
+str_scoreboard_match1:Match 1
+str_scoreboard_match2:Match 2
+str_scoreboard_match3:Match 3
+str_scoreboard_match4:Match 4
+str_scoreboard_name:Name
+str_scoreboard_number:Team #
+str_scoreboard_place:Place
+str_scoreboard_title:<!--#str_title--> : Scoreboard
+
+// Strings for the score sheet page
+str_scoresheet_title:<!--#str_title--> : Score Entry
+
+// Strings for the season page
+str_seasons_error:Could not update the season!
+
+// Strings for the events page
+str_events_add:Add Event
+str_events_add_failed:Could not add the new event!
+str_events_already_exists:The event already exists!
+str_events_delete_cancel:Cancel
+str_events_delete_delete:Delete
+str_events_delete_score_warning:This event has scores, which will be deleted with the event. Are you sure you want to delete this event?
+str_events_delete_warning:Are you sure you want to delete this event?
+str_events_doesnt_exist:The event does not exists!
+str_events_edit:Edit Event
+str_events_edit_failed:Could not edit the event!
+str_events_invalid_date:The date of the event is not valid!
+str_events_invalid_name:The name of the event is not valid!
+str_events_invalid_matches:The number of matches is not valid!
+str_events_load_failed:Failed to fetch the event list!
+str_events_list_actions:Actions
+str_events_list_date:Date
+str_events_list_four:4
+str_events_list_matches:Matches
+str_events_list_name:Name
+str_events_list_select:Select
+str_events_list_three:3
+str_events_none:None
+
+// Strings for the teams page
+str_teams_add:Add Team
+str_teams_add_failed:Could not add the new team!
+str_teams_already_exists:The team already exists!
+str_teams_delete_cancel:Cancel
+str_teams_delete_delete:Delete
+str_teams_delete_event_score_warning:This team has event scores, which will be deleted with the team. Are you sure you want to delete this team?
+str_teams_delete_season_score_warning:This team has scores, which will be deleted with the team. Are you sure you want to delete this team?
+str_teams_delete_warning:Are you sure you want to delete this team?
+str_teams_edit:Edit Team
+str_teams_edit_failed:Could not edit the team!
+str_teams_event_add_failed:Failed to add this team to the event!
+str_teams_event_remove_failed: Failed to remove this team from the event!
+str_teams_event_score_warning:This team has event scores, which will be deleted if the team is removed from the event. Are you sure you want to remove this team?
+str_teams_invalid_name:The name of the team is not valid!
+str_teams_invalid_number:The number of the team is not valid!
+str_teams_load_failed:Failed to fetch the team list!
+str_teams_list_actions:Actions
+str_teams_list_at_event:At Event
+str_teams_list_name:Name
+str_teams_list_number:Number
+str_teams_none:None
+
+// Strings for the scores page
+str_scores_delete:Are you sure you want to delete this score?
+str_scores_delete_error:Failed to remove the score!
+str_scores_exchange:Exchange Scores
+str_scores_exchange_error:Failed to exchange scores!
+str_scores_load_failed:Failed to fetch the scores list!
+str_scores_match1:Match 1
+str_scores_match2:Match 2
+str_scores_match3:Match 3
+str_scores_match4:Match 4
+str_scores_name:Name
+str_scores_none:None
+str_scores_number:Number
+str_scores_unknown_match:Unknown match!
+
+// Strings for the timekeeper page
+str_timekeeper_cancel:Cancel
+str_timekeeper_reset:Reset
+str_timekeeper_start:Start
+str_timekeeper_test_cancel:Cancel
+str_timekeeper_test_end:End
+str_timekeeper_test_end_game:End Game
+str_timekeeper_test_start:Start
+str_timekeeper_test_title:Test the sound system
+str_timekeeper_title:<!--#str_title--> : Time Keeper
+
+// Strings for the timer page
+str_timer_title:<!--#str_title--> : Timer

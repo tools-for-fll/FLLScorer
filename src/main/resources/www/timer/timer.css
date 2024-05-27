@@ -1,0 +1,106 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+.container
+{
+  display: grid;
+  gap: 0 0;
+  grid-template-columns: 10vw 1fr 10vw;
+  grid-template-rows: 10vw 1fr 10vw;
+  height: 100vh;
+  width: 100vw;
+}
+
+.clock
+{
+  display: grid;
+  gap: 0 0;
+  grid-column: 2;
+  grid-row: 2;
+  grid-template-areas:
+    "m11 m12 m13 m14 m15 .  .  . t11 t12 t13 t14 t15 . o11 o12 o13 o14 o15"
+    "m21  .   .   .  m25 .  .  . t21  .   .   .  t25 . o21  .   .   .  o25"
+    "m31  .   .   .  m35 . c31 . t31  .   .   .  t35 . o31  .   .   .  o35"
+    "m41 m42 m43 m44 m45 .  .  . t41 t42 t43 t44 t45 . o41 o42 o43 o44 o45"
+    "m51  .   .   .  m55 . c51 . t51  .   .   .  t55 . o51  .   .   .  o55"
+    "m61  .   .   .  m65 .  .  . t61  .   .   .  t65 . o61  .   .   .  o65"
+    "m71 m72 m73 m74 m75 .  .  . t71 t72 t73 t74 t75 . o71 o72 o73 o74 o75";
+  grid-template-columns: repeat(19, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+}
+
+.m11 { grid-area: m11; }
+.m12 { grid-area: m12; }
+.m13 { grid-area: m13; }
+.m14 { grid-area: m14; }
+.m15 { grid-area: m15; }
+.m21 { grid-area: m21; }
+.m25 { grid-area: m25; }
+.m31 { grid-area: m31; }
+.m35 { grid-area: m35; }
+.m41 { grid-area: m41; }
+.m42 { grid-area: m42; }
+.m43 { grid-area: m43; }
+.m44 { grid-area: m44; }
+.m45 { grid-area: m45; }
+.m51 { grid-area: m51; }
+.m55 { grid-area: m55; }
+.m61 { grid-area: m61; }
+.m65 { grid-area: m65; }
+.m71 { grid-area: m71; }
+.m72 { grid-area: m72; }
+.m73 { grid-area: m73; }
+.m74 { grid-area: m74; }
+.m75 { grid-area: m75; }
+.c31 { grid-area: c31; }
+.c51 { grid-area: c51; }
+.t11 { grid-area: t11; }
+.t12 { grid-area: t12; }
+.t13 { grid-area: t13; }
+.t14 { grid-area: t14; }
+.t15 { grid-area: t15; }
+.t21 { grid-area: t21; }
+.t25 { grid-area: t25; }
+.t31 { grid-area: t31; }
+.t35 { grid-area: t35; }
+.t41 { grid-area: t41; }
+.t42 { grid-area: t42; }
+.t43 { grid-area: t43; }
+.t44 { grid-area: t44; }
+.t45 { grid-area: t45; }
+.t51 { grid-area: t51; }
+.t55 { grid-area: t55; }
+.t61 { grid-area: t61; }
+.t65 { grid-area: t65; }
+.t71 { grid-area: t71; }
+.t72 { grid-area: t72; }
+.t73 { grid-area: t73; }
+.t74 { grid-area: t74; }
+.t75 { grid-area: t75; }
+.o11 { grid-area: o11; }
+.o12 { grid-area: o12; }
+.o13 { grid-area: o13; }
+.o14 { grid-area: o14; }
+.o15 { grid-area: o15; }
+.o21 { grid-area: o21; }
+.o25 { grid-area: o25; }
+.o31 { grid-area: o31; }
+.o35 { grid-area: o35; }
+.o41 { grid-area: o41; }
+.o42 { grid-area: o42; }
+.o43 { grid-area: o43; }
+.o44 { grid-area: o44; }
+.o45 { grid-area: o45; }
+.o51 { grid-area: o51; }
+.o55 { grid-area: o55; }
+.o61 { grid-area: o61; }
+.o65 { grid-area: o65; }
+.o71 { grid-area: o71; }
+.o72 { grid-area: o72; }
+.o73 { grid-area: o73; }
+.o74 { grid-area: o74; }
+.o75 { grid-area: o75; }

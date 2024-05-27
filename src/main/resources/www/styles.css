@@ -1,0 +1,304 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+:root
+{
+  --background-color: #000000;
+  --border-color: #333333;
+  --color: #ffffff;
+  --color-dark-green: #003f00;
+  --color-dark-red: #7f0000;
+  --color-dark-yellow: #7f7f00;
+  --color-gray: #333333;
+  --color-green: #007f00;
+  --color-red: #ff0000;
+  --color-yellow: #ffff00;
+  --disable-background-color: #222222;
+  --disable-color: #666666;
+  --error-background-color: #ff0000;
+  --error-color: #ffffff;
+  --heading-background-color: #00007f;
+  --link-color: #00ffff;
+  --menu-background-color: #222222;
+  --menu-border-color: #444444;
+  --menu-color: #bbbbbb;
+  --menu-hover-background-color: #666666;
+  --menu-hover-color: #ffffff;
+  --select-background-color: #007f7f;
+  --select-color: #ffffff;
+  --shadow: #00000080;
+  --success-background-color: #007f00;
+  --success-color: #ffffff;
+  --transparent: #00000000;
+  --warning-background-color: #ffff00;
+  --warning-color: #000000;
+}
+
+html, body
+{
+  background-color: var(--background-color);
+  color: var(--color);
+  font-family: Arial;
+  margin: 0;
+}
+
+button
+{
+  border: 0;
+  border-radius: 0.75em;
+  padding: 0.5em 1.5em;
+}
+
+dialog
+{
+  border: 0;
+  background-color: var(--transparent);
+  padding: 0;
+}
+
+dialog::backdrop
+{
+  background-color: var(--shadow);
+}
+
+input[type="date"]
+{
+  background-color: var(--background-color);
+  border: 0;
+  border-bottom: 0.05em solid var(--color);
+  color: var(--color);
+  color-scheme: dark;
+  font-family: Arial;
+  font-size: 1em;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  width: 100%;
+}
+
+input[type="date"]:focus
+{
+  outline: 0;
+}
+
+input[type="text"]
+{
+  background-color: var(--background-color);
+  border: 0;
+  border-bottom: 0.05em solid var(--color);
+  color: var(--color);
+  font-size: 1em;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  width: 100%;
+}
+
+input[type="text"]:focus
+{
+  outline: 0;
+}
+
+input[type="text"]::-webkit-input-placeholder
+{
+  font-family: "FontAwesome";
+}
+
+.search input[type="text"]
+{
+  background-color: var(--select-background-color);
+  border-bottom: 0.05em solid var(--select-color);
+  color: var(--select-color);
+  margin: 0 0.5em;
+}
+
+.search input[type="text"]::-webkit-input-placeholder
+{
+  color: var(--color);
+}
+
+select
+{
+  background-color: var(--background-color);
+  border: 0;
+  border-bottom: 0.05em solid var(--color);
+  color: var(--color);
+  color-scheme: dark;
+  font-family: Arial;
+  font-size: 1em;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.hidden
+{
+  display: none;
+}
+
+.left
+{
+  float: left;
+}
+
+.right
+{
+  float: right;
+}
+
+.gray
+{
+  background-color: var(--color-gray);
+  border-color: var(--color-dark-gray);
+  color: var(--color);
+}
+
+.green
+{
+  background-color: var(--color-green);
+  border-color: var(--color-dark-green);
+  color: var(--color);
+}
+
+.red
+{
+  background-color: var(--color-red);
+  border-color: var(--color-dark-red);
+  color: var(--color);
+}
+
+.yellow
+{
+  background-color: var(--color-yellow);
+  border-color: var(--color-dark-yellow);
+  color: var(--color);
+}
+
+.main_container
+{
+  display: grid;
+  gap: 0 0;
+  grid-auto-flow: row;
+  grid-template-areas: "menu" "tab";
+  grid-template-rows: 3em 1fr 3em;
+  height: 100vh;
+}
+
+.main_container .menu
+{
+  background-color: var(--menu-background-color);
+  font-size: 1.5em;
+  grid-row: 1;
+  line-height: calc(2em - 1px);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.main_container .menu button
+{
+  background-color: var(--menu-background-color);
+  color: var(--menu-color);
+  font-size: 1em;
+  height: 100%;
+  padding: 0 1em;
+}
+
+.main_container .menu button:hover:not(.active)
+{
+  background-color: var(--menu-hover-background-color);
+  color: var(--menu-hover-color);
+}
+
+.main_container .menu button.active
+{
+  background-color: var(--select-background-color);
+  color: var(--select-color);
+}
+
+.main_container .tab
+{
+  display: none;
+  grid-row: 2;
+  overflow-y: scroll;
+}
+
+.main_container .status
+{
+  background-color: var(--menu-background-color);
+  font-size: 1.5em;
+  grid-row: 3;
+  line-height: 2em;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.main_container .status .label
+{
+  color: var(--link-color);
+  margin-left: 1em;
+  margin-right: 0.5em;
+}
+
+.main_container .show
+{
+  display: block;
+}
+
+.about_container
+{
+  align-items: center;
+  background-color: var(--background-color);
+  border: 0.25em solid var(--link-color);
+  border-radius: 1em;
+  color: var(--color);
+  display: grid;
+  gap: 0 0;
+  grid-auto-flow: row;
+  grid-template-columns: 20em 1fr;
+  height: 20em;
+  justify-items: center;
+  padding: 1em;
+  width: 50em;
+}
+
+.about_container > img
+{
+  grid-column: 1;
+  max-height: 20em;
+  max-width: 20em;
+}
+
+.about_container > div
+{
+  font-size: 1.5em;
+  grid-column: 2;
+  text-align: center;
+}
+
+.warning_container
+{
+  align-items: center;
+  background-color: var(--background-color);
+  border: 0.25em solid var(--link-color);
+  border-radius: 1em;
+  color: var(--color);
+  display: grid;
+  gap: 0 0;
+  grid-auto-flow: row;
+  grid-template-rows: 20em;
+  height: 20em;
+  justify-items: center;
+  padding: 1em;
+  width: 50em;
+}
+
+.warning_container > div
+{
+  font-size: 1.5em;
+  grid-column: 1;
+  text-align: center;
+}

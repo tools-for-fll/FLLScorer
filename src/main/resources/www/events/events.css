@@ -1,0 +1,214 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+.events_container
+{
+  display: grid;
+  grid-template-rows: 3.1em 1fr 3em;
+  height: 100%;
+  width: 100%;
+}
+
+.events_container .heading
+{
+  background-color: var(--select-background-color);
+  color: var(--select-color);
+  display: grid;
+  grid-row: 1;
+  grid-template-columns: 10em 10em 1fr 10em 10em;
+  height: 3em;
+  margin-top: 0.1em;
+  width: 100%;
+}
+
+.events_container .body
+{
+  grid-row: 2;
+  overflow-y: scroll;
+}
+
+.events_container .search
+{
+  background-color: var(--select-background-color);
+  color: var(--select-color);
+  display: grid;
+  grid-row: 3;
+  grid-template-columns: 1fr 10em;
+  height: 3em;
+  width: 100%;
+}
+
+.events_container .row
+{
+  border: 0.1em solid var(--background-color);
+  border-radius: 1em;
+  display: grid;
+  grid-template-columns: 10em 10em 1fr 10em 10em;
+  height: calc(3em - 0.2em);
+  width: calc(100% - 0.2em);
+}
+
+.events_container .row:hover
+{
+  border: 0.1em solid var(--link-color);
+}
+
+.events_container .date
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 1;
+  justify-content: center;
+}
+
+.events_container .matches
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 2;
+  justify-content: center;
+}
+
+.events_container .name
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 3;
+}
+
+.events_container .select
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 4;
+  justify-content: center;
+}
+
+.events_container .actions
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 5;
+  justify-content: center;
+}
+
+.events_container .fa
+{
+  padding: 0 0.1em;
+}
+
+.events_container .search .input
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 1;
+}
+
+.events_container .search .actions
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 2;
+  justify-content: center;
+}
+
+.events_editor_container
+{
+  align-items: center;
+  background-color: var(--background-color);
+  border: 0.25em solid var(--link-color);
+  border-radius: 1em;
+  color: var(--color);
+  display: grid;
+  gap: 0 0;
+  grid-auto-flow: row;
+  grid-template-rows: 3em 1em 3em 1em 3em 1em 3em 1em 3em;
+  height: 19em;
+  justify-items: center;
+  padding: 1em;
+}
+
+.events_editor_container .title
+{
+  font-size: 1.5em;
+  grid-row: 1;
+  text-align: center;
+}
+
+.events_editor_container .date
+{
+  display: grid;
+  font-size: 1.5em;
+  gap: 0 0;
+  grid-row: 3;
+  grid-template-columns: 7em 30em;
+  text-align: center;
+}
+
+events_editor_container .date .label
+{
+  grid-column: 1;
+}
+
+.events_editor_container .date .input
+{
+  grid-column: 2;
+}
+
+.events_editor_container .matches
+{
+  display: grid;
+  font-size: 1.5em;
+  gap: 0 0;
+  grid-row: 5;
+  grid-template-columns: 7em 30em;
+  text-align:center;
+}
+
+.events_editor_container .matches .label
+{
+  grid-column: 1;
+}
+
+.events_editor_container .matches .input
+{
+  grid-column: 2;
+}
+
+.events_editor_container .name
+{
+  display: grid;
+  font-size: 1.5em;
+  gap: 0 0;
+  grid-row: 7;
+  grid-template-columns: 7em 30em;
+  text-align: center;
+}
+
+.events_editor_container .name .label
+{
+  grid-column: 1;
+}
+
+.events_editor_container .name .input
+{
+  grid-column: 2;
+}
+
+.events_editor_container .buttons
+{
+  font-size: 1.5em;
+  grid-row: 9;
+  text-align: center;
+}
