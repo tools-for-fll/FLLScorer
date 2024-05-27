@@ -610,7 +610,7 @@ public class WebServer extends HttpServlet
 
     // Use the class loader to open this resource file.
     InputStream in = Thread.currentThread().getContextClassLoader().
-                       getResourceAsStream("strings/" + locale);
+                       getResourceAsStream("strings/" + locale + ".txt");
     if(in == null)
     {
       // Do nothing since the resource file could not be loaded.
