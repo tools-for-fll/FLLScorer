@@ -11,7 +11,7 @@ str_connect_error:Could not connect to the server!
 str_title:FLL Scoring System
 
 // Strings for the main page
-str_main_title:<!--#str_title--> | Admin
+str_main_title:<!--#str_title--> : Admin
 str_menu_about:About
 str_menu_events:Events
 str_menu_judging:Judging

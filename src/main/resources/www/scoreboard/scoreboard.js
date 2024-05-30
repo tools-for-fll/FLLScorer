@@ -30,8 +30,8 @@ loadData()
   function
   onDone(newData)
   {
-      // Save the newly retreived data.
-      data = newData;
+    // Save the newly retreived data.
+    data = newData;
   }
 
   // Called when the scoreboard fetch fails.
@@ -124,9 +124,11 @@ runTimer()
     $(".m3" + i).html("").removeClass("grey");
     $(".m4" + i).html("").removeClass("grey");
 
+    // See if there is an entry for this position.
     if((data != null) && (data["scores"] != null) &&
        (data["scores"][index + i] != null))
     {
+      // Update this row with this entry's information.
       $(".pl" + i).html(data["scores"][index + i]["place"]);
       $(".num" + i).html(data["scores"][index + i]["num"]);
       $(".name" + i).html(data["scores"][index + i]["name"]);

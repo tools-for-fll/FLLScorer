@@ -767,7 +767,7 @@ public class Database
       Statement stmt = m_connection.createStatement();
 
       // The SQL commands to get the date of the event.
-      String sql = "select date from event where event_id = " + event_id;
+      String sql = "select date from event where id = " + event_id;
 
       // Get the date of the event from the database.
       if(m_debug)
@@ -890,6 +890,51 @@ public class Database
 
     // Return the number of matches at the event.
     return(matches);
+  }
+
+  /**
+   * Gets the name of an event from the database.
+   *
+   * @param event_id The ID of the event.
+   *
+   * @return The name of the event.
+   */
+  public String
+  eventGetName(int event_id)
+  {
+    String name = null;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL commands to get the name of the event.
+      String sql = "select name from event where id = " + event_id;
+
+      // Get the name of the event from the database.
+      if(m_debug)
+      {
+        System.out.println(sql);
+      }
+      ResultSet result = stmt.executeQuery(sql);
+      if(result.next())
+      {
+        // Extract the date from the results.
+        name = result.getString("name");
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+    }
+
+    // Return the name of the event.
+    return(name);
   }
 
   /**

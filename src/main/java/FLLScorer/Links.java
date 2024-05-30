@@ -7,6 +7,9 @@ package FLLScorer;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 
 import javax.imageio.ImageIO;
 
@@ -103,6 +106,21 @@ public class Links
   private byte[]
   serveJudge(String path, String parameters)
   {
+    InetAddress IP;
+
+    try
+    {
+      Socket socket = new Socket();
+      socket.connect(new InetSocketAddress("google.com", 80));
+      IP = socket.getLocalAddress();
+      socket.close();
+
+      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/judge"));
+    }
+    catch(Exception e)
+    {
+    }
+
     return(serveQrCode("http://localhost:8080/judge"));
   }
 
@@ -118,6 +136,21 @@ public class Links
   private byte[]
   serveReferee(String path, String parameters)
   {
+    InetAddress IP;
+
+    try
+    {
+      Socket socket = new Socket();
+      socket.connect(new InetSocketAddress("google.com", 80));
+      IP = socket.getLocalAddress();
+      socket.close();
+
+      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/referee"));
+    }
+    catch(Exception e)
+    {
+    }
+
     return(serveQrCode("http://localhost:8080/referee"));
   }
 
@@ -133,6 +166,21 @@ public class Links
   private byte[]
   serveScoreboard(String path, String parameters)
   {
+    InetAddress IP;
+
+    try
+    {
+      Socket socket = new Socket();
+      socket.connect(new InetSocketAddress("google.com", 80));
+      IP = socket.getLocalAddress();
+      socket.close();
+
+      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/scoreboard"));
+    }
+    catch(Exception e)
+    {
+    }
+
     return(serveQrCode("http://localhost:8080/scoreboard"));
   }
 
@@ -148,6 +196,21 @@ public class Links
   private byte[]
   serveTimekeeper(String path, String parameters)
   {
+    InetAddress IP;
+
+    try
+    {
+      Socket socket = new Socket();
+      socket.connect(new InetSocketAddress("google.com", 80));
+      IP = socket.getLocalAddress();
+      socket.close();
+
+      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/timekeeper"));
+    }
+    catch(Exception e)
+    {
+    }
+
     return(serveQrCode("http://localhost:8080/timekeeper"));
   }
 
@@ -163,6 +226,21 @@ public class Links
   private byte[]
   serveTimer(String path, String parameters)
   {
+    InetAddress IP;
+
+    try
+    {
+      Socket socket = new Socket();
+      socket.connect(new InetSocketAddress("google.com", 80));
+      IP = socket.getLocalAddress();
+      socket.close();
+
+      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/timer"));
+    }
+    catch(Exception e)
+    {
+    }
+
     return(serveQrCode("http://localhost:8080/timer"));
   }
 

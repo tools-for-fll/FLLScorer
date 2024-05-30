@@ -23,7 +23,7 @@
   --error-color: #ffffff;
   --heading-background-color: #00007f;
   --link-color: #00ffff;
-  --menu-background-color: #222222;
+  --menu-background-color: #333333;
   --menu-border-color: #444444;
   --menu-color: #bbbbbb;
   --menu-hover-background-color: #666666;
@@ -90,6 +90,7 @@ input[type="text"]
   background-color: var(--background-color);
   border: 0;
   border-bottom: 0.05em solid var(--color);
+  border-radius: 0;
   color: var(--color);
   font-size: 1em;
   margin: 0;
@@ -175,7 +176,7 @@ select
 {
   background-color: var(--color-yellow);
   border-color: var(--color-dark-yellow);
-  color: var(--color);
+  color: var(--background-color);
 }
 
 .main_container

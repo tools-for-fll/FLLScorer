@@ -235,13 +235,12 @@ public class Teams
       ArrayList<Integer> count = new ArrayList<Integer>();
 
       // Enumerate the teams at this event.
-      m_database.
-        teamAtEventEnumerate(season_id, event_id, -1,
-                             (l_season_id, l_event_id, l_team_id) ->
-                             {
-                               // Add this team ID to the list.
-                               count.add(l_team_id);
-                             });
+      m_database.teamAtEventEnumerate(season_id, event_id, -1,
+                                      (l_season_id, l_event_id, l_team_id) ->
+        {
+          // Add this team ID to the list.
+          count.add(l_team_id);
+        });
 
       // Set the result to the number of teams at this event.
       result.set("count", count.size());
@@ -260,34 +259,27 @@ public class Teams
       ArrayList<Boolean> eventScores = new ArrayList<Boolean>();
 
       // Enumerate the teams from the database for this season.
-      m_database.
-        teamEnumerate(season_id,
-                      (l_id, l_season_id, l_number, l_name) ->
-                      {
-                        // Find the place in the list to insert this team in
-                        // number order.
-                        int i;
-                        for(i = 0; i < numbers.size(); i++)
-                        {
-                          if(l_number < numbers.get(i))
-                          {
-                            break;
-                          }
-                        }
+      m_database.teamEnumerate(season_id,
+                               (l_id, l_season_id, l_number, l_name) ->
+        {
+          // Find the place in the list to insert this team in number order.
+          int i;
+          for(i = 0; i < numbers.size(); i++)
+          {
+            if(l_number < numbers.get(i))
+            {
+              break;
+            }
+          }
 
-                        // Add this team to the lists.
-                        ids.add(i, l_id);
-                        numbers.add(i, l_number);
-                        names.add(i, l_name);
-                        inEvent.add(i, m_database.teamAtEventGet(event_id,
-                                                                 l_id));
-                        seasonScores.add(i,
-                                         m_database.teamHasScores(season_id,
-                                                                  l_id));
-                        eventScores.add(i,
-                                        m_database.teamHasEventScores(event_id,
-                                                                      l_id));
-                      });
+          // Add this team to the lists.
+          ids.add(i, l_id);
+          numbers.add(i, l_number);
+          names.add(i, l_name);
+          inEvent.add(i, m_database.teamAtEventGet(event_id, l_id));
+          seasonScores.add(i, m_database.teamHasScores(season_id, l_id));
+          eventScores.add(i, m_database.teamHasEventScores(event_id, l_id));
+        });
 
       // Loop through the teams.
       JSONArray teams = new SimpleJSONArray();
@@ -326,7 +318,8 @@ public class Teams
   public void
   setup()
   {
-    // Get references to the web server, database, and the season objects.
+    // Get references to the web server, database, season, and the event
+    // objects.
     m_webserver = WebServer.getInstance();
     m_database = Database.getInstance();
     m_season = Seasons.getInstance();

@@ -132,38 +132,37 @@ public class Events
       // Enumerate the events from the database for this season.
       m_database.eventEnumerate(season_id,
                                 (id, l_season_id, date, l_matches, name) ->
-                                {
-                                  // Find the place in the list to insert this
-                                  // date in chronological order.
-                                  int i;
-                                  for(i = 0; i < dates.size(); i++)
-                                  {
-                                    if(date.compareTo(dates.get(i)) < 0)
-                                    {
-                                      break;
-                                    }
-                                  }
+        {
+          // Find the place in the list to insert this date in chronological
+          // order.
+          int i;
+          for(i = 0; i < dates.size(); i++)
+          {
+            if(date.compareTo(dates.get(i)) < 0)
+            {
+              break;
+            }
+          }
 
-                                  // Add this event to the lists.
-                                  if(ids != null)
-                                  {
-                                    ids.add(i, id);
-                                  }
-                                  dates.add(i, date);
-                                  if(matches != null)
-                                  {
-                                    matches.add(i, l_matches);
-                                  }
-                                  if(names != null)
-                                  {
-                                    names.add(i, name);
-                                  }
-                                  if(scores != null)
-                                  {
-                                    scores.add(i,
-                                               m_database.eventHasScores(id));
-                                  }
-                                });
+          // Add this event to the lists.
+          if(ids != null)
+          {
+            ids.add(i, id);
+          }
+          dates.add(i, date);
+          if(matches != null)
+          {
+            matches.add(i, l_matches);
+          }
+          if(names != null)
+          {
+            names.add(i, name);
+          }
+          if(scores != null)
+          {
+            scores.add(i, m_database.eventHasScores(id));
+          }
+        });
   }
 
   /**

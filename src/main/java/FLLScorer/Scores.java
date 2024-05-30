@@ -248,77 +248,75 @@ public class Scores
       ArrayList<Integer> a_match4 = new ArrayList<Integer>();
 
       // Enumerate the teams from the database for this season.
-      m_database.
-        teamEnumerate(season_id,
-                      (l_id, l_season_id, l_number, l_name) ->
-                      {
-                        // Ignore this team if it is not at this event.
-                        if(!m_database.teamAtEventGet(event_id, l_id))
-                        {
-                          return;
-                        }
+      m_database.teamEnumerate(season_id,
+                               (l_id, l_season_id, l_number, l_name) ->
+        {
+          // Ignore this team if it is not at this event.
+          if(!m_database.teamAtEventGet(event_id, l_id))
+          {
+            return;
+          }
 
-                        // Find the place in the list to insert this team in
-                        // number order.
-                        int i;
-                        for(i = 0; i < a_numbers.size(); i++)
-                        {
-                          if(l_number < a_numbers.get(i))
-                          {
-                            break;
-                          }
-                        }
+          // Find the place in the list to insert this team in number order.
+          int i;
+          for(i = 0; i < a_numbers.size(); i++)
+          {
+            if(l_number < a_numbers.get(i))
+            {
+              break;
+            }
+          }
 
-                        // Add this team to the lists.
-                        a_ids.add(i, l_id);
-                        a_numbers.add(i, l_number);
-                        a_names.add(i, l_name);
-                        a_match1.add(i, -1);
-                        a_match2.add(i, -1);
-                        a_match3.add(i, -1);
-                        a_match4.add(i, -1);
-                      });
+          // Add this team to the lists.
+          a_ids.add(i, l_id);
+          a_numbers.add(i, l_number);
+          a_names.add(i, l_name);
+          a_match1.add(i, -1);
+          a_match2.add(i, -1);
+          a_match3.add(i, -1);
+          a_match4.add(i, -1);
+        });
 
       // Enumerate the scores for this event.
-      m_database.
-        scoreEnumerate(season_id, event_id,
-                       (l_id, l_season_id, l_event_id, team_id, l_match1,
-                        match1_cv, match1_sheet, l_match2, match2_cv,
-                        match2_sheet, l_match3, match3_cv, match3_sheet,
-                        l_match4, match4_cv, match4_sheet) ->
-                       {
-                         // Ignore this score if it is not for a team at this
-                         // event (should not happen).
-                         int idx = a_ids.indexOf(team_id);
-                         if(idx == -1)
-                         {
-                           return;
-                         }
+      m_database.scoreEnumerate(season_id, event_id,
+                                (l_id, l_season_id, l_event_id, team_id,
+                                 l_match1, match1_cv, match1_sheet, l_match2,
+                                 match2_cv, match2_sheet, l_match3, match3_cv,
+                                 match3_sheet, l_match4, match4_cv,
+                                 match4_sheet) ->
+        {
+          // Ignore this score if it is not for a team at this event (should
+          // not happen).
+          int idx = a_ids.indexOf(team_id);
+          if(idx == -1)
+          {
+            return;
+          }
 
-                         // Save the match 1 score, if it exists.
-                         if(l_match1 != null)
-                         {
-                           a_match1.set(idx, l_match1);
-                         }
+          // Save the match 1 score, if it exists.
+          if(l_match1 != null)
+          {
+            a_match1.set(idx, l_match1);
+          }
 
-                         // Save the match 2 score, if it exists.
-                         if(l_match2 != null)
-                         {
-                           a_match2.set(idx, l_match2);
-                         }
+          // Save the match 2 score, if it exists.
+          if(l_match2 != null)
+          {
+            a_match2.set(idx, l_match2);
+          }
 
-                         // Save the match 3 score, if it exists.
-                         if(l_match3 != null)
-                         {
-                           a_match3.set(idx, l_match3);
-                         }
+          // Save the match 3 score, if it exists.
+          if(l_match3 != null)
+          {
+            a_match3.set(idx, l_match3);
+          }
 
-                         // Save the match 4 score, if it exists.
-                         if(l_match4 != null)
-                         {
-                           a_match4.set(idx, l_match4);
-                         }
-                       });
+          // Save the match 4 score, if it exists.
+          if(l_match4 != null)
+          {
+            a_match4.set(idx, l_match4);
+          }
+        });
 
       // Loop through the teams.
       JSONArray scores = new SimpleJSONArray();

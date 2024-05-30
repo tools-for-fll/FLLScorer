@@ -24,11 +24,6 @@ html, body
   justify-content: center;
 }
 
-.blue
-{
-  background-color: var(--heading-background-color);
-}
-
 .grey
 {
   background-color: var(--menu-background-color);
@@ -103,14 +98,46 @@ html, body
   font-size: 200%;
 }
 .logo2 { grid-area: logo2; }
-.plt { grid-area: plt; }
-.numt { grid-area: numt; }
-.namet { grid-area: namet; }
-.hight { grid-area: hight; }
-.m1t { grid-area: m1t; }
-.m2t { grid-area: m2t; }
-.m3t { grid-area: m3t; }
-.m4t { grid-area: m4t; }
+.plt
+{
+  background-color: var(--select-background-color);
+  grid-area: plt;
+}
+.numt
+{
+  background-color: var(--select-background-color);
+  grid-area: numt;
+}
+.namet
+{
+  background-color: var(--select-background-color);
+  grid-area: namet;
+}
+.hight
+{
+  background-color: var(--select-background-color);
+  grid-area: hight;
+}
+.m1t
+{
+  background-color: var(--select-background-color);
+  grid-area: m1t;
+}
+.m2t
+{
+  background-color: var(--select-background-color);
+  grid-area: m2t;
+}
+.m3t
+{
+  background-color: var(--select-background-color);
+  grid-area: m3t;
+}
+.m4t
+{
+  background-color: var(--select-background-color);
+  grid-area: m4t;
+}
 .pl0 { grid-area: pl0; }
 .num0 { grid-area: num0; }
 .name0 { grid-area: name0; }
