@@ -188,10 +188,10 @@ function resetTimer() {
 // in the timer.
 function ready() {
   // Pre-load the sound files used by the timer.
-  snd_cancel = loadSound("timekeeper/cancel.mp3");
-  snd_end_game = loadSound("timekeeper/end-game.mp3");
-  snd_end = loadSound("timekeeper/end.mp3");
-  snd_start = loadSound("timekeeper/start.mp3");
+  snd_cancel = loadSound("/timekeeper/cancel.mp3");
+  snd_end_game = loadSound("/timekeeper/end-game.mp3");
+  snd_end = loadSound("/timekeeper/end.mp3");
+  snd_start = loadSound("/timekeeper/start.mp3");
 
   // Set the function to call when the "test" button is pressed.
   $(".button_test").click(openTest);

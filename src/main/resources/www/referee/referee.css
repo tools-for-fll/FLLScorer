@@ -1,0 +1,288 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+.list_container
+{
+  display: grid;
+  gap: 0 0;
+  grid-template-rows: 4em 1fr 4em;
+  height: 100dvh;
+}
+
+.list_container .heading
+{
+  align-items: center;
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
+  display: flex;
+  font-size: 2em;
+  grid-row: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+.list_container .body
+{
+  grid-row: 2;
+  overflow-y: scroll;
+}
+
+.list_container .body .row
+{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 4em 4em;
+  height: 8em;
+}
+
+.list_container .three_matches .row
+{
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.list_container .body .row:nth-child(even)
+{
+  background-color: var(--color-gray3);
+}
+
+.list_container .body .row button
+{
+  font-size: 1em;
+  padding: 0.25em 0;
+  width: 90%;
+}
+
+.list_container .body .row .name
+{
+  align-items: center;
+  display: flex;
+  font-size: 2em;
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  justify-content: center;
+}
+
+.list_container .body .row .match1
+{
+  align-items: center;
+  display: flex;
+  font-size: 2em;
+  grid-column: 1;
+  grid-row: 2;
+  justify-content: center;
+}
+
+.list_container .body .row .match1 button::after
+{
+  content: "M1"
+}
+
+.list_container .body .row .match2
+{
+  align-items: center;
+  display: flex;
+  font-size: 2em;
+  grid-column: 2;
+  grid-row: 2;
+  justify-content: center;
+}
+
+.list_container .body .row .match2 button::after
+{
+  content: "M2"
+}
+
+.list_container .body .row .match3
+{
+  align-items: center;
+  display: flex;
+  font-size: 2em;
+  grid-column: 3;
+  grid-row: 2;
+  justify-content: center;
+}
+
+.list_container .body .row .match3 button::after
+{
+  content: "M3"
+}
+
+.list_container .body .row .match4
+{
+  align-items: center;
+  display: flex;
+  font-size: 2em;
+  grid-column: 4;
+  grid-row: 2;
+  justify-content: center;
+}
+
+.list_container .body .row .match4 button::after
+{
+  content: "M4"
+}
+
+.list_container .three_matches .row .match4
+{
+  display: none;
+}
+
+.list_container .search
+{
+  align-items: center;
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
+  display: flex;
+  font-size: 2em;
+  grid-row: 3;
+}
+
+@media (width > 768px) and (width <= 1366px)
+{
+  .list_container .body .row
+  {
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 4em;
+    height: 4em;
+  }
+
+  .list_container .three_matches .row
+  {
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+  }
+
+  .list_container .body .row .name
+  {
+    grid-column: 1;
+    grid-row: 1;
+    justify-content: left;
+    margin-left: 0.5em;
+  }
+
+  .list_container .body .row .match1
+  {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match2
+  {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match3
+  {
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match4
+  {
+    grid-column: 5;
+    grid-row: 1;
+  }
+
+  .list_container .three_matches .row .match4
+  {
+    display: none;
+  }
+}
+
+@media (width > 1366px)
+{
+  .list_container
+  {
+    grid-template-rows: 3em 1fr 3em;
+  }
+
+  .list_container .heading
+  {
+    font-size: 1.5em;
+  }
+
+  .list_container .body .row
+  {
+    display: grid;
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 3em;
+    height: 3em;
+  }
+
+  .list_container .three_matches .row
+  {
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+  }
+
+  .list_container .body .row .name
+  {
+    font-size: 1.5em;
+    grid-column: 1;
+    grid-row: 1;
+    justify-content: left;
+    margin-left: 0.5em;
+  }
+
+  .list_container .body .row .match1
+  {
+    font-size: 1.5em;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match1 button::after
+  {
+    content: "Match 1"
+  }
+
+  .list_container .body .row .match2
+  {
+    font-size: 1.5em;
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match2 button::after
+  {
+    content: "Match 2"
+  }
+
+  .list_container .body .row .match3
+  {
+    font-size: 1.5em;
+    grid-column: 4;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match3 button::after
+  {
+    content: "Match 3"
+  }
+
+  .list_container .body .row .match4
+  {
+    font-size: 1.5em;
+    grid-column: 5;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match4 button::after
+  {
+    content: "Match 4"
+  }
+
+  .list_container .three_matches .row .match4
+  {
+    display: none;
+  }
+
+  .list_container .search
+  {
+    font-size: 1.5em;
+  }
+}

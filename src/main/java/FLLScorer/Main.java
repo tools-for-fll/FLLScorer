@@ -19,6 +19,7 @@ public class Main
     Teams.getInstance().setup();
     Scores.getInstance().setup();
     Links.getInstance().setup();
+    Referee.getInstance().setup();
     Gui.getInstance().setup();
   }
 }
