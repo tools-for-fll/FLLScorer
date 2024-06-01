@@ -111,7 +111,7 @@ public class Seasons
   }
 
   /**
-   * Handles requests for /seasons/seasons.json.
+   * Handles requests for /admin/seasons/seasons.json.
    *
    * @param path The path from the request.
    *
@@ -333,7 +333,7 @@ public class Seasons
     m_webserver.registerSSI("seasons_js", fragment);
 
     // Register the dynamic handler for the season.json file.
-    m_webserver.registerDynamicFile("/seasons/seasons.json",
+    m_webserver.registerDynamicFile("/admin/seasons/seasons.json",
                                     this::serveSeasons);
   }
 }

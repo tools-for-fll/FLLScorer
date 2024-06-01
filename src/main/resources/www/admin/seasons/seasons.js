@@ -59,7 +59,7 @@ seasonsSelect(season)
   }
 
   // Send the updated season to the server.
-  $.getJSON("/seasons/seasons.json?year=" + season)
+  $.getJSON("/admin/seasons/seasons.json?year=" + season)
     .done(onDone)
     .fail(onError);
 }

@@ -263,12 +263,15 @@ public class Links
     m_webserver = WebServer.getInstance();
 
     // Register the dynamic handlers for the various QR code PNGs.
-    m_webserver.registerDynamicFile("/links/judge.png", this::serveJudge);
-    m_webserver.registerDynamicFile("/links/referee.png", this::serveReferee);
-    m_webserver.registerDynamicFile("/links/scoreboard.png",
+    m_webserver.registerDynamicFile("/admin/links/judge.png",
+                                    this::serveJudge);
+    m_webserver.registerDynamicFile("/admin/links/referee.png",
+                                    this::serveReferee);
+    m_webserver.registerDynamicFile("/admin/links/scoreboard.png",
                                     this::serveScoreboard);
-    m_webserver.registerDynamicFile("/links/timekeeper.png",
+    m_webserver.registerDynamicFile("/admin/links/timekeeper.png",
                                     this::serveTimekeeper);
-    m_webserver.registerDynamicFile("/links/timer.png", this::serveTimer);
+    m_webserver.registerDynamicFile("/admin/links/timer.png",
+                                    this::serveTimer);
   }
 }

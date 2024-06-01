@@ -160,7 +160,7 @@ showTab(tab)
   }
 
   // Request the content for this tab.
-  $("#tab_" + tab).load("/" + tab + "/index.html", onTabLoad);
+  $("#tab_" + tab).load("/admin/" + tab + "/index.html", onTabLoad);
 }
 
 // Updates the status bar based on the selected season and event.
@@ -237,7 +237,7 @@ updateStatus()
     }
 
     // Fetch the team count from the server.
-    $.getJSON("/teams/teams.json?action=count")
+    $.getJSON("/admin/teams/teams.json?action=count")
       .done(teamDone)
       .fail(teamFail);
   }
@@ -268,7 +268,7 @@ updateStatus()
     }
 
     // Fetch the event name from the server.
-    $.getJSON("/events/events.json")
+    $.getJSON("/admin/events/events.json")
       .done(eventDone)
       .fail(eventFail);
   }
@@ -282,7 +282,7 @@ updateStatus()
   }
 
   // Fetch the season name from the server.
-  $.getJSON("/seasons/seasons.json")
+  $.getJSON("/admin/seasons/seasons.json")
     .done(seasonDone)
     .fail(seasonFail);
 }

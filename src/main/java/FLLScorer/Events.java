@@ -166,7 +166,7 @@ public class Events
   }
 
   /**
-   * Handles requests for /events/events.json.
+   * Handles requests for /admin/events/events.json.
    *
    * @param path The path from the request.
    *
@@ -420,6 +420,7 @@ public class Events
     m_season = Seasons.getInstance();
 
    // Register the dynamic handler for the events.json file.
-   m_webserver.registerDynamicFile("/events/events.json", this::serveEvents);
+   m_webserver.registerDynamicFile("/admin/events/events.json",
+                                   this::serveEvents);
   }
 }

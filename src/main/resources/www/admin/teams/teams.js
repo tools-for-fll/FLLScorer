@@ -134,7 +134,7 @@ teamsAdd()
     else
     {
       // Send a request to the server to create the team.
-      $.getJSON("/teams/teams.json?action=add&number=" + number_enc +
+      $.getJSON("/admin/teams/teams.json?action=add&number=" + number_enc +
                 "&name=" + name_enc)
         .done(onDone)
         .fail(onFail);
@@ -236,7 +236,7 @@ teamsEdit(id)
     else
     {
       // Send a request to the server to edit the team.
-      $.getJSON("/teams/teams.json?action=edit&id=" + id + "&number=" +
+      $.getJSON("/admin/teams/teams.json?action=edit&id=" + id + "&number=" +
                 number_enc + "&name=" + name_enc)
         .done(onDone)
         .fail(onFail);
@@ -288,7 +288,7 @@ teamsDelete(id)
     }
 
     // Send a request to the server to delete the team.
-    $.getJSON("/teams/teams.json?action=delete&id=" + id)
+    $.getJSON("/admin/teams/teams.json?action=delete&id=" + id)
       .done(onDone)
       .fail(onFail);
   };
@@ -363,13 +363,13 @@ teamsSelect(id)
     // Send a request to the server to add or remove the team from the event.
     if(enabled)
     {
-      $.getJSON("/teams/teams.json?action=not_in_event&id=" + id)
+      $.getJSON("/admin/teams/teams.json?action=not_in_event&id=" + id)
         .done(onDone)
         .fail(onFail);
     }
     else
     {
-      $.getJSON("/teams/teams.json?action=in_event&id=" + id)
+      $.getJSON("/admin/teams/teams.json?action=in_event&id=" + id)
         .done(onDone)
         .fail(onFail);
     }
@@ -505,7 +505,7 @@ teamsLoad()
   };
 
   // Send a request to the server to get the list of teams.
-  $.getJSON("/teams/teams.json")
+  $.getJSON("/admin/teams/teams.json")
     .done(onDone)
     .fail(onFail);
 }

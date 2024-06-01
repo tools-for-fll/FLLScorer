@@ -72,7 +72,7 @@ public class Scores
   }
 
   /**
-   * Handles requests for /teams/teams.json.
+   * Handles requests for /admin/teams/teams.json.
    *
    * @param path The path from the request.
    *
@@ -376,6 +376,7 @@ public class Scores
     m_event = Events.getInstance();
 
     // Register the dynamic handler for the scores.json file.
-    m_webserver.registerDynamicFile("/scores/scores.json", this::serveScores);
+    m_webserver.registerDynamicFile("/admin/scores/scores.json",
+                                    this::serveScores);
   }
 }

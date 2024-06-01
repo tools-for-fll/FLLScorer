@@ -124,8 +124,8 @@ scoresExchange(id, match)
     }
 
     // Send a request to the server to exchange the scores.
-    $.getJSON("/scores/scores.json?action=exchange&id=" + id + "&match=" +
-              match + "&id2=" + new_id + "&match2=" + new_match)
+    $.getJSON("/admin/scores/scores.json?action=exchange&id=" + id +
+              "&match=" + match + "&id2=" + new_id + "&match2=" + new_match)
       .done(onDone)
       .fail(onFail);
   }
@@ -169,7 +169,8 @@ scoresDelete(id, match)
     }
 
     // Send a request to the server to delete the score.
-    $.getJSON("/scores/scores.json?action=delete&id=" + id + "&match=" + match)
+    $.getJSON("/admin/scores/scores.json?action=delete&id=" + id + "&match=" +
+              match)
       .done(onDone)
       .fail(onFail);
   }
@@ -327,7 +328,7 @@ scoresLoad()
   };
 
   // Send a request to the server to get the list of scores.
-  $.getJSON("/scores/scores.json")
+  $.getJSON("/admin/scores/scores.json")
     .done(onDone)
     .fail(onFail);
 }

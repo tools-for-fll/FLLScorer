@@ -73,7 +73,7 @@ public class Teams
   }
 
   /**
-   * Handles requests for /teams/teams.json.
+   * Handles requests for /admin/teams/teams.json.
    *
    * @param path The path from the request.
    *
@@ -326,6 +326,7 @@ public class Teams
     m_event = Events.getInstance();
 
    // Register the dynamic handler for the teams.json file.
-   m_webserver.registerDynamicFile("/teams/teams.json", this::serveTeams);
+   m_webserver.registerDynamicFile("/admin/teams/teams.json",
+                                   this::serveTeams);
   }
 }

@@ -175,7 +175,7 @@ eventsAdd()
     else
     {
       // Send a request to the server to create the event.
-      $.getJSON("/events/events.json?action=add&date=" + date_enc +
+      $.getJSON("/admin/events/events.json?action=add&date=" + date_enc +
                 "&matches=" + matches_enc + "&name=" + name_enc)
         .done(onDone)
         .fail(onFail);
@@ -291,8 +291,8 @@ eventsEdit(id)
     else
     {
       // Send a request to the server to edit the event.
-      $.getJSON("/events/events.json?action=edit&id=" + id + "&date=" + date +
-                "&matches=" + matches + "&name=" + name)
+      $.getJSON("/admin/events/events.json?action=edit&id=" + id + "&date=" +
+                date + "&matches=" + matches + "&name=" + name)
         .done(onDone)
         .fail(onFail);
     }
@@ -342,7 +342,7 @@ eventsDelete(id)
     }
 
     // Send a request to the server to delete the event.
-    $.getJSON("/events/events.json?action=delete&id=" + id)
+    $.getJSON("/admin/events/events.json?action=delete&id=" + id)
       .done(onDone)
       .fail(onFail);
   };
@@ -404,7 +404,7 @@ eventsSelect(id)
   }
 
   // Send a request to the server to select the event.
-  $.getJSON("/events/events.json?action=select&id=" + id)
+  $.getJSON("/admin/events/events.json?action=select&id=" + id)
     .done(onDone)
     .fail(onFail);
 }
@@ -516,7 +516,7 @@ eventsLoad()
   };
 
   // Send a request to the server to get the list of events.
-  $.getJSON("/events/events.json")
+  $.getJSON("/admin/events/events.json")
     .done(onDone)
     .fail(onFail);
 }
