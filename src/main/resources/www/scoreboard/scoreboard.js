@@ -115,14 +115,14 @@ runTimer()
   for(i = 0; i < 8; i++)
   {
     // Remove the background from this row. It will be added if necessary.
-    $(".pl" + i).html("").removeClass("grey");
-    $(".num" + i).html("").removeClass("grey");
-    $(".name" + i).html("").removeClass("grey");
-    $(".high" + i).html("").removeClass("grey");
-    $(".m1" + i).html("").removeClass("grey");
-    $(".m2" + i).html("").removeClass("grey");
-    $(".m3" + i).html("").removeClass("grey");
-    $(".m4" + i).html("").removeClass("grey");
+    $(".pl" + i).html("").removeClass("gray");
+    $(".num" + i).html("").removeClass("gray");
+    $(".name" + i).html("").removeClass("gray");
+    $(".high" + i).html("").removeClass("gray");
+    $(".m1" + i).html("").removeClass("gray");
+    $(".m2" + i).html("").removeClass("gray");
+    $(".m3" + i).html("").removeClass("gray");
+    $(".m4" + i).html("").removeClass("gray");
 
     // See if there is an entry for this position.
     if((data != null) && (data["scores"] != null) &&
@@ -153,17 +153,17 @@ runTimer()
         $(".m4" + i).html(data["scores"][index + i]["m4"]);
       }
 
-      // If this is an odd row, set the background to grey.
+      // If this is an odd row, set the background to gray.
       if(i & 1)
       {
-        $(".pl" + i).addClass("grey");
-        $(".num" + i).addClass("grey");
-        $(".name" + i).addClass("grey");
-        $(".high" + i).addClass("grey");
-        $(".m1" + i).addClass("grey");
-        $(".m2" + i).addClass("grey");
-        $(".m3" + i).addClass("grey");
-        $(".m4" + i).addClass("grey");
+        $(".pl" + i).addClass("gray");
+        $(".num" + i).addClass("gray");
+        $(".name" + i).addClass("gray");
+        $(".high" + i).addClass("gray");
+        $(".m1" + i).addClass("gray");
+        $(".m2" + i).addClass("gray");
+        $(".m3" + i).addClass("gray");
+        $(".m4" + i).addClass("gray");
       }
     }
   }

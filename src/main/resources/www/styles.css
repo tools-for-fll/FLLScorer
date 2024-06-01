@@ -7,41 +7,61 @@
 
 :root
 {
-  --background-color: #000000;
-  --border-color: #333333;
-  --color: #ffffff;
-  --color-dark-green: #003f00;
-  --color-dark-red: #7f0000;
-  --color-dark-yellow: #7f7f00;
-  --color-gray: #333333;
-  --color-green: #007f00;
-  --color-red: #ff0000;
-  --color-yellow: #ffff00;
-  --disable-background-color: #222222;
-  --disable-color: #666666;
-  --error-background-color: #ff0000;
-  --error-color: #ffffff;
-  --heading-background-color: #00007f;
-  --link-color: #00ffff;
-  --menu-background-color: #333333;
-  --menu-border-color: #444444;
-  --menu-color: #bbbbbb;
-  --menu-hover-background-color: #666666;
-  --menu-hover-color: #ffffff;
-  --select-background-color: #007f7f;
-  --select-color: #ffffff;
+  --accent-color: var(--color-cyan);
+  --background-color: var(--color-black);
+  --border-color: var(--color-gray3);
+  --color-black: #000000;
+  --color-blue: #008dd1;
+  --color-bright-green: #00ff00;
+  --color-bright-red: #ff0000;
+  --color-bright-yellow: #ffff00;
+  --color-cyan: #1fa198;
+  --color-dark-blue: #0073b5;
+  --color-dark-cyan: #00877e;
+  --color-dark-green: #717e00;
+  --color-dark-magenta: #b51069;
+  --color-dark-orange: #b03000;
+  --color-dark-red: #c00018;
+  --color-dark-violet: #3f5aa8;
+  --color-dark-yellow: #9d6f00;
+  --color-green: #8d9800;
+  --color-gray1: #111111;
+  --color-gray2: #222222;
+  --color-gray3: #333333;
+  --color-gray4: #444444;
+  --color-gray5: #555555;
+  --color-gray6: #666666;
+  --color-gray7: #777777;
+  --color-gray8: #888888;
+  --color-gray9: #999999;
+  --color-gray10: #aaaaaa;
+  --color-gray11: #bbbbbb;
+  --color-gray12: #cccccc;
+  --color-gray13: #dddddd;
+  --color-gray14: #eeeeee;
+  --color-gray15: #ffffff;
+  --color-magenta: #d33982;
+  --color-orange: #cf4b15;
+  --color-red: #e0332e;
+  --color-violet: #5c73c4;
+  --color-yellow: #bb8801;
+  --color-white: #ffffff;
+  --disable-color: var(--color-gray6);
+  --foreground-color: var(--color-white);
+  --menu-background-color: var(--color-gray3);
+  --menu-border-color: var(--color-gray4);
+  --menu-color: var(--color-gray11);
+  --menu-hover-background-color: var(--color-gray6);
+  --menu-hover-color: var(--color-white);
+  --status-background-color: var(--color-gray3);
   --shadow: #00000080;
-  --success-background-color: #007f00;
-  --success-color: #ffffff;
   --transparent: #00000000;
-  --warning-background-color: #ffff00;
-  --warning-color: #000000;
 }
 
 html, body
 {
   background-color: var(--background-color);
-  color: var(--color);
+  color: var(--foreground-color);
   font-family: Arial;
   margin: 0;
 }
@@ -69,8 +89,7 @@ input[type="date"]
 {
   background-color: var(--background-color);
   border: 0;
-  border-bottom: 0.05em solid var(--color);
-  color: var(--color);
+  border-bottom: 0.05em solid var(--foreground-color);
   color-scheme: dark;
   font-family: Arial;
   font-size: 1em;
@@ -89,9 +108,9 @@ input[type="text"]
 {
   background-color: var(--background-color);
   border: 0;
-  border-bottom: 0.05em solid var(--color);
+  border-bottom: 0.05em solid var(--foreground-color);
   border-radius: 0;
-  color: var(--color);
+  color: var(--foreground-color);
   font-size: 1em;
   margin: 0;
   outline: 0;
@@ -111,23 +130,22 @@ input[type="text"]::-webkit-input-placeholder
 
 .search input[type="text"]
 {
-  background-color: var(--select-background-color);
-  border-bottom: 0.05em solid var(--select-color);
-  color: var(--select-color);
+  background-color: var(--accent-color);
+  border-bottom: 0.05em solid var(--foreground-color);
+  color: var(--foreground-color);
   margin: 0 0.5em;
 }
 
 .search input[type="text"]::-webkit-input-placeholder
 {
-  color: var(--color);
+  color: var(--foreground-color);
 }
 
 select
 {
   background-color: var(--background-color);
   border: 0;
-  border-bottom: 0.05em solid var(--color);
-  color: var(--color);
+  border-bottom: 0.05em solid var(--foreground-color);
   color-scheme: dark;
   font-family: Arial;
   font-size: 1em;
@@ -153,30 +171,30 @@ select
 
 .gray
 {
-  background-color: var(--color-gray);
-  border-color: var(--color-dark-gray);
-  color: var(--color);
+  background-color: var(--color-gray3);
+  border-color: var(--color-gray1);
+  color: var(--foreground-color);
 }
 
 .green
 {
   background-color: var(--color-green);
   border-color: var(--color-dark-green);
-  color: var(--color);
+  color: var(--foreground-color);
 }
 
 .red
 {
   background-color: var(--color-red);
   border-color: var(--color-dark-red);
-  color: var(--color);
+  color: var(--foreground-color);
 }
 
 .yellow
 {
   background-color: var(--color-yellow);
   border-color: var(--color-dark-yellow);
-  color: var(--background-color);
+  color: var(--foreground-color);
 }
 
 .main_container
@@ -216,8 +234,8 @@ select
 
 .main_container .menu button.active
 {
-  background-color: var(--select-background-color);
-  color: var(--select-color);
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
 }
 
 .main_container .tab
@@ -229,7 +247,7 @@ select
 
 .main_container .status
 {
-  background-color: var(--menu-background-color);
+  background-color: var(--status-background-color);
   font-size: 1.5em;
   grid-row: 3;
   line-height: 2em;
@@ -239,7 +257,7 @@ select
 
 .main_container .status .label
 {
-  color: var(--link-color);
+  color: var(--accent-color);
   margin-left: 1em;
   margin-right: 0.5em;
 }
@@ -253,9 +271,9 @@ select
 {
   align-items: center;
   background-color: var(--background-color);
-  border: 0.25em solid var(--link-color);
+  border: 0.25em solid var(--accent-color);
   border-radius: 1em;
-  color: var(--color);
+  color: var(--foreground-color);
   display: grid;
   gap: 0 0;
   grid-auto-flow: row;
@@ -284,9 +302,9 @@ select
 {
   align-items: center;
   background-color: var(--background-color);
-  border: 0.25em solid var(--link-color);
+  border: 0.25em solid var(--accent-color);
   border-radius: 1em;
-  color: var(--color);
+  color: var(--foreground-color);
   display: grid;
   gap: 0 0;
   grid-auto-flow: row;

@@ -10,8 +10,10 @@ str_button_ok:OK
 str_connect_error:Could not connect to the server!
 str_title:FLL Scoring System
 
-// Strings for the main page
-str_main_title:<!--#str_title--> : Admin
+// Strings for the admin page
+str_admin_title:<!--#str_title--> : Admin
+
+// Strings for the menu
 str_menu_about:About
 str_menu_events:Events
 str_menu_judging:Judging
@@ -21,6 +23,8 @@ str_menu_scores:Scores
 str_menu_seasons:Seasons
 str_menu_standings:Standings
 str_menu_teams:Teams
+
+// Strings for the status bar
 str_status_event:Event
 str_status_season:Season
 str_status_teams:Teams
@@ -37,6 +41,10 @@ str_links_referee:Referee
 str_links_scoreboard:Scoreboard
 str_links_timekeeper:Time Keeper
 str_links_timer:Timer
+
+// Strings for the referee page
+str_referee_heading:Referee : Team List
+str_referee_title:<!--#str_title--> : Referee
 
 // Strings for the scoreboard page
 str_scoreboard_high:High

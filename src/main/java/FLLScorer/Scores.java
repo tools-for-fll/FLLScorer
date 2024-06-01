@@ -14,6 +14,9 @@ import org.bspfsystems.simplejson.SimpleJSONArray;
 import org.bspfsystems.simplejson.SimpleJSONObject;
 import org.bspfsystems.simplejson.parser.JSONParser;
 
+/**
+ * Handles the scores tab.
+ */
 public class Scores
 {
   /**

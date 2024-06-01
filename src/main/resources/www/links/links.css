@@ -11,7 +11,7 @@
   width: 20em;
   height: 23em;
   margin: 0.5em;
-  border: 0.1em solid var(--link-color);
+  border: 0.1em solid var(--accent-color);
   border-radius: 0.75em;
   padding: 0.375em;
   display: grid;
@@ -31,7 +31,7 @@
 
 .links_tile p
 {
-  color: var(--color);
+  color: var(--foreground-color);
   font-size: 1.5em;
   grid-row: 2;
   text-align: center;

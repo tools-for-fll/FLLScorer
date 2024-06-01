@@ -22,15 +22,15 @@ displayTime(time)
 
   if(time == 0)
   {
-    color = "var(--color-red)";
+    color = "var(--color-bright-red)";
   }
   else if(time <= 30)
   {
-    color = "var(--color-yellow)";
+    color = "var(--color-bright-yellow)";
   }
   else
   {
-    color = "var(--color-green)";
+    color = "var(--color-bright-green)";
   }
 
   // Set the styles based on the current values of the time digits.

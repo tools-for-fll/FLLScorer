@@ -29,18 +29,18 @@
 
 .seasons_tile:hover:not(.active):not(.disabled)
 {
-  border: 0.1em solid var(--color);
+  border: 0.1em solid var(--foreground-color);
 }
 
 .seasons_tile.active
 {
-  background-color: var(--menu-background-color);
-  border: 0.1em solid var(--link-color);
+  background-color: var(--color-gray3);
+  border: 0.1em solid var(--accent-color);
 }
 
 .seasons_tile.disabled
 {
-  border: 0.1em solid var(--menu-background-color);
+  border: 0.1em solid var(--color-gray3);
 }
 
 .seasons_tile img

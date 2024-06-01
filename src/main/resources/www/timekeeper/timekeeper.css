@@ -13,9 +13,9 @@ html, body
 button
 {
   background-color: var(--background-color);
-  border: 0.1vw solid var(--link-color);
+  border: 0.1vw solid var(--accent-color);
   border-radius: 10vmin;
-  color: var(--link-color);
+  color: var(--accent-color);
   font-size: 1.75vw;
 }
 
@@ -187,7 +187,7 @@ button:disabled
 {
   background-color: var(--background-color);
   border: 0;
-  color: var(--color);
+  color: var(--foreground-color);
   float: right;
   font-size: 1vw;
   padding: 0.5vw;
@@ -208,9 +208,9 @@ button:disabled
 .test_main
 {
   background-color: var(--background-color);
-  border: 0.1vw solid var(--color);
+  border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
-  color: var(--color);
+  color: var(--foreground-color);
   height: calc(100vh - 10vw);
   left: 3vw;
   padding: 2vw;
@@ -255,9 +255,9 @@ button:disabled
 .test_start
 {
   background-color: var(--background-color);
-  border: 0.1vw solid var(--color);
+  border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
-  color: var(--color);
+  color: var(--foreground-color);
   grid-area: test_start;
   height: 75%;
   margin: 0 auto;
@@ -267,9 +267,9 @@ button:disabled
 .test_end_game
 {
   background-color: var(--background-color);
-  border: 0.1vw solid var(--color);
+  border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
-  color: var(--color);
+  color: var(--foreground-color);
   grid-area: test_end_game;
   height: 75%;
   margin: 0 auto;
@@ -279,9 +279,9 @@ button:disabled
 .test_end
 {
   background-color: var(--background-color);
-  border: 0.1vw solid var(--color);
+  border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
-  color: var(--color);
+  color: var(--foreground-color);
   grid-area: test_end;
   height: 75%;
   margin: 0 auto;
@@ -291,9 +291,9 @@ button:disabled
 .test_cancel
 {
   background-color: var(--background-color);
-  border: 0.1vw solid var(--color);
+  border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
-  color: var(--color);
+  color: var(--foreground-color);
   grid-area: test_cancel;
   height: 75%;
   margin: 0 auto;
@@ -305,7 +305,7 @@ button:disabled
   align-self: start;
   background-color: var(--background-color);
   border: 0;
-  color: var(--color);
+  color: var(--foreground-color);
   grid-area: test_exit;
   justify-self: right;
   padding: 0;

@@ -15,8 +15,8 @@
 
 .teams_container .heading
 {
-  background-color: var(--select-background-color);
-  color: var(--select-color);
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
   display: grid;
   grid-row: 1;
   grid-template-columns: 10em 1fr 10em 10em;
@@ -33,8 +33,8 @@
 
 .teams_container .search
 {
-  background-color: var(--select-background-color);
-  color: var(--select-color);
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
   display: grid;
   grid-row: 3;
   grid-template-columns: 1fr 10em;
@@ -54,7 +54,7 @@
 
 .teams_container .row:hover
 {
-  border: 0.1em solid var(--link-color);
+  border: 0.1em solid var(--accent-color);
 }
 
 .teams_container .number
@@ -118,9 +118,9 @@
 {
   align-items: center;
   background-color: var(--background-color);
-  border: 0.25em solid var(--link-color);
+  border: 0.25em solid var(--accent-color);
   border-radius: 1em;
-  color: var(--color);
+  color: var(--foreground-color);
   display: grid;
   gap: 0 0;
   grid-auto-flow: row;

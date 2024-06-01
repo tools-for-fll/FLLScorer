@@ -24,9 +24,9 @@ html, body
   justify-content: center;
 }
 
-.grey
+.gray
 {
-  background-color: var(--menu-background-color);
+  background-color: var(--color-gray3);
 }
 
 .logo1
@@ -100,42 +100,42 @@ html, body
 .logo2 { grid-area: logo2; }
 .plt
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: plt;
 }
 .numt
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: numt;
 }
 .namet
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: namet;
 }
 .hight
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: hight;
 }
 .m1t
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: m1t;
 }
 .m2t
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: m2t;
 }
 .m3t
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: m3t;
 }
 .m4t
 {
-  background-color: var(--select-background-color);
+  background-color: var(--accent-color);
   grid-area: m4t;
 }
 .pl0 { grid-area: pl0; }
