@@ -13,7 +13,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.server.HttpConfiguration;
+import org.eclipse.jetty.server.HttpConnectionFactory;
+import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.handler.SecuredRedirectHandler;
+import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.util.resource.ResourceFactory;
+import org.eclipse.jetty.util.resource.Resources;
+import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -458,20 +468,87 @@ public class WebServer extends HttpServlet
   */
 
   /**
+   * Finds the resource that contains the SSL key store.
+   *
+   * @param resourceFactory The resource factory to use.
+   *
+   * @return The resource that contains the SSL key store.
+   */
+  private static Resource
+  findKeyStore(ResourceFactory resourceFactory)
+  {
+    // The name of the resource file that contains the key store.
+    String resourceName = "ssl/keystore";
+
+    // Get a resource for the key store.
+    Resource resource = resourceFactory.newClassLoaderResource(resourceName);
+    if (!Resources.isReadableFile(resource))
+    {
+      throw(new RuntimeException("Unable to read " + resourceName));
+    }
+
+    // Return the resource.
+    return(resource);
+  }
+
+  /**
    * Starts the web server.
    *
-   * @param port The port on which to serve content; should be 443 unless
+   * @param port The port on which to serve content; should be 80 unless
    *             special circumstances exist.
+   *
+   * @param ports The secure port on which to serve content; should be 443
+   *              unless special circumstances exist.
    */
   private void
-  run(int port)
+  run(int port, int ports)
   {
     // Create a web server.
-    Server server = new Server(port);
+    Server server = new Server();
 
-    // Create a context handler and associate it with the server.
+    // Configure the HttpConfiguration for the clear-text connector.
+    HttpConfiguration httpConfig = new HttpConfiguration();
+    httpConfig.setSecurePort(ports);
+
+    // Add the clear-text connector to the server.
+    ServerConnector connector =
+      new ServerConnector(server, new HttpConnectionFactory(httpConfig));
+    connector.setPort(port);
+    server.addConnector(connector);
+
+    // Get a resource factory for finding the keystore.
+    ResourceFactory resourceFactory = ResourceFactory.of(server);
+
+    // Setup the SSL/TLS context.
+    SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+    sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
+    sslContextFactory.setKeyStorePassword("12345678");
+    sslContextFactory.setKeyManagerPassword("12345678");
+
+    // Configure the HttpConfiguration for the secured connection. The SNI host
+    // check is disabled (which will cause a browser warning) since a canned,
+    // self-signed certificate is used.
+    HttpConfiguration httpsConf = new HttpConfiguration();
+    httpsConf.setSecurePort(ports);
+    httpsConf.setSecureScheme("https");
+    SecureRequestCustomizer src = new SecureRequestCustomizer();
+    src.setSniHostCheck(false);
+    httpsConf.addCustomizer(src);
+
+    // Add the secured connector to the server.
+    ServerConnector httpsConnector = new ServerConnector(server,
+        new SslConnectionFactory(sslContextFactory, "http/1.1"),
+        new HttpConnectionFactory(httpsConf));
+    httpsConnector.setPort(8443);
+    server.addConnector(httpsConnector);
+
+    // Add the redirect from the clear-text to the secured connection.
+    SecuredRedirectHandler securedHandler = new SecuredRedirectHandler();
+    server.setHandler(securedHandler);
+
+    // Create a context handler and associate it with the secure handler.
     ServletContextHandler handler = new ServletContextHandler();
-    server.setHandler(handler);
+    securedHandler.setHandler(handler);
 
     // Add a servlet to the server for serving up the content.
     handler.addServlet(this, "/");
@@ -694,7 +771,7 @@ public class WebServer extends HttpServlet
     // Set the match length as a Server Side Include.
     registerSSI("match_len", "150");
 
-    // Load the HTML fragments.
+    // Load the HTML fragments into Server Side Inclueds.
     loadFragment("html_body_end", "body_end.html");
     loadFragment("html_body_start", "body_start.html");
     loadFragment("html_head", "head.html");
@@ -709,6 +786,6 @@ public class WebServer extends HttpServlet
     }
 
     // Start the web server.
-    run(8080);
+    run(8080, 8443);
   }
 }
