@@ -3,12 +3,14 @@
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
-// String for use in multiple places
+// Strings for use in multiple places
 str_button_cancel:Cancel
 str_button_delete:Delete
 str_button_ok:OK
 str_connect_error:Could not connect to the server!
+str_no:No
 str_title:FLL Scoring System
+str_yes:Yes
 
 // Strings for the admin page
 str_admin_title:<!--#str_title--> : Admin
@@ -43,7 +45,25 @@ str_links_timekeeper:Time Keeper
 str_links_timer:Timer
 
 // Strings for the referee page
+str_referee_discard:Discard
+str_referee_discard_conf:Are you sure you want to discard the changes to this scoresheet?
+str_referee_error:There is an error in the score sheet!
+str_referee_errors:There are ${count} errors in the score sheet!
 str_referee_heading:Referee : Team List
+str_referee_m1:M1
+str_referee_match1:Match 1
+str_referee_m2:M2
+str_referee_match2:Match 2
+str_referee_m3:M3
+str_referee_match3:Match 3
+str_referee_m4:M4
+str_referee_match4:Match 4
+str_referee_parse_fail:Failed to parse scoresheet selections!
+str_referee_publish:Publish
+str_referee_save:Save
+str_referee_save_fail:Failed to save the scoresheet!
+str_referee_score:Score
+str_referee_score_short:S
 str_referee_title:<!--#str_title--> : Referee
 
 // Strings for the scoreboard page

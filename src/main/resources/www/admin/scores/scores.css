@@ -37,7 +37,7 @@
   color: var(--foreground-color);
   display: grid;
   grid-row: 3;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 10em;
   height: 3em;
   width: 100%;
 }
@@ -158,6 +158,15 @@
   display: flex;
   font-size: 1.5em;
   grid-column: 1;
+}
+
+.scores_container .search .actions
+{
+  align-items: center;
+  display: flex;
+  font-size: 1.5em;
+  grid-column: 2;
+  justify-content: center;
 }
 
 .scores_exchange_container

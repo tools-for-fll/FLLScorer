@@ -418,6 +418,7 @@ teamsLoad()
     <div class="row">
       <div class="number">-</div>
       <div class="name"><!--#str_teams_none--></div>
+      <div class="at_event">-</div>
       <div class="actions">-</div>
     </div>`;
     }

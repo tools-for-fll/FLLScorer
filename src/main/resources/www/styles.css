@@ -18,13 +18,13 @@
   --color-cyan: #1fa198;
   --color-dark-blue: #0073b5;
   --color-dark-cyan: #00877e;
-  --color-dark-green: #717e00;
+  --color-dark-green: #5da800;
   --color-dark-magenta: #b51069;
   --color-dark-orange: #b03000;
   --color-dark-red: #c00018;
   --color-dark-violet: #3f5aa8;
   --color-dark-yellow: #9d6f00;
-  --color-green: #8d9800;
+  --color-green: #6db800;
   --color-gray1: #111111;
   --color-gray2: #222222;
   --color-gray3: #333333;
@@ -308,16 +308,39 @@ select
   display: grid;
   gap: 0 0;
   grid-auto-flow: row;
-  grid-template-rows: 20em;
-  height: 20em;
+  grid-template-rows: 1fr;
   justify-items: center;
   padding: 1em;
-  width: 50em;
 }
 
 .warning_container > div
 {
-  font-size: 1.5em;
   grid-column: 1;
   text-align: center;
+}
+
+.warning_container > div p
+{
+  font-size: 2em;
+  margin: 0;
+}
+
+.warning_container > div button
+{
+  font-size: 2em;
+  min-width: 4em;
+  padding: 0.25em;
+}
+
+@media (width > 768px)
+{
+  .warning_container > div p
+  {
+    font-size: 1.5em;
+  }
+
+  .warning_container > div button
+  {
+    font-size: 1.5em;
+  }
 }

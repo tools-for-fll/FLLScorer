@@ -429,6 +429,7 @@ eventsLoad()
       <div class="date">-</div>
       <div class="matches">-</div>
       <div class="name"><!--#str_events_none--></div>
+      <div class="select">-</div>
       <div class="actions">-</div>
     </div>`;
     }

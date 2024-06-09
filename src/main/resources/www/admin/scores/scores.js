@@ -7,7 +7,9 @@
 function
 scoresEdit(id, match)
 {
-  console.log("Edit: " + id + " " + match);
+  // Open the referee scoring page for this team and match.
+  window.open(window.location.origin + "/referee?team=" + id + "&match=" +
+              match);
 }
 
 // Exchanges scores for a team.
@@ -31,13 +33,19 @@ scoresExchange(id, match)
     html += `
 <div class="scores_exchange_container">
   <div class="title">
-    <!--#str_scores_exchange-->
+    <span>
+      <!--#str_scores_exchange-->
+    </span>
   </div>
   <div class="team1">
-    ${team}
+    <span>
+      ${team}
+    </span>
   </div>
   <div class="match1">
-    ${match_name} : ${score}
+    <span>
+      ${match_name} : ${score}
+    </span>
   </div>
   <div class="exchange">
     <span class="fa fa-exchange"></span>
@@ -215,12 +223,12 @@ scoresLoad()
       // are none.
       html += `
     <div class="row">
-      <div class="number">-</div>
-      <div class="name"><!--#str_scores_none--></div>
-      <div class="match1">-</div>
-      <div class="match2">-</div>
-      <div class="match3">-</div>
-      <div class="match4">-</div>
+      <div class="number"><span>-</span></div>
+      <div class="name"><span><!--#str_scores_none--></span></div>
+      <div class="match1"><span>-</span></div>
+      <div class="match2"><span>-</span></div>
+      <div class="match3"><span>-</span></div>
+      <div class="match4"><span>-</span></div>
     </div>`;
     }
 
@@ -236,7 +244,7 @@ scoresLoad()
           <span class="match_action">
             <span id="score${id}_edit${match}" class="fa fa-pencil"
                   onclick="scoresEdit(${id}, ${match});" tabindex="0"></span>`;
-      if(score != "")
+      if(score !== "")
       {
         html += `
             <span id="score${id}_exchange${match}" class="fa fa-exchange"
@@ -268,10 +276,14 @@ scoresLoad()
       html += `
     <div id="score${id}" class="row">
       <div id="score${id}_number" class="number">
-        ${result["scores"][i]["number"]}
+        <span>
+          ${result["scores"][i]["number"]}
+        </span>
       </div>
       <div id="score${id}_name" class="name">
-        ${result["scores"][i]["name"]}
+        <span>
+          ${result["scores"][i]["name"]}
+        </span>
       </div>`;
       addScore(i, id, 1);
       addScore(i, id, 2);
@@ -387,12 +399,26 @@ scoresSearch()
 function
 scoresKeydown(e)
 {
+  // See if Ctrl-R was pressed.
+  if(((e.key == 'r') || (e.key == 'R')) && (e.ctrlKey == true) &&
+     ($("dialog").length == 0))
+  {
+    // Load the scores from the server.
+    scoresLoad();
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+
   // See if Ctrl-S was pressed.
   if(((e.key == 's') || (e.key == 'S')) && (e.ctrlKey == true) &&
      ($("dialog").length == 0))
   {
     // Move the focus to the search bar.
     $("#scores-search").focus();
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
   }
 
   // See if Escape was pressed while the search bar is active.
@@ -403,6 +429,9 @@ scoresKeydown(e)
 
     // Perform a "search" to get all the scores displayed.
     scoresSearch();
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
   }
 }
 
@@ -415,6 +444,7 @@ scoresSetup()
 
   // Add event handlers for elements on the scores tab.
   $("#scores-search").on("keyup", scoresSearch);
+  $("#scores-refresh").on("click", scoresLoad);
 
   // Add a keydown event listener.
   document.addEventListener("keydown", scoresKeydown);

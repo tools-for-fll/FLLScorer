@@ -10,12 +10,13 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "All team equipment fits in the small inspection area:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -28,12 +29,13 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
-            "en_US": "If your Innovation Project Model has the following:<br>• Made of at least two white LEGO® pieces.<br>• Measures at least as long as 4 LEGO “studs” in some direction.<br>• Has any part of it touching the CARGO CONNECT℠ circle."
+            "en_US": "If your Innovation Project Model has the following:<br><br>• Made of at least two white LEGO® pieces.<br>• Measures at least as long as 4 LEGO “studs” in some direction.<br>• Has any part of it touching the CARGO CONNECT℠ circle."
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -46,6 +48,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The hinged container is completely closed:"
@@ -53,6 +56,7 @@
           "type": "yesno"
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "Number of contents completely in the hinged container:"
@@ -64,7 +68,7 @@
           }
         }
       ],
-      "scoring": [ 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 20, 20, 20, 30 ]
+      "score": [ 0, 0, 0, 20, 0, 20, 0, 20, 0, 20, 0, 20, 0, 30 ]
     },
     {
       "mission": "M03",
@@ -75,20 +79,22 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The cargo door rests completely down, touching the black frame:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "The container is completely separate from the plane:"
           },
           "type": "yesno",
-          "score": 10
+          "score": [ 0, 10 ]
         }
       ]
     },
@@ -101,6 +107,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The truck is completely past its blue end line and is on the mat:"
@@ -108,6 +115,7 @@
           "type": "yesno"
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "The airplane is completely past its blue end line and is on the mat:"
@@ -115,7 +123,7 @@
           "type": "yesno"
         }
       ],
-      "scoring": [ 0, 10, 10, 30 ]
+      "score": [ 0, 10, 10, 30 ]
     },
     {
       "mission": "M05",
@@ -126,12 +134,13 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The yellow bar rests all the way down/south:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -144,6 +153,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The robot is parked over the blue accident-avoidance line at the end of the match:"
@@ -151,6 +161,7 @@
           "type": "yesno"
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "The yellow panel is knocked down:"
@@ -158,6 +169,7 @@
           "type": "yesno"
         },
         {
+          "id": 3,
           "description":
           {
             "en_US": "The black panel is knocked down:"
@@ -165,7 +177,7 @@
           "type": "yesno"
         }
       ],
-      "scoring": [ 0, 20, 0, 30, 0, 0, 0, 0 ]
+      "score": [ 0, 20, 0, 30, 0, 0, 0, 0 ]
     },
     {
       "mission": "M07",
@@ -176,20 +188,22 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The container is no longer touching the cargo ship’s east deck:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "The container is completely east of the cargo ship’s east deck:"
           },
           "type": "yesno",
-          "score": 10
+          "score": [ 0, 10 ]
         }
       ],
       "constraints":
@@ -197,9 +211,9 @@
         {
           "description":
           {
-            "en_US": "The container can not be touching the east deck if it is east of the cargo ship's east deck!"
+            "en_US": "The container can not be touching the east deck if it is east of the cargo ship’s east deck."
           },
-          "rule": "#1 requires #0"
+          "rule": "M07_1 - M07_2"
         }
       ]
     },
@@ -212,28 +226,31 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The food package is separated from your helicopter:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "The other team’s food package is completely in your field’s CARGO CONNECT℠ circle:"
           },
           "type": "yesno",
-          "score": 10
+          "score": [ 0, 10 ]
         },
         {
+          "id": 3,
           "description":
           {
             "en_US": "Both teams have separated their food package from their field’s helicopters:"
           },
           "type": "yesno",
-          "score": 10
+          "score": [ 0, 10 ]
         }
       ],
       "constraints":
@@ -241,16 +258,9 @@
         {
           "description":
           {
-            "en_US": "Placing the food package in the CARGO CONNECT℠ circle requires both teams to have or have not separated their food package from their helicopter!"
+            "en_US": "The team must have separated the food package from their helicopter for both teams to have separated the food package from their helicopters."
           },
-          "rule": "#1 requires #0 == #2"
-        },
-        {
-          "description":
-          {
-            "en_US": "This team must have separated the food package from their helicopter for both teams to have separated the food package from their helicopters!"
-          },
-          "rule": "#2 requires #0"
+          "rule": "M08_1 - M08_3"
         }
       ]
     },
@@ -263,20 +273,22 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The train tracks are repaired, resting completely down/west:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "The train is latched at the end of the tracks:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -289,12 +301,13 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The light orange container is the only container completely in the blue sorting area box:"
           },
           "type": "yesno",
-          "score": 20,
+          "score": [ 0, 20 ],
           "pieces":
           [
             {
@@ -314,6 +327,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The package is on the doorstep, and not touching any equipment:"
@@ -336,6 +350,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "The turbine blade is touching only the blue holder and:"
@@ -348,6 +363,7 @@
           "score": [ 0, 20, 30 ]
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "The chicken statue is upright with its base in its circle:"
@@ -370,6 +386,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "Both trucks are latched together completely outside of home:"
@@ -377,6 +394,7 @@
           "type": "yesno"
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "A truck is latched to the bridge:"
@@ -384,7 +402,7 @@
           "type": "yesno"
         }
       ],
-      "scoring": [ 0, 10, 10, 30 ]
+      "score": [ 0, 10, 10, 30 ]
     },
     {
       "mission": "M14",
@@ -395,6 +413,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "Number of bridge decks that have been lowered onto their center support:"
@@ -417,6 +436,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "Number of containers touching only the platooning trucks completely outside of home:"
@@ -436,6 +456,7 @@
           ]
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "Number of containers touching only the train:"
@@ -455,6 +476,7 @@
           ]
         },
         {
+          "id": 3,
           "description":
           {
             "en_US": "Number of containers touching only the cargo ship’s west deck:"
@@ -484,6 +506,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "Number of containers partly in any circle:"
@@ -503,6 +526,7 @@
           ]
         },
         {
+          "id": 2,
           "description":
           {
             "en_US": "Number of containers completely in any circle:"
@@ -522,22 +546,25 @@
           ]
         },
         {
+          "id": 3,
           "description":
           {
             "en_US": "The blue (not hinged) container is completely in the blue circle:"
           },
           "type": "yesno",
-          "scoring": 20
+          "score": [ 0, 20 ]
         },
         {
+          "id": 4,
           "description":
           {
             "en_US": "The lime green container is completely in the lime green circle:"
           },
           "type": "yesno",
-          "score": 20
+          "score": [ 0, 20 ]
         },
         {
+          "id": 5,
           "description":
           {
             "en_US": "Number of circles with at least one container completely in them:"
@@ -555,30 +582,30 @@
         {
           "description":
           {
-            "en_US": "Not enough circles with containers completely in them!"
+            "en_US": "Not enough circles with containers completely in them! 2 -> 5 > 1"
           },
-          "rule": "#1 requires #4 > 0"
+          "rule": "M16_1"
         },
         {
           "description":
           {
             "en_US": "Not enough containers completely in circles!"
           },
-          "rule": "#1 >= #4"
+          "rule": "M16_2 - M16_5"
         },
         {
           "description":
           {
             "en_US": "Not enough containers completely in circles for the green and blue containers!"
           },
-          "rule": "#1 >= (#2 + #3)"
+          "rule": "M16_2 - M16_3 - M16_4"
         },
         {
           "description":
           {
             "en_US": "Not enough circles with containers for the green and blue containers!"
           },
-          "rule": "(#2 + #3) <= #4"
+          "rule": "M16_5 - M16_3 - M16_4"
         }
       ]
     },
@@ -591,6 +618,7 @@
       "items":
       [
         {
+          "id": 1,
           "description":
           {
             "en_US": "Number of precision tokens left on the field:"

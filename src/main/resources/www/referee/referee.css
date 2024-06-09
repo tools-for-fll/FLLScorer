@@ -11,6 +11,7 @@
   gap: 0 0;
   grid-template-rows: 4em 1fr 4em;
   height: 100dvh;
+  width: 100dvw;
 }
 
 .list_container .heading
@@ -34,24 +35,24 @@
 .list_container .body .row
 {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 4em 4em;
   height: 8em;
 }
 
 .list_container .three_matches .row
 {
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.list_container .body .row:nth-child(even)
+.list_container .body .row:nth-child(even of :not([style*="display: none"]))
 {
   background-color: var(--color-gray3);
 }
 
 .list_container .body .row button
 {
-  font-size: 1em;
+  font-size: 2em;
   padding: 0.25em 0;
   width: 90%;
 }
@@ -70,7 +71,6 @@
 {
   align-items: center;
   display: flex;
-  font-size: 2em;
   grid-column: 1;
   grid-row: 2;
   justify-content: center;
@@ -78,14 +78,13 @@
 
 .list_container .body .row .match1 button::after
 {
-  content: "M1"
+  content: "<!--#str_referee_m1-->"
 }
 
 .list_container .body .row .match2
 {
   align-items: center;
   display: flex;
-  font-size: 2em;
   grid-column: 2;
   grid-row: 2;
   justify-content: center;
@@ -93,14 +92,13 @@
 
 .list_container .body .row .match2 button::after
 {
-  content: "M2"
+  content: "<!--#str_referee_m2-->"
 }
 
 .list_container .body .row .match3
 {
   align-items: center;
   display: flex;
-  font-size: 2em;
   grid-column: 3;
   grid-row: 2;
   justify-content: center;
@@ -108,14 +106,13 @@
 
 .list_container .body .row .match3 button::after
 {
-  content: "M3"
+  content: "<!--#str_referee_m3-->"
 }
 
 .list_container .body .row .match4
 {
   align-items: center;
   display: flex;
-  font-size: 2em;
   grid-column: 4;
   grid-row: 2;
   justify-content: center;
@@ -123,7 +120,7 @@
 
 .list_container .body .row .match4 button::after
 {
-  content: "M4"
+  content: "<!--#str_referee_m4-->"
 }
 
 .list_container .three_matches .row .match4
@@ -133,12 +130,247 @@
 
 .list_container .search
 {
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
+  display: grid;
+  grid-row: 3;
+  grid-template-columns: 1fr 5em;
+  width: 100%;
+}
+
+.list_container .search .input
+{
+  align-items: center;
+  display: flex;
+  font-size: 2em;
+  grid-column: 1;
+}
+
+.list_container .search .actions
+{
+  align-items: center;
+  display: flex;
+  font-size: 2em;
+  grid-column: 2;
+  justify-content: center;
+}
+
+.score_container
+{
+  display: grid;
+  gap: 0 0;
+  grid-template-rows: 4em 1fr 4em;
+  height: 100dvh;
+  width: 100dvw;
+}
+
+.score_container .header
+{
   align-items: center;
   background-color: var(--accent-color);
   color: var(--foreground-color);
   display: flex;
   font-size: 2em;
+  grid-row: 1;
+  justify-content: center;
+  overflow-x: scroll;
+}
+
+.score_container .header .match1
+{
+  display: none;
+}
+
+.score_container .header .match1::after
+{
+  content: "<!--#str_referee_m1-->";
+}
+
+.score_container .header .match2
+{
+  display: none;
+}
+
+.score_container .header .match2::after
+{
+  content: "<!--#str_referee_m2-->";
+}
+
+.score_container .header .match3
+{
+  display: none;
+}
+
+.score_container .header .match3::after
+{
+  content: "<!--#str_referee_m3-->";
+}
+
+.score_container .header .match4
+{
+  display: none;
+}
+
+.score_container .header .match4::after
+{
+  content: "<!--#str_referee_m4-->";
+}
+
+.score_container .body
+{
+  grid-row: 2;
+  overflow-y: scroll;
+}
+
+.score_container .footer
+{
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
+  font-size: 1.5em;
   grid-row: 3;
+}
+
+.score_container .footer button
+{
+  background-color: var(--color-gray3);
+  color: var(--foreground-color);
+  font-size: 1em;
+  height: 2em;
+  margin: 0.375em 0 0.375em 0.375em;
+  min-width: 3em;
+  padding: 0.5em;
+}
+
+.score_container .footer button:disabled
+{
+  color: var(--color-gray6);
+}
+
+.score_container .footer #discard
+{
+  float: left;
+}
+
+.score_container .footer #save
+{
+  float: left;
+}
+
+.score_container .footer #publish
+{
+  float: left;
+}
+
+.score_container .footer #compute
+{
+  float: right;
+  margin: 0.375em 0.375em 0.375em 0;
+}
+
+.score_container .footer #compute::before
+{
+  content: "<!--#str_referee_score_short-->: ";
+}
+
+.score_container .footer #compute::after
+{
+  content: "\f021";
+  font-family: FontAwesome;
+}
+
+.score_container .footer #compute.has_score::after
+{
+  content: "";
+  font-family: Arial;
+}
+
+.score_container .mission
+{
+  border: 0.1em solid var(--accent-color);
+  border-radius: 1em;
+  display: grid;
+  grid-template-columns: 5em 1fr;
+  margin: 0.5em;
+  padding: 0.5em;
+}
+
+.score_container .mission .mission_id
+{
+  align-items: center;
+  background-color: var(--accent-color);
+  border-radius: 0.25em 0 0 0;
+  color: var(--foreground-color);
+  display: flex;
+  font-size: 2em;
+  grid-column: 1;
+  justify-content: center;
+}
+
+.score_container .mission .mission_name
+{
+  align-items: center;
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  display: flex;
+  font-size: 2em;
+  grid-column: 2;
+  margin-left: 0.25em;
+}
+
+.score_container .mission .mission_desc
+{
+  grid-column: 1 / span 2;
+  font-size: 1.5em;
+  width: 100%;
+}
+
+.score_container .mission .mission_sel
+{
+  display: flex;
+  flex-wrap: wrap;
+  grid-column: 1 / span 2;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.score_container .mission .mission_sel button
+{
+  background-color: var(--color-gray3);
+  color: var(--foreground-color);
+  float: right;
+  font-size: 1.5em;
+  height: 2em;
+  margin: 0.25em 0 0 0.25em;
+  min-width: 4em;
+  padding: 0.5em;
+}
+
+.score_container .mission .mission_sel button.selected
+{
+  background-color: var(--accent-color);
+}
+
+.score_container .mission hr
+{
+  border: 0.05em solid var(--accent-color);
+  grid-column: 1 / span 2;
+  width: 100%;
+}
+
+.score_container .mission .error
+{
+  display: none;
+  grid-column: 1 / span 2;
+  width: 100%;
+}
+
+.score_container .mission .error .mission_error
+{
+  background-color: var(--accent-color);
+  border-radius: 0 0 0.25em 0.25em;
+  color: var(--foreground-color);
+  font-size: 1.5em;
+  padding: 0.5em;
 }
 
 @media (width > 768px) and (width <= 1366px)
@@ -146,14 +378,14 @@
   .list_container .body .row
   {
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 4fr repeat(4, 1fr);
     grid-template-rows: 4em;
     height: 4em;
   }
 
   .list_container .three_matches .row
   {
-    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-columns: 3fr repeat(3, 1fr);
   }
 
   .list_container .body .row .name
@@ -191,6 +423,64 @@
   .list_container .three_matches .row .match4
   {
     display: none;
+  }
+
+  .score_container .header .match1::after
+  {
+    content: "<!--#str_referee_match1-->";
+  }
+
+  .score_container .header .match2::after
+  {
+    content: "<!--#str_referee_match2-->";
+  }
+
+  .score_container .header .match3::after
+  {
+    content: "<!--#str_referee_match3-->";
+  }
+
+  .score_container .header .match4::after
+  {
+    content: "<!--#str_referee_match4-->";
+  }
+
+  .score_container .footer #discard::before
+  {
+    content: none;
+  }
+
+  .score_container .footer #discard::after
+  {
+    content: "<!--#str_referee_discard-->";
+    font-family: Arial;
+  }
+
+  .score_container .footer #save::before
+  {
+    content: none;
+  }
+
+  .score_container .footer #save::after
+  {
+    content: "<!--#str_referee_save-->";
+    font-family: Arial;
+  }
+
+  .score_container .footer #publish::before
+  {
+    content: none;
+  }
+
+  .score_container .footer #publish::after
+  {
+    content: "<!--#str_referee_publish-->";
+    font-family: Arial;
+  }
+
+  .score_container .footer #compute::before
+  {
+    content: "<!--#str_referee_score-->: ";
   }
 }
 
@@ -209,14 +499,19 @@
   .list_container .body .row
   {
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 4fr repeat(4, 1fr);
     grid-template-rows: 3em;
     height: 3em;
   }
 
   .list_container .three_matches .row
   {
-    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-columns: 3fr repeat(3, 1fr);
+  }
+
+  .list_container .body .row button
+  {
+    font-size: 1.5em;
   }
 
   .list_container .body .row .name
@@ -230,50 +525,46 @@
 
   .list_container .body .row .match1
   {
-    font-size: 1.5em;
     grid-column: 2;
     grid-row: 1;
   }
 
   .list_container .body .row .match1 button::after
   {
-    content: "Match 1"
+    content: "<!--#str_referee_match1-->"
   }
 
   .list_container .body .row .match2
   {
-    font-size: 1.5em;
     grid-column: 3;
     grid-row: 1;
   }
 
   .list_container .body .row .match2 button::after
   {
-    content: "Match 2"
+    content: "<!--#str_referee_match2-->"
   }
 
   .list_container .body .row .match3
   {
-    font-size: 1.5em;
     grid-column: 4;
     grid-row: 1;
   }
 
   .list_container .body .row .match3 button::after
   {
-    content: "Match 3"
+    content: "<!--#str_referee_match3-->"
   }
 
   .list_container .body .row .match4
   {
-    font-size: 1.5em;
     grid-column: 5;
     grid-row: 1;
   }
 
   .list_container .body .row .match4 button::after
   {
-    content: "Match 4"
+    content: "<!--#str_referee_match4-->"
   }
 
   .list_container .three_matches .row .match4
@@ -281,8 +572,71 @@
     display: none;
   }
 
-  .list_container .search
+  .list_container .search .input
   {
     font-size: 1.5em;
+  }
+
+  .list_container .search .actions
+  {
+    font-size: 1.5em;
+  }
+
+  .score_container .header .match1::after
+  {
+    content: "<!--#str_referee_match1-->";
+  }
+
+  .score_container .header .match2::after
+  {
+    content: "<!--#str_referee_match2-->";
+  }
+
+  .score_container .header .match3::after
+  {
+    content: "<!--#str_referee_match3-->";
+  }
+
+  .score_container .header .match4::after
+  {
+    content: "<!--#str_referee_match4-->";
+  }
+
+  .score_container .footer #discard::before
+  {
+    content: none;
+  }
+
+  .score_container .footer #discard::after
+  {
+    content: "<!--#str_referee_discard-->";
+    font-family: Arial;
+  }
+
+  .score_container .footer #save::before
+  {
+    content: none;
+  }
+
+  .score_container .footer #save::after
+  {
+    content: "<!--#str_referee_save-->";
+    font-family: Arial;
+  }
+
+  .score_container .footer #publish::before
+  {
+    content: none;
+  }
+
+  .score_container .footer #publish::after
+  {
+    content: "<!--#str_referee_publish-->";
+   font-family: Arial;
+  }
+
+  .score_container .footer #compute::before
+  {
+    content: "<!--#str_referee_score-->: ";
   }
 }

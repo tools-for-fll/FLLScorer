@@ -69,7 +69,7 @@ interface MatchScoreMethod
 interface JudgingMethod
 {
   void accept(int id, int season_id, int event_id, int team_id, int project,
-              int robot_design, int core_values);
+              int robot_design, int core_values, String rubric);
 }
 
 /**
@@ -193,6 +193,7 @@ public class Database
                      "  project integer, " +
                      "  robot_design integer, " +
                      "  core_values integer " +
+                     "  rubric char " +
                      ")";
 
     // Attempt to create the tables, catching (and ignoring) any errors that
@@ -1350,6 +1351,100 @@ public class Database
   }
 
   /**
+   * Gets the name of a team.
+   *
+   * @param season_id The ID of the season.
+   *
+   * @param team_id The ID of the team.
+   *
+   * @return The name of the team.
+   */
+  public String
+  teamNameGet(int season_id, int team_id)
+  {
+    String name = null;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL command to get the name of the team.
+      String sql = "select name from team where season_id = " + season_id +
+                   " and id = " + team_id;
+
+      // Get the name of this team from the database.
+      if(m_debug)
+      {
+        System.out.println(sql);
+      }
+      ResultSet result = stmt.executeQuery(sql);
+      if(result.next())
+      {
+        name = result.getString("name");
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+    }
+
+    // Return the team name.
+    return(name);
+  }
+
+  /**
+   * Gets the number of a team.
+   *
+   * @param season_id The ID of the season.
+   *
+   * @param team_id The ID of the team.
+   *
+   * @return The name of the team.
+   */
+  public int
+  teamNumberGet(int season_id, int team_id)
+  {
+    int number = -1;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL command to get the name of the team.
+      String sql = "select number from team where season_id = " + season_id +
+                   " and id = " + team_id;
+
+      // Get the name of this team from the database.
+      if(m_debug)
+      {
+        System.out.println(sql);
+      }
+      ResultSet result = stmt.executeQuery(sql);
+      if(result.next())
+      {
+        number = result.getInt("number");
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+    }
+
+    // Return the team number.
+    return(number);
+  }
+
+  /**
    * Removes a team from the database.
    *
    * @param season_id The ID of the season.
@@ -1834,7 +1929,7 @@ public class Database
    *
    * @param callback The function to call to provide the score.
    *
-   * @return <b>true</b> if the match 1 score is returned successfully.
+   * @return <b>true</b> if the match score is returned successfully.
    */
   public boolean
   scoreMatchGet(int season_id, int event_id, int team_id, int match,
@@ -2014,11 +2109,13 @@ public class Database
    *
    * @param core_values The core values score.
    *
+   * @param rubric The rubric choices in JSON format.
+   *
    * @return The judging ID for the judging result.
    */
   public int
   judgingAdd(int season_id, int event_id, int team_id, int project,
-             int robot_design, int core_values)
+             int robot_design, int core_values, String rubric)
   {
     int id = -1;
 
@@ -2033,14 +2130,15 @@ public class Database
                     " and event_id = " + event_id + " and team_id = " +
                     team_id;
       String sql2 = "insert into judging (season_id, event_id, team_id, " +
-                    "project, robot_design, core_values) values (" +
+                    "project, robot_design, core_values, rubric) values (" +
                     season_id + ", " + event_id + ", " + team_id + ", " +
-                    project + ", " + robot_design + "," + core_values + ")";
+                    project + ", " + robot_design + "," + core_values + "," +
+                    rubric + ")";
       String sql3 = "update judging set project = " + project +
                     ", robot_design = " + robot_design + ", core_values = " +
-                    core_values + " where season_id = " + season_id +
-                    " and event_id = " + event_id + " and team_id = " +
-                    team_id;
+                    core_values + ", rubric = " + rubric +
+                    " where season_id = " + season_id + " and event_id = " +
+                    event_id + " and team_id = " + team_id;
 
       // See if the judging result already exists in the database.
       if(m_debug)
@@ -2132,7 +2230,8 @@ public class Database
                         result.getInt("team_id"),
                         result.getInt("project"),
                         result.getInt("robot_design"),
-                        result.getInt("core_values"));
+                        result.getInt("core_values"),
+                        result.getString("rubric"));
       }
 
       // Close the SQL statement.
