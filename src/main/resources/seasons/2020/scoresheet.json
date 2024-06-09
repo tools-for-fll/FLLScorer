@@ -1,0 +1,564 @@
+{
+  "missions":
+  [
+    {
+      "mission": "M00",
+      "name":
+      {
+        "en_US": "Equipment Inspection Bonus"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "All team equipment fits in the small inspection area:"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Innovation Project Model"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Innovation Project:<br><ul><li>Is made of at least two white LEGO pieces</li><li>Measures at least as long as four LEGO studs in at least one direction</li><li>Has any part of it touching either the RePLAY logo or the gray area around the bench</li></ul>"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Step Counter"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The bottom of the pointer is on:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Magenta", "Yellow", "Blue" ]
+          },
+          "score": [ 0, 10, 15, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Slide"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Figures off the slide:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 5, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "A slide figure is completely in home:"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "A slide figure is held completely off the mat by the heavy tire and is touching nothing else:"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Not enough figures off the slide for the number that are in other scoring positions."
+          },
+          "rule": "M03_1 - M03_2 - M03_3"
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Bench"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The bench is down flat:"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The bench is down flat and the number of cubes touching the mat in the hopscotch spaces:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 10, 20, 30, 40 ],
+          "pieces":
+          [
+            {
+              "name": "cube",
+              "quantity": [ 0, 1, 2, 3, 4 ]
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "The backrest is completely out of both of its holes:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The bench must be down flat in order to score cubes in the hopscotch spaces."
+          },
+          "rule": "(M04_1 * 10) - M04_2"
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Basketball"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "There is a cube in the crate:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ],
+          "pieces":
+          [
+            {
+              "name": "cube",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "White stopper that the crate rests on:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Middle", "Top" ]
+          },
+          "score": [ 0, 15, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Pull-Up Bar"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The robot passes completely through the pull-up bar’s upright frame at any time:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The pull-up bar holds 100% of the robot up off the mat at the end of the match:"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Robot Dance"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The robot’s controller is at least partly over the dance floor in a “dancing” motion at the end of the match:"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The robot can not be dancing and hanging on the pull-up bar at the same time."
+          },
+          "rule": "1 - M07_1 - M06_2"
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Boccia"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Both share models have sent only one cube anywhere onto the opposing field and those cubes color-match each other:"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Cubes completely in your frame or target:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80 ],
+          "pieces":
+          [
+            {
+              "name": "cube",
+              "quantity": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "At least one yellow cube is completely in your target:"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "There must be a cube in the target area for there to be a yellow cube in the target area."
+          },
+          "rule": "M08_2 - M08_3"
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Tire Flip"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The light (blue tread) tire is white center up:"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The heavy (black tread) tire is white center up:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "Number of white-center-up tires are completely in the large target circle:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 5, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Tires must be white-center-up in order to score in the large target circle."
+          },
+          "rule": "M09_1 + M09_2 - M09_3"
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+       "en_US": "Cell Phone"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The cell phone is white side up and resting on only the mat:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Treadmill"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The robot spins the rollers so the pointer points to:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Gray", "Red", "Orange", "Yellow", "Light Green", "Dark Green" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Row Machine"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The free wheel is completely outside the large circle:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The free wheel is completely in the small circle:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The free wheel must be completely outside the large circle to be completely in the small circle."
+          },
+          "rule": "M12_1 - M12_2"
+        }
+      ]
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Weight Machine"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The stopper is under the lever and the lever setting is:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Blue", "Magenta", "Yellow" ]
+          },
+          "score": [ 0, 10, 15, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Health Units"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of health units touching either the RePLAY logo or the gray area around the bench:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25, 30, 35, 40 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Number of health units looped over a pull-up bar post and touching no equipment:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 10, 20, 30, 40 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+            "description":
+            {
+              "en_US": "Too many health units have been scored."
+            },
+            "rule": "8 - M14_1 - M14_2"
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Precision"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of precision tokens left on the field:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+          },
+          "score": [ 0, 5, 10, 20, 30, 45, 60 ]
+        }
+      ]
+    }
+  ],
+  "pieces":
+  [
+    {
+      "name": "cube",
+      "description":
+      {
+        "en_US": "cubes"
+      },
+      "mission": "M08",
+      "quantity": 16
+    }
+  ]
+}

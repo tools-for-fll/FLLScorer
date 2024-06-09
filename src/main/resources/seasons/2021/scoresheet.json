@@ -32,7 +32,7 @@
           "id": 1,
           "description":
           {
-            "en_US": "If your Innovation Project Model has the following:<br><br>• Made of at least two white LEGO® pieces.<br>• Measures at least as long as 4 LEGO “studs” in some direction.<br>• Has any part of it touching the CARGO CONNECT℠ circle."
+            "en_US": "If your Innovation Project Model has the following:<br><ul><li>Made of at least two white LEGO® pieces.</li><li>Measures at least as long as 4 LEGO “studs” in some direction.</li><li>Has any part of it touching the CARGO CONNECT℠ circle.</li></ul>"
           },
           "type": "yesno",
           "score": [ 0, 20 ]
