@@ -133,3 +133,5 @@ scores at a single event.  The columns are:
 **robot_design** &rarr; The robot design score.
 
 **core_values** &rarr; The core values score.
+
+**rubric** &rarr; The judging rubric (JSON).
