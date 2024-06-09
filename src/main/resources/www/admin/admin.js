@@ -65,6 +65,18 @@ showTab(tab)
       {
         window[tab + "Setup"]();
       }
+
+      // Rewrite the URL for the current page.
+      if(tab != "seasons")
+      {
+        window.history.replaceState(null, "", window.location.origin +
+                                              window.location.pathname +
+                                              "?tab=" + tab);
+      }
+      else
+      {
+        window.history.replaceState(null, "", window.location.origin);
+      }
     }
     else
     {
@@ -252,6 +264,34 @@ showAbout()
 function
 ready()
 {
+  var params = window.location.search;
+  var tab = "seasons";
+
+  // See if there are any parameters to this page.
+  if(params != "")
+  {
+    // Remove the "?" from the beginning of the parameters.
+    params = params.substring(1);
+
+    // Split the parameters on any "&", which separates unique parameters.
+    params = params.split("&");
+
+    // Loop through the parameters.
+    for(var param of params)
+    {
+      // Split this parameter on the "=", which separates the name from the
+      // value.
+      param = param.split("=");
+
+      // Save the tab name if this parameter is the tab, and it is a valid tab.
+      if((param[0] == "tab") && ($("#btn_" + param[1]).length != 0) &&
+         (param[1] != "about"))
+      {
+        tab = param[1];
+      }
+    }
+  }
+
   // Insert the button names.
   $("#btn_seasons").html(seasonsButton);
   $("#btn_events").html(eventsButton);
@@ -275,7 +315,7 @@ ready()
   $("#btn_about").click(showAbout);
 
   // Show the seasons tab by default.
-  showTab("seasons");
+  showTab(tab);
 
   // Update the status bar.
   updateStatus();

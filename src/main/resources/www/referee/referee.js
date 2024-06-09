@@ -642,7 +642,7 @@ ready()
     params = params.split("&");
 
     // Loop through the parameters.
-    for(param of params)
+    for(var param of params)
     {
       // Split this parameter on the "=", which separates the name from the
       // value.
