@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONArray;
 import org.bspfsystems.simplejson.JSONObject;
@@ -493,6 +494,12 @@ public class Referee
     // The set of variables used by the scoring rules.
     StaticVariableSet<Double> vars = new StaticVariableSet<Double>();
 
+    // The set of game pieces.
+    HashMap<String, String> pieces_desc = new HashMap<String, String>();
+    HashMap<String, Integer> pieces_qty = new HashMap<String, Integer>();
+    HashMap<String, Integer> pieces_used = new HashMap<String, Integer>();
+    HashMap<String, String> pieces_mission = new HashMap<String, String>();
+
     // Catch any exceptions and return an error.
     try
     {
@@ -501,6 +508,41 @@ public class Referee
 
       // Load the current season's scoresheet if necessary.
       loadScoresheet();
+
+      // Get the game pieces from the scoresheet.
+      JSONArray pieces = m_scoresheet.getArray("pieces");
+
+      // Loop through the game pieces.
+      for(int i = 0; (pieces != null) && (i < pieces.size()); i++)
+      {
+        // Get the JSON object for this game piece.
+        JSONObject piece = pieces.getObject(i);
+
+        // Get the name of this game piece.
+        String name = piece.getString("name");
+
+        // Get the description of this game piece.  If it is not available in
+        // the current locale, default back to en_US.
+        String desc =
+          piece.getObject("description").getString(m_config.localeGet());
+        if(desc == null)
+        {
+          desc = piece.getObject("description").getString("en_US");
+        }
+
+        // Get the quantity of this game piece.
+        int quantity = piece.getInteger("quantity");
+
+        // Get the mission for which an over use of this game pieces is marked
+        // as being in error.
+        String mission = piece.getString("mission");
+
+        // Add this piece to the map of game pieces.
+        pieces_desc.put(name, desc);
+        pieces_qty.put(name, quantity);
+        pieces_used.put(name, 0);
+        pieces_mission.put(name, mission);
+      }
 
       // Get the missions from the scoresheet.
       JSONArray missions = m_scoresheet.getArray("missions");
@@ -563,6 +605,21 @@ public class Referee
             // this selection.
             points += scores.getInteger(selection);
           }
+
+          // Get the pieces for this item.
+          pieces = item.getArray("pieces");
+
+          // Loop through the pieces for this item.
+          for(int k = 0; (pieces != null) && (k < pieces.size()); k++)
+          {
+            // Get the name and quantity from this game piece.
+            String name = pieces.getObject(k).getString("name");
+            int quantity =
+              pieces.getObject(k).getArray("quantity").getInteger(selection);
+
+            // Update the quantity of this piece in use.
+            pieces_used.put(name, pieces_used.get(name) + quantity);
+          }
         }
 
         // See if there is a mission-based score list.
@@ -616,6 +673,34 @@ public class Referee
           }
         }
       }
+
+      // Interate through the game pieces.
+      pieces_used.forEach((name, qty) ->
+        {
+          // See if more pieces were used than are available.
+          if(pieces_used.get(name) > pieces_qty.get(name))
+          {
+            // Too many pieces were used, so add this failure description to
+            // the result.
+            String res = result.getString("result");
+            if(res == null)
+            {
+              res = "";
+            }
+
+            // Get the name of this game piece.
+            String piece = pieces_desc.get(name);
+
+            // Get the too many pieces error message.
+            String message = m_webserver.getSSI("str_referee_too_many_pieces");
+
+            // Substitue in the name of this game piece.
+            message = message.replace("${piece}", piece);
+
+            // Append this error message to the existing result.
+            result.set("result", res + pieces_mission.get(name) + ":" + message + "\n");
+          }
+        });
 
       // Add the score to the JSON response.
       result.set("score", points);

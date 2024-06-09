@@ -312,7 +312,7 @@
           [
             {
               "name": "container",
-              "quantity": 1
+              "quantity": [ 0, 1 ]
             }
           ]
         }
@@ -582,28 +582,21 @@
         {
           "description":
           {
-            "en_US": "Not enough circles with containers completely in them! 2 -> 5 > 1"
-          },
-          "rule": "M16_1"
-        },
-        {
-          "description":
-          {
-            "en_US": "Not enough containers completely in circles!"
+            "en_US": "Not enough containers completely in circles."
           },
           "rule": "M16_2 - M16_5"
         },
         {
           "description":
           {
-            "en_US": "Not enough containers completely in circles for the green and blue containers!"
+            "en_US": "Not enough containers completely in circles for the green and blue containers."
           },
           "rule": "M16_2 - M16_3 - M16_4"
         },
         {
           "description":
           {
-            "en_US": "Not enough circles with containers for the green and blue containers!"
+            "en_US": "Not enough circles with containers completely in for the green and blue containers."
           },
           "rule": "M16_5 - M16_3 - M16_4"
         }
@@ -639,8 +632,9 @@
       "name": "container",
       "description":
       {
-        "en_US": "Containers"
+        "en_US": "containers"
       },
+      "mission": "M16",
       "quantity": 8
     }
   ]

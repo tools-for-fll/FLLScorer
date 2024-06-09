@@ -65,6 +65,7 @@ str_referee_save_fail:Failed to save the scoresheet!
 str_referee_score:Score
 str_referee_score_short:S
 str_referee_title:<!--#str_title--> : Referee
+str_referee_too_many_pieces:There are too many ${piece} in use.
 
 // Strings for the scoreboard page
 str_scoreboard_high:High
