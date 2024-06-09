@@ -257,24 +257,14 @@ publish()
               "<!--#str_connect_error-->", null);
   }
 
-  // See if the scoresheet has been modified.
-  if(modified)
-  {
-    // Get the JSON representation of the current scoresheet selections.
-    var json = getSheetJSON();
+  // Get the JSON representation of the current scoresheet selections.
+  var json = getSheetJSON();
 
-    // Send a request to the server to publish the scoresheet.
-    $.getJSON("/referee/referee.json?action=publish&id=" + teamID + "&match=" +
-              theMatch + "&json=" + json)
-      .done(done)
-      .fail(fail)
-  }
-  else
-  {
-    // The scoresheet has not been modified, so bypass sending the scoresheet
-    // to the server and act as though it were successful.
-    done(null);
-  }
+  // Send a request to the server to publish the scoresheet.
+  $.getJSON("/referee/referee.json?action=publish&id=" + teamID + "&match=" +
+            theMatch + "&json=" + json)
+    .done(done)
+    .fail(fail)
 }
 
 // Handles computing the score for the scoresheet.
