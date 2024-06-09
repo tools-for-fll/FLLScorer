@@ -1,0 +1,555 @@
+{
+  "missions":
+  [
+    {
+      "mission": "EIB",
+      "name":
+      {
+        "en_US": "Equipment Inspection Bonus"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "All team equipment fits in one launch area and under 12 in. (305 mm)"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Innovation Project Model"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Innovation Project model is at least partly in the hydrogen plant target area"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Oil Platform"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Fuel units in the fuel truck"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "At least one fuel unit is in the fuel truck and the fuel truck is at least partly over the fueling station target"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "There must be a fuel unit in the truck to score for being over the fueling station."
+          },
+          "rule": "(M02_1 * 10) - M02_2"
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Energy Storage"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units completely in the energy storage bin"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The energy unit is completely removed from the energy storage tray"
+          },
+          "type": "yesno",
+          "score": [ 0, 5 ]
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Solar Farm"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "An energy unit has been completely removed from its starting circle"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Smart Grid"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Your field’s orange connector is completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Both teams’ orange connectors are completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Your orange connect must be completely raised in order for both team’s orange connectors to be completely raised."
+          },
+          "rule": "M05_1 - M05_2"
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Hybrid Car"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The hybrid car is no longer touching the ramp"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The hybrid unit is in the hybrid car"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Wind Turbine"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units no longer touching the wind turbine"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Watch Television"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The television is completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "An energy unit is completely in the green television slot"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Dinosaur Toy"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The dinosaur toy is completely in the left home area"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The dinosaur toy lid is completely closed and the dinosaur toy contains"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "Nothing", "Energy unit", "Rechargable battery" ]
+          },
+          "score": [ 0, 10, 20 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 0 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+        "en_US": "Power Plant"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units no longer touching the power plant"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Hydroelectric Dam"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The energy unit is no longer touching the hydroelectric dam"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Water Reservoir"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Looped water units completely in the water reservoir, touching the mat"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Looped water units placed on a single red hook"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 10, 20 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Too many looped water units in use."
+          },
+          "rule": "3 - M12_1 - M12_2"
+        }
+      ]
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Power-To-X"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units completely in the hydrogen plant target area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Toy Factory"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units at least partly in the slot in the back of the toy factory (or in the red hopper)"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The mini dinosaur toy has been released"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Rechargeable Battery"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units completely in the rechargeable battery target area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "PT",
+      "name":
+      {
+        "en_US": "Precision Tokens"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of precision tokens remaining"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+          },
+          "score": [ 0, 10, 15, 25, 35, 50, 50 ]
+        }
+      ]
+    },
+    {
+      "mission": "CV",
+      "name":
+      {
+        "en_US": "Core Values"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Gracious Professionalism<sup>&reg;</sup> displayed at the robot game table"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 0, 0, 0 ]
+        }
+      ]
+    }
+  ],
+  "pieces":
+  [
+    {
+      "name": "energy unit",
+      "description":
+      {
+        "en_US": "energy units"
+      },
+      "mission": "M15",
+      "quantity": 13
+    }
+  ]
+}

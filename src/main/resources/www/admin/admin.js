@@ -111,11 +111,13 @@ updateStatus()
     // Update the status bar with the season name, event name, and team count.
     $(".main_container .status").html("<span class=\"label\">" +
                                       "<!--#str_status_season-->:</span>" +
-                                      seasonName + "<span class=\"label\">" +
+                                      "<span>" + seasonName + "</span>" +
+                                      "<span class=\"label\">" +
                                       "<!--#str_status_event-->:</span>" +
-                                      eventName + "<span class=\"label\">" +
+                                      "<span>" + eventName + "</span>" +
+                                      "<span class=\"label\">" +
                                       "<!--#str_status_teams-->:</span>" +
-                                      teamCount);
+                                      "<span>" + teamCount + "</span>");
   }
 
   // Called when the fetch of the team count fails.

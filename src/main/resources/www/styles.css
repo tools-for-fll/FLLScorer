@@ -70,7 +70,8 @@ button
 {
   border: 0;
   border-radius: 0.75em;
-  padding: 0.5em 1.5em;
+  font-size: 1em;
+  padding: 0.25em 0.75em;
 }
 
 dialog
@@ -221,7 +222,6 @@ select
 {
   background-color: var(--menu-background-color);
   color: var(--menu-color);
-  font-size: 1em;
   height: 100%;
   padding: 0 1em;
 }
@@ -284,18 +284,18 @@ select
   width: 50em;
 }
 
-.about_container > img
-{
-  grid-column: 1;
-  max-height: 20em;
-  max-width: 20em;
-}
-
-.about_container > div
+.about_container div
 {
   font-size: 1.5em;
   grid-column: 2;
   text-align: center;
+}
+
+.about_container img
+{
+  grid-column: 1;
+  max-height: 20em;
+  max-width: 20em;
 }
 
 .warning_container
@@ -329,7 +329,6 @@ select
 {
   font-size: 2em;
   min-width: 4em;
-  padding: 0.25em;
 }
 
 @media (width > 768px)
