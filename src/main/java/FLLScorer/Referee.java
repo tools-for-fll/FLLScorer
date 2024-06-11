@@ -557,6 +557,9 @@ public class Referee
         // zero.
         int sel = 0;
 
+        // The mission-specific score starts at zero.
+        int mission_points = 0;
+
         // Get the JSON object for this mission, and the mission ID from that.
         JSONObject mission = missions.getObject(i);
         String mission_id = mission.getString("mission");
@@ -604,6 +607,7 @@ public class Referee
             // There are scores for this item, so add to the score based on
             // this selection.
             points += scores.getInteger(selection);
+            mission_points += scores.getInteger(selection);
           }
 
           // Get the pieces for this item.
@@ -628,7 +632,11 @@ public class Referee
         {
           // Add to the score based on the accumulation of selections.
           points += scores.getInteger(sel);
+          mission_points += scores.getInteger(sel);
         }
+
+        // Save the score of this mission to the rules variable set.
+        vars.set(mission_id, (double)mission_points);
       }
 
       // Loop through the missions.
@@ -671,6 +679,14 @@ public class Referee
               result.set("result", res + mission_id + ":" + error + "\n");
             }
           }
+        }
+
+        // See if there is a scoring rule for this mission.
+        String rule = mission.getString("score_rule");
+        if(rule != null)
+        {
+          // Evalute this rule and add the resulting points to the score.
+          points += Math.round(eval.evaluate(rule, vars));
         }
       }
 
