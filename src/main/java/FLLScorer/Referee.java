@@ -666,7 +666,7 @@ public class Referee
             // Get the rule for this constraint.
             String rule = constraint.getString("rule");
 
-            // Evalute this rule.
+            // Evaluate this rule.
             if(eval.evaluate(rule, vars) < 0)
             {
               // The rule failed, so get the description of the failure.
@@ -692,7 +692,7 @@ public class Referee
         String rule = mission.getString("score_rule");
         if(rule != null)
         {
-          // Evalute this rule and add the resulting points to the score.
+          // Evaluate this rule and add the resulting points to the score.
           points += Math.round(eval.evaluate(rule, vars));
         }
       }
