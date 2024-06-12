@@ -501,7 +501,7 @@ loadMatch(id, match)
     $(".score_container .name").html(result["name"]);
 
     // Show the score, if there is one.
-    setScore(result["score"] ? result["score"] : -1);
+    setScore(Object.hasOwn(result, "score") ? result["score"] : -1);
 
     // Hide any error messages that may have been present from a previous
     // sccoresheet.

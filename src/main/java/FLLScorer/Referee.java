@@ -288,7 +288,14 @@ public class Referee
         // Add the score to the JSON response, if it exists.
         if(score != null)
         {
-          result.set("score", score.intValue());
+          if(score.intValue() < 0)
+          {
+            result.set("score", 0);
+          }
+          else
+          {
+            result.set("score", score.intValue());
+          }
         }
 
         // Add the scoresheet to the JSON response, if it exists.
@@ -867,6 +874,10 @@ public class Referee
     {
       // Score the scoresheet.
       score(result, json);
+      if(result.isSet("score") && (result.getInteger("score") < 0))
+      {
+        result.set("score", 0);
+      }
     }
 
     // See if the action was specified and is "publish", for scoring and

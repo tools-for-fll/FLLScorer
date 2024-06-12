@@ -1,0 +1,511 @@
+{
+  "missions":
+  [
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Pipe Removal"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Broken Pipe is completely in Base"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Flow"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Big Water is on the other team’s Field (only by turning the Pump System’s valves(s))"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Pump Addition"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Pump Addition has contact with the mat, completely inside the target area"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Rain"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "At least one Rain is out of the Rain Cloud"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Filter"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Lock latch is in the dropped position"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Water Treatment"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Big Water is ejected from the Water Treatment model (only by the Toilet’s lever)"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Fountain"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Middle layer is raised (due only to a Big Water in the gray tub)"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ],
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Manhole Covers"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Manhole Cover(s) are flipped over past vertical (and never reached Base)"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 15, 30 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Both Manhole Covers are flipped over, and completely in separate Tripod targets"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Both Manhole Covers must be flipped over to score the bonus"
+          },
+          "rule": "M08_1 - (M08_2 * 2)"
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Tripod"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "All the Tripod’s feet are touching the mat, and the Tripod is in the Tripod target:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Partially", "Completely" ]
+          },
+          "score": [ 0, 15, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+       "en_US": "Pipe Replacement"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "New Pipe is installed where the Broken Pipe was, and has full/flat contact with the mat"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Pipe Construction"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "New Pipe has full/flat contact with the mat, and is:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Partially", "Completely" ]
+          },
+          "score": [ 0, 15, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Sludge"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Sludge is touching visible wood of a drawn garden box"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Flower"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Flower is raised (due only to a Big Water in the brown pot)"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ],
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "At least one Rain is in the purple part, touching nothing but the Flower model"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Flower model must be raised to score the Rain in the purple part"
+          },
+          "rule": "M13_1 - M13_2"
+        }
+      ]
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Water Well"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Water Well contacting the mat inside the target area:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Partially", "Completely" ]
+          },
+          "score": [ 0, 15, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Fire"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Fire is dropped (due only to the Firetruck applying direct force to the House’s lever"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M16",
+      "name":
+      {
+        "en_US": "Water Collection"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Water Target is East of the Off-Limits line (and never reached the Off-Limit line)"
+          },
+          "type": "yesno"
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "At least one Rain is touching mat in the Water Target"
+          },
+          "type": "yesno"
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "Big Waters touching mat in the Water Target"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5" ]
+          },
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1, 2, 3, 4, 5 ]
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "description":
+          {
+            "en_US": "At least one pair of Big Waters stacked in the Water Target"
+          },
+          "type": "yesno",
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        }
+      ],
+      "score_rule": "M16_1 * max(M16_2 * 10, (M16_3 * 10) + (M16_4 * 30))"
+    },
+    {
+      "mission": "M17",
+      "name":
+      {
+        "en_US": "Slingshot"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Slingshot is completely in the Slingshot target"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Rain AND Dirty Water completely in the Slingshot target"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Slingshot must be completely in the Slingship target to score the bonus"
+          },
+          "rule": "M17_1 - M17_2"
+        }
+      ]
+    },
+    {
+      "mission": "M18",
+      "name":
+      {
+        "en_US": "Faucet"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Water level is more blue than white (only by turning the Faucet handle)"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "P01",
+      "name":
+      {
+        "en_US": "Penalties"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Penalty discs in the white triangle area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+          },
+          "score": [ 0, -5, -10, -15, -20, -25, -30 ]
+        }
+      ]
+    }
+  ],
+  "pieces":
+  [
+    {
+      "name": "big water",
+      "description":
+      {
+        "en_US": "Big Water"
+      },
+      "mission": "M16",
+      "quantity": 5
+    }
+  ]
+}

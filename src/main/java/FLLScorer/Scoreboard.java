@@ -176,11 +176,11 @@ public class Scoreboard
         a_place.add(i, i);
         a_numbers.add(i, l_number);
         a_names.add(i, l_name);
-        a_high.add(i, -1);
-        a_match1.add(i, -1);
-        a_match2.add(i, -1);
-        a_match3.add(i, -1);
-        a_match4.add(i, -1);
+        a_high.add(i, -100);
+        a_match1.add(i, -100);
+        a_match2.add(i, -100);
+        a_match3.add(i, -100);
+        a_match4.add(i, -100);
       });
 
     // Enumerate the scores for this event.
@@ -237,7 +237,7 @@ public class Scoreboard
     for(int i = 0; i < a_numbers.size(); i++)
     {
       // This team does not need to get moved if it does not have any scores.
-      if(a_high.get(i) == -1)
+      if(a_high.get(i) == -100)
       {
         continue;
       }
@@ -276,7 +276,7 @@ public class Scoreboard
     for(int i = 0; i < a_numbers.size(); i++)
     {
       // Do not assign a place if this team has no scores.
-      if(a_high.get(i) == -1)
+      if(a_high.get(i) == -100)
       {
         a_place.set(i, -1);
       }
@@ -312,25 +312,30 @@ public class Scoreboard
       }
       score.set("num", a_numbers.get(i));
       score.set("name", a_names.get(i));
-      if(a_high.get(i) != -1)
+      int points = a_high.get(i);
+      if(points != -100)
       {
-        score.set("high", a_high.get(i));
+        score.set("high", (points < 0) ? 0 : points);
       }
-      if(a_match1.get(i) != -1)
+      points = a_match1.get(i);
+      if(points != -100)
       {
-        score.set("m1", a_match1.get(i));
+        score.set("m1", (points < 0) ? 0 : points);
       }
-      if(a_match2.get(i) != -1)
+      points = a_match2.get(i);
+      if(points != -100)
       {
-        score.set("m2", a_match2.get(i));
+        score.set("m2", (points < 0) ? 0 : points);
       }
-      if(a_match3.get(i) != -1)
+      points = a_match3.get(i);
+      if(points != -100)
       {
-        score.set("m3", a_match3.get(i));
+        score.set("m3", (points < 0) ? 0 : points);
       }
-      if(a_match4.get(i) != -1)
+      points = a_match4.get(i);
+      if(points != -100)
       {
-        score.set("m4", a_match4.get(i));
+        score.set("m4", (points < 0) ? 0 : points);
       }
       scores.addEntry(score);
     }
