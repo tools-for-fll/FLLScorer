@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.ArrayList;
 
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketCreator;
+import org.eclipse.jetty.ee10.websocket.server.config.JettyWebSocketServletContainerInitializer;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
@@ -52,6 +55,16 @@ public class WebServer extends HttpServlet
    * The Config object.
    */
   private Config m_config = null;
+
+  /**
+   * The Jetty web server object.
+   */
+  private Server m_server = null;
+
+  /**
+   * The Jetty servlet context handler object.
+   */
+  private ServletContextHandler m_handler = null;
 
   /**
    * The list of file name extensions that have mime types.
@@ -423,50 +436,6 @@ public class WebServer extends HttpServlet
     response.getOutputStream().write(resp, 0, resp.length);
   }
 
-  /*
-  @WebSocket
-  public class TimeSocket implements Runnable
-  {
-    private TimeZone m_timezone;
-    private Session m_session;
-
-    @OnWebSocketOpen
-    public void onOpen(Session session)
-    {
-      m_session = session;
-      m_timezone = TimeZone.getTimeZone("UTC");
-      new Thread(this).start();
-    }
-
-    @OnWebSocketClose
-    public void onClose(int closeCode, String closeReasonPhrase)
-    {
-      m_session = null;
-    }
-
-    @Override
-    public void run()
-    {
-      while (m_session != null)
-      {
-        try
-        {
-          SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-          dateFormat.setTimeZone(m_timezone);
-
-          String timestamp = dateFormat.format(new Date());
-          m_session.sendText(timestamp, Callback.NOOP);
-          TimeUnit.SECONDS.sleep(1);
-        }
-        catch(InterruptedException e)
-        {
-          System.out.println("Send of TEXT message interrupted: " + e);
-        }
-      }
-    }
-  }
-  */
-
   /**
    * Finds the resource that contains the SSL key store.
    *
@@ -492,76 +461,28 @@ public class WebServer extends HttpServlet
   }
 
   /**
-   * Starts the web server.
+   * Adds a WebSocket handler to the web server.
    *
-   * @param port The port on which to serve content; should be 80 unless
-   *             special circumstances exist.
+   * @param path The path where the WebSocket will be accessed.
    *
-   * @param ports The secure port on which to serve content; should be 443
-   *              unless special circumstances exist.
+   * @param creator The creator for the WebSocket handler.
+   *
+   * @param idleTimeout The idle timeout for the WebSocket, in milliseconds.
    */
-  private void
-  run(int port, int ports)
+  public void
+  addWebSocket(String path, JettyWebSocketCreator creator, long idleTimeout)
   {
-    // Create a web server.
-    Server server = new Server();
+    // Configure this WebSocket.
+    JettyWebSocketServletContainerInitializer.configure(m_handler,
+                                                        (context,
+                                                         configurator) ->
+      {
+        // Set the idle timeout.
+        configurator.setIdleTimeout(Duration.ofMillis(idleTimeout));
 
-    // Configure the HttpConfiguration for the clear-text connector.
-    HttpConfiguration httpConfig = new HttpConfiguration();
-    httpConfig.setSecurePort(ports);
-
-    // Add the clear-text connector to the server.
-    ServerConnector connector =
-      new ServerConnector(server, new HttpConnectionFactory(httpConfig));
-    connector.setPort(port);
-    server.addConnector(connector);
-
-    // Get a resource factory for finding the keystore.
-    ResourceFactory resourceFactory = ResourceFactory.of(server);
-
-    // Setup the SSL/TLS context.
-    SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-    sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
-    sslContextFactory.setKeyStorePassword("12345678");
-    sslContextFactory.setKeyManagerPassword("12345678");
-
-    // Configure the HttpConfiguration for the secured connection. The SNI host
-    // check is disabled (which will cause a browser warning) since a canned,
-    // self-signed certificate is used.
-    HttpConfiguration httpsConf = new HttpConfiguration();
-    httpsConf.setSecurePort(ports);
-    httpsConf.setSecureScheme("https");
-    SecureRequestCustomizer src = new SecureRequestCustomizer();
-    src.setSniHostCheck(false);
-    httpsConf.addCustomizer(src);
-
-    // Add the secured connector to the server.
-    ServerConnector httpsConnector = new ServerConnector(server,
-        new SslConnectionFactory(sslContextFactory, "http/1.1"),
-        new HttpConnectionFactory(httpsConf));
-    httpsConnector.setPort(8443);
-    server.addConnector(httpsConnector);
-
-    // Add the redirect from the clear-text to the secured connection.
-    SecuredRedirectHandler securedHandler = new SecuredRedirectHandler();
-    server.setHandler(securedHandler);
-
-    // Create a context handler and associate it with the secure handler.
-    ServletContextHandler handler = new ServletContextHandler();
-    securedHandler.setHandler(handler);
-
-    // Add a servlet to the server for serving up the content.
-    handler.addServlet(this, "/");
-
-    // Start the server.
-    try
-    {
-      server.start();
-    }
-    catch(Exception e)
-    {
-      System.out.println("Jetty error: " + e);
-    }
+        // Set the mapping for this WebSocket.
+        configurator.addMapping(path, creator);
+      });
   }
 
   /**
@@ -785,7 +706,77 @@ public class WebServer extends HttpServlet
       loadStrings(m_config.localeGet());
     }
 
-    // Start the web server.
-    run(8080, 8443);
+    // The ports to use.
+    int port = 8080;
+    int ports = 8443;
+
+    // Create a web server.
+    m_server = new Server();
+
+    // Configure the HttpConfiguration for the clear-text connector.
+    HttpConfiguration httpConfig = new HttpConfiguration();
+    httpConfig.setSecurePort(ports);
+
+    // Add the clear-text connector to the server.
+    ServerConnector connector =
+      new ServerConnector(m_server, new HttpConnectionFactory(httpConfig));
+    connector.setPort(port);
+    m_server.addConnector(connector);
+
+    // Get a resource factory for finding the keystore.
+    ResourceFactory resourceFactory = ResourceFactory.of(m_server);
+
+    // Setup the SSL/TLS context.
+    SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+    sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
+    sslContextFactory.setKeyStorePassword("12345678");
+    sslContextFactory.setKeyManagerPassword("12345678");
+
+    // Configure the HttpConfiguration for the secured connection. The SNI host
+    // check is disabled (which will cause a browser warning) since a canned,
+    // self-signed certificate is used.
+    HttpConfiguration httpsConf = new HttpConfiguration();
+    httpsConf.setSecurePort(ports);
+    httpsConf.setSecureScheme("https");
+    SecureRequestCustomizer src = new SecureRequestCustomizer();
+    src.setSniHostCheck(false);
+    httpsConf.addCustomizer(src);
+
+    // Add the secured connector to the server.
+    ServerConnector httpsConnector =
+      new ServerConnector(m_server,
+                          new SslConnectionFactory(sslContextFactory,
+                                                   "http/1.1"),
+                          new HttpConnectionFactory(httpsConf));
+    httpsConnector.setPort(8443);
+    m_server.addConnector(httpsConnector);
+
+    // Add the redirect from the clear-text to the secured connection.
+    SecuredRedirectHandler securedHandler = new SecuredRedirectHandler();
+    m_server.setHandler(securedHandler);
+
+    // Create a context handler and associate it with the secure handler.
+    m_handler = new ServletContextHandler();
+    securedHandler.setHandler(m_handler);
+
+    // Add a servlet to the server for serving up the content.
+    m_handler.addServlet(this, "/");
+  }
+
+  /**
+   * Starts the web server.
+   */
+  public void
+  run()
+  {
+    // Start the server.
+    try
+    {
+      m_server.start();
+    }
+    catch(Exception e)
+    {
+      System.out.println("Jetty error: " + e);
+    }
   }
 }
