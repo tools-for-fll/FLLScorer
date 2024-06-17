@@ -20,7 +20,8 @@ public class Main
     Scores.getInstance().setup();
     Links.getInstance().setup();
     Referee.getInstance().setup();
-    Timekeeper.getInstance().setup();
+    TimeKeeper.getInstance().setup();
+    Timer.getInstance().setup();
     WebServer.getInstance().run();
     Gui.getInstance().setup();
   }
