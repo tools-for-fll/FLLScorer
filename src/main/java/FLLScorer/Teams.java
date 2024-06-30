@@ -8,6 +8,7 @@ package FLLScorer;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONArray;
 import org.bspfsystems.simplejson.JSONObject;
@@ -17,6 +18,8 @@ import org.bspfsystems.simplejson.parser.JSONParser;
 
 /**
  * Handles the teams tab.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class Teams
 {
@@ -73,231 +76,321 @@ public class Teams
   }
 
   /**
+   * Adds a team.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   *
+   * @param number The team number.
+   *
+   * @param name The team name.
+   */
+  private void
+  add(JSONObject result, int number, String name)
+  {
+    // Get the season ID.
+    int season_id = m_season.seasonIdGet();
+
+    // See if there is already a team with the given number.
+    if(m_database.teamGet(season_id, number) >= 0)
+    {
+      // Return an error since the team already exists.
+      result.set("result", m_webserver.getSSI("str_teams_already_exists"));
+    }
+
+    // Add the team to the database.
+    else if(m_database.teamAdd(season_id, number, name) >= 0)
+    {
+      // Return success since the team was added.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, an error occurred when adding the team.
+    else
+    {
+      // Return an error.
+      result.set("result", m_webserver.getSSI("str_teams_add_failed"));
+    }
+  }
+
+  /**
+   * Adds a team to the event.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   *
+   * @param id The ID of the team.
+   */
+  private void
+  addToEvent(JSONObject result, int id)
+  {
+    // Get the season and event IDs.
+    int season_id = m_season.seasonIdGet();
+    int event_id = m_event.eventIdGet();
+
+    // Add this team to the event.
+    if(m_database.teamAtEventSet(season_id, event_id, id) == true)
+    {
+      // Return success since the team was added.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, an error occurred when adding the team.
+    else
+    {
+      // Return an error since the team could not be added.
+      result.set("result", m_webserver.getSSI("str_teams_event_add_failed"));
+    }
+  }
+
+  /**
+   * Counts the number of teams at the event.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   */
+  private void
+  count(JSONObject result)
+  {
+    // Get the season and event IDs.
+    int season_id = m_season.seasonIdGet();
+    int event_id = m_event.eventIdGet();
+
+    // A list of the team IDs for the teams at this event.
+    ArrayList<Integer> teams = new ArrayList<Integer>();
+
+    // Enumerate the teams at this event.
+    m_database.teamAtEventEnumerate(season_id, event_id, -1, null, null,
+                                    teams);
+
+    // Set the result to the number of teams at this event.
+    result.set("count", teams.size());
+    result.set("result", "ok");
+  }
+
+  /**
+   * Deletes a team.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   *
+   * @param id The ID of the team.
+   */
+  private void
+  delete(JSONObject result, int id)
+  {
+    // Get the season ID.
+    int season_id = m_season.seasonIdGet();
+
+    // Delete the team from the database.
+    m_database.teamRemove(season_id, id);
+
+    // Return success since the team was deleted.
+    result.set("result", "ok");
+  }
+
+  /**
+   * Edits a team.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   *
+   * @param id The ID of the team.
+   *
+   * @param number The team number.
+   *
+   * @param name The team name.
+   */
+  private void
+  edit(JSONObject result, int id, int number, String name)
+  {
+    // Edit the team in the database.
+    if(m_database.teamEdit(id, number, name) == true)
+    {
+      // Return success since the team was edited.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, an error occurred when editing the team.
+    else
+    {
+      // Return an error since the team could not be edited.
+      result.set("result", m_webserver.getSSI("str_teams_edit_failed"));
+    }
+  }
+
+  /**
+   * Lists the teams.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   */
+  private void
+  list(JSONObject result)
+  {
+    // Get the season and event IDs.
+    int season_id = m_season.seasonIdGet();
+    int event_id = m_event.eventIdGet();
+
+    // A list of information about teams, maintained in team number order.
+    ArrayList<Integer> ids = new ArrayList<Integer>();
+    ArrayList<Integer> numbers = new ArrayList<Integer>();
+    ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Boolean> inEvent = new ArrayList<Boolean>();
+    ArrayList<Boolean> seasonScores = new ArrayList<Boolean>();
+    ArrayList<Boolean> eventScores = new ArrayList<Boolean>();
+
+    // Enumerate the teams from the database for this season.
+    m_database.teamEnumerate(season_id, -1, ids, numbers, names);
+
+    // Add the other information about the teams.
+    for(int idx = 0; idx < numbers.size(); idx++)
+    {
+      int id = ids.get(idx);
+      inEvent.add(idx, m_database.teamAtEventGet(event_id, id));
+      seasonScores.add(idx, m_database.teamHasScores(season_id, id));
+      eventScores.add(idx, m_database.teamHasEventScores(event_id, id));
+    };
+
+    // Loop through the teams.
+    JSONArray teams = new SimpleJSONArray();
+    for(int i = 0; i < numbers.size(); i++)
+    {
+      // Add this team to the team array.
+      JSONObject team = new SimpleJSONObject();
+      team.set("id", ids.get(i));
+      team.set("number", numbers.get(i));
+      team.set("name", names.get(i));
+      team.set("inEvent", inEvent.get(i));
+      team.set("seasonScores", seasonScores.get(i));
+      team.set("eventScores", eventScores.get(i));
+      teams.addEntry(team);
+    }
+
+    // Add the team array to the JSON response.
+    result.set("teams", teams);
+  }
+
+  /**
+   * Removes a team from an event.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   *
+   * @param id The ID of the team.
+   */
+  private void
+  removeFromEvent(JSONObject result, int id)
+  {
+    // Get the event ID.
+    int event_id = m_event.eventIdGet();
+
+    // Remove this team from the event.
+    if(m_database.teamAtEventRemove(event_id, id) == true)
+    {
+      // Return success since the team was removed.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, an error occurred when removing the team.
+    else
+    {
+      // Return an error since the team coudl not be removed.
+      result.set("result",
+                 m_webserver.getSSI("str_teams_event_remove_failed"));
+    }
+  }
+
+  /**
    * Handles requests for /admin/teams/teams.json.
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveTeams(String path, String parameters)
+  serveTeams(String path, HashMap<String, String> paramMap)
   {
-    String action = null, id = null, number = null, name = null;
     JSONObject result = new SimpleJSONObject();
-    int season_id = m_season.seasonIdGet();
-    int event_id = m_event.eventIdGet();
-    String[] params, items;
 
-    // See if there are parameters to be parsed.
-    if(parameters != null)
+    // See if there is an action request.
+    if(paramMap.containsKey("action"))
     {
-      // Split the parameter string into its individual parameters.
-      params = parameters.split("&");
-
-      // Loop through the parameters.
-      for(var i = 0; i < params.length; i++)
+      // See if the action is "add", for adding a team.
+      if(paramMap.get("action").equals("add") &&
+         paramMap.containsKey("number") && paramMap.containsKey("name"))
       {
-        // Split this parameter into its key/value.
-        items = params[i].split("=");
-
-        // See if this is the "action" key.
-        if(items[0].equals("action"))
-        {
-          // Save the action for later use.
-          action = items[1];
-        }
-
-        // See if this is the "id" key.
-        if(items[0].equals("id"))
-        {
-          // Save the ID for later use.
-          id = items[1];
-        }
-
-        // See if this is the "number" key.
-        if(items[0].equals("number"))
-        {
-          // Convert and save the number for later use.
-          number = URLDecoder.decode(items[1], StandardCharsets.UTF_8);
-        }
-
-        // See if this is the "name" key.
-        if(items[0].equals("name"))
-        {
-          // Convert and save the name for later use.
-          name = URLDecoder.decode(items[1], StandardCharsets.UTF_8);
-        }
-      }
-    }
-
-    // See if the action was specified and is "add", for adding a team.
-    if("add".equals(action) && (number != null) && (name != null))
-    {
-      // See if there is already a team with the given number.
-      if(m_database.teamGet(season_id, Integer.parseInt(number)) >= 0)
-      {
-        // Return an error since the team already exists.
-        result.set("result", m_webserver.getSSI("str_teams_already_exists"));
+        // Add the team.
+        add(result, Integer.parseInt(paramMap.get("number")),
+            URLDecoder.decode(paramMap.get("name"), StandardCharsets.UTF_8));
       }
 
-      // Add the team to the database.
-      else if(m_database.teamAdd(season_id, Integer.parseInt(number),
-                                 name) >= 0)
+      // See if the action is "delete", for deleting a team.
+      else if(paramMap.get("action").equals("delete") &&
+              paramMap.containsKey("id"))
       {
-        // Return success since the team was added.
-        result.set("result", "ok");
+        // Delete the team.
+        delete(result, Integer.parseInt(paramMap.get("id")));
       }
 
-      // Otherwise, an error occurred when adding the team.
+      // See if the action is "edit", for editing a team.
+      else if(paramMap.get("action").equals("edit") &&
+              paramMap.containsKey("id") && paramMap.containsKey("number") &&
+              paramMap.containsKey("name"))
+      {
+        // Edit the team.
+        edit(result, Integer.parseInt(paramMap.get("id")),
+             Integer.parseInt(paramMap.get("number")),
+             URLDecoder.decode(paramMap.get("name"), StandardCharsets.UTF_8));
+      }
+
+      // See if the action is "in_event", for adding a team to the current
+      // event.
+      else if(paramMap.get("action").equals("in_event") &&
+              paramMap.containsKey("id"))
+      {
+        // Add the team to the event.
+        addToEvent(result, Integer.parseInt(paramMap.get("id")));
+      }
+
+      // See if the action is "not_in_event", for removing a team from the
+      // current event.
+      else if(paramMap.get("action").equals("not_in_event") &&
+              paramMap.containsKey("id"))
+      {
+        // Remove the team from the event.
+        removeFromEvent(result, Integer.parseInt(paramMap.get("id")));
+      }
+
+      // See if the action is "count", for returning the count of teams at the
+      // current event.
+      else if(paramMap.get("action").equals("count"))
+      {
+        // Count the teams at the event.
+        count(result);
+      }
+
+      // See if the action is "list", for listing the teams.
+      if(paramMap.get("action").equals("list"))
+      {
+        // List the teams.
+        list(result);
+      }
+
+      // Otherwise, return an error.
       else
       {
-        // Return an error.
-        result.set("result", m_webserver.getSSI("str_teams_add_failed"));
+        result.set("result", "error");
       }
-    }
-
-    // See if the action was specified and is "delete", for deleting a team.
-    else if("delete".equals(action) && (id != null))
-    {
-      // Delete the team from the database.
-      m_database.teamRemove(season_id, Integer.parseInt(id));
-
-      // Return success since the team was deleted.
-      result.set("result", "ok");
-    }
-
-    // See if the action was specified and is "edit", for editing a team.
-    else if("edit".equals(action) && (id != null) && (number != null) &&
-            (name != null))
-    {
-      // Edit the team in the database.
-      if(m_database.teamEdit(Integer.parseInt(id), number, name) == true)
-      {
-        // Return success since the team was edited.
-        result.set("result", "ok");
-      }
-
-      // Otherwise, an error occurred when editing the team.
-      else
-      {
-        // Return an error since the team could not be edited.
-        result.set("result", m_webserver.getSSI("str_teams_edit_failed"));
-      }
-    }
-
-    // See if the action was specified and is "in_event", for adding a team to
-    // the current event.
-    else if("in_event".equals(action) && (id != null))
-    {
-      // Add this team to the event.
-      if(m_database.teamAtEventSet(season_id, event_id,
-                                   Integer.parseInt(id)) == true)
-      {
-        // Return success since the team was added.
-        result.set("result", "ok");
-      }
-
-      // Otherwise, an error occurred when adding the team.
-      else
-      {
-        // Return an error since the team could not be added.
-        result.set("result", m_webserver.getSSI("str_teams_event_add_failed"));
-      }
-    }
-
-    // See if the action was specified and is "not_in_event", for removing a
-    // team from the current event.
-    else if("not_in_event".equals(action) && (id != null))
-    {
-      // Remove this team from the event.
-      if(m_database.teamAtEventRemove(event_id, Integer.parseInt(id)) == true)
-      {
-        // Return success since the team was removed.
-        result.set("result", "ok");
-      }
-
-      // Otherwise, an error occurred when removing the team.
-      else
-      {
-        // Return an error since the team coudl not be removed.
-        result.set("result",
-                   m_webserver.getSSI("str_teams_event_remove_failed"));
-      }
-    }
-
-    // See if the action was specified and is "count", for returning the count
-    // of teams at the current event.
-    else if("count".equals(action))
-    {
-      // A list of the team IDs for the teams at this event.
-      ArrayList<Integer> count = new ArrayList<Integer>();
-
-      // Enumerate the teams at this event.
-      m_database.teamAtEventEnumerate(season_id, event_id, -1,
-                                      (l_season_id, l_event_id, l_team_id) ->
-        {
-          // Add this team ID to the list.
-          count.add(l_team_id);
-        });
-
-      // Set the result to the number of teams at this event.
-      result.set("count", count.size());
-      result.set("result", "ok");
     }
 
     // Otherwise, return a list of the teams.
     else
     {
-      // A list of information about teams, maintained in team number order.
-      ArrayList<Integer> ids = new ArrayList<Integer>();
-      ArrayList<Integer> numbers = new ArrayList<Integer>();
-      ArrayList<String> names = new ArrayList<String>();
-      ArrayList<Boolean> inEvent = new ArrayList<Boolean>();
-      ArrayList<Boolean> seasonScores = new ArrayList<Boolean>();
-      ArrayList<Boolean> eventScores = new ArrayList<Boolean>();
-
-      // Enumerate the teams from the database for this season.
-      m_database.teamEnumerate(season_id,
-                               (l_id, l_season_id, l_number, l_name) ->
-        {
-          // Find the place in the list to insert this team in number order.
-          int i;
-          for(i = 0; i < numbers.size(); i++)
-          {
-            if(l_number < numbers.get(i))
-            {
-              break;
-            }
-          }
-
-          // Add this team to the lists.
-          ids.add(i, l_id);
-          numbers.add(i, l_number);
-          names.add(i, l_name);
-          inEvent.add(i, m_database.teamAtEventGet(event_id, l_id));
-          seasonScores.add(i, m_database.teamHasScores(season_id, l_id));
-          eventScores.add(i, m_database.teamHasEventScores(event_id, l_id));
-        });
-
-      // Loop through the teams.
-      JSONArray teams = new SimpleJSONArray();
-      for(int i = 0; i < numbers.size(); i++)
-      {
-        // Add this team to the team array.
-        JSONObject team = new SimpleJSONObject();
-        team.set("id", ids.get(i));
-        team.set("number", numbers.get(i));
-        team.set("name", names.get(i));
-        team.set("inEvent", inEvent.get(i));
-        team.set("seasonScores", seasonScores.get(i));
-        team.set("eventScores", eventScores.get(i));
-        teams.addEntry(team);
-      }
-
-      // Add the team array to the JSON response.
-      result.set("teams", teams);
+      // List the teams.
+      list(result);
     }
 
     // Convert the response into a byte array and return it.

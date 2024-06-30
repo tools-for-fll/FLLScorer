@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -17,6 +18,8 @@ import io.nayuki.qrcodegen.QrCode;
 
 /**
  * Handles the link to dedicated web pages.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class Links
 {
@@ -46,6 +49,53 @@ public class Links
 
     // Return the Links object.
     return(m_instance);
+  }
+
+  /**
+   * The constructor.  This is private so that the object can only be created
+   * via the getIntance() method.
+   */
+  private
+  Links()
+  {
+  }
+
+  /**
+   * Gets the IP address of the server.
+   *
+   * @return The String representation of the IP address.
+   */
+  private String
+  getIP()
+  {
+    InetAddress IP;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a socket.
+      Socket socket = new Socket();
+
+      // Attempt to connect that socket to Google (an arbitrarily chosen web
+      // site).
+      socket.connect(new InetSocketAddress("google.com", 80));
+
+      // Get the local IP address of the socket.
+      IP = socket.getLocalAddress();
+
+      // Close the socket.
+      socket.close();
+
+      // Return the String version of the local IP address.
+      return(IP.getHostAddress());
+    }
+    catch(Exception e)
+    {
+    }
+
+    // An exception occurred, so return localhost (which only works for local
+    // connections).
+    return("localhost");
   }
 
   /**
@@ -95,33 +145,35 @@ public class Links
   }
 
   /**
-   * Serve a PNG with a QR code for the web page for judges.
+   * Serve a PNG with a QR code for the web page for admins.
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveJudge(String path, String parameters)
+  serveAdmin(String path, HashMap<String, String> paramMap)
   {
-    InetAddress IP;
+    // Generate a QR code for the admin web page.
+    return(serveQrCode("https://" + getIP() + ":8443/admin"));
+  }
 
-    try
-    {
-      Socket socket = new Socket();
-      socket.connect(new InetSocketAddress("google.com", 80));
-      IP = socket.getLocalAddress();
-      socket.close();
-
-      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/judge"));
-    }
-    catch(Exception e)
-    {
-    }
-
-    return(serveQrCode("http://localhost:8080/judge"));
+  /**
+   * Serve a PNG with a QR code for the web page for judges.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  private byte[]
+  serveJudge(String path, HashMap<String, String> paramMap)
+  {
+    // Generate a QR code for the judge's web page.
+    return(serveQrCode("https://" + getIP() + ":8443/judge"));
   }
 
   /**
@@ -129,29 +181,15 @@ public class Links
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveReferee(String path, String parameters)
+  serveReferee(String path, HashMap<String, String> paramMap)
   {
-    InetAddress IP;
-
-    try
-    {
-      Socket socket = new Socket();
-      socket.connect(new InetSocketAddress("google.com", 80));
-      IP = socket.getLocalAddress();
-      socket.close();
-
-      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/referee"));
-    }
-    catch(Exception e)
-    {
-    }
-
-    return(serveQrCode("http://localhost:8080/referee"));
+    // Generate a QR code for the referee's web page.
+    return(serveQrCode("https://" + getIP() + ":8443/referee"));
   }
 
   /**
@@ -159,29 +197,15 @@ public class Links
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveScoreboard(String path, String parameters)
+  serveScoreboard(String path, HashMap<String, String> paramMap)
   {
-    InetAddress IP;
-
-    try
-    {
-      Socket socket = new Socket();
-      socket.connect(new InetSocketAddress("google.com", 80));
-      IP = socket.getLocalAddress();
-      socket.close();
-
-      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/scoreboard"));
-    }
-    catch(Exception e)
-    {
-    }
-
-    return(serveQrCode("http://localhost:8080/scoreboard"));
+    // Generate a QR code for the scoreboard web page.
+    return(serveQrCode("https://" + getIP() + ":8443/scoreboard"));
   }
 
   /**
@@ -189,29 +213,15 @@ public class Links
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveTimekeeper(String path, String parameters)
+  serveTimekeeper(String path, HashMap<String, String> paramMap)
   {
-    InetAddress IP;
-
-    try
-    {
-      Socket socket = new Socket();
-      socket.connect(new InetSocketAddress("google.com", 80));
-      IP = socket.getLocalAddress();
-      socket.close();
-
-      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/timekeeper"));
-    }
-    catch(Exception e)
-    {
-    }
-
-    return(serveQrCode("http://localhost:8080/timekeeper"));
+    // Generate a QR code for the time keeper's web page.
+    return(serveQrCode("https://" + getIP() + ":8443/timekeeper"));
   }
 
   /**
@@ -219,38 +229,31 @@ public class Links
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveTimer(String path, String parameters)
+  serveTimer(String path, HashMap<String, String> paramMap)
   {
-    InetAddress IP;
-
-    try
-    {
-      Socket socket = new Socket();
-      socket.connect(new InetSocketAddress("google.com", 80));
-      IP = socket.getLocalAddress();
-      socket.close();
-
-      return(serveQrCode("http://" + IP.getHostAddress() + ":8080/timer"));
-    }
-    catch(Exception e)
-    {
-    }
-
-    return(serveQrCode("http://localhost:8080/timer"));
+    // Generate a QR code for the timer web page.
+    return(serveQrCode("https://" + getIP() + ":8443/timer"));
   }
 
   /**
-   * The constructor.  This is private so that the object can only be created
-   * via the getIntance() method.
+   * Serve a PNG with a QR code for joining the WiFi network.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
    */
-  private
-  Links()
+  private byte[]
+  serveWiFi(String path, HashMap<String, String> paramMap)
   {
+    // Generate a QR code for joining the WiFi network.
+    return(serveQrCode("WIFI:T:WPA;S:network;P:password;;"));
   }
 
   /**
@@ -263,15 +266,14 @@ public class Links
     m_webserver = WebServer.getInstance();
 
     // Register the dynamic handlers for the various QR code PNGs.
-    m_webserver.registerDynamicFile("/admin/links/judge.png",
-                                    this::serveJudge);
-    m_webserver.registerDynamicFile("/admin/links/referee.png",
-                                    this::serveReferee);
-    m_webserver.registerDynamicFile("/admin/links/scoreboard.png",
+    m_webserver.registerDynamicFile("/links/admin.png", this::serveAdmin);
+    m_webserver.registerDynamicFile("/links/judge.png", this::serveJudge);
+    m_webserver.registerDynamicFile("/links/referee.png", this::serveReferee);
+    m_webserver.registerDynamicFile("/links/scoreboard.png",
                                     this::serveScoreboard);
-    m_webserver.registerDynamicFile("/admin/links/timekeeper.png",
+    m_webserver.registerDynamicFile("/links/timekeeper.png",
                                     this::serveTimekeeper);
-    m_webserver.registerDynamicFile("/admin/links/timer.png",
-                                    this::serveTimer);
+    m_webserver.registerDynamicFile("/links/timer.png", this::serveTimer);
+    m_webserver.registerDynamicFile("/links/wifi.png", this::serveWiFi);
   }
 }

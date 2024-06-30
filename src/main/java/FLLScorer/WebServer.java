@@ -12,10 +12,18 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
 
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.security.ConstraintMapping;
+import org.eclipse.jetty.ee10.servlet.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketCreator;
 import org.eclipse.jetty.ee10.websocket.server.config.JettyWebSocketServletContainerInitializer;
+import org.eclipse.jetty.security.Constraint;
+import org.eclipse.jetty.security.HashLoginService;
+import org.eclipse.jetty.security.UserStore;
+import org.eclipse.jetty.security.authentication.FormAuthenticator;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.SecureRequestCustomizer;
@@ -26,6 +34,7 @@ import org.eclipse.jetty.server.handler.SecuredRedirectHandler;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.eclipse.jetty.util.resource.Resources;
+import org.eclipse.jetty.util.security.Credential;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import jakarta.servlet.ServletException;
@@ -38,11 +47,13 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 interface DynamicHandler
 {
-  byte[] run(String path, String parameters);
+  byte[] run(String path, HashMap<String, String> paramMap);
 }
 
 /**
  * Handles the web server.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class WebServer extends HttpServlet
 {
@@ -65,6 +76,11 @@ public class WebServer extends HttpServlet
    * The Jetty servlet context handler object.
    */
   private ServletContextHandler m_handler = null;
+
+  /**
+   * The Jetty authenticator user store.
+   */
+  private UserStore m_userStore = null;
 
   /**
    * The list of file name extensions that have mime types.
@@ -123,6 +139,12 @@ public class WebServer extends HttpServlet
    * debugging purposes.
    */
   private static boolean m_debug = false;
+
+  /**
+   * When set to <b>true</b>, the security/login is bypassed (making it easier
+   * to use during development).
+   */
+  private static boolean m_bypassSecurity = false;
 
   /**
    * Gets the WebServer singleton object, creating it if necessary.
@@ -334,23 +356,23 @@ public class WebServer extends HttpServlet
     return(resp.getBytes(StandardCharsets.UTF_8));
   }
 
-  // Processes web requests.
+  // Processes HTTP POST requests.
   @Override
   protected void
-  doGet(HttpServletRequest request, HttpServletResponse response)
+  doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException
   {
-    String path, parameters;
+    HashMap<String, String> paramMap = new HashMap<String, String>();
     byte[] resp = null;
+    String path;
 
     // Get the path and parameters from the request.
     path = request.getRequestURI();
-    parameters = request.getQueryString();
 
     // If in debug mode, print out the path and parameters.
     if(m_debug)
     {
-      System.out.println(path + ", " + parameters);
+      System.out.println("POST: " + path);
     }
 
     // Strip any leading "/" or "../" path elements from the request.
@@ -390,6 +412,17 @@ public class WebServer extends HttpServlet
       }
     }
 
+    // Get the parameters from the request.
+    Enumeration<String> keys = request.getParameterNames();
+    while(keys.hasMoreElements())
+    {
+      // Get the next parameter key.
+      String key = keys.nextElement();
+
+      // Get this parameter's value and add it to the parameter map.
+      paramMap.put(key, request.getParameter(key));
+    }
+
     // Loop through the dynamic paths.
     for(int i = 0; i < m_dynamicPaths.size(); i++)
     {
@@ -397,7 +430,114 @@ public class WebServer extends HttpServlet
       if(path.equals(m_dynamicPaths.get(i)))
       {
         // Call the dynamic handler for this path.
-        resp = m_dynamicHandlers.get(i).run(path.substring(3), parameters);
+        resp = m_dynamicHandlers.get(i).run(path.substring(3), paramMap);
+
+        // The remainder of the list does not need to be checked.
+        break;
+      }
+    }
+
+    // If there is not a response, return an empty response.  A POST request
+    // must be handled by a dynamic handler.
+    if(resp == null)
+    {
+      resp = "".getBytes();
+    }
+
+    // Set the mime type for this request.
+    if(setMimeType(response, path))
+    {
+      // Perform SSI processing on the response.
+      resp = processSSI(resp);
+    }
+
+    // Set the content length and write the response.
+    response.setContentLength(resp.length);
+    response.getOutputStream().write(resp, 0, resp.length);
+  }
+
+  // Processes HTTP GET requests.
+  @Override
+  protected void
+  doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException
+  {
+    HashMap<String, String> paramMap = new HashMap<String, String>();
+    String path, parameters;
+    byte[] resp = null;
+
+    // Get the path and parameters from the request.
+    path = request.getRequestURI();
+    parameters = request.getQueryString();
+
+    // If in debug mode, print out the path and parameters.
+    if(m_debug)
+    {
+      System.out.println("GET: " + path + ", " + parameters);
+    }
+
+    // Strip any leading "/" or "../" path elements from the request.
+    while(true)
+    {
+      if((path.length() > 0) && (path.substring(0, 1).equals("/")))
+      {
+        path = path.substring(1);
+        continue;
+      }
+      if((path.length() > 2) && (path.substring(0, 3).equals("../")))
+      {
+        path = path.substring(3);
+        continue;
+      }
+      break;
+    }
+
+    // Prepend the path with "www/" (so that only those resources are served)
+    // and append "/index.html" if there is not a file name extension in the
+    // request.
+    path = "www/" + path;
+    if(path.lastIndexOf("/") > path.lastIndexOf("."))
+    {
+      path += "/index.html";
+    }
+
+    // Replace any double path separators with single path separators.
+    path = path.replaceAll("//", "/");
+
+    // If this path has a path mapping, change it to its mapped value.
+    for(int i = 0; i < m_pathMappingSrc.size(); i++)
+    {
+      if(path.equals(m_pathMappingSrc.get(i)))
+      {
+        path = m_pathMappingDest.get(i);
+      }
+    }
+
+    // See if there are parameters.
+    if(parameters != null)
+    {
+      // Split the parameter string into its individual parameters.
+      String[] params = parameters.split("&");
+
+      // Loop through the parameters.
+      for(int i = 0; i < params.length; i++)
+      {
+        // Split this parameter into its key/value.
+        String[] items = params[i].split("=");
+
+        // Add this key/value to the parameter map.
+        paramMap.put(items[0], items[1]);
+      }
+    }
+
+    // Loop through the dynamic paths.
+    for(int i = 0; i < m_dynamicPaths.size(); i++)
+    {
+      // See if the requested path matches this dynamic path.
+      if(path.equals(m_dynamicPaths.get(i)))
+      {
+        // Call the dynamic handler for this path.
+        resp = m_dynamicHandlers.get(i).run(path.substring(3), paramMap);
 
         // The remainder of the list does not need to be checked.
         break;
@@ -648,6 +788,103 @@ public class WebServer extends HttpServlet
   }
 
   /**
+   * Adds a security constraint to the web server.
+   *
+   * @param securityHandler The {@link ConstraintSecurityHandler} to which to
+   *                        add the constraint.
+   *
+   * @param constraint The {@link Constraint} to add.
+   *
+   * @param pathSpec The web path to which to apply the constraint.
+   */
+  private void
+  addConstraint(ConstraintSecurityHandler securityHandler,
+                Constraint constraint, String pathSpec)
+  {
+    // Create a new constraint mapping.
+    ConstraintMapping constraintMapping = new ConstraintMapping();
+
+    // Provide the contraint and path to the constraint mapping.
+    constraintMapping.setConstraint(constraint);
+    constraintMapping.setPathSpec(pathSpec);
+
+    // Add the constraint mapping to the security handler.
+    securityHandler.addConstraintMapping(constraintMapping);
+  }
+
+  /**
+   * Adds a user to the user store.
+   *
+   * @param name The name of the user.
+   *
+   * @param password The user's password.
+   *
+   * @param admin <b>1</b> if the user has the <i>admin</i> role, and <b>0</b>
+   *              otherwise.
+   *
+   * @param host <b>1</b> if the user has the <i>host</i> role, and <b>0</b>
+   *             otherwise.
+   *
+   * @param judge <b>1</b> if the user has the <i>judge</i> role, and <b>0</b>
+   *              otherwise.
+   *
+   * @param referee <b>1</b> if the user has the <i>referee</i> role, and
+   *                <b>0</b> otherwise.
+   *
+   * @param timekeeper <b>1</b> if the user has the <i>timekeeper</i> role, and
+   *                   <b>0</b> otherwise.
+   */
+  public void
+  addUser(String name, String password, int admin, int host, int judge,
+          int referee, int timekeeper)
+  {
+    // An array to hold the user's roles.
+    ArrayList<String> roles = new ArrayList<String>();
+
+    // Add the appropriate roles to the array.
+    if(admin != 0)
+    {
+      roles.add("admin");
+    }
+    if(host != 0)
+    {
+      roles.add("host");
+    }
+    if(judge != 0)
+    {
+      roles.add("judge");
+    }
+    if(referee != 0)
+    {
+      roles.add("referee");
+    }
+    if(timekeeper != 0)
+    {
+      roles.add("timekeeper");
+    }
+
+    // Convert the ArrayList of rules into an array of roles.
+    String[] roleArray = new String[roles.size()];
+    roleArray = roles.toArray(roleArray);
+
+    // Add this user to the user store.
+    m_userStore.addUser(name, Credential.getCredential(password),
+                        roleArray);
+  }
+
+  /**
+   * Removes a user from the user store.
+   *
+   * @param name The name of the user.
+   */
+  public void
+  removeUser(String name)
+  {
+    // Remove this user from the user store.
+    m_userStore.removeUser(name);
+  }
+
+  /**
    * Performs initial setup for the web server.
    */
   public void
@@ -727,7 +964,8 @@ public class WebServer extends HttpServlet
     ResourceFactory resourceFactory = ResourceFactory.of(m_server);
 
     // Setup the SSL/TLS context.
-    SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
+    SslContextFactory.Server sslContextFactory =
+      new SslContextFactory.Server();
     sslContextFactory.setKeyStoreResource(findKeyStore(resourceFactory));
     sslContextFactory.setKeyStorePassword("12345678");
     sslContextFactory.setKeyManagerPassword("12345678");
@@ -756,11 +994,60 @@ public class WebServer extends HttpServlet
     m_server.setHandler(securedHandler);
 
     // Create a context handler and associate it with the secure handler.
-    m_handler = new ServletContextHandler();
+    m_handler = new ServletContextHandler("/", ServletContextHandler.SESSIONS |
+                                               ServletContextHandler.SECURITY);
     securedHandler.setHandler(m_handler);
 
     // Add a servlet to the server for serving up the content.
     m_handler.addServlet(this, "/");
+
+    // Create the security handler that contains the role restrictions.
+    ConstraintSecurityHandler securityHandler =
+      new ConstraintSecurityHandler();
+
+    // Add a constraint for the administration page.
+    addConstraint(securityHandler, Constraint.from("admin", "host"),
+                  "/admin/*");
+
+    // Add a constraint for the judge page.
+    addConstraint(securityHandler, Constraint.from("admin", "host", "judge"),
+                  "/judge/*");
+
+    // Add a constraint for the referee page.
+    addConstraint(securityHandler, Constraint.from("admin", "host", "referee"),
+                  "/referee/*");
+
+    // Add a constraint for the timekeeper page.
+    addConstraint(securityHandler,
+                  Constraint.from("admin", "host", "timekeeper"),
+                  "/timekeeper/*");
+
+    // Allow anyone to access everything else.
+    addConstraint(securityHandler, Constraint.ALLOWED, "/*");
+
+    // Create a login service.
+    HashLoginService loginService = new HashLoginService();
+
+    // Create a user credential storage.
+    m_userStore = new UserStore();
+
+    // Add the user store to the login service, and the login service to the
+    // security handler
+    loginService.setUserStore(m_userStore);
+    securityHandler.setLoginService(loginService);
+
+    // Create a form authenticator to present the actual login to the user.
+    FormAuthenticator authenticator =
+      new FormAuthenticator("/login/login.html", "/login/login.html?error=yes",
+                            false);
+    authenticator.setAlwaysSaveUri(true);
+    securityHandler.setAuthenticator(authenticator);
+
+    // Add the security handler to the servelet.
+    if(!m_bypassSecurity)
+    {
+      m_handler.setSecurityHandler(securityHandler);
+    }
   }
 
   /**

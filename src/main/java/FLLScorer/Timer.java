@@ -18,7 +18,9 @@ import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 /**
  * Handles the timing controls for the timer.
- */
+  * <p>
+ * This is a singleton that is acquired via the getInstance() method.
+*/
 public class Timer
 {
   /**

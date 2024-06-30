@@ -12,6 +12,12 @@ str_no:No
 str_title:FLL Scoring System
 str_yes:Yes
 
+// Strings for the login page
+str_login_error:Invalid username or password
+str_login_login:Login
+str_login_password:Password
+str_login_username:Username
+
 // Strings for the admin page
 str_admin_title:<!--#str_title--> : Admin
 
@@ -19,12 +25,11 @@ str_admin_title:<!--#str_title--> : Admin
 str_menu_about:About
 str_menu_events:Events
 str_menu_judging:Judging
-str_menu_links:Links
-str_menu_passwords:Passwords
 str_menu_scores:Scores
 str_menu_seasons:Seasons
 str_menu_standings:Standings
 str_menu_teams:Teams
+str_menu_users:Users
 
 // Strings for the status bar
 str_status_event:Event
@@ -34,15 +39,17 @@ str_status_teams:Teams
 // Strings for the about popup
 str_about_copyright:Copyright &copy; 2024 Brian Kircher
 str_about_reserved:All rights reserved.
-str_about_title:FLL Scoring System
+str_about_title:<!--#str_title-->
 str_about_version:Version <!--#version-->
 
 // Strings for the links page
+str_links_admin:Admin
 str_links_judge:Judge
 str_links_referee:Referee
 str_links_scoreboard:Scoreboard
 str_links_timekeeper:Time Keeper
 str_links_timer:Timer
+str_links_wifi:WiFi
 
 // Strings for the referee page
 str_referee_discard:Discard
@@ -78,9 +85,6 @@ str_scoreboard_number:Team #
 str_scoreboard_place:Place
 str_scoreboard_title:<!--#str_title--> : Scoreboard
 
-// Strings for the score sheet page
-str_scoresheet_title:<!--#str_title--> : Score Entry
-
 // Strings for the season page
 str_seasons_error:Could not update the season!
 
@@ -88,8 +92,6 @@ str_seasons_error:Could not update the season!
 str_events_add:Add Event
 str_events_add_failed:Could not add the new event!
 str_events_already_exists:The event already exists!
-str_events_delete_cancel:Cancel
-str_events_delete_delete:Delete
 str_events_delete_score_warning:This event has scores, which will be deleted with the event. Are you sure you want to delete this event?
 str_events_delete_warning:Are you sure you want to delete this event?
 str_events_doesnt_exist:The event does not exists!
@@ -112,9 +114,6 @@ str_events_none:None
 str_teams_add:Add Team
 str_teams_add_failed:Could not add the new team!
 str_teams_already_exists:The team already exists!
-str_teams_delete_cancel:Cancel
-str_teams_delete_delete:Delete
-str_teams_delete_event_score_warning:This team has event scores, which will be deleted with the team. Are you sure you want to delete this team?
 str_teams_delete_season_score_warning:This team has scores, which will be deleted with the team. Are you sure you want to delete this team?
 str_teams_delete_warning:Are you sure you want to delete this team?
 str_teams_edit:Edit Team
@@ -145,6 +144,36 @@ str_scores_name:Name
 str_scores_none:None
 str_scores_number:Number
 str_scores_unknown_match:Unknown match!
+
+// Strings for the users page
+str_users_add:Add User
+str_users_already_exists:User already exists!
+str_users_delete_warning:Are you sure you want to delete this user?
+str_users_edit:Edit User
+str_users_edit_error:The user's password must be changed when their username is changed!
+str_users_invalid_name:The name of the user is not valid!
+str_users_invalid_password:The password of the user is not valid!
+str_users_invalid_role:Invalid role!
+str_users_list_actions:Actions
+str_users_list_admin:Admin
+str_users_list_fail:Failed to list the users!
+str_users_list_host:Host
+str_users_list_judge:Judge
+str_users_list_name:Name
+str_users_list_referee:Referee
+str_users_list_timekeeper:Time Keeper
+str_users_load_failed:Failed to fetch the user list!
+str_users_name_change_error:The <i>admin</i> user can not be renamed!
+str_users_name_change_fail:Failed to update the user's name!
+str_users_none:None
+str_users_password:Password
+str_users_password_fail:Failed to set new password!
+str_users_remove_error:The <i>admin</i> user can not be removed!
+str_users_remove_fail:Unable to remove the user!
+str_users_role_add_error:The <i>admin</i> user can not have roles added!
+str_users_role_add_fail:Failed to add the role!
+str_users_role_remove_error:The <i>admin</i> user can not have roles removed!
+str_users_role_remove_fail:Failed to remove the role!
 
 // Strings for the timekeeper page
 str_timekeeper_cancel:Cancel

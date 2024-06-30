@@ -18,6 +18,7 @@ public class Main
     Events.getInstance().setup();
     Teams.getInstance().setup();
     Scores.getInstance().setup();
+    Users.getInstance().setup();
     Links.getInstance().setup();
     Referee.getInstance().setup();
     TimeKeeper.getInstance().setup();

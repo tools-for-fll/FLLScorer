@@ -8,34 +8,52 @@
 <html lang="<!--#locale-->">
   <head>
 <!--#html_head-->
+    <link rel="stylesheet" href="/links/links.css">
     <script src="/common.js" type="text/javascript"></script>
-    <script src="/admin/admin.js" type="text/javascript"></script>
-    <title><!--#str_admin_title--></title>
-    </head>
+    <title><!--#str_title--></title>
+  </head>
   <body>
 <!--#html_body_start-->
-    <div class="main_container">
-      <div class="menu">
-        <button id="btn_seasons"></button>
-        <button id="btn_events"></button>
-        <button id="btn_teams"></button>
-        <button id="btn_scores"></button>
-        <button id="btn_judging"></button>
-        <button id="btn_standings"></button>
-        <button id="btn_passwords"></button>
-        <button id="btn_links"></button>
-        <button id="btn_about" class="right"></button>
-      </div>
-      <div id="tab_seasons" class="tab"></div>
-      <div id="tab_events" class="tab"></div>
-      <div id="tab_teams" class="tab"></div>
-      <div id="tab_scores" class="tab"></div>
-      <div id="tab_judging" class="tab"></div>
-      <div id="tab_standings" class="tab"></div>
-      <div id="tab_passwords" class="tab"></div>
-      <div id="tab_links" class="tab"></div>
-      <div id="status" class="status"></div>
+    <div id="links_wifi" class="links_tile">
+      <img src="/links/wifi.png">
+      <p><!--#str_links_wifi--></p>
     </div>
+    <a href="/admin" target="_blank">
+      <div id="links_admin" class="links_tile">
+        <img src="/links/admin.png">
+        <p><!--#str_links_admin--></p>
+      </div>
+    </a>
+    <a href="/judge" target="_blank">
+      <div id="links_judge" class="links_tile">
+        <img src="/links/judge.png">
+        <p><!--#str_links_judge--></p>
+      </div>
+    </a>
+    <a href="/referee" target="_blank">
+      <div id="links_referee" class="links_tile">
+        <img src="/links/referee.png">
+        <p><!--#str_links_referee--></p>
+      </div>
+    </a>
+    <a href="/scoreboard" target="_blank">
+      <div id="links_scoreboard" class="links_tile">
+        <img src="/links/scoreboard.png">
+        <p><!--#str_links_scoreboard--></p>
+      </div>
+    </a>
+    <a href="/timekeeper" target="_blank">
+      <div id="links_timekeeper" class="links_tile">
+        <img src="/links/timekeeper.png">
+        <p><!--#str_links_timekeeper--></p>
+      </div>
+    </a>
+    <a href="/timer" target="_blank">
+      <div id="links_timer" class="links_tile">
+        <img src="/links/timer.png">
+        <p><!--#str_links_timer--></p>
+      </div>
+    </a>
 <!--#html_body_end-->
   </body>
 </html>

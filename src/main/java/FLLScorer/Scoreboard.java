@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONArray;
 import org.bspfsystems.simplejson.JSONObject;
@@ -18,6 +19,8 @@ import org.bspfsystems.simplejson.parser.JSONParser;
 
 /**
  * Handles the scoreboard.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class Scoreboard
 {
@@ -129,12 +132,12 @@ public class Scoreboard
    *
    * @param path The path that was requested.
    *
-   * @param parameters The parameters associated with the request.
+   * @param paramMap The parameters associated with the request.
    *
    * @return A byte array containing the JSON data for the scoreboard.
    */
   private byte[]
-  serveScoreJson(String path, String parameters)
+  serveScoreJson(String path, HashMap<String, String> paramMap)
   {
     JSONObject result = new SimpleJSONObject();
     int season_id = m_season.seasonIdGet();
@@ -152,84 +155,75 @@ public class Scoreboard
     ArrayList<Integer> a_match4 = new ArrayList<Integer>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id,
-                             (l_id, l_season_id, l_number, l_name) ->
-      {
-        // Ignore this team if it is not at this event.
-        if(!m_database.teamAtEventGet(event_id, l_id))
-        {
-          return;
-        }
+    m_database.teamEnumerate(season_id, event_id, a_ids, a_numbers, a_names);
 
-        // Find the place in the list to insert this team in number order.
-        int i;
-        for(i = 0; i < a_numbers.size(); i++)
-        {
-          if(l_number < a_numbers.get(i))
-          {
-            break;
-          }
-        }
+    // Set the score indicator for each team to no score available.
+    for(int idx = 0; idx < a_numbers.size(); idx++)
+    {
+      a_match1.add(idx, -100);
+      a_match2.add(idx, -100);
+      a_match3.add(idx, -100);
+      a_match4.add(idx, -100);
+    }
 
-        // Add this team to the lists.
-        a_ids.add(i, l_id);
-        a_place.add(i, i);
-        a_numbers.add(i, l_number);
-        a_names.add(i, l_name);
-        a_high.add(i, -100);
-        a_match1.add(i, -100);
-        a_match2.add(i, -100);
-        a_match3.add(i, -100);
-        a_match4.add(i, -100);
-      });
+    // A list of information about the scores.
+    ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Integer> score1 = new ArrayList<Integer>();
+    ArrayList<Integer> score2 = new ArrayList<Integer>();
+    ArrayList<Integer> score3 = new ArrayList<Integer>();
+    ArrayList<Integer> score4 = new ArrayList<Integer>();
 
     // Enumerate the scores for this event.
-    m_database.scoreEnumerate(season_id, event_id,
-                              (l_id, l_season_id, l_event_id, team_id,
-                               l_match1, match1_cv, match1_sheet, l_match2,
-                               match2_cv, match2_sheet, l_match3, match3_cv,
-                               match3_sheet, l_match4, match4_cv,
-                               match4_sheet) ->
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
+                              null, score2, null, null, score3, null, null,
+                              score4, null, null);
+
+    // Loop through all the scores
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      // Ignore this score if it is not for a team at this event (should not
+      // happen).
+      int team_idx = a_ids.indexOf(teams.get(idx));
+      if(team_idx == -1)
       {
-        // Ignore this score if it is not for a team at this event (should not
-        // happen).
-        int idx = a_ids.indexOf(team_id);
-        if(idx == -1)
-        {
-          return;
-        }
+        continue;
+      }
 
-        // Save the match 1 score, if it exists.
-        if(l_match1 != null)
-        {
-          a_match1.set(idx, l_match1);
-        }
+      // Save the match 1 score, if it exists.
+      if(score1.get(idx) != null)
+      {
+        a_match1.set(team_idx, score1.get(idx));
+      }
 
-        // Save the match 2 score, if it exists.
-        if(l_match2 != null)
-        {
-          a_match2.set(idx, l_match2);
-        }
+      // Save the match 2 score, if it exists.
+      if(score2.get(idx) != null)
+      {
+        a_match2.set(team_idx, score2.get(idx));
+      }
 
-        // Save the match 3 score, if it exists.
-        if(l_match3 != null)
-        {
-          a_match3.set(idx, l_match3);
-        }
+      // Save the match 3 score, if it exists.
+      if(score3.get(idx) != null)
+      {
+        a_match3.set(team_idx, score3.get(idx));
+      }
 
-        // Save the match 4 score, if it exists.
-        if(l_match4 != null)
-        {
-          a_match4.set(idx, l_match4);
-        }
+      // Save the match 4 score, if it exists.
+      if(score4.get(idx) != null)
+      {
+        a_match4.set(team_idx, score4.get(idx));
+      }
+    }
 
-        // Get the high score.
-        int high = ((a_match1.get(idx) > a_match2.get(idx)) ?
-                    a_match1.get(idx) : a_match2.get(idx));
-        high = (a_match3.get(idx) > high) ? a_match3.get(idx) : high;
-        high = (a_match4.get(idx) > high) ? a_match4.get(idx) : high;
-        a_high.set(idx, high);
-      });
+    // Loop through all the teams to find their high score.
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      // Get the high score.
+      int high = a_match1.get(idx);
+      high = (a_match2.get(idx) > high) ? a_match2.get(idx) : high;
+      high = (a_match3.get(idx) > high) ? a_match3.get(idx) : high;
+      high = (a_match4.get(idx) > high) ? a_match4.get(idx) : high;
+      a_high.add(idx, high);
+    }
 
     // Loop through all the teams, sorting them into placement order (with
     // equally-placed teams and teams without any scores remaining in team
@@ -278,7 +272,7 @@ public class Scoreboard
       // Do not assign a place if this team has no scores.
       if(a_high.get(i) == -100)
       {
-        a_place.set(i, -1);
+        a_place.add(i, -1);
       }
 
       // Otherwise, if this is the first team or this team does not have the
@@ -290,13 +284,13 @@ public class Scoreboard
                              a_match2.get(i - 1), a_match3.get(i - 1),
                              a_match4.get(i - 1)) != 0))
       {
-        a_place.set(i, i + 1);
+        a_place.add(i, i + 1);
       }
 
       // Otherwise, give this team the same placement as the preceding team.
       else
       {
-        a_place.set(i, a_place.get(i - 1));
+        a_place.add(i, a_place.get(i - 1));
       }
     }
 

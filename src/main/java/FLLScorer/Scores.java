@@ -7,6 +7,7 @@ package FLLScorer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONArray;
 import org.bspfsystems.simplejson.JSONObject;
@@ -16,6 +17,8 @@ import org.bspfsystems.simplejson.parser.JSONParser;
 
 /**
  * Handles the scores tab.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class Scores
 {
@@ -72,283 +75,289 @@ public class Scores
   }
 
   /**
+   * Deletes a teams score.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   *
+   * @param id The ID of the team.
+   *
+   * @param match The match number.
+   */
+  private void
+  delete(JSONObject result, int id, int match)
+  {
+    int season_id = m_season.seasonIdGet();
+    int event_id = m_event.eventIdGet();
+
+    // Ensure that the match number is valid.
+    if((match >= 1) && (match <= 4))
+    {
+      // Delete the score from the database.
+      if(m_database.scoreMatchRemove(season_id, event_id, id, match) == true)
+      {
+        // Return successs since the match score was deleted.
+        result.set("result", "ok");
+      }
+      else
+      {
+        // Return an error since the match score could not be delete.
+        result.set("result", m_webserver.getSSI("str_scores_delete_error"));
+      }
+    }
+    else
+    {
+      // Return an error since the match number is not valid.
+      result.set("result", m_webserver.getSSI("str_scores_unknown_match"));
+    }
+  }
+
+  /**
+   * Exchanges scores between two teams/matches.
+   *
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
+   *
+   * @param id The ID of the first team.
+   *
+   * @param match The match of the first team.
+   *
+   * @param id2 The ID of the second team.
+   *
+   * @param match2 The match of the second team.
+   */
+  private void
+  exchange(JSONObject result, int id, int match, int id2, int match2)
+  {
+    int season_id = m_season.seasonIdGet();
+    int event_id = m_event.eventIdGet();
+
+    ArrayList<Integer> a_score = new ArrayList<Integer>();
+    ArrayList<Integer> a_cv = new ArrayList<Integer>();
+    ArrayList<String> a_sheet = new ArrayList<String>();
+
+    // Get the first match score.
+    if(m_database.scoreMatchGet(season_id, event_id, id, match,
+                                (score, cv, sheet) ->
+                                {
+                                  a_score.add(score);
+                                  a_cv.add(cv);
+                                  a_sheet.add(sheet);
+                                }) == false)
+    {
+      // Return an error.
+      result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
+    }
+
+    // Then get the second match score.
+    else if(m_database.scoreMatchGet(season_id, event_id, id2, match2,
+                                     (score, cv, sheet) ->
+                                     {
+                                       a_score.add(score);
+                                       a_cv.add(cv);
+                                       a_sheet.add(sheet);
+                                     }) == false)
+    {
+      // Return an error.
+      result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
+    }
+
+    // Then set the second match score to the first match score.
+    else if(m_database.scoreMatchAdd(season_id, event_id, id2, match2,
+                                     a_score.get(0), a_cv.get(0),
+                                     a_sheet.get(0)) == -1)
+    {
+      // Return an error.
+      result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
+    }
+
+    // Then set the first match score to the second match score.
+    else if(m_database.scoreMatchAdd(season_id, event_id, id, match,
+                                     a_score.get(1), a_cv.get(1),
+                                     a_sheet.get(1)) == -1)
+    {
+      // The first match score could not be updated, so attempt to restore
+      // the second match score.  If this fails...there is data loss.
+      m_database.scoreMatchAdd(season_id, event_id, id2, match2,
+                               a_score.get(1), a_cv.get(1), a_sheet.get(1));
+
+      // Return an error.
+      result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
+    }
+    else
+    {
+      // Return success since the scores were exchanged.
+      result.set("result", "ok");
+    }
+  }
+
+  /**
+   * Lists the scores of the teams.
+   *
+   * @param result
+   */
+  private void
+  list(JSONObject result)
+  {
+    int season_id = m_season.seasonIdGet();
+    int event_id = m_event.eventIdGet();
+
+    // A list of information about teams, maintained in team number order.
+    ArrayList<Integer> ids = new ArrayList<Integer>();
+    ArrayList<Integer> numbers = new ArrayList<Integer>();
+    ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> match1 = new ArrayList<Integer>();
+    ArrayList<Integer> match2 = new ArrayList<Integer>();
+    ArrayList<Integer> match3 = new ArrayList<Integer>();
+    ArrayList<Integer> match4 = new ArrayList<Integer>();
+
+    // Enumerate the teams from the database for this season.
+    m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
+
+    // Set the score indicator for each team to no score available.
+    for(int idx = 0; idx < numbers.size(); idx++)
+    {
+      match1.add(idx, -1);
+      match2.add(idx, -1);
+      match3.add(idx, -1);
+      match4.add(idx, -1);
+    };
+
+    // A list of information about the scores.
+    ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Integer> score1 = new ArrayList<Integer>();
+    ArrayList<Integer> score2 = new ArrayList<Integer>();
+    ArrayList<Integer> score3 = new ArrayList<Integer>();
+    ArrayList<Integer> score4 = new ArrayList<Integer>();
+
+    // Enumerate the scores for this event.
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
+                              null, score2, null, null, score3, null, null,
+                              score4, null, null);
+
+    // Loop through all the scores
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      // Ignore this score if it is not for a team at this event (should not
+      // happen).
+      int team_idx = ids.indexOf(teams.get(idx));
+      if(team_idx == -1)
+      {
+        continue;
+      }
+
+      // Save the match 1 score, if it exists.
+      if(score1.get(idx) != null)
+      {
+        match1.set(team_idx, score1.get(idx));
+      }
+
+      // Save the match 2 score, if it exists.
+      if(score2.get(idx) != null)
+      {
+        match2.set(team_idx, score2.get(idx));
+      }
+
+      // Save the match 3 score, if it exists.
+      if(score3.get(idx) != null)
+      {
+        match3.set(team_idx, score3.get(idx));
+      }
+
+      // Save the match 4 score, if it exists.
+      if(score4.get(idx) != null)
+      {
+        match4.set(team_idx, score4.get(idx));
+      }
+    }
+
+    // Loop through the teams.
+    JSONArray scores = new SimpleJSONArray();
+    for(int i = 0; i < numbers.size(); i++)
+    {
+      // Add this team's scores to the score array.
+      JSONObject score = new SimpleJSONObject();
+      score.set("id", ids.get(i));
+      score.set("number", numbers.get(i));
+      score.set("name", names.get(i));
+      score.set("match1", (match1.get(i) == -1) ? "" : match1.get(i));
+      score.set("match2", (match2.get(i) == -1) ? "" : match2.get(i));
+      score.set("match3", (match3.get(i) == -1) ? "" : match3.get(i));
+      score.set("match4", (match4.get(i) == -1) ? "" : match4.get(i));
+      scores.addEntry(score);
+    }
+
+    // Add the scores array to the JSON response.
+    result.set("scores", scores);
+
+    // Add the number of matches to the JSON response.
+    if(event_id != -1)
+    {
+      result.set("matches", m_database.eventGetMatches(event_id));
+    }
+    else
+    {
+      result.set("matches", 3);
+    }
+  }
+
+  /**
    * Handles requests for /admin/teams/teams.json.
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveScores(String path, String parameters)
+  serveScores(String path, HashMap<String, String> paramMap)
   {
-    String action = null, id = null, match = null, id2 = null, match2 = null;
     JSONObject result = new SimpleJSONObject();
-    int season_id = m_season.seasonIdGet();
-    int event_id = m_event.eventIdGet();
-    String[] params, items;
 
-    // See if there are parameters to be parsed.
-    if(parameters != null)
+    // See if there is an action request.
+    if(paramMap.containsKey("action"))
     {
-      // Split the parameter string into its individual parameters.
-      params = parameters.split("&");
-
-      // Loop through the parameters.
-      for(var i = 0; i < params.length; i++)
+      // See if the action is "delete", for deleting a team's score.
+      if(paramMap.get("action").equals("delete") &&
+         paramMap.containsKey("id") && paramMap.containsKey("match"))
       {
-        // Split this parameter into its key/value.
-        items = params[i].split("=");
-
-        // See if this is the "action" key.
-        if(items[0].equals("action"))
-        {
-          // Save the action for later use.
-          action = items[1];
-        }
-
-        // See if this is the "id" key.
-        if(items[0].equals("id"))
-        {
-          // Save the ID for later use.
-          id = items[1];
-        }
-
-        // See if this is the "match" key.
-        if(items[0].equals("match"))
-        {
-          // Convert and save the match for later use.
-          match = items[1];
-        }
-
-        // See if this is the "id2" key.
-        if(items[0].equals("id2"))
-        {
-          // Save the ID for later use.
-          id2 = items[1];
-        }
-
-        // See if this is the "match2" key.
-        if(items[0].equals("match2"))
-        {
-          // Convert and save the match for later use.
-          match2 = items[1];
-        }
+        // Delete this score.
+        delete(result, Integer.parseInt(paramMap.get("id")),
+               Integer.parseInt(paramMap.get("match")));
       }
-    }
 
-    // See if the action was specified and is "delete", for deleting a team's
-    // score.
-    if("delete".equals(action) && (id != null) && (match != null))
-    {
-      // Ensure that the match number is valid.
-      if((Integer.parseInt(match) >= 1) && (Integer.parseInt(match) <= 4))
+      // See if the action is "exchange", for exchanging a team's score.
+      else if(paramMap.get("action").equals("exchange") &&
+              paramMap.containsKey("id") && paramMap.containsKey("match") &&
+              paramMap.containsKey("id2") && paramMap.containsKey("match2"))
       {
-        // Delete the score from the database.
-        if(m_database.scoreMatchRemove(season_id, event_id,
-                                       Integer.parseInt(id),
-                                       Integer.parseInt(match)) == true)
-        {
-          // Return successs since the match score was deleted.
-          result.set("result", "ok");
-        }
-        else
-        {
-          // Return an error since the match score could not be delete.
-          result.set("result", m_webserver.getSSI("str_scores_delete_error"));
-        }
+        // Exchange the scores.
+        exchange(result, Integer.parseInt(paramMap.get("id")),
+                 Integer.parseInt(paramMap.get("match")),
+                 Integer.parseInt(paramMap.get("id2")),
+                 Integer.parseInt(paramMap.get("match2")));
       }
+
+      // See if the action is "list", for listing the scores.
+      else if(paramMap.get("action").equals("list"))
+      {
+        // List the scores of the teams.
+        list(result);
+      }
+
+      // Otherwise, return an error.
       else
       {
-        // Return an error since the match number is not valid.
-        result.set("result", m_webserver.getSSI("str_scores_unknown_match"));
-      }
-    }
-
-    // See if the action was specified and is "exchange", for exchanging a
-    // team's score.
-    else if("exchange".equals(action) && (id != null) && (match != null) &&
-            (id2 != null) && (match2 != null))
-    {
-      ArrayList<Integer> a_score = new ArrayList<Integer>();
-      ArrayList<Integer> a_cv = new ArrayList<Integer>();
-      ArrayList<String> a_sheet = new ArrayList<String>();
-
-      // Get the first match score.
-      if(m_database.scoreMatchGet(season_id, event_id, Integer.parseInt(id),
-                                  Integer.parseInt(match),
-                                  (score, cv, sheet) ->
-                                  {
-                                    a_score.add(score);
-                                    a_cv.add(cv);
-                                    a_sheet.add(sheet);
-                                  }) == false)
-      {
-        // Return an error.
-        result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
-      }
-
-      // Then get the second match score.
-      else if(m_database.scoreMatchGet(season_id, event_id,
-                                       Integer.parseInt(id2),
-                                       Integer.parseInt(match2),
-                                       (score, cv, sheet) ->
-                                       {
-                                         a_score.add(score);
-                                         a_cv.add(cv);
-                                         a_sheet.add(sheet);
-                                       }) == false)
-      {
-        // Return an error.
-        result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
-      }
-
-      // Then set the second match score to the first match score.
-      else if(m_database.scoreMatchAdd(season_id, event_id,
-                                       Integer.parseInt(id2),
-                                       Integer.parseInt(match2),
-                                       a_score.get(0), a_cv.get(0),
-                                       a_sheet.get(0)) == -1)
-      {
-        // Return an error.
-        result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
-      }
-
-      // Then set the first match score to the second match score.
-      else if(m_database.scoreMatchAdd(season_id, event_id,
-                                       Integer.parseInt(id),
-                                       Integer.parseInt(match),
-                                       a_score.get(1), a_cv.get(1),
-                                       a_sheet.get(1)) == -1)
-      {
-        // The first match score could not be updated, so attempt to restore
-        // the second match score.  If this fails...there is data loss.
-        m_database.scoreMatchAdd(season_id, event_id, Integer.parseInt(id2),
-                                 Integer.parseInt(match2), a_score.get(1),
-                                 a_cv.get(1), a_sheet.get(1));
-
-        // Return an error.
-        result.set("result", m_webserver.getSSI("str_scores_exchange_error"));
-      }
-      else
-      {
-        // Return success since the scores were exchanged.
-        result.set("result", "ok");
+        result.set("result", "error");
       }
     }
 
     // Otherwise, return a list of the teams.
     else
     {
-      // A list of information about teams, maintained in team number order.
-      ArrayList<Integer> a_ids = new ArrayList<Integer>();
-      ArrayList<Integer> a_numbers = new ArrayList<Integer>();
-      ArrayList<String> a_names = new ArrayList<String>();
-      ArrayList<Integer> a_match1 = new ArrayList<Integer>();
-      ArrayList<Integer> a_match2 = new ArrayList<Integer>();
-      ArrayList<Integer> a_match3 = new ArrayList<Integer>();
-      ArrayList<Integer> a_match4 = new ArrayList<Integer>();
-
-      // Enumerate the teams from the database for this season.
-      m_database.teamEnumerate(season_id,
-                               (l_id, l_season_id, l_number, l_name) ->
-        {
-          // Ignore this team if it is not at this event.
-          if(!m_database.teamAtEventGet(event_id, l_id))
-          {
-            return;
-          }
-
-          // Find the place in the list to insert this team in number order.
-          int i;
-          for(i = 0; i < a_numbers.size(); i++)
-          {
-            if(l_number < a_numbers.get(i))
-            {
-              break;
-            }
-          }
-
-          // Add this team to the lists.
-          a_ids.add(i, l_id);
-          a_numbers.add(i, l_number);
-          a_names.add(i, l_name);
-          a_match1.add(i, -1);
-          a_match2.add(i, -1);
-          a_match3.add(i, -1);
-          a_match4.add(i, -1);
-        });
-
-      // Enumerate the scores for this event.
-      m_database.scoreEnumerate(season_id, event_id,
-                                (l_id, l_season_id, l_event_id, team_id,
-                                 l_match1, match1_cv, match1_sheet, l_match2,
-                                 match2_cv, match2_sheet, l_match3, match3_cv,
-                                 match3_sheet, l_match4, match4_cv,
-                                 match4_sheet) ->
-        {
-          // Ignore this score if it is not for a team at this event (should
-          // not happen).
-          int idx = a_ids.indexOf(team_id);
-          if(idx == -1)
-          {
-            return;
-          }
-
-          // Save the match 1 score, if it exists.
-          if(l_match1 != null)
-          {
-            a_match1.set(idx, l_match1);
-          }
-
-          // Save the match 2 score, if it exists.
-          if(l_match2 != null)
-          {
-            a_match2.set(idx, l_match2);
-          }
-
-          // Save the match 3 score, if it exists.
-          if(l_match3 != null)
-          {
-            a_match3.set(idx, l_match3);
-          }
-
-          // Save the match 4 score, if it exists.
-          if(l_match4 != null)
-          {
-            a_match4.set(idx, l_match4);
-          }
-        });
-
-      // Loop through the teams.
-      JSONArray scores = new SimpleJSONArray();
-      for(int i = 0; i < a_numbers.size(); i++)
-      {
-        // Add this team's scores to the score array.
-        JSONObject score = new SimpleJSONObject();
-        score.set("id", a_ids.get(i));
-        score.set("number", a_numbers.get(i));
-        score.set("name", a_names.get(i));
-        score.set("match1", (a_match1.get(i) == -1) ? "" : a_match1.get(i));
-        score.set("match2", (a_match2.get(i) == -1) ? "" : a_match2.get(i));
-        score.set("match3", (a_match3.get(i) == -1) ? "" : a_match3.get(i));
-        score.set("match4", (a_match4.get(i) == -1) ? "" : a_match4.get(i));
-        scores.addEntry(score);
-      }
-
-      // Add the scores array to the JSON response.
-      result.set("scores", scores);
-
-      // Add the number of matches to the JSON response.
-      if(event_id != -1)
-      {
-        result.set("matches", m_database.eventGetMatches(event_id));
-      }
-      else
-      {
-        result.set("matches", 3);
-      }
+      // List the scores of the teams.
+      list(result);
     }
 
     // Convert the response into a byte array and return it.

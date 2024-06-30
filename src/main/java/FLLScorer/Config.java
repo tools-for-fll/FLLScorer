@@ -9,6 +9,8 @@ import java.util.Locale;
 
 /**
  * Handles storing the configuration values for the application.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class Config
 {

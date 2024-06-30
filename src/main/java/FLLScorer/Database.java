@@ -8,52 +8,11 @@ package FLLScorer;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-/**
- * The interface for accepting the enumerated contents of the season table.
- */
-interface SeasonMethod
-{
-  void accept(int id, String year, String name);
-}
-
-/**
- * The interface for accepting the enumerated contents of the event table.
- */
-interface EventMethod
-{
-  void accept(int id, int season_id, String date, int matches, String name);
-}
-
-/**
- * The interface for accepting the enumerated contents of the team table.
- */
-interface TeamMethod
-{
-  void accept(int id, int season_id, int number, String name);
-}
-
-/**
- * The interface for accepting the enumerated contents of the teamAtEvent
- * table.
- */
-interface TeamAtEventMethod
-{
-  void accept(int season_id, int event_id, int team_id);
-}
-
-/**
- * The interface for accepting the enumerated contents of the score table.
- */
-interface ScoreMethod
-{
-  void accept(int id, int season_id, int event_id, int team_id,
-              Integer match1, Integer match1_cv, String match1_sheet,
-              Integer match2, Integer match2_cv, String match2_sheet,
-              Integer match3, Integer match3_cv, String match3_sheet,
-              Integer match4, Integer match4_cv, String match4_sheet);
-}
+import org.eclipse.jetty.util.security.Credential;
 
 /**
  * The interface for accepting a match score.
@@ -61,15 +20,6 @@ interface ScoreMethod
 interface MatchScoreMethod
 {
   void accept(Integer match, Integer match_cv, String match_sheet);
-}
-
-/**
- * The interface for accepting the enumerated contents of the judging table.
- */
-interface JudgingMethod
-{
-  void accept(int id, int season_id, int event_id, int team_id, int project,
-              int robot_design, int core_values, String rubric);
 }
 
 /**
@@ -122,6 +72,66 @@ public class Database
   private
   Database()
   {
+  }
+
+  /**
+   * Executes the given SQL statement, which returns a single {@link ResultSet}
+   * object.
+   *
+   * @param stmt The {@link Statement} to use.
+   *
+   * @param sql The SQL query.
+   *
+   * @return The {@link ResultSet} from the query.
+   *
+   * @throws SQLException if a database access error occurs, this method is
+   *                      called on a closed {@link Statement}, the given SQL
+   *                      statement produces anything other than a single
+   *                      {@link ResultSet} object, the method is called on a
+   *                      <code>PreparedStatement</code> or
+   *                      <code>CallableStatement</code>.
+   */
+  private ResultSet
+  executeQuery(Statement stmt, String sql) throws SQLException
+  {
+    // If debugging is enabled, print out the SQL statement.
+    if(m_debug)
+    {
+      System.out.println(sql);
+    }
+
+    // Execute the SQL statement.
+    return(stmt.executeQuery(sql));
+  }
+
+  /**
+   * Executes the given SQL statement, which may be an INSERT, UPDATE, or
+   * DELETE statement or an SQL statement that returns nothing, such as an SQL
+   * DDL statement.
+   *
+   * @param stmt The {@link Statement} to use.
+   *
+   * @param sql The SQL query.
+   *
+   * @return The result of the query.
+   *
+   * @throws SQLException if a database access error occurs, this method is 
+   *                      called on a closed {@link Statement}, the given SQL
+   *                      statement produces a {@link ResultSet} object, the
+   *                      method is called on a <code>PreparedStatement</code>
+   *                      or <code>CallableStatement</code>.
+   */
+  private int
+  executeUpdate(Statement stmt, String sql) throws SQLException
+  {
+    // If debugging is enabled, print out the SQL statement.
+    if(m_debug)
+    {
+      System.out.println(sql);
+    }
+
+    // Execute the SQL statement.
+    return(stmt.executeUpdate(sql));
   }
 
   /**
@@ -195,6 +205,23 @@ public class Database
                      "  core_values integer " +
                      "  rubric char " +
                      ")";
+    String user = "create table if not exists user " +
+                  "( " +
+                  "  id integer primary key, " +
+                  "  name char, " +
+                  "  password char, " +
+                  "  admin integer, " +
+                  "  host integer, " +
+                  "  judge integer, " +
+                  "  referee integer, " +
+                  "  timekeeper integer " +
+                  ")";
+    String admin_check = "select " +
+                         "  id " +
+                         "from " +
+                         "  user " +
+                         "where " +
+                         "  name = 'admin'";
 
     // Attempt to create the tables, catching (and ignoring) any errors that
     // may occur.
@@ -204,53 +231,37 @@ public class Database
       Statement stmt = m_connection.createStatement();
 
       // Execute the SQL statement to create the config table.
-      if(m_debug)
-      {
-        System.out.println(config);
-      }
-      stmt.executeUpdate(config);
+      executeUpdate(stmt, config);
 
       // Execute the SQL statement to create the season table.
-      if(m_debug)
-      {
-        System.out.println(season);
-      }
-      stmt.executeUpdate(season);
+      executeUpdate(stmt, season);
 
       // Execute the SQL statement to create the event table.
-      if(m_debug)
-      {
-        System.out.println(event);
-      }
-      stmt.executeUpdate(event);
+      executeUpdate(stmt, event);
 
       // Execute the SQL statement to create the team table.
-      if(m_debug)
-      {
-        System.out.println(team);
-      }
-      stmt.executeUpdate(team);
+      executeUpdate(stmt, team);
 
       // Execute the SQL statement to create the teamAtEvent table.
-      if(m_debug)
-      {
-        System.out.println(teamAtEvent);
-      }
-      stmt.executeUpdate(teamAtEvent);
+      executeUpdate(stmt, teamAtEvent);
 
       // Execute the SQL statement to create the score table.
-      if(m_debug)
-      {
-        System.out.println(score);
-      }
-      stmt.executeUpdate(score);
+      executeUpdate(stmt, score);
 
       // Execute the SQL statement to create the judging table.
-      if(m_debug)
+      executeUpdate(stmt, judging);
+
+      // Execute the SQL statement to create the user table.
+      executeUpdate(stmt, user);
+
+      // Execute the SQL statement to check for the admin user.
+      ResultSet result = executeQuery(stmt, admin_check);
+      if(result.next() == false)
       {
-        System.out.println(judging);
+        // Create the admin user since it does not exist.
+        userAdd("admin", Credential.Crypt.crypt("admin", "FLLRocks!"), 1, 0, 0,
+                0, 0);
       }
-      stmt.executeUpdate(judging);
 
       // Close the SQL statement.
       stmt.close();
@@ -287,11 +298,7 @@ public class Database
       String sql = "select value from config where key = '" + key + "'";
 
       // Read the value from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // Extract the value from the result.
@@ -339,19 +346,11 @@ public class Database
                     " where key = " + stmt.enquoteLiteral(key);
 
       // See if the key already exists.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(result.next() == false)
       {
         // The key does not exist, so add it to the database.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
       }
       else
       {
@@ -360,11 +359,7 @@ public class Database
         if(!result.getString("value").equals(value))
         {
           // Update the value.
-          if(m_debug)
-          {
-            System.out.println(sql3);
-          }
-          stmt.executeUpdate(sql3);
+          executeUpdate(stmt, sql3);
         }
       }
 
@@ -402,11 +397,7 @@ public class Database
                    stmt.enquoteLiteral(key);
 
       // Write the value to the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      stmt.executeUpdate(sql);
+      executeUpdate(stmt, sql);
 
       // Close the SQL statement.
       stmt.close();
@@ -449,26 +440,14 @@ public class Database
                     stmt.enquoteLiteral(name) + ")";
 
       // See if the season already exists in the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(!result.next())
       {
         // The season does not exist, so create it now.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
 
         // Read the ID of the newly created season.
-        if(m_debug)
-        {
-          System.out.println(sql1);
-        }
-        result = stmt.executeQuery(sql1);
+        result = executeQuery(stmt, sql1);
         result.next();
       }
 
@@ -493,12 +472,17 @@ public class Database
   /**
    * Enumerates the seasons in the database.
    *
-   * @param callback The function to call for each season in the database.
+   * @param id An array for the IDs for the seasons.
+   *
+   * @param year An array for the years for the seasons.
+   *
+   * @param name An array for the names for the seasons.
    *
    * @return <b>true</b> if the seasons are enumerated successfully.
    */
   public boolean
-  seasonEnumerate(SeasonMethod callback)
+  seasonEnumerate(ArrayList<Integer> id, ArrayList<String> year,
+                  ArrayList<String> name)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -510,19 +494,15 @@ public class Database
       String sql = "select * from season";
 
       // Query the season table.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
 
       // Loop through all the rows in the table.
       while(result.next())
       {
-        // Provide the values from this row to the callback.
-        callback.accept(result.getInt("id"),
-                        result.getString("year"),
-                        result.getString("name"));
+        // Add the values from this row to the arrays.
+        id.add(result.getInt("id"));
+        year.add(result.getString("year"));
+        name.add(result.getString("name"));
       }
 
       // Close the SQL statement.
@@ -558,11 +538,7 @@ public class Database
       String sql = "delete from season where id = " + id;
 
       // Delete this season from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      stmt.executeUpdate(sql);
+      executeUpdate(stmt, sql);
 
       // Close the SQL statement.
       stmt.close();
@@ -609,26 +585,14 @@ public class Database
                     ", " + matches + ", " + stmt.enquoteLiteral(name) + ")";
 
       // See if the event already exists in the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(!result.next())
       {
         // The event does not exist, so create it now.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
 
         // Read the ID of the newly created event.
-        if(m_debug)
-        {
-          System.out.println(sql1);
-        }
-        result = stmt.executeQuery(sql1);
+        result = executeQuery(stmt, sql1);
         result.next();
       }
 
@@ -678,11 +642,7 @@ public class Database
                    stmt.enquoteLiteral(name) + " where id = " + event_id;
 
       // Edit the event.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      stmt.executeUpdate(sql);
+      executeUpdate(stmt, sql);
 
       // Close the SQL statement.
       stmt.close();
@@ -702,13 +662,30 @@ public class Database
    *
    * @param season_id The ID of the season.
    *
-   * @param callback The function to call for each event in the database.
+   * @param ids The array for the IDs of the events; can be <b>null</b> if the
+   *            event IDs are not required.
+   *
+   * @param season_ids The array for the IDs of the seasons; can be <b>null</b>
+   *                   if the season IDs are not required.
+   *
+   * @param dates The array for the dates of the events; must not be
+   *              <b>null</b>.
+   *
+   * @param matches The array for the number of matches in the events; can be
+   *                <b>null</b> if the number of matches are not required.
+   *
+   * @param name The array for the names of the events; can be <b>null</b> if
+   *             the names are not required.
    *
    * @return <b>true</b> if the events are enumerated successfully.
    */
   public boolean
-  eventEnumerate(int season_id, EventMethod callback)
+  eventEnumerate(int season_id, ArrayList<Integer> ids,
+                 ArrayList<Integer> season_ids, ArrayList<String> dates,
+                 ArrayList<Integer> matches, ArrayList<String> names)
   {
+    int idx;
+
     // Catch (and ignore) any errors that may occur.
     try
     {
@@ -719,21 +696,42 @@ public class Database
       String sql = "select * from event where season_id = " + season_id;
 
       // Query the event table.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
 
       // Loop through all the rows in the table.
       while(result.next())
       {
-        // Provide the values from this row to the callback.
-        callback.accept(result.getInt("id"),
-                        result.getInt("season_id"),
-                        result.getString("date"),
-                        result.getInt("matches"),
-                        result.getString("name"));
+        // Get the date of this event.
+        String ldate = result.getString("date");
+
+        // Find where to place this event in date order.
+        for(idx = 0; idx < dates.size(); idx++)
+        {
+          if(ldate.compareTo(dates.get(idx)) < 0)
+          {
+            break;
+          }
+        }
+
+        // Insert the data for this event into the lists that have been
+        // supplied.
+        if(ids != null)
+        {
+          ids.add(idx, result.getInt("id"));
+        }
+        if(season_ids != null)
+        {
+          season_ids.add(idx, result.getInt("season_id"));
+        }
+        dates.add(idx, ldate);
+        if(matches != null)
+        {
+          matches.add(idx, result.getInt("matches"));
+        }
+        if(names != null)
+        {
+          names.add(idx, result.getString("name"));
+        }
       }
 
       // Close the SQL statement.
@@ -771,11 +769,7 @@ public class Database
       String sql = "select date from event where id = " + event_id;
 
       // Get the date of the event from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // Extract the date from the results.
@@ -825,11 +819,7 @@ public class Database
                    stmt.enquoteLiteral(name);
 
       // Get the ID of the event from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // Extract the ID from the results.
@@ -870,11 +860,7 @@ public class Database
       String sql = "select matches from event where id = " + event_id;
 
       // Get the number of matches at the event from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // Extract the number of matches from the results.
@@ -915,11 +901,7 @@ public class Database
       String sql = "select name from event where id = " + event_id;
 
       // Get the name of the event from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // Extract the date from the results.
@@ -960,11 +942,7 @@ public class Database
       String sql = "select id from score where event_id = " + event_id;
 
       // See if the event has scores in the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // There is a score.
@@ -1006,26 +984,10 @@ public class Database
       String sql4 = "delete from event where id = " + id;
 
       // Delete this event from the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      stmt.executeUpdate(sql1);
-      if(m_debug)
-      {
-        System.out.println(sql2);
-      }
-      stmt.executeUpdate(sql2);
-      if(m_debug)
-      {
-        System.out.println(sql3);
-      }
-      stmt.executeUpdate(sql3);
-      if(m_debug)
-      {
-        System.out.println(sql4);
-      }
-      stmt.executeUpdate(sql4);
+      executeUpdate(stmt, sql1);
+      executeUpdate(stmt, sql2);
+      executeUpdate(stmt, sql3);
+      executeUpdate(stmt, sql4);
 
       // Close the SQL statement.
       stmt.close();
@@ -1069,26 +1031,14 @@ public class Database
                     stmt.enquoteLiteral(name) + ")";
 
       // See if the team already exists in the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(!result.next())
       {
         // The team does not exist, so create it now.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
 
         // Read the ID of the newly created team.
-        if(m_debug)
-        {
-          System.out.println(sql1);
-        }
-        result = stmt.executeQuery(sql1);
+        result = executeQuery(stmt, sql1);
         result.next();
       }
 
@@ -1122,7 +1072,7 @@ public class Database
    * @return <b>true</b> if the team is edited successfully.
    */
   public boolean
-  teamEdit(int team_id, String number, String name)
+  teamEdit(int team_id, int number, String name)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -1131,16 +1081,11 @@ public class Database
       Statement stmt = m_connection.createStatement();
 
       // The SQL command to edit the team.
-      String sql = "update team set number = " + stmt.enquoteLiteral(number) +
-                   ", name = " + stmt.enquoteLiteral(name) + " where id = " +
-                   team_id;
+      String sql = "update team set number = " + number + ", name = " +
+                   stmt.enquoteLiteral(name) + " where id = " + team_id;
 
       // Edit the team.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      stmt.executeUpdate(sql);
+      executeUpdate(stmt, sql);
 
       // Close the SQL statement.
       stmt.close();
@@ -1160,13 +1105,25 @@ public class Database
    *
    * @param season_id The ID of the season.
    *
-   * @param callback The function to call for each team in the database.
+   * @param event_id The ID of the event.
+   *
+   * @param ids The array for the IDs of the teams; can be <b>null</b> if the
+   *            IDs are not required.
+   *
+   * @param numbers The array for the numbers of the teams; must not be
+   *                <b>null</b>.
+   *
+   * @param names The array for the names of the teams; can be <b>null</b> if
+   *              the names are not required.
    *
    * @return <b>true</b> if the teams are enumerated successfully.
    */
   public boolean
-  teamEnumerate(int season_id, TeamMethod callback)
+  teamEnumerate(int season_id, int event_id, ArrayList<Integer> ids,
+                ArrayList<Integer> numbers, ArrayList<String> names)
   {
+    int idx;
+
     // Catch (and ignore) any errors that may occur.
     try
     {
@@ -1177,20 +1134,41 @@ public class Database
       String sql = "select * from team where season_id = " + season_id;
 
       // Query the team table.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
 
       // Loop through all the rows in the table.
       while(result.next())
       {
-        // Provide the values from this row to the callback.
-        callback.accept(result.getInt("id"),
-                        result.getInt("season_id"),
-                        result.getInt("number"),
-                        result.getString("name"));
+        // If an event ID was specified and the team is not at this event, skip
+        // it.
+        if((event_id != -1) && !teamAtEventGet(event_id, result.getInt("id")))
+        {
+          continue;
+        }
+
+        // Get the number of this team.
+        int lnumber = result.getInt("number");
+
+        // Find where to place this event in date order.
+        for(idx = 0; idx < numbers.size(); idx++)
+        {
+          if(lnumber < numbers.get(idx))
+          {
+            break;
+          }
+        }
+
+        // Insert the data for this team into the lists that have been
+        // supplied.
+        if(ids != null)
+        {
+          ids.add(idx, result.getInt("id"));
+        }
+        numbers.add(idx, lnumber);
+        if(names != null)
+        {
+          names.add(idx, result.getString("name"));
+        }
       }
 
       // Close the SQL statement.
@@ -1231,11 +1209,7 @@ public class Database
                    " and number = " + number;
 
       // Get the ID of the team from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // Extract the ID from the results.
@@ -1279,11 +1253,7 @@ public class Database
                    " and team_id = " + team_id;
 
       // See if the team has event scores in the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // There is a score.
@@ -1327,11 +1297,7 @@ public class Database
                    " and team_id = " + team_id;
 
       // See if the team has scores in the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // There is a score.
@@ -1375,11 +1341,7 @@ public class Database
                    " and id = " + team_id;
 
       // Get the name of this team from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         name = result.getString("name");
@@ -1422,11 +1384,7 @@ public class Database
                    " and id = " + team_id;
 
       // Get the name of this team from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         number = result.getInt("number");
@@ -1472,26 +1430,10 @@ public class Database
       String sql4 = "delete from team where id = " + team_id;
 
       // Delete this team from the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      stmt.executeUpdate(sql1);
-      if(m_debug)
-      {
-        System.out.println(sql2);
-      }
-      stmt.executeUpdate(sql2);
-      if(m_debug)
-      {
-        System.out.println(sql3);
-      }
-      stmt.executeUpdate(sql3);
-      if(m_debug)
-      {
-        System.out.println(sql4);
-      }
-      stmt.executeUpdate(sql4);
+      executeUpdate(stmt, sql1);
+      executeUpdate(stmt, sql2);
+      executeUpdate(stmt, sql3);
+      executeUpdate(stmt, sql4);
 
       // Close the SQL statement.
       stmt.close();
@@ -1511,14 +1453,21 @@ public class Database
    *
    * @param team_id The ID of the team.
    *
-   * @param callback The function to call for each team to event association in
-   *                 the database.
+   * @param seasons The array for the IDs of the seasons; can be <b>null</b> if
+   *                the season IDs are not required.
+   *
+   * @param events The array for the IDs of the events; can be <b>null</b> if
+   *               the event IDs are not required.
+   *
+   * @param teams The array for the IDs of the teams; can be <b>null</b> if the
+   *              team IDs are not required.
    *
    * @return <b>true</b> if the scores are enumerated successfully.
    */
   public boolean
   teamAtEventEnumerate(int season_id, int event_id, int team_id,
-                       TeamAtEventMethod callback)
+                       ArrayList<Integer> seasons, ArrayList<Integer> events,
+                       ArrayList<Integer> teams)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -1551,19 +1500,25 @@ public class Database
       }
 
       // Query the teamAtEvent table.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
 
       // Loop through all the rows in the table.
       while(result.next())
       {
-        // Provide the values from this row to the callback.
-        callback.accept(result.getInt("season_id"),
-                        result.getInt("event_id"),
-                        result.getInt("team_id"));
+        // Insert the data for this team into the lists that have been
+        // supplied.
+        if(seasons != null)
+        {
+          seasons.add(result.getInt("season_id"));
+        }
+        if(events != null)
+        {
+          events.add(result.getInt("event_id"));
+        }
+        if(teams != null)
+        {
+          teams.add(result.getInt("team_id"));
+        }
       }
 
       // Close the SQL statement.
@@ -1604,11 +1559,7 @@ public class Database
                    " and team_id = " + team_id;
 
       // See if the team is at this event.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
       if(result.next())
       {
         // The team is at this event.
@@ -1652,21 +1603,9 @@ public class Database
                     " and team_id = " + team_id;
 
       // Delete this team from this event in the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      stmt.executeUpdate(sql1);
-      if(m_debug)
-      {
-        System.out.println(sql2);
-      }
-      stmt.executeUpdate(sql2);
-      if(m_debug)
-      {
-        System.out.println(sql3);
-      }
-      stmt.executeUpdate(sql3);
+      executeUpdate(stmt, sql1);
+      executeUpdate(stmt, sql2);
+      executeUpdate(stmt, sql3);
 
       // Close the SQL statement.
       stmt.close();
@@ -1709,19 +1648,11 @@ public class Database
                     ")";
 
       // See if the team is at the event.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(!result.next())
       {
         // The team is not at the event, so add it to the event.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
       }
 
       // Close the SQL statement.
@@ -1744,12 +1675,67 @@ public class Database
    *
    * @param event_id The ID of the event.
    *
-   * @param callback The function to call for each score in the database.
+   * @param ids The array for the IDs of the scores; can be <b>null</b> if the
+   *            score IDs are not required.
+   *
+   * @param teams The array for the IDs of the teams; can be <b>null</b> if the
+   *              team IDs are not required.
+   *
+   * @param match1 The array for the match 1 scores; can be <b>null</b> if the
+   *               match 1 scores are not required.
+   *
+   * @param match1_cv The array for the match 1 core values scores; can be
+   *                  <b>null</b> if the match 1 core values scores are not
+   *                  required.
+   *
+   * @param match1_sheet The array for the match 1 JSON scoresheets; can be
+   *                     <b>null</b> if the match 1 JSON scoresheets are not
+   *                     required.
+   *
+   * @param match2 The array for the match 2 scores; can be <b>null</b> if the
+   *               match 2 scores are not required.
+   *
+   * @param match2_cv The array for the match 2 core values scores; can be
+   *                  <b>null</b> if the match 2 core values scores are not
+   *                  required.
+   *
+   * @param match2_sheet The array for the match 2 JSON scoresheets; can be
+   *                     <b>null</b> if the match s JSON scoresheets are not
+   *                     required.
+   *
+   * @param match3 The array for the match 3 scores; can be <b>null</b> if the
+   *               match 3 scores are not required.
+   *
+   * @param match3_cv The array for the match 3 core values scores; can be
+   *                  <b>null</b> if the match 3 core values scores are not
+   *                  required.
+   *
+   * @param match3_sheet The array for the match 3 JSON scoresheets; can be
+   *                     <b>null</b> if the match 3 JSON scoresheets are not
+   *                     required.
+   *
+   * @param match4 The array for the match 4 scores; can be <b>null</b> if the
+   *               match 4 scores are not required.
+   *
+   * @param match4_cv The array for the match 4 core values scores; can be
+   *                  <b>null</b> if the match 4 core values scores are not
+   *                  required.
+   *
+   * @param match4_sheet The array for the match 4 JSON scoresheets; can be
+   *                     <b>null</b> if the match 4 JSON scoresheets are not
+   *                     required.
    *
    * @return <b>true</b> if the scores are enumerated successfully.
    */
   public boolean
-  scoreEnumerate(int season_id, int event_id, ScoreMethod callback)
+  scoreEnumerate(int season_id, int event_id, ArrayList<Integer> ids,
+                 ArrayList<Integer> teams, ArrayList<Integer> match1,
+                 ArrayList<Integer> match1_cv, ArrayList<String> match1_sheet,
+                 ArrayList<Integer> match2, ArrayList<Integer> match2_cv,
+                 ArrayList<String> match2_sheet, ArrayList<Integer> match3,
+                 ArrayList<Integer> match3_cv, ArrayList<String> match3_sheet,
+                 ArrayList<Integer> match4, ArrayList<Integer> match4_cv,
+                 ArrayList<String> match4_sheet)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -1762,49 +1748,93 @@ public class Database
                    " and event_id = " + event_id;
 
       // Query the score table.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
 
       // Loop through all the rows in the table.
       while(result.next())
       {
-        // Get the scores, handling the possible NULLs appropriately.
-        Integer match1 = result.getInt("match1");
-        match1 = result.wasNull() ? null : match1;
-        Integer match1_cv = result.getInt("match1_cv");
-        match1_cv = result.wasNull() ? null : match1_cv;
-        String match1_sheet = result.getString("match1_sheet");
-        match1_sheet = result.wasNull() ? null : match1_sheet;
-        Integer match2 = result.getInt("match2");
-        match2 = result.wasNull() ? null : match2;
-        Integer match2_cv = result.getInt("match2_cv");
-        match2_cv = result.wasNull() ? null : match2_cv;
-        String match2_sheet = result.getString("match2_sheet");
-        match2_sheet = result.wasNull() ? null : match2_sheet;
-        Integer match3 = result.getInt("match3");
-        match3 = result.wasNull() ? null : match3;
-        Integer match3_cv = result.getInt("match3_cv");
-        match3_cv = result.wasNull() ? null : match3_cv;
-        String match3_sheet = result.getString("match3_sheet");
-        match3_sheet = result.wasNull() ? null : match3_sheet;
-        Integer match4 = result.getInt("match4");
-        match4 = result.wasNull() ? null : match4;
-        Integer match4_cv = result.getInt("match4_cv");
-        match4_cv = result.wasNull() ? null : match4_cv;
-        String match4_sheet = result.getString("match4_sheet");
-        match4_sheet = result.wasNull() ? null : match4_sheet;
-
-        // Provide the values from this row to the callback.
-        callback.accept(result.getInt("id"),
-                        result.getInt("season_id"),
-                        result.getInt("event_id"),
-                        result.getInt("team_id"),
-                        match1, match1_cv, match1_sheet, match2, match2_cv,
-                        match2_sheet, match3, match3_cv, match3_sheet, match4,
-                        match4_cv, match4_sheet);
+        // Insert the data for this score into the lists that have been
+        // supplied.
+        if(ids != null)
+        {
+          ids.add(result.getInt("id"));
+        }
+        if(teams != null)
+        {
+          teams.add(result.getInt("team_id"));
+        }
+        if(match1 != null)
+        {
+          Integer score = result.getInt("match1");
+          score = result.wasNull() ? null : score;
+          match1.add(score);
+        }
+        if(match1_cv != null)
+        {
+          Integer score = result.getInt("match1_cv");
+          score = result.wasNull() ? null : score;
+          match1_cv.add(score);
+        }
+        if(match1_sheet != null)
+        {
+          String sheet = result.getString("match1_sheet");
+          sheet = result.wasNull() ? null : sheet;
+          match1_sheet.add(sheet);
+        }
+        if(match2 != null)
+        {
+          Integer score = result.getInt("match2");
+          score = result.wasNull() ? null : score;
+          match2.add(score);
+        }
+        if(match2_cv != null)
+        {
+          Integer score = result.getInt("match2_cv");
+          score = result.wasNull() ? null : score;
+          match2_cv.add(score);
+        }
+        if(match2_sheet != null)
+        {
+          String sheet = result.getString("match2_sheet");
+          sheet = result.wasNull() ? null : sheet;
+          match2_sheet.add(sheet);
+        }
+        if(match3 != null)
+        {
+          Integer score = result.getInt("match3");
+          score = result.wasNull() ? null : score;
+          match3.add(score);
+        }
+        if(match3_cv != null)
+        {
+          Integer score = result.getInt("match3_cv");
+          score = result.wasNull() ? null : score;
+          match3_cv.add(score);
+        }
+        if(match3_sheet != null)
+        {
+          String sheet = result.getString("match3_sheet");
+          sheet = result.wasNull() ? null : sheet;
+          match3_sheet.add(sheet);
+        }
+        if(match4 != null)
+        {
+          Integer score = result.getInt("match4");
+          score = result.wasNull() ? null : score;
+          match4.add(score);
+        }
+        if(match4_cv != null)
+        {
+          Integer score = result.getInt("match4_cv");
+          score = result.wasNull() ? null : score;
+          match4_cv.add(score);
+        }
+        if(match4_sheet != null)
+        {
+          String sheet = result.getString("match4_sheet");
+          sheet = result.wasNull() ? null : sheet;
+          match4_sheet.add(sheet);
+        }
       }
 
       // Close the SQL statement.
@@ -1869,36 +1899,20 @@ public class Database
                     event_id + " and team_id = " + team_id;
 
       // See if the score already exists in the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(!result.next())
       {
         // The score does not exist, so create it now.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
       }
       else
       {
         // The score does exist, so update it now.
-        if(m_debug)
-        {
-          System.out.println(sql3);
-        }
-        stmt.executeUpdate(sql3);
+        executeUpdate(stmt, sql3);
       }
 
       // Read the ID of the score.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      result = stmt.executeQuery(sql1);
+      result = executeQuery(stmt, sql1);
       result.next();
 
       // Extract the ID from the results.
@@ -1931,6 +1945,7 @@ public class Database
    *
    * @return <b>true</b> if the match score is returned successfully.
    */
+  // TODO do not use a callback
   public boolean
   scoreMatchGet(int season_id, int event_id, int team_id, int match,
                 MatchScoreMethod callback)
@@ -1952,11 +1967,7 @@ public class Database
                    " and team_id = " + team_id;
 
       // Get the score from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
 
       // See if the query was successful.
       if(result.next())
@@ -2027,19 +2038,11 @@ public class Database
                     team_id;
 
       // See if the score already exists in the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(result.next())
       {
         // The score does exist, so update it now.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
       }
 
       // Close the SQL statement.
@@ -2075,11 +2078,7 @@ public class Database
       String sql = "delete from score where id = " + id;
 
       // Delete this score from the database.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      stmt.executeUpdate(sql);
+      executeUpdate(stmt, sql);
 
       // Close the SQL statement.
       stmt.close();
@@ -2141,36 +2140,20 @@ public class Database
                     event_id + " and team_id = " + team_id;
 
       // See if the judging result already exists in the database.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      ResultSet result = stmt.executeQuery(sql1);
+      ResultSet result = executeQuery(stmt, sql1);
       if(!result.next())
       {
         // The judging result does not exist, so create it now.
-        if(m_debug)
-        {
-          System.out.println(sql2);
-        }
-        stmt.executeUpdate(sql2);
+        executeUpdate(stmt, sql2);
       }
       else
       {
         // The judging result does exist, so update it now.
-        if(m_debug)
-        {
-          System.out.println(sql3);
-        }
-        stmt.executeUpdate(sql3);
+        executeUpdate(stmt, sql3);
       }
 
       // Read the ID of the judging result.
-      if(m_debug)
-      {
-        System.out.println(sql1);
-      }
-      result = stmt.executeQuery(sql1);
+      result = executeQuery(stmt, sql1);
       result.next();
 
       // Extract the ID from the results.
@@ -2195,13 +2178,39 @@ public class Database
    *
    * @param event_id The ID of the event.
    *
-   * @param callback The function to call for each judging result in the
-   *                 database.
+   * @param ids The array for the IDs of the judging item; can be <b>null</b>
+   *            if the judging IDs are not required.
+   *
+   * @param seasons The array for the IDs of the seasons; can be <b>null</b> if
+   *                the season IDs are not required.
+   *
+   * @param events The array for the IDs of the events; can be <b>null</b> if
+   *               the event IDs are not required.
+   *
+   * @param teams The array for the IDs of the teams; can be <b>null</b> if the
+   *              team IDs are not required.
+   *
+   * @param projects The array for the project scores; can be <b>null</b> if
+   *                 the project scores are not required.
+   *
+   * @param robotDesigns The array for the robot design scores; can be
+   *                     <b>null</b> if the robot design scores are not
+   *                     required.
+   *
+   * @param coreValues The array for the core values scores; can be <b>null</b>
+   *                   if the core values scores are not required.
+   *
+   * @param rubrics The array for the JSON rubric data; can be <b>null</b> if
+   *                the JSON rubric data is not required.
    *
    * @return <b>true</b> if the judging results are enumerated successfully.
    */
   public boolean
-  judgingEnumerate(int season_id, int event_id, JudgingMethod callback)
+  judgingEnumerate(int season_id, int event_id, ArrayList<Integer> ids,
+                   ArrayList<Integer> seasons, ArrayList<Integer> events,
+                   ArrayList<Integer> teams, ArrayList<Integer> projects,
+                   ArrayList<Integer> robotDesigns,
+                   ArrayList<Integer> coreValues, ArrayList<String> rubrics)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -2214,24 +2223,41 @@ public class Database
                    " and event_id = " + event_id;
 
       // Query the judging table.
-      if(m_debug)
-      {
-        System.out.println(sql);
-      }
-      ResultSet result = stmt.executeQuery(sql);
+      ResultSet result = executeQuery(stmt, sql);
 
       // Loop through all the rows in the table.
       while(result.next())
       {
-        // Provide the values from this row to the callback.
-        callback.accept(result.getInt("id"),
-                        result.getInt("season_id"),
-                        result.getInt("event_id"),
-                        result.getInt("team_id"),
-                        result.getInt("project"),
-                        result.getInt("robot_design"),
-                        result.getInt("core_values"),
-                        result.getString("rubric"));
+        // Insert the data for this team into the lists that have been
+        // supplied.
+        if(ids != null)
+        {
+          ids.add(result.getInt("id"));
+        }
+        if(seasons != null)
+        {
+          seasons.add(result.getInt("season_id"));
+        }
+        if(events != null)
+        {
+          events.add(result.getInt("event_id"));
+        }
+        if(teams != null)
+        {
+          teams.add(result.getInt("team_id"));
+        }
+        if(projects != null)
+        {
+          projects.add(result.getInt("project"));
+        }
+        if(coreValues != null)
+        {
+          coreValues.add(result.getInt("core_values"));
+        }
+        if(rubrics != null)
+        {
+          rubrics.add(result.getString("rubrics"));
+        }
       }
 
       // Close the SQL statement.
@@ -2266,12 +2292,729 @@ public class Database
       // The SQL statement to remove the judging result.
       String sql = "delete from judging where id = " + id;
 
-      // Delete this judging from the database.
-      if(m_debug)
+      // Delete this judging result from the database.
+      executeUpdate(stmt, sql);
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Adds a user to the database.
+   *
+   * @param name The user's name.
+   *
+   * @param password The user's password.
+   *
+   * @param admin One if the user has the <i>admin</i> role, zero otherwise.
+   *
+   * @param host One if the user has the <i>host</i> role, zero otherwise.
+   *
+   * @param judge One if the user has the <i>judge</i> role, zero otherwise.
+   *
+   * @param referee One if the user has the <i>referee</i> role, zero
+   *                otherwise.
+   *
+   * @param timekeeper One if the user has the <i>timekeeper</i> role, zero
+   *                   otherwise.
+   *
+   * @return The user ID for the added user, or -1 if the user already exists.
+   */
+  public int
+  userAdd(String name, String password, int admin, int host, int judge,
+          int referee, int timekeeper)
+  {
+    int id = -1;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL command to check for and insert the user.
+      String sql1 = "select id from user where name = " +
+                    stmt.enquoteLiteral(name);
+      String sql2 = "insert into user (name, password, admin, host, judge, " +
+                    "referee, timekeeper) values (" +
+                    stmt.enquoteLiteral(name) + ", " +
+                    stmt.enquoteLiteral(password) + ", " + admin + ", " +
+                    host + ", " + judge + ", " + referee + "," + timekeeper +
+                    ")";
+
+      // See if the user result already exists in the database.
+      ResultSet result = executeQuery(stmt, sql1);
+      if(!result.next())
       {
-        System.out.println(sql);
+        // The user does not exist, so create it now.
+        executeUpdate(stmt, sql2);
       }
-      stmt.executeUpdate(sql);
+      else
+      {
+        // The user already exists, so return an error.
+        stmt.close();
+        return(-1);
+      }
+
+      // Read the ID of the user.
+      result = executeQuery(stmt, sql1);
+      result.next();
+
+      // Extract the ID from the results.
+      id = result.getInt("id");
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(-1);
+    }
+
+    // Return the ID of the user.
+    return(id);
+  }
+
+  /**
+   * Enumerates the users in the database.
+   *
+   * @param id An array for the IDs of the users; can be <b>null</b> if the IDs
+   *           are not required.
+   *
+   * @param name An array for the names of the users; must not be <b>null</b>.
+   *
+   * @param password An array for the passwords of the users; can be
+   *                 <b>null</b> if the passwords are not required.
+   *
+   * @param admin An array for the admin role flags for the users; can be
+   *              <b>null</b> if the admin role flags are not requried.
+   *
+   * @param host An array for the host role flags for the users; can be
+   *             <b>null</b> if the host role flags are not required.
+   *
+   * @param judge An array for the judge role flags for the users; can be
+   *              <b>null</b> if the judge role flags are not required.
+   *
+   * @param referee An array for the referee role flags for the users; can be
+   *                <b>null</b> if the referee role flags are not required.
+   *
+   * @param timekeeper An array for the timekeeper role flags for the users;
+   *                   can be <b>null</b> if the timekeeper role flags are not
+   *                   required.
+   *
+   * @return <b>true</b> if the users are enumerated successfully.
+   */
+  public boolean
+  userEnumerate(ArrayList<Integer> id, ArrayList<String> name,
+                ArrayList<String> password, ArrayList<Integer> admin,
+                ArrayList<Integer> host, ArrayList<Integer> judge,
+                ArrayList<Integer> referee, ArrayList<Integer> timekeeper)
+  {
+    int idx;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to enumreate the users.
+      String sql = "select * from user";
+
+      // Query the user table.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // Loop through all the rows in the table.
+      while(result.next())
+      {
+        // Get the name of this user.
+        String lname = result.getString("name");
+
+        // Find where to place this user in alphabetical order.
+        for(idx = 0; idx < name.size(); idx++)
+        {
+          if(lname.compareTo(name.get(idx)) < 0)
+          {
+            break;
+          }
+        }
+
+        // Insert the data for this user into the lists that have been
+        // supplied.
+        if(id != null)
+        {
+          id.add(idx, result.getInt("id"));
+        }
+        name.add(idx, lname);
+        if(password != null)
+        {
+          password.add(idx, result.getString("password"));
+        }
+        if(admin != null)
+        {
+          admin.add(idx, result.getInt("admin"));
+        }
+        if(host != null)
+        {
+          host.add(idx, result.getInt("host"));
+        }
+        if(judge != null)
+        {
+          judge.add(idx, result.getInt("judge"));
+        }
+        if(referee != null)
+        {
+          referee.add(idx, result.getInt("referee"));
+        }
+        if(timekeeper != null)
+        {
+          timekeeper.add(idx, result.getInt("timekeeper"));
+        }
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Gets the name of a user.
+   *
+   * @param id The ID of the user.
+   *
+   * @return The name of the user.
+   */
+  public String
+  userNameGet(int id)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to set the user name.
+      String sql = "select name from user where id = " + id;
+
+      // Get the name of this user from the database.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // Return an empty string if the user was not found.
+      if(result.next() == false)
+      {
+        return("");
+      }
+
+      // Get the name of the user.
+      String name = result.getString("name");
+
+      // Close the SQL statement.
+      stmt.close();
+
+      // Return the name of the user.
+      return(name);
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return("");
+    }
+  }
+
+  /**
+   * Sets the name of a user.
+   *
+   * @param id The ID of the user.
+   *
+   * @param name The name of the user.
+   *
+   * @return <b>true</b> if the user name is updated successfully.
+   */
+  public boolean
+  userNameSet(int id, String name)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to set the user name.
+      String sql = "update user set name = " + stmt.enquoteLiteral(name) +
+                   " where id = " + id;
+
+      // Update the name of this user in the database.
+      executeUpdate(stmt, sql);
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Gets the password of a user.
+   *
+   * @param id The ID of the user.
+   *
+   * @return The password of the user.
+   */
+  public String
+  userPasswordGet(int id)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to get the password.
+      String sql = "select password from user where id = " + id;
+
+      // Get the password for this user from the database.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // Return an empty string if the user was not found.
+      if(result.next() == false)
+      {
+        return("");
+      }
+
+      // Get the password.
+      String password = result.getString("password");
+
+      // Close the SQL statement.
+      stmt.close();
+
+      // Return the password.
+      return(password);
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return("");
+    }
+  }
+
+  /**
+   * Sets the password of a user.
+   *
+   * @param id The ID of the user.
+   *
+   * @param password The password of the user.
+   *
+   * @return <b>true</b> if the password is updated successfully.
+   */
+  public boolean
+  userPasswordSet(int id, String password)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to set the password.
+      String sql = "update user set password = " +
+                   stmt.enquoteLiteral(password) + " where id = " + id;
+
+      // Update the password of this user in the database.
+      executeUpdate(stmt, sql);
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Validates the password of a user.
+   *
+   * @param id The ID of the user.
+   *
+   * @param password The user's password.
+   *
+   * @return <b>true</b> if the password matches.
+   */
+  public boolean
+  userPasswordValidate(int id, String password)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to get the password.
+      String sql = "select password from user where id = " + id;
+
+      // Get the password of this user from the database.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // If there is not a matching user, or the password for the user does not
+      // match, return a failure.
+      if((result.next() == false) ||
+         !result.getString("password").equals(password))
+      {
+        stmt.close();
+        return(false);
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Validates a user and their password.
+   *
+   * @param name The name of the user.
+   *
+   * @param password The user's password.
+   *
+   * @return <b>true</b> if the user exists and the password matches.
+   */
+  public boolean
+  userPasswordValidate(String name, String password)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to get the password.
+      String sql = "select password from user where name = " +
+                   stmt.enquoteLiteral(name);
+
+      // Get the password of this user from the database.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // If there is not a matching user, or the password for the user does not
+      // match, return a failure.
+      if((result.next() == false) ||
+         !result.getString("password").equals(password))
+      {
+        stmt.close();
+        return(false);
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Removes a user from the database.
+   *
+   * @param id The ID of the user.
+   *
+   * @return <b>true</b> if the user is removed successfully.
+   */
+  public boolean
+  userRemove(int id)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to remove the user.
+      String sql = "delete from user where id = " + id;
+
+      // Delete this user from the database.
+      executeUpdate(stmt, sql);
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Adds a role to a user.
+   *
+   * @param id The ID of the user.
+   *
+   * @param role The role to add.
+   *
+   * @return <b>true</b> if the role was added successfully.
+   */
+  public boolean
+  userRoleAdd(int id, String role)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL command to add the role to the user.
+      String sql1 = "update user set admin = 1 where id = " + id;
+      String sql2 = "update user set host = 1 where id = " + id;
+      String sql3 = "update user set judge = 1 where id = " + id;
+      String sql4 = "update user set referee = 1 where id = " + id;
+      String sql5 = "update user set timekeeper = 1 where id = " + id;
+
+      // See if this is the admin role.
+      if(role.equals("admin"))
+      {
+        // Add the admin role to this user.
+        executeUpdate(stmt, sql1);
+      }
+
+      // See if this is the host role.
+      else if(role.equals("host"))
+      {
+        // Add the host role to this user.
+        executeUpdate(stmt, sql2);
+      }
+
+      // See if this is the judge role.
+      else if(role.equals("judge"))
+      {
+        // Add the judge role to this user.
+        executeUpdate(stmt, sql3);
+      }
+
+      // See if this is the referee role.
+      else if(role.equals("referee"))
+      {
+        // Add the referee role to this user.
+        executeUpdate(stmt, sql4);
+      }
+
+      // See if this is the timekeeper role.
+      else if(role.equals("timekeeper"))
+      {
+        // Add the timekeeper role to this user.
+        executeUpdate(stmt, sql5);
+      }
+
+      // Otherwise, this is an unknown role.
+      else
+      {
+        stmt.close();
+        return(false);
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Determines if a user has a given role.
+   *
+   * @param id The ID of the user.
+   *
+   * @param role The role to query.
+   *
+   * @return <b>1</b> if the user has the given role.
+   */
+  public int
+  userRoleGet(int id, String role)
+  {
+    ResultSet result = null;
+    int hasRole = 0;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL command to remove the role to the user.
+      String sql1 = "select admin from user where id = " + id;
+      String sql2 = "select host from user where id = " + id;
+      String sql3 = "select judge from user where id = " + id;
+      String sql4 = "select referee from user where id = " + id;
+      String sql5 = "select timekeeper from user where id = " + id;
+
+      // See if this is the admin role.
+      if(role.equals("admin"))
+      {
+        // Query the admin role for this user.
+        result = executeQuery(stmt, sql1);
+      }
+
+      // See if this is the host role.
+      else if(role.equals("host"))
+      {
+        // Query the host role for this user.
+        result = executeQuery(stmt, sql2);
+      }
+
+      // See if this is the judge role.
+      else if(role.equals("judge"))
+      {
+        // Query the judge role for this user.
+        result = executeQuery(stmt, sql3);
+      }
+
+      // See if this is the referee role.
+      else if(role.equals("referee"))
+      {
+        // Query the referee role for this user.
+        result = executeQuery(stmt, sql4);
+      }
+
+      // See if this is the timekeeper role.
+      else if(role.equals("timekeeper"))
+      {
+        // Query the timekeeper role for this user.
+        result = executeQuery(stmt, sql5);
+      }
+
+      // See if there is a result, and it matched a user.
+      if((result != null) && (result.next() == true))
+      {
+        // Determine if the user has the given role.
+        hasRole = result.getInt(role);
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+    }
+
+    // Return the status of the user having this role.
+    return(hasRole);
+  }
+
+  /**
+   * Removes a role from a user.
+   *
+   * @param id The ID of the user.
+   *
+   * @param role The role to remove.
+   *
+   * @return <b>true</b> if the role was rmeoved successfully.
+   */
+  public boolean
+  userRoleRemove(int id, String role)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL command to remove the role to the user.
+      String sql1 = "update user set admin = 0 where id = " + id;
+      String sql2 = "update user set host = 0 where id = " + id;
+      String sql3 = "update user set judge = 0 where id = " + id;
+      String sql4 = "update user set referee = 0 where id = " + id;
+      String sql5 = "update user set timekeeper = 0 where id = " + id;
+
+      // See if this is the admin role.
+      if(role.equals("admin"))
+      {
+        // Remove the admin role from this user.
+        executeUpdate(stmt, sql1);
+      }
+
+      // See if this is the host role.
+      else if(role.equals("host"))
+      {
+        // Remove the host role from this user.
+        executeUpdate(stmt, sql2);
+      }
+
+      // See if this is the judge role.
+      else if(role.equals("judge"))
+      {
+        // Remove the judge role from this user.
+        executeUpdate(stmt, sql3);
+      }
+
+      // See if this is the referee role.
+      else if(role.equals("referee"))
+      {
+        // Remove the referee role from this user.
+        executeUpdate(stmt, sql4);
+      }
+
+      // See if this is the timekeeper role.
+      else if(role.equals("timekeeper"))
+      {
+        // Remove the timekeeper role from this user.
+        executeUpdate(stmt, sql5);
+      }
+
+      // Otherwise, this is an unknown role.
+      else
+      {
+        stmt.close();
+        return(false);
+      }
 
       // Close the SQL statement.
       stmt.close();

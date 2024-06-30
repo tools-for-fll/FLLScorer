@@ -32,7 +32,7 @@ teamsEditorHtml(title, number, name)
     </div>
     <div class="input">
       <input id="teams-editor-number" type="text" ${number}
-             placeholder="&#61724;" />
+             placeholder="&#f11c;" />
     </div>
   </div>
   <div class="name">
@@ -41,7 +41,7 @@ teamsEditorHtml(title, number, name)
     </div>
     <div class="input">
       <input id="teams-editor-name" type="text" ${name}
-             placeholder="&#61724;" >
+             placeholder="&#f11c;" >
     </div>
   </div>
   <div class="buttons">
@@ -316,7 +316,7 @@ teamsSelect(id)
   // Determine if the team is current part of the event.
   var enabled = $("#team" + id + "_select").hasClass("fa-check-square-o");
 
-  // Called when the seelct on the team should be inverted.
+  // Called when the select on the team should be inverted.
   function
   selectTeam()
   {

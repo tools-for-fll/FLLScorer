@@ -1,4 +1,9 @@
 #!/bin/sh
+# Copyright (c) 2024 Brian Kircher
+#
+# Open Source Software; you can modify and/or share it under the terms of BSD
+# license file in the root directory of this project.
+
 KEYSTORE=src/main/resources/ssl/keystore
 PASSWORD=12345678
 SUBJECT="/C=US/ST=Texas/O=FLL Scorer/OU=FLL Scorer/CN=fllscorer.local"

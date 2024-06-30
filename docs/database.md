@@ -82,7 +82,7 @@ The columns are:
 Each row of the score table contains details about a single team's robot game
 scores at a single event.  The columns are:
 
-**id** &rarr; A unique ID for each for of the table.
+**id** &rarr; A unique ID for each row of the table.
 
 **season_id** &rarr; The ID for an entry in the season table for ths score.
 
@@ -120,7 +120,7 @@ scores at a single event.  The columns are:
 Each row of the score table contains details about a single team's judging
 scores at a single event.  The columns are:
 
-**id** &rarr; A unique ID for each for of the table.
+**id** &rarr; A unique ID for each row of the table.
 
 **season_id** &rarr; The ID for an entry in the season table for ths score.
 
@@ -135,3 +135,25 @@ scores at a single event.  The columns are:
 **core_values** &rarr; The core values score.
 
 **rubric** &rarr; The judging rubric (JSON).
+
+
+## Users table
+
+Each row of the users table contains details about a single user.  The columns
+are:
+
+**id** &rarr; A unique ID for each row of the table.
+
+**name** &rarr; The user's name.
+
+**password** &rarr; The user's password, hashed.
+
+**admin** &rarr; True if the user has the *admin* role.
+
+**host** &rarr; True if the user has the *host* role.
+
+**judge** &rarr; True if the user has the *judge* role.
+
+**referee** &rarr; True if the user has the *referee* role.
+
+**timekeeper** &rarr; True if the user has the *timekeeper* role.

@@ -1,0 +1,53 @@
+<!doctype html>
+<!--
+ Copyright (c) 2024 Brian Kircher
+
+ Open Source Software; you can modify and/or share it under the terms of BSD
+ license file in the root directory of this project.
+-->
+<html lang="<!--#locale-->">
+  <head>
+<!--#html_head-->
+    <link rel="stylesheet" href="/login/login.css">
+    <script src="/common.js" type="text/javascript"></script>
+    <script src="/login/login.js" type="text/javascript"></script>
+    <title><!--#str_title--></title>
+  </head>
+  <body>
+<!--#html_body_start-->
+    <form method="POST" action='/j_security_check'>
+      <div class="login_container">
+        <div class="title">
+          <p>
+            <!--#str_title-->
+          </p>
+        </div>
+        <div class="user_label">
+          <p>
+            <!--#str_login_username-->
+          </p>
+        </div>
+        <div class="user_input">
+          <input type="text" name="j_username" placeholder="&#xf007;" />
+        </div>
+        <div class="pass_label">
+          <p>
+            <!--#str_login_password-->
+          </p>
+        </div>
+        <div class="pass_input">
+          <input type="password" name="j_password" placeholder="&#xf023;" />
+        </div>
+        <div class="submit">
+          <input type="submit" value="<!--#str_login_login-->" />
+        </div>
+        <div class="error">
+          <p>
+            <!--#str_login_error-->
+          </p>
+        </div>
+      </div>
+    </form>
+<!--#html_body_end-->
+  </body>
+</html>

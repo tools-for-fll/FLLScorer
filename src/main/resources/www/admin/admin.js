@@ -10,8 +10,7 @@ const teamsButton = "<!--#str_menu_teams-->";
 const scoresButton = "<!--#str_menu_scores-->";
 const judgingButton = "<!--#str_menu_judging-->";
 const standingsButton = "<!--#str_menu_standings-->";
-const passwordsButton = "<!--#str_menu_passwords-->";
-const linksButton = "<!--#str_menu_links-->";
+const usersButton = "<!--#str_menu_users-->";
 const aboutButton = "<!--#str_menu_about-->";
 
 // HTML encodes an input string.
@@ -75,7 +74,8 @@ showTab(tab)
       }
       else
       {
-        window.history.replaceState(null, "", window.location.origin);
+        window.history.replaceState(null, "", window.location.origin +
+                                              window.location.pathname);
       }
     }
     else
@@ -250,7 +250,7 @@ showAbout()
     </span>
     <br>
     <br>
-    <button id="about-ok" class="green">
+    <button id="about-ok" class="accent">
       <!--#str_button_ok-->
     </button>
   </div>
@@ -299,8 +299,7 @@ ready()
   $("#btn_scores").html(scoresButton);
   $("#btn_judging").html(judgingButton);
   $("#btn_standings").html(standingsButton);
-  $("#btn_passwords").html(passwordsButton);
-  $("#btn_links").html(linksButton);
+  $("#btn_users").html(usersButton);
   $("#btn_about").html(aboutButton);
 
   // Add the click handlers for the various tabs.
@@ -310,8 +309,7 @@ ready()
   $("#btn_scores").click(function() { showTab("scores"); });
   $("#btn_judging").click(function() { showTab("judging"); });
   $("#btn_standings").click(function() { showTab("standings"); });
-  $("#btn_passwords").click(function() { showTab("passwords"); });
-  $("#btn_links").click(function() { showTab("links"); });
+  $("#btn_users").click(function() { showTab("users"); });
   $("#btn_about").click(showAbout);
 
   // Show the seasons tab by default.

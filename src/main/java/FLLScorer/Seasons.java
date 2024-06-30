@@ -8,6 +8,7 @@ package FLLScorer;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONObject;
 import org.bspfsystems.simplejson.SimpleJSONObject;
@@ -15,6 +16,8 @@ import org.bspfsystems.simplejson.parser.JSONParser;
 
 /**
  * Handles the seasons tab.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class Seasons
 {
@@ -115,66 +118,45 @@ public class Seasons
    *
    * @param path The path from the request.
    *
-   * @param parameters The parameters from the request.
+   * @param paramMap The parameters from the request.
    *
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveSeasons(String path, String parameters)
+  serveSeasons(String path, HashMap<String, String> paramMap)
   {
     JSONObject result = new SimpleJSONObject();
-    String[] params;
 
-    // If there are no parameters, return the currently selected season.
-    if(parameters == null)
+    // See if the year was provided.
+    if(paramMap.containsKey("year"))
     {
+      // Get the requested year.
+      int year = Integer.parseInt(paramMap.get("year"));
+
+      // See if this is a known season, and it is enabled.
+      if(m_index.contains(year) && m_enabled.get(m_index.indexOf(year)))
+      {
+        // Save the new value for the season.
+        m_config.seasonSet(Integer.toString(year));
+
+        // Update the SSI for the selected season.
+        m_webserver.registerSSI("season_selected", m_config.seasonGet());
+
+        // Update the selected event based on the new season.
+        m_events.selectDefault();
+
+        // Set the result to success.
+        result.set("result", "ok");
+      }
+    }
+    else
+    {
+      // Return the details of the selected season.
       int idx = m_index.indexOf(Integer.parseInt(m_config.seasonGet()));
       result.set("id", m_config.seasonGet());
       result.set("year", m_years.get(idx));
       result.set("name", m_names.get(idx));
       result.set("result", "ok");
-    }
-
-    // Otherwise, split the parameters, and loop through all of them.
-    else
-    {
-      params = parameters.split("&");
-      for(int i = 0; i < params.length; i++)
-      {
-        // Split this parameter into its key and value.
-        String[] items = params[i].split("=");
-
-        // See if the key for this parameter is the year.
-        if(items[0].equals("year"))
-        {
-          // Get the requested year.
-          int year = Integer.parseInt(items[1]);
-
-          // Ignore this request if the given season is not a known season.
-          if(!m_index.contains(year))
-          {
-            break;
-          }
-
-          // Ignore this request if the given seasin is not enabled.
-          if(!m_enabled.get(m_index.indexOf(year)))
-          {
-            break;
-          }
-
-          // Save the new value for the season.
-          m_config.seasonSet(items[1]);
-
-          // Update the SSI for the selected season.
-          m_webserver.registerSSI("season_selected", m_config.seasonGet());
-
-          // Update the selected event based on the new season.
-          m_events.selectDefault();
-
-          // Set the result to success.
-          result.set("result", "ok");
-        }
-      }
     }
 
     // If there is not result, set an error.

@@ -22,6 +22,8 @@ import com.fathzer.soft.javaluator.StaticVariableSet;
 
 /**
  * Handles the referee page.
+ * <p>
+ * This is a singleton that is acquired via the getInstance() method.
  */
 public class Referee
 {
@@ -142,12 +144,8 @@ public class Referee
    * @param match The match.
    */
   private void
-  get(JSONObject result, String id, String match)
+  get(JSONObject result, int id, int match)
   {
-    // Convert the ID and match to integers.
-    int team_id = Integer.parseInt(id);
-    int match_num = Integer.parseInt(match);
-
     // Get the season and event IDs.
     int season_id = m_season.seasonIdGet();
     int event_id = m_event.eventIdGet();
@@ -276,13 +274,13 @@ public class Referee
     result.set("scoresheet", html);
 
     // Add information about the team to the JSON response.
-    result.set("id", team_id);
-    result.set("number", m_database.teamNumberGet(season_id, team_id));
-    result.set("name", m_database.teamNameGet(season_id, team_id));
-    result.set("match", match_num);
+    result.set("id", id);
+    result.set("number", m_database.teamNumberGet(season_id, id));
+    result.set("name", m_database.teamNameGet(season_id, id));
+    result.set("match", match);
 
     // See if there is a score or scoresheet for this team/match.
-    m_database.scoreMatchGet(season_id, event_id, team_id, match_num,
+    m_database.scoreMatchGet(season_id, event_id, id, match,
                              (score, cv, sheet) ->
       {
         // Add the score to the JSON response, if it exists.
@@ -331,91 +329,83 @@ public class Referee
     ArrayList<Integer> match4 = new ArrayList<Integer>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id,
-                             (l_id, l_season_id, l_number, l_name) ->
-      {
-        // Ignore this team if it is not at this event.
-        if(!m_database.teamAtEventGet(event_id, l_id))
-        {
-          return;
-        }
+    m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
 
-        // Find the place in the list to insert this team in number order.
-        int i;
-        for(i = 0; i < numbers.size(); i++)
-        {
-          if(l_number < numbers.get(i))
-          {
-            break;
-          }
-        }
+    // Set the score indicator for each team to no score available.
+    for(int idx = 0; idx < numbers.size(); idx++)
+    {
+      match1.add(idx, 0);
+      match2.add(idx, 0);
+      match3.add(idx, 0);
+      match4.add(idx, 0);
+    }
 
-        // Add this team to the lists.
-        ids.add(i, l_id);
-        numbers.add(i, l_number);
-        names.add(i, l_name);
-        match1.add(i, 0);
-        match2.add(i, 0);
-        match3.add(i, 0);
-        match4.add(i, 0);
-      });
+    // A list of information about scores.
+    ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Integer> score1 = new ArrayList<Integer>();
+    ArrayList<String> match1_sheet = new ArrayList<String>();
+    ArrayList<Integer> score2 = new ArrayList<Integer>();
+    ArrayList<String> match2_sheet = new ArrayList<String>();
+    ArrayList<Integer> score3 = new ArrayList<Integer>();
+    ArrayList<String> match3_sheet = new ArrayList<String>();
+    ArrayList<Integer> score4 = new ArrayList<Integer>();
+    ArrayList<String> match4_sheet = new ArrayList<String>();
 
     // Enumerate the scores for this event.
-    m_database.scoreEnumerate(season_id, event_id,
-                              (l_id, l_season_id, l_event_id, team_id,
-                               l_match1, match1_cv, match1_sheet, l_match2,
-                               match2_cv, match2_sheet, l_match3, match3_cv,
-                               match3_sheet, l_match4, match4_cv,
-                               match4_sheet) ->
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
+                              match1_sheet, score2, null, match2_sheet, score3,
+                              null, match3_sheet, score4, null, match4_sheet);
+
+    // Loop through all the scores.
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      // Get the index the team for these scores.
+      int team_idx = ids.indexOf(teams.get(idx));
+      if(team_idx == -1)
       {
-        // Ignore this score if it is not for a team at this event (should not
-        // happen).
-        int idx = ids.indexOf(team_id);
-        if(idx == -1)
-        {
-          return;
-        }
+        continue;
+      }
 
-        // Indicate if there is a match 1 score.
-        if(l_match1 != null)
-        {
-          match1.set(idx, 2);
-        }
-        else if(match1_sheet != null)
-        {
-          match1.set(idx, 1);
-        }
+      // Determine the correct indicator for the match1 score.
+      if(score1.get(idx) != null)
+      {
+        match1.set(team_idx, 2);
+      }
+      else if(match1_sheet.get(idx) != null)
+      {
+        match1.set(team_idx, 1);
+      }
 
-        // Indicate if there is a match 2 score.
-        if(l_match2 != null)
-        {
-          match2.set(idx, 2);
-        }
-        else if(match2_sheet != null)
-        {
-          match2.set(idx, 1);
-        }
+      // Determine the correct indicator for the match2 score.
+      if(score2.get(idx) != null)
+      {
+        match2.set(team_idx, 2);
+      }
+      else if(match2_sheet.get(idx) != null)
+      {
+        match2.set(team_idx, 1);
+      }
 
-        // Indicate if there is a match 3 score.
-        if(l_match3 != null)
-        {
-          match3.set(idx, 2);
-        }
-        else if(match3_sheet != null)
-        {
-          match3.set(idx, 1);
-        }
+      // Determine the correct indicator for the match3 score.
+      if(score3.get(idx) != null)
+      {
+        match3.set(team_idx, 2);
+      }
+      else if(match3_sheet.get(idx) != null)
+      {
+        match3.set(team_idx, 1);
+      }
 
-        // Indicate if there is a match 4 score.
-        if(l_match4 != null)
-        {
-          match4.set(idx, 2);
-        }
-        else if(match4_sheet != null)
-        {
-          match4.set(idx, 1);
-        }
-      });
+      // Determine the correct indicator for the match4 score.
+      if(score4.get(idx) != null)
+      {
+        match4.set(team_idx, 2);
+      }
+      else if(match4_sheet.get(idx) != null)
+      {
+        match4.set(team_idx, 1);
+      }
+    }
 
     // Loop through the teams.
     JSONArray scores = new SimpleJSONArray();
@@ -462,7 +452,7 @@ public class Referee
    * @param json The JSON representation of the scoresheet selections.
    */
   private void
-  save(JSONObject result, String id, String match, String json)
+  save(JSONObject result, int id, int match, String json)
   {
     // Convert an empty JSON object into a null for storage into the database.
     if(json.equals("{}"))
@@ -472,8 +462,7 @@ public class Referee
 
     // Save the scoresheet for this team/match.
     if(m_database.scoreMatchAdd(m_season.seasonIdGet(), m_event.eventIdGet(),
-                               Integer.parseInt(id), Integer.parseInt(match),
-                               null, null, json) == -1)
+                               id, match, null, null, json) == -1)
     {
       // Return an error since the scoresheet couldn't be saved.
       result.set("result", m_webserver.getSSI("str_referee_save_fail"));
@@ -759,7 +748,7 @@ public class Referee
    * @param json The JSON representation of the scoresheet selections.
    */
   private void
-  publish(JSONObject result, String id, String match, String json)
+  publish(JSONObject result, int id, int match, String json)
   {
     // Score the scoresheet.
     score(result, json);
@@ -781,8 +770,7 @@ public class Referee
 
     // Save the scoresheet for this team/match.
     if(m_database.scoreMatchAdd(m_season.seasonIdGet(), m_event.eventIdGet(),
-                               Integer.parseInt(id), Integer.parseInt(match),
-                               score, cv, json) == -1)
+                                id, match, score, cv, json) == -1)
     {
       // Return an error since the scoresheet couldn't be saved.
       result.set("result", m_webserver.getSSI("str_referee_save_fail"));
@@ -799,94 +787,75 @@ public class Referee
    *
    * @param path The path that was requested.
    *
-   * @param parameters The parameters associated with the request.
+   * @param paramMap The parameters associated with the request.
    *
    * @return A byte array containing the JSON data for the referees.
    */
   private byte[]
-  serveRefereeJson(String path, String parameters)
+  serveRefereeJson(String path, HashMap<String, String> paramMap)
   {
-    String action = null, id = null, match = null, json = null;
     JSONObject result = new SimpleJSONObject();
-    String[] params, items;
 
-    // See if there are parameters to be parsed.
-    if(parameters != null)
+    // See if there is an action request.
+    if(paramMap.containsKey("action"))
     {
-      // Split the parameter string into its individual parameters.
-      params = parameters.split("&");
-
-      // Loop through the parameters.
-      for(var i = 0; i < params.length; i++)
+      // See if the action is "get", for getting a scoresheet.
+      if(paramMap.get("action").equals("get") && paramMap.containsKey("id") &&
+         paramMap.containsKey("match"))
       {
-        // Split this parameter into its key/value.
-        items = params[i].split("=");
+        // Get the scoresheet.
+        get(result, Integer.parseInt(paramMap.get("id")),
+            Integer.parseInt(paramMap.get("match")));
+      }
 
-        // See if this is the "action" key.
-        if(items[0].equals("action"))
-        {
-          // Save the action for later use.
-          action = items[1];
-        }
+      // See if the action is "save", for saving but not scoring a scoresheet.
+      else if(paramMap.get("action").equals("save") &&
+              paramMap.containsKey("id") && paramMap.containsKey("match") &&
+              paramMap.containsKey("json"))
+      {
+        // Save the scoresheet.
+        save(result, Integer.parseInt(paramMap.get("id")),
+             Integer.parseInt(paramMap.get("match")),
+             URLDecoder.decode(paramMap.get("json"), StandardCharsets.UTF_8));
+      }
 
-        // See if this is the "id" key.
-        if(items[0].equals("id"))
+      // See if the action is "score", for getting the score for a scoresheet.
+      else if(paramMap.get("action").equals("score") &&
+              paramMap.containsKey("json"))
+      {
+        // Score the scoresheet.
+        score(result,
+              URLDecoder.decode(paramMap.get("json"), StandardCharsets.UTF_8));
+        if(result.isSet("score") && (result.getInteger("score") < 0))
         {
-          // Save the ID for later use.
-          id = items[1];
-        }
-
-        // See if this is the "match" key.
-        if(items[0].equals("match"))
-        {
-          // Save the match for later use.
-          match = items[1];
-        }
-
-        // See if this is the "json" key.
-        if(items[0].equals("json"))
-        {
-          // Convert and save the json for later use.
-          json = URLDecoder.decode(items[1], StandardCharsets.UTF_8);
+          result.set("score", 0);
         }
       }
-    }
 
-    // See if the action was specified and is "get", for getting a scoresheet.
-    if("get".equals(action) && (id != null) && (match != null))
-    {
-      // Get the scoresheet.
-      get(result, id, match);
-    }
-
-    // See if the action was specified and is "save", for saving but not
-    // scoring a scoresheet.
-    else if("save".equals(action) && (id != null) && (match != null) &&
-            (json != null))
-    {
-      // Save the scoresheet.
-      save(result, id, match, json);
-    }
-
-    // See if the action was specified and is "score", for getting the score
-    // for a scoresheet.
-    else if("score".equals(action) && (json != null))
-    {
-      // Score the scoresheet.
-      score(result, json);
-      if(result.isSet("score") && (result.getInteger("score") < 0))
+      // See if the action is "publish", for scoring and saving a scoresheet.
+      else if(paramMap.get("action").equals("publish") &&
+              paramMap.containsKey("id") && paramMap.containsKey("match") &&
+              paramMap.containsKey("json"))
       {
-        result.set("score", 0);
+        // Publish the scoresheet.
+        publish(result, Integer.parseInt(paramMap.get("id")),
+                Integer.parseInt(paramMap.get("match")),
+                URLDecoder.decode(paramMap.get("json"),
+                                  StandardCharsets.UTF_8));
       }
-    }
 
-    // See if the action was specified and is "publish", for scoring and
-    // saving a scoresheet.
-    else if("publish".equals(action) && (id != null) && (match != null) &&
-            (json != null))
-    {
-      // Publish the scoresheet.
-      publish(result, id, match, json);
+      // See if the action is "list", for listing the scores.
+      else if(paramMap.get("action").equals("list"))
+      {
+        // List the scores.
+        list(result);
+      }
+
+      // Otherwise, return an error.
+      else
+      {
+        result.set("result", "error");
+      }
     }
 
     // Otherwise, the list of teams and scores should be provided.
