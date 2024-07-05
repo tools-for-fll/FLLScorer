@@ -20,6 +20,11 @@ public class Config
   private static final String m_eventKey = new String("event");
 
   /**
+   * The database key used to store the HTTP debug configuration.
+   */
+  private static final String m_httpDebugKey = new String("httpDebug");
+
+  /**
    * The database key used to store the current locale.
    */
   private static final String m_localeKey = new String("locale");
@@ -28,6 +33,12 @@ public class Config
    * The database key used to store the current season.
    */
   private static final String m_seasonKey = new String("season");
+
+  /**
+   * The database key used to store the security bypass configuration.
+   */
+  private static final String m_securityBypassKey =
+    new String("securityBypass");
 
   /**
    * The object for the Config singleton.
@@ -121,6 +132,29 @@ public class Config
   }
 
   /**
+   * Gets the HTTP debug configuration value.
+   *
+   * @return <b>true</b> if HTTP accesses should be logged to the terminal for
+   *         debugging purposes.
+   */
+  public boolean
+  httpDebugGet()
+  {
+    // Get the value of the configuration value from the database.
+    String debug = m_database.configValueGet(m_httpDebugKey);
+
+    // If the configuration value does not exist in the database, or has a
+    // value of zero, then HTTP debug logging should not occur.
+    if((debug == null) || (Integer.parseInt(debug) == 0))
+    {
+      return(false);
+    }
+
+    // HTTP debug logging is enabled.
+    return(true);
+  }
+
+  /**
    * Gets the currently selected locale.
    *
    * @return The IETF language code for the current locale.
@@ -199,6 +233,29 @@ public class Config
 
     // Update the selected season.
     m_season = season;
+  }
+
+  /**
+   * Gets the security bypass configuration value.
+   *
+   * @return <b>true</b> if security should be bypassed to make it easier to
+   *         develop/modify/enhance the application.
+   */
+  public boolean
+  securityBypassGet()
+  {
+    // Get the value of the configuration value from the database.
+    String debug = m_database.configValueGet(m_securityBypassKey);
+
+    // If the configuration value does not exist in the database, or has a
+    // value of zero, then security should not be bypassed.
+    if((debug == null) || (Integer.parseInt(debug) == 0))
+    {
+      return(false);
+    }
+
+    // Security should be bypassed.
+    return(true);
   }
 
   /**

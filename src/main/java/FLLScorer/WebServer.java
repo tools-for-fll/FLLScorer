@@ -136,15 +136,17 @@ public class WebServer extends HttpServlet
 
   /**
    * When set to <b>true</b>, every request is printed to the terminal for
-   * debugging purposes.
+   * debugging purposes.  This is configurable via the "httpDebug" value in
+   * the configuration database table.
    */
   private static boolean m_debug = false;
 
   /**
    * When set to <b>true</b>, the security/login is bypassed (making it easier
-   * to use during development).
+   * to use during development).  This is configurable via the "securityBypass"
+   * value in the configuration database table.
    */
-  private static boolean m_bypassSecurity = false;
+  private static boolean m_securityBypass = false;
 
   /**
    * Gets the WebServer singleton object, creating it if necessary.
@@ -893,6 +895,10 @@ public class WebServer extends HttpServlet
     // Get a reference to the configuration manager.
     m_config = Config.getInstance();
 
+    // Get the HTTP debug and security bypass configuration from the database.
+    m_debug = m_config.httpDebugGet();
+    m_securityBypass = m_config.securityBypassGet();
+
     // Create the arrays used by the web server.
     m_extensions = new ArrayList<String>();
     m_mimeTypes = new ArrayList<String>();
@@ -1044,7 +1050,7 @@ public class WebServer extends HttpServlet
     securityHandler.setAuthenticator(authenticator);
 
     // Add the security handler to the servelet.
-    if(!m_bypassSecurity)
+    if(!m_securityBypass)
     {
       m_handler.setSecurityHandler(securityHandler);
     }

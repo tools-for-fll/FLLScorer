@@ -42,7 +42,8 @@ public class Database
 
   /**
    * When set to <b>true</b>, every SQL statement is printed to the terminal
-   * for debugging purposes.
+   * for debugging purposes.  This is configurable via the "dbDebug" value in
+   * the configuration database table.
    */
   private static boolean m_debug = false;
 
@@ -3046,10 +3047,21 @@ public class Database
       m_instance.m_connection = null;
     }
 
-    // Create the required tables in the database.
+    // See if the connection to the database was successful.
     if(m_instance.m_connection != null)
     {
+      // Create the required tables in the database.
       m_instance.createTables();
+
+      // Get the value of the database debug configuration value.
+      String debug = configValueGet("dbDebug");
+
+      // If the configuration value exists and has a non-zero value, then
+      // database debug logging is enabled.
+      if((debug != null) && (Integer.parseInt(debug) != 0))
+      {
+        m_debug = true;
+      }
     }
   }
 }
