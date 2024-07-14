@@ -15,7 +15,6 @@ import org.bspfsystems.simplejson.JSONObject;
 import org.bspfsystems.simplejson.SimpleJSONArray;
 import org.bspfsystems.simplejson.SimpleJSONObject;
 import org.bspfsystems.simplejson.parser.JSONParser;
-import org.eclipse.jetty.util.security.Credential;
 
 /**
  * Handles the users tab.
@@ -79,7 +78,7 @@ public class Users
   passwordEncrypt(String user, String password)
   {
     // Encrypt the password with the Unix crypt algorithm.
-    return(Credential.Crypt.crypt(user, password));
+    return(MD5SHA.hash(user, password));
   }
 
   /**
