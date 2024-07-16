@@ -485,7 +485,7 @@ public class Users
   }
 
   /**
-   * Performs initial setup for the teams handler.
+   * Performs initial setup for the users handler.
    */
   public void
   setup()
@@ -518,7 +518,7 @@ public class Users
       }
     }
 
-    // Register the dynamic handler for the teams.json file.
+    // Register the dynamic handler for the users.json file.
     m_webserver.registerDynamicFile("/admin/users/users.json",
                                     this::serveUsers);
   }
