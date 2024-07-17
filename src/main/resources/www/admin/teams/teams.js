@@ -32,7 +32,7 @@ teamsEditorHtml(title, number, name)
     </div>
     <div class="input">
       <input id="teams-editor-number" type="text" ${number}
-             placeholder="&#f11c;" />
+             placeholder="&#xf11c;" />
     </div>
   </div>
   <div class="name">
@@ -41,7 +41,7 @@ teamsEditorHtml(title, number, name)
     </div>
     <div class="input">
       <input id="teams-editor-name" type="text" ${name}
-             placeholder="&#f11c;" >
+             placeholder="&#xf11c;" >
     </div>
   </div>
   <div class="buttons">

@@ -69,7 +69,7 @@ eventsEditorHtml(title, date, matches, name)
     </div>
     <div class="input">
       <input id="events-editor-name" type="text" ${name}
-             placeholder="&#f11c;" >
+             placeholder="&#xf11c;" >
     </div>
   </div>
   <div class="buttons">
