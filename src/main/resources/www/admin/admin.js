@@ -23,6 +23,45 @@ htmlEncode(input)
               .replace(/>/g, '&gt;'));
 }
 
+// Toggles the state of the side panel menu.
+function
+toggleMenu()
+{
+  // Get the main container.
+  container = $(".side_panel");
+
+  // See if the drawer is visible.
+  if(container.hasClass("show"))
+  {
+    // Hide the panel.
+    $(".side_panel_bg").removeClass("show");
+    container.removeClass("show");
+  }
+  else
+  {
+    // Show the panel.
+    $(".side_panel_bg").addClass("show");
+    container.addClass("show");
+  }
+}
+
+// Hides the side panel menu.
+function
+hideMenu()
+{
+  // Hide the menu, which may be a NOP.
+  $(".side_panel_bg").removeClass("show");
+  $(".side_panel").removeClass("show");
+}
+
+// Logs the user out of the system.
+function
+logout()
+{
+  // Redirect to the logout page.
+  location.href = "/logout";
+}
+
 // Shows the requsted tab.
 function
 showTab(tab)
@@ -303,6 +342,9 @@ ready()
   $("#btn_about").html(aboutButton);
 
   // Add the click handlers for the various tabs.
+  $("#btn_menu").click(toggleMenu);
+  $("#btn_password").click(function() { hideMenu(); changePassword(); });
+  $("#btn_logout").click(logout);
   $("#btn_seasons").click(function() { showTab("seasons"); });
   $("#btn_events").click(function() { showTab("events"); });
   $("#btn_teams").click(function() { showTab("teams"); });
@@ -311,6 +353,9 @@ ready()
   $("#btn_standings").click(function() { showTab("standings"); });
   $("#btn_users").click(function() { showTab("users"); });
   $("#btn_about").click(showAbout);
+
+  // Add a click handler for the side panel background, to hide it.
+  $(".side_panel_bg").click(hideMenu);
 
   // Show the seasons tab by default.
   showTab(tab);

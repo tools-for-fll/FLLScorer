@@ -5,6 +5,7 @@
 
 // Strings for use in multiple places
 str_button_cancel:Cancel
+str_button_change:Change
 str_button_delete:Delete
 str_button_ok:OK
 str_connect_error:Could not connect to the server!
@@ -17,6 +18,15 @@ str_login_error:Invalid username or password
 str_login_login:Login
 str_login_password:Password
 str_login_username:Username
+
+// Strings for the passowrd change dialog.
+str_password_change:Change Password
+str_password_current:Current password
+str_password_incorrect:Current password is incorrect!
+str_password_mismatch:New passwords do not match!
+str_password_new:New password
+str_password_success:Password changed
+str_password_verify:Verify new password
 
 // Strings for the admin page
 str_admin_title:<!--#str_title--> : Admin
@@ -35,6 +45,10 @@ str_menu_users:Users
 str_status_event:Event
 str_status_season:Season
 str_status_teams:Teams
+
+// Strings for the side panel.
+str_side_panel_change_password:Change Password
+str_side_panel_logout:Logout
 
 // Strings for the about popup
 str_about_copyright:Copyright &copy; 2024 Brian Kircher

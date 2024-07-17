@@ -2497,6 +2497,50 @@ public class Database
   }
 
   /**
+   * Gets the ID of a user.
+   *
+   * @param name The name of the user.
+   *
+   * @return The ID of the user.
+   */
+  public int
+  userIDGet(String name)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to get the user ID.
+      String sql = "select id from user where name = \"" + name + "\"";
+
+      // Get the name of this user from the database.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // Return an error if the user was not found.
+      if(result.next() == false)
+      {
+        return(-1);
+      }
+
+      // Get the ID of the user.
+      int id = result.getInt("id");
+
+      // Close the SQL statement.
+      stmt.close();
+
+      // Return the ID of the user.
+      return(id);
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(-1);
+    }
+  }
+
+  /**
    * Gets the name of a user.
    *
    * @param id The ID of the user.
@@ -2512,7 +2556,7 @@ public class Database
       // Create a SQL statement.
       Statement stmt = m_connection.createStatement();
 
-      // The SQL statement to set the user name.
+      // The SQL statement to get the user name.
       String sql = "select name from user where id = " + id;
 
       // Get the name of this user from the database.

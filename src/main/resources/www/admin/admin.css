@@ -1,0 +1,105 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+.main_container
+{
+  display: grid;
+  gap: 0 0;
+  grid-auto-flow: row;
+  grid-template-rows: 3em 1fr 3em;
+  height: 100dvh;
+  transition: 300ms;
+}
+
+.main_container .menu
+{
+  background-color: var(--menu-background-color);
+  font-size: 1.5em;
+  grid-row: 1;
+  line-height: calc(2em - 1px);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.main_container .menu button
+{
+  background-color: var(--menu-background-color);
+  color: var(--menu-color);
+  height: 100%;
+  padding: 0 1em;
+}
+
+.main_container .menu button:hover:not(.active)
+{
+  background-color: var(--menu-hover-background-color);
+  color: var(--menu-hover-color);
+}
+
+.main_container .menu button.active
+{
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
+}
+
+.main_container .tab
+{
+  background-color: var(--background-color);
+  display: none;
+  grid-row: 2;
+  overflow-y: scroll;
+}
+
+.main_container .status
+{
+  background-color: var(--status-background-color);
+  font-size: 1.5em;
+  grid-row: 3;
+  line-height: 2em;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.main_container .status .label
+{
+  color: var(--accent-color);
+  margin-left: 1em;
+  margin-right: 0.5em;
+}
+
+.main_container .show
+{
+  display: block;
+}
+
+.about_container
+{
+  align-items: center;
+  background-color: var(--background-color);
+  border: 0.25em solid var(--accent-color);
+  border-radius: 1em;
+  color: var(--foreground-color);
+  display: grid;
+  gap: 0 0;
+  grid-auto-flow: row;
+  grid-template-columns: 20em 25em;
+  justify-items: center;
+  padding: 1em;
+}
+
+.about_container div
+{
+  font-size: 1.5em;
+  grid-column: 2;
+  text-align: center;
+}
+
+.about_container img
+{
+  grid-column: 1;
+  max-height: 20em;
+  max-width: 20em;
+}

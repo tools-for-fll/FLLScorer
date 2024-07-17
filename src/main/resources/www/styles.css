@@ -132,17 +132,20 @@ input[type="password"]::-webkit-input-placeholder
   font-family: "FontAwesome";
 }
 
-.search input[type="text"]
+.search
 {
-  background-color: var(--accent-color);
-  border-bottom: 0.05em solid var(--foreground-color);
-  color: var(--foreground-color);
-  margin: 0 0.5em;
-}
+  input[type="text"]
+  {
+    background-color: var(--accent-color);
+    border-bottom: 0.05em solid var(--foreground-color);
+    color: var(--foreground-color);
+    margin: 0 0.5em;
+  }
 
-.search input[type="text"]::-webkit-input-placeholder
-{
-  color: var(--foreground-color);
+  input[type="text"]::-webkit-input-placeholder
+  {
+    color: var(--foreground-color);
+  }
 }
 
 select
@@ -208,102 +211,55 @@ select
   color: var(--foreground-color);
 }
 
-.main_container
+.side_panel_bg
 {
-  display: grid;
-  gap: 0 0;
-  grid-auto-flow: row;
-  grid-template-areas: "menu" "tab";
-  grid-template-rows: 3em 1fr 3em;
-  height: 100vh;
-}
-
-.main_container .menu
-{
-  background-color: var(--menu-background-color);
-  font-size: 1.5em;
-  grid-row: 1;
-  line-height: calc(2em - 1px);
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.main_container .menu button
-{
-  background-color: var(--menu-background-color);
-  color: var(--menu-color);
-  height: 100%;
-  padding: 0 1em;
-}
-
-.main_container .menu button:hover:not(.active)
-{
-  background-color: var(--menu-hover-background-color);
-  color: var(--menu-hover-color);
-}
-
-.main_container .menu button.active
-{
-  background-color: var(--accent-color);
-  color: var(--foreground-color);
-}
-
-.main_container .tab
-{
+  bottom: 0;
   display: none;
-  grid-row: 2;
-  overflow-y: scroll;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 99;
 }
 
-.main_container .status
-{
-  background-color: var(--status-background-color);
-  font-size: 1.5em;
-  grid-row: 3;
-  line-height: 2em;
-  overflow: auto;
-  white-space: nowrap;
-}
-
-.main_container .status .label
-{
-  color: var(--accent-color);
-  margin-left: 1em;
-  margin-right: 0.5em;
-}
-
-.main_container .show
+.side_panel_bg.side_panel.show
 {
   display: block;
 }
 
-.about_container
+.side_panel
 {
-  align-items: center;
-  background-color: var(--background-color);
-  border: 0.25em solid var(--accent-color);
-  border-radius: 1em;
-  color: var(--foreground-color);
-  display: grid;
-  gap: 0 0;
-  grid-auto-flow: row;
-  grid-template-columns: 20em 25em;
-  justify-items: center;
-  padding: 1em;
+  background-color: var(--menu-background-color);
+  left: -20em;
+  position: absolute;
+  top: 3em;
+  transition: 300ms;
+  width: 20em;
+  z-index: 100;
+
+  button
+  {
+    background-color: var(--menu-hover-background-color);
+    color: var(--menu-hover-color);
+    font-size: 1.5em;
+    margin: 0 1em 1em 1em;
+    width: calc(100% - 2em);
+  }
+
+  button:first-of-type
+  {
+    margin: 1em;
+  }
+
+  button:hover
+  {
+    background-color: var(--accent-color);
+  }
 }
 
-.about_container div
+.side_panel.show
 {
-  font-size: 1.5em;
-  grid-column: 2;
-  text-align: center;
-}
-
-.about_container img
-{
-  grid-column: 1;
-  max-height: 20em;
-  max-width: 20em;
+  left: 0em;
 }
 
 .warning_container
@@ -319,35 +275,316 @@ select
   grid-template-rows: 1fr;
   justify-items: center;
   padding: 1em;
-}
 
-.warning_container > div
-{
-  grid-column: 1;
-  text-align: center;
-}
-
-.warning_container > div p
-{
-  font-size: 2em;
-  margin: 0;
-}
-
-.warning_container > div button
-{
-  font-size: 2em;
-  min-width: 4em;
-}
-
-@media (width > 768px)
-{
-  .warning_container > div p
+  > div
   {
-    font-size: 1.5em;
+    grid-column: 1;
+    text-align: center;
   }
 
-  .warning_container > div button
+  > div p
   {
+    font-size: 2em;
+    margin: 0;
+  }
+
+  > div button
+  {
+    font-size: 2em;
+    min-width: 4em;
+  }
+
+  @media (width > 768px)
+  {
+    > div p
+    {
+      font-size: 1.5em;
+    }
+
+    > div button
+    {
+      font-size: 1.5em;
+    }
+  }
+}
+
+.password_container, .password_error_container
+{
+  background-color: var(--background-color);
+  border: 0.25em solid var(--accent-color);
+  border-radius: 1em;
+  color: var(--foreground-color);
+  display: grid;
+  font-size: 1.5em;
+  grid-template-rows: 2em 0.5em 2em 2em 0.5em 2em 2em 0.5em 2em 2em 0.5em 2em;
+  padding: 1em;
+  width: 13em;
+
+  .title
+  {
+    align-items: center;
+    display: flex;
     font-size: 1.5em;
+    grid-row: 1;
+    justify-content: center;
+  }
+
+  .error
+  {
+    color: var(--color-red);
+    display: none;
+  }
+
+  .old
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 3;
+    justify-content: center;
+  }
+
+  .old_input
+  {
+    grid-row: 4;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .new
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 6;
+    justify-content: center;
+  }
+
+  .new_input
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 7;
+    justify-content: center;
+
+    input
+    {
+      -webkit-text-security: disc;
+    }
+
+    .show_pw
+    {
+      -webkit-text-security: none;
+    }
+  }
+
+  .verify
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 9;
+    justify-content: center;
+  }
+
+  .verify_input
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 10;
+    justify-content: center;
+
+    input
+    {
+      -webkit-text-security: disc;
+    }
+
+    .show_pw
+    {
+      -webkit-text-security: none;
+    }
+  }
+
+  .buttons
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 12;
+    justify-content: center;
+
+    button
+    {
+      margin-left: 0.5em;
+    }
+
+    button:first-of-type
+    {
+      margin-left: 0;
+    }
+  }
+
+  input[type="text"],
+  input[type="password"]
+  {
+    text-align: center;
+  }
+
+  @media (width > 768px)
+  {
+    grid-template-columns: 10em 10em;
+    grid-template-rows: 2em 0.5em 2em 0.5em 2em 0.5em 2em 0.5em 2em;
+    width: 20em;
+
+    .title
+    {
+      grid-column: 1 / span 2;
+      grid-row: 1;
+    }
+
+    .old
+    {
+      grid-column: 1;
+      grid-row: 3;
+    }
+
+    .old_input
+    {
+      grid-column: 2;
+      grid-row: 3;
+    }
+
+    .new
+    {
+      grid-column: 1;
+      grid-row: 5;
+    }
+
+    .new_input
+    {
+      grid-column: 2;
+      grid-row: 5;
+    }
+
+    .verify
+    {
+      grid-column: 1;
+      grid-row: 7;
+    }
+
+    .verify_input
+    {
+      grid-column: 2;
+      grid-row: 7;
+    }
+
+    .buttons
+    {
+      grid-column: 1 / span 2;
+      grid-row: 9;
+    }
+
+    input[type="text"],
+    input[type="password"]
+    {
+      text-align: left;
+    }
+  }
+}
+
+.password_error_container
+{
+  grid-template-rows: 2em 0.5em 2em 0.5em 2em 2em 0.5em 2em 2em 0.5em 2em 2em 0.5em 2em;
+
+  .error
+  {
+    align-items: center;
+    grid-row: 3;
+    display: flex;
+    justify-content: center;
+  }
+
+  .old
+  {
+    grid-row: 5;
+  }
+
+  .old_input
+  {
+    grid-row: 6;
+  }
+
+  .new
+  {
+    grid-row: 8;
+  }
+
+  .new_input
+  {
+    grid-row: 9;
+  }
+
+  .verify
+  {
+    grid-row: 11;
+  }
+
+  .verify_input
+  {
+    grid-row: 12;
+  }
+
+  .buttons
+  {
+    grid-row: 14;
+  }
+
+  @media (width > 768px)
+  {
+    grid-template-columns: 10em 10em;
+    grid-template-rows: 2em 0.5em 2em 0.5em 2em 0.5em 2em 0.5em 2em 0.5em 2em;
+
+    .title
+    {
+      grid-row: 1;
+    }
+
+    .error
+    {
+      grid-column: 1 / span 2;
+      grid-row: 3;
+    }
+
+    .old
+    {
+      grid-row: 5;
+    }
+
+    .old_input
+    {
+      grid-row: 5;
+    }
+
+    .new
+    {
+      grid-row: 7;
+    }
+
+    .new_input
+    {
+      grid-row: 7;
+    }
+
+    .verify
+    {
+      grid-row: 9;
+    }
+
+    .verify_input
+    {
+      grid-row: 9;
+    }
+
+    .buttons
+    {
+      grid-row: 11;
+    }
   }
 }

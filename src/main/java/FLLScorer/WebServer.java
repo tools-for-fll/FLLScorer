@@ -422,7 +422,16 @@ public class WebServer extends HttpServlet
       String key = keys.nextElement();
 
       // Get this parameter's value and add it to the parameter map.
-      paramMap.put(key, request.getParameter(key));
+      if(!key.equals("authenticated_user"))
+      {
+        paramMap.put(key, request.getParameter(key));
+      }
+    }
+
+    // Add the authenticated user, if one exists, to the parameter map.
+    if(request.getRemoteUser() != null)
+    {
+      paramMap.put("authenticated_user", request.getRemoteUser());
     }
 
     // Loop through the dynamic paths.
@@ -494,6 +503,22 @@ public class WebServer extends HttpServlet
       break;
     }
 
+    // See if this is a logout request.
+    if(path.equals("logout"))
+    {
+      // Log out the current user.
+      if(!m_securityBypass)
+      {
+        request.logout();
+      }
+
+      // Redirect the browser to the root page.
+      response.sendRedirect("/");
+
+      // There is nothing further to be done.
+      return;
+    }
+
     // Prepend the path with "www/" (so that only those resources are served)
     // and append "/index.html" if there is not a file name extension in the
     // request.
@@ -528,8 +553,17 @@ public class WebServer extends HttpServlet
         String[] items = params[i].split("=");
 
         // Add this key/value to the parameter map.
-        paramMap.put(items[0], items[1]);
+        if(!items[0].equals("authenticated_user"))
+        {
+          paramMap.put(items[0], items[1]);
+        }
       }
+    }
+
+    // Add the authenticated user, if one exists, to the parameter map.
+    if(request.getRemoteUser() != null)
+    {
+      paramMap.put("authenticated_user", request.getRemoteUser());
     }
 
     // Loop through the dynamic paths.
@@ -939,6 +973,7 @@ public class WebServer extends HttpServlet
     loadFragment("html_body_end", "body_end.html");
     loadFragment("html_body_start", "body_start.html");
     loadFragment("html_head", "head.html");
+    loadFragment("html_side_panel", "side_panel.html");
 
     // Load the en_US strings, then overlay them with the strings for the
     // selected locale.  This means that new strings, which will likely

@@ -485,6 +485,86 @@ public class Users
   }
 
   /**
+   * Handles requests for /password.json.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  private byte[]
+  servePassword(String path, HashMap<String, String> paramMap)
+  {
+    JSONObject result = new SimpleJSONObject();
+
+    // See if there is an action request.
+    if(paramMap.containsKey("action"))
+    {
+      // See if the action is "change", for changing a user's password.
+      if(paramMap.get("action").equals("change") &&
+         paramMap.containsKey("authenticated_user") &&
+         paramMap.containsKey("old") && paramMap.containsKey("new") &&
+         paramMap.containsKey("verify"))
+      {
+        // Get the parameters.
+        String user = paramMap.get("authenticated_user");
+        String old = URLDecoder.decode(paramMap.get("old"),
+                                       StandardCharsets.UTF_8);
+        String new_pw = URLDecoder.decode(paramMap.get("new"),
+                                          StandardCharsets.UTF_8);
+        String verify = URLDecoder.decode(paramMap.get("verify"),
+                                          StandardCharsets.UTF_8);
+
+        // Get the user's ID.
+        int id = m_database.userIDGet(user);
+
+        // See if the current password is correct.
+        if(m_database.userPasswordValidate(id, MD5SHA.hash(user, old)) ==
+           false)
+        {
+          result.set("result", m_webserver.getSSI("str_password_incorrect"));
+        }
+
+        // See if the new and verify passwords match.
+        else if(!new_pw.equals(verify))
+        {
+          result.set("result", m_webserver.getSSI("str_password_mismatch"));
+        }
+
+        // Update the user's password.
+        else
+        {
+          changePassword(result, id, new_pw);
+        }
+      }
+
+      // An unknown request was provided.
+      else
+      {
+        result.set("result", "error");
+      }
+    }
+
+    // No request was provided.
+    else
+    {
+      result.set("result", "error");
+    }
+
+    // Convert the response into a byte array and return it.
+    try
+    {
+      String json = JSONParser.format(JSONParser.serialize(result));
+      return(json.getBytes(StandardCharsets.UTF_8));
+    }
+    catch(Exception e)
+    {
+      return("{}".getBytes(StandardCharsets.UTF_8));
+    }
+  }
+
+  /**
    * Performs initial setup for the users handler.
    */
   public void
@@ -521,5 +601,8 @@ public class Users
     // Register the dynamic handler for the users.json file.
     m_webserver.registerDynamicFile("/admin/users/users.json",
                                     this::serveUsers);
+
+    // Register the dynamic handler for the password.json file.
+    m_webserver.registerDynamicFile("/password.json", this::servePassword);
   }
 }
