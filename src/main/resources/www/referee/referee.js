@@ -21,9 +21,20 @@ var closeOnExit = false;
 function
 computeEnable()
 {
+  var missions;
+
+  // Get the selector for the core values selection.
+  if($(".mission_sel#GP_1").length == 1)
+  {
+    missions = ".mission_sel:not(#GP_1)";
+  }
+  else
+  {
+    missions = ".mission_sel:not(#CV_1)";
+  }
+
   // See if there are selections for the entire scoresheet.
-  if($(".mission_sel:not(#CV_1").length ==
-     $(".mission_sel:not(#CV_1) .selected").length)
+  if($(missions).length == $(missions + " .selected").length)
   {
     // The entire scoresheet has selections, so enable the compute button.
     $("#compute").removeAttr("disabled");

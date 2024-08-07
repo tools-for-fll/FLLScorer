@@ -1,0 +1,518 @@
+{
+  "missions":
+  [
+    {
+      "mission": "EI",
+      "name":
+      {
+        "en_US": "Equipment Inspection"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "(Prematch) The robot and all equipment fit completely in one launch area and under the height limit"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Coral Nursery"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The coral tree is hanging on the coral tree support"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The bottom of the coral tree is in its holder"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "The coral buds are flipped up"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The coral tree must be on the support to score being in the holder."
+          },
+          "rule": "M01_1 - M01_2"
+        }
+      ]
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Shark"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The shark is no longer touching the cave"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The shark is touching the mat at least partly in the shark habitat"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The shark can not be touching the cave if it is in the shark habitat."
+          },
+          "rule": "M02_1 - M02_2"
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Coral Reef"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The coral reef is flipped up, not touching the mat"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Number of reef segments standing upright, outside of home, and touching the mat"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ]
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Scuba Diver"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The scuba diver is no longer touching the coral nursery"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The scuba diver is hanging on the coral reef support"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The scuba diver can not be touching the coral nursery while also hanging on the coral reef."
+          },
+          "rule": "M04_1 - M04_2"
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Angler Fish"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The angler fish is latched within the shipwreck"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Raise the Mast"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The shipwreck’s mast is completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Kraken's Treasure"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The treasure chest is completely outside the kraken’s nest"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Artificial Habitat"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of artificial habitat stack segments completely flat and upright"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 10, 20, 30, 40 ]
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Unexpected Encounter"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The unknown creature is released"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The unknown creature is at least partly in the cold seep"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The unknown creature must be released to be in the cold seep."
+          },
+          "rule": "M09_1 - M09_2"
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+        "en_US": "Send Over The Submersible"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Your team’s yellow flag is down"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The submersible is clearly closer to the opposing field"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Sonar Discovery"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of whales revealed"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 20, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Feed The Whale"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of krill at least partly in the whale’s mouth"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5" ]
+          },
+          "score": [ 0, 10, 20, 30, 40, 50 ]
+        }
+      ]
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Change Shipping Lanes"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The ship is in the new shipping lane, touching the mat"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Sample Collection"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The water sample is completely outside the water sample area"
+          },
+          "type": "yesno",
+          "score": [ 0, 5 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The seabed sample is no longer touching the seabed"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "The plankton sample is no longer touching the kelp forest"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 4,
+          "description":
+          {
+            "en_US": "Number of trident pieces no longer touching the shipwreck"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 20, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Research Vessel"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of samples, trident part(s), or treasure chest at least partly in the research vessel’s cargo area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25, 30 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The ports latch is at least partly in the research vessel’s loop"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "PT",
+      "name":
+      {
+        "en_US": "Precision Tokens"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of precision tokens remaining"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+          },
+          "score": [ 0, 10, 15, 25, 35, 50, 50 ]
+        }
+      ]
+    },
+    {
+      "mission": "GP",
+      "name":
+      {
+        "en_US": "Gracious Professionalism<sup>&reg;</sup>"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Gracious Professionalism<sup>&reg;</sup> displayed at the robot game table"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 0, 0, 0 ]
+        }
+      ]
+    }
+  ]
+}
