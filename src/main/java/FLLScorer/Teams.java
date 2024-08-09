@@ -373,7 +373,7 @@ public class Teams
       }
 
       // See if the action is "list", for listing the teams.
-      if(paramMap.get("action").equals("list"))
+      else if(paramMap.get("action").equals("list"))
       {
         // List the teams.
         list(result);
