@@ -1,0 +1,55 @@
+# Overview
+
+The following describes the development process for the application, both the
+mechanisms of developing code and the philosophy/intent behind the various
+portions of the application.
+
+## Development cycle
+
+Despite the majority of the application being a web server and a large quantity
+of HTML/CSS/Javascript, it is not possible to edit web content and then refresh
+the browser to see the changes.  The entire application must be re-built and
+re-launched in order to try out changes (an obvious requirement for the Java
+portion of the application, but not so obvious for the web content).
+
+There are two build tasks to ease the development cycle:
+
+- _run_ - This builds the application and then runs it.  This is the most
+  common task to use.
+
+- _build_ - This builds a new JAR file that can be run manually, or shared with
+  someone else.
+
+The process is therefore edit code, use the _run_ build task, test the code,
+close the application window, repeat.
+
+## UX design
+
+There are three main "display" targets for the application, each of which
+guides the design of the corresponding sections of the application.
+
+- Desktop - This is where the main adminstration and configuration occurs.  The
+  _Admin_ page, with all of its sub-pages, is intended for desktop use, and is
+  therefore designed with that as a target (meaning that it is not necessarily
+  mobile-friendly).
+
+- Mobile - This is where the majority of the work during the running of an
+  event takes place.  The _Judge_ page, _Referee_ page, and _Time Keeper_ page
+  are all used by the corresponding volunteers during an event, and are
+  therefore designed to work well on a modile device (following mobile-first
+  design practices).  CSS media queries (<tt>@media</tt>) are used to adjust
+  these pages to better utilize larger displays (such as a tablet instead of a
+  phone, or desktop), but the design is done first for a phone in portrait mode
+  (the most horizontally-space restrictive environment).
+
+- Projector - There are two audience displays, allowing the attendees to see
+  pertinent information about the event.  These are the _Scoreboard_ page and
+  the _Timer_ page.  Similar to desktop, they are intended for projection onto
+  a large screen (or wall), and are not necessarily mobile-friendly.
+
+There are a common set of colors in the base CSS file (<tt>styles.css</tt>)
+that are used throughout the remainder of the CSS to select colors.  The web
+interface is primarily black and white, with an accent color (defined as an
+accent color in the CSS); utilizing this accent color name allows the accent
+color to be changed across the entire web interface with a one-line change in
+the base CSS.
