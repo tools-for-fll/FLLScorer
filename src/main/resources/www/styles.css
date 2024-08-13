@@ -213,7 +213,7 @@ select
 
 #popup_menu
 {
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: var(--shadow);
   border: 0;
   height: 100dvh;
   margin: 0;
@@ -265,19 +265,20 @@ select
 
   button
   {
-    background-color: #555;
-    color: white;
+    background-color: var(--menu-background-color);
+    color: var(--foreground-color);
     font-size: 2em;
   }
 
   button:hover
   {
-    background-color: #1fa198;
+    background-color: var(--accent-color);
   }
 
   .close
   {
-    color: white;
+    align-items: center;
+    color: var(--foreground-color);
     display: flex;
     grid-column: 3;
     grid-row: 1;
