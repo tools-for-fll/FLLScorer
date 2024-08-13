@@ -46,9 +46,9 @@ str_status_event:Event
 str_status_season:Season
 str_status_teams:Teams
 
-// Strings for the side panel.
-str_side_panel_change_password:Change Password
-str_side_panel_logout:Logout
+// Strings for the popup menu.
+str_popup_menu_change_password:Change Password
+str_popup_menu_logout:Logout
 
 // Strings for the about popup
 str_about_copyright:Copyright &copy; 2024 Brian Kircher

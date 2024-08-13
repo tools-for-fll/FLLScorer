@@ -211,55 +211,107 @@ select
   color: var(--foreground-color);
 }
 
-.side_panel_bg
+#popup_menu
 {
-  bottom: 0;
-  display: none;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 99;
-}
+  background-color: rgba(0, 0, 0, 0.75);
+  border: 0;
+  height: 100dvh;
+  margin: 0;
+  max-height: 100dvh;
+  max-width: 100dvw;
+  padding: 0;
+  width: 100dvw;
 
-.side_panel_bg.side_panel.show
-{
-  display: block;
-}
+  &[open]
+  {
+    animation: show-popup-menu 0.5s ease normal;
+  }
 
-.side_panel
-{
-  background-color: var(--menu-background-color);
-  left: -20em;
-  position: absolute;
-  top: 3em;
-  transition: 300ms;
-  width: 20em;
-  z-index: 100;
+  &.hide
+  {
+    animation: hide-popup-menu 0.5s ease normal;
+  }
+
+  .popup_body
+  {
+    display: grid;
+    grid-template-columns: 3em 1fr 3em;
+    grid-template-rows: 3em 1fr 4em 2em 4em 1fr 3em;
+    height: 100%;
+    width: 100%;
+  }
+
+  .change_password
+  {
+    align-items: center;
+    display: flex;
+    grid-column: 2;
+    grid-row: 3;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .logout
+  {
+    align-items: center;
+    display: flex;
+    grid-column: 2;
+    grid-row: 5;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+  }
 
   button
   {
-    background-color: var(--menu-hover-background-color);
-    color: var(--menu-hover-color);
-    font-size: 1.5em;
-    margin: 0 1em 1em 1em;
-    width: calc(100% - 2em);
-  }
-
-  button:first-of-type
-  {
-    margin: 1em;
+    background-color: #555;
+    color: white;
+    font-size: 2em;
   }
 
   button:hover
   {
-    background-color: var(--accent-color);
+    background-color: #1fa198;
+  }
+
+  .close
+  {
+    color: white;
+    display: flex;
+    grid-column: 3;
+    grid-row: 1;
+    justify-content: center;
+  }
+
+  .close span
+  {
+    font-size: 3em;
   }
 }
 
-.side_panel.show
+@keyframes show-popup-menu
 {
-  left: 0em;
+  from
+  {
+    transform: translateX(-100%);
+  }
+  to
+  {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes hide-popup-menu
+{
+  from
+  {
+    transform: translateX(0%);
+  }
+  to
+  {
+    transform: translateX(-100%);
+  }
 }
 
 .warning_container

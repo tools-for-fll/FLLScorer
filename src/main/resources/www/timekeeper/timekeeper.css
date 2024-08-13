@@ -5,33 +5,12 @@
  * license file in the root directory of this project.
  */
 
-html, body
-{
-  font-size: 1.75vw;
-}
-
-button
-{
-  background-color: var(--background-color);
-  border: 0.1vw solid var(--accent-color);
-  border-radius: 10vmin;
-  color: var(--accent-color);
-  font-size: 1.75vw;
-}
-
-button:disabled
-{
-  border: 0.1vw solid var(--disable-color);
-  border-radius: 10vmin;
-  color: var(--disable-color);
-}
-
 .container
 {
   display: grid;
   gap: 0 0;
   grid-template-areas:
-    ". . test"
+    "menu . test"
     ". clock ."
     ". . ."
     ". buttons ."
@@ -142,6 +121,22 @@ button:disabled
   grid-template-rows: 1fr;
 }
 
+.buttons button
+{
+  background-color: var(--background-color);
+  border: 0.1vw solid var(--accent-color);
+  border-radius: 10vmin;
+  color: var(--accent-color);
+  font-size: 1.75vw;
+}
+
+.buttons button:disabled
+{
+  border: 0.1vw solid var(--disable-color);
+  border-radius: 10vmin;
+  color: var(--disable-color);
+}
+
 .start
 {
   grid-area: start;
@@ -178,9 +173,29 @@ button:disabled
   width: 100%;
 }
 
+.menu
+{
+  align-items: flex-start;
+  display: flex;
+  grid-area: menu;
+  justify-content: flex-start;
+}
+
+.button_menu
+{
+  background-color: var(--background-color);
+  border: 0;
+  color: var(--foreground-color);
+  font-size: 1vw;
+  padding: 0.5vw;
+}
+
 .test
 {
+  align-items: flex-start;
+  display: flex;
   grid-area: test;
+  justify-content: flex-end;
 }
 
 .button_test
@@ -188,7 +203,6 @@ button:disabled
   background-color: var(--background-color);
   border: 0;
   color: var(--foreground-color);
-  float: right;
   font-size: 1vw;
   padding: 0.5vw;
 }
@@ -239,6 +253,7 @@ button:disabled
 
 .test_title
 {
+  font-size: 2vw;
   grid-area: test_title;
   height: 100%;
   margin: 0 auto;
@@ -258,6 +273,7 @@ button:disabled
   border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
   color: var(--foreground-color);
+  font-size: 2vw;
   grid-area: test_start;
   height: 75%;
   margin: 0 auto;
@@ -270,6 +286,7 @@ button:disabled
   border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
   color: var(--foreground-color);
+  font-size: 2vw;
   grid-area: test_end_game;
   height: 75%;
   margin: 0 auto;
@@ -282,6 +299,7 @@ button:disabled
   border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
   color: var(--foreground-color);
+  font-size: 2vw;
   grid-area: test_end;
   height: 75%;
   margin: 0 auto;
@@ -294,6 +312,7 @@ button:disabled
   border: 0.1vw solid var(--foreground-color);
   border-radius: 2vw;
   color: var(--foreground-color);
+  font-size: 2vw;
   grid-area: test_cancel;
   height: 75%;
   margin: 0 auto;

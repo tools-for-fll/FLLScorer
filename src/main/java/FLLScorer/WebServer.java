@@ -973,7 +973,7 @@ public class WebServer extends HttpServlet
     loadFragment("html_body_end", "body_end.html");
     loadFragment("html_body_start", "body_start.html");
     loadFragment("html_head", "head.html");
-    loadFragment("html_side_panel", "side_panel.html");
+    loadFragment("html_popup_menu", "popup_menu.html");
 
     // Load the en_US strings, then overlay them with the strings for the
     // selected locale.  This means that new strings, which will likely

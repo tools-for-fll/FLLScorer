@@ -9,7 +9,6 @@
   <head>
 <!--#html_head-->
     <link rel="stylesheet" href="/referee/referee.css">
-    <script src="/common.js" type="text/javascript"></script>
     <script src="/referee/referee.js" type="text/javascript"></script>
     <title><!--#str_referee_title--></title>
   </head>
@@ -18,7 +17,14 @@
     <div id="list" class="hidden">
       <div class="list_container">
         <div class="heading">
-          <span><!--#str_referee_heading--></span>
+          <div class="menu">
+            <button id="btn_menu">
+              <span class="fa fa-bars"></span>
+            </button>
+          </div>
+          <div class="title">
+            <span><!--#str_referee_heading--></span>
+          </div>
         </div>
         <div class="body">
         </div>
@@ -55,6 +61,7 @@
         </div>
       </div>
     </div>
+<!--#html_popup_menu-->
 <!--#html_body_end-->
   </body>
 </html>

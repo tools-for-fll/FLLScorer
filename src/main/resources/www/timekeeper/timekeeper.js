@@ -201,6 +201,9 @@ wsClose()
 function
 ready()
 {
+  // Set the function to call when the "menu" button is pressed.
+  $(".button_menu").click(showMenu);
+
   // Set the function to call when the "test" button is pressed.
   $(".button_test").click(openTest);
 

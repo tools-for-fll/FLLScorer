@@ -3,6 +3,34 @@
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
+// Extend JQuery by adding a showModal() method (mimic-ing the corresponding
+// method in the standard DOM model).
+$.fn.extend({showModal: function()
+                        {
+                          return this.each(function()
+                                           {
+                                             if(this.tagName=== "DIALOG")
+                                             {
+                                               this.showModal();
+                                             }
+                                           });
+                        }
+            });
+
+// Extend JQuery by adding a close() method (mimic-ing the corresponding method
+// in the standard DOM model).
+$.fn.extend({close: function()
+                    {
+                      return this.each(function()
+                                       {
+                                         if(this.tagName=== "DIALOG")
+                                         {
+                                           this.close();
+                                         }
+                                       });
+                    }
+            });
+
 // Displays a popup window.
 function
 showPopup(html, buttons)
@@ -123,7 +151,6 @@ showMessage(message)
             });
 }
 
-
 // Shows a warning popup.
 function
 showError(message, fn)
@@ -147,6 +174,92 @@ showError(message, fn)
             {
               "error-message-ok": fn
             });
+}
+
+// Tracks if the click handlers have been added to the pop-up menu.
+var popup_added = false;
+
+// Shows the pop-up menu.
+function
+showMenu()
+{
+  // Get the dialog element.
+  const dialog = $("#popup_menu");
+
+  // Called when the menu hide animation completes.
+  function
+  hideMenuEnd()
+  {
+    // Remove the hide class (preparing the pop-up menu for the next time it is
+    // displayed).
+    dialog.removeClass("hide");
+
+    // Close the modal dialog.
+    dialog.close();
+
+    // Remove the end of animation event listener.
+    dialog.off("animationend", hideMenuEnd);
+
+    // Remove the keydown event listener.
+    $(document).off("keydown", showMenu.keyDownMenu);
+  }
+
+  // Hides the pop-up menu.
+  function
+  hideMenu()
+  {
+    // Add an end of animation event listener.
+    dialog.on("animationend", hideMenuEnd);
+
+    // Add the hide class to the dialog, starting the close animation.
+    dialog.addClass("hide");
+  }
+
+  // Called when a key is pressed.
+  function
+  keyDownMenu(e)
+  {
+    // Close the pop-up menu if the escape key is pressed.
+    if(e.key == "Escape")
+    {
+      // Start the animated close of the pop-up menu.
+      hideMenu();
+
+      // Prevent any further handling of this keystroke.
+      e.preventDefault();
+    }
+  }
+
+  // Handles starting the change password dialog.
+  function
+  passwd()
+  {
+    // Hide the menu.
+    hideMenu();
+
+    // Start the change password dialog.
+    changePassword();
+  }
+
+  // See if the click handlers need to be added to the pop-up menu.
+  if(!popup_added)
+  {
+    // Add the click handlers to the pop-up menu.
+    dialog.find(".change_password button").on("click", passwd);
+    dialog.find(".logout button").on("click", logout);
+    dialog.find(".close span").on("click", hideMenu);
+
+    // Remmber that the click handlers have been added.
+    popup_added = true;
+  }
+
+  // Show the pop-up menu as a modal.
+  dialog.showModal();
+
+  // Add a keydown listener to the document to override the default Escape key
+  // handling for a modal dialog (which simply closes it, instead of animating
+  // the close like needed here).
+  $(document).on("keydown", keyDownMenu);
 }
 
 // Shows a password change dialog.
@@ -291,4 +404,12 @@ changePassword()
 
   // Start the password change process.
   onStart("");
+}
+
+// Logs the user out of the system.
+function
+logout()
+{
+  // Redirect to the logout page.
+  location.href = "/logout";
 }

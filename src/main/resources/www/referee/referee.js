@@ -684,6 +684,7 @@ ready()
   }
 
   // Add event handlers for elements on the referee page.
+  $("#btn_menu").on("click", showMenu);
   $("#search").on("keyup", search);
   $("#refresh").on("click", loadScores);
   $("#discard").on("click", discard);

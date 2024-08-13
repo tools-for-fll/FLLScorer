@@ -16,12 +16,39 @@
 
 .list_container .heading
 {
+  display: grid;
+  gap: 0 0;
+  grid-template-columns: 3em 1fr;
+  height: 100%;
+  width: 100%;
+}
+
+.list_container .heading .menu
+{
   align-items: center;
   background-color: var(--accent-color);
   color: var(--foreground-color);
   display: flex;
   font-size: 2em;
-  grid-row: 1;
+  grid-column: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+.list_container .heading .menu button
+{
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
+}
+
+.list_container .heading .title
+{
+  align-items: center;
+  background-color: var(--accent-color);
+  color: var(--foreground-color);
+  display: flex;
+  font-size: 2em;
+  grid-column: 2;
   justify-content: center;
   width: 100%;
 }
@@ -491,7 +518,12 @@
     grid-template-rows: 3em 1fr 3em;
   }
 
-  .list_container .heading
+  .list_container .heading .menu
+  {
+    font-size: 1.5em;
+  }
+
+  .list_container .heading .title
   {
     font-size: 1.5em;
   }
