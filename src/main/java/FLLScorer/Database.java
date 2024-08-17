@@ -3163,11 +3163,34 @@ public class Database
   public void
   setup()
   {
+    String path;
+
+    // Get the path to this class, which will be different when run from a JAR
+    // or run from a development environment (such as VS Code).
+    path = this.getClass().getResource(this.getClass().getSimpleName() +
+                                       ".class").toString();
+
+    // See if the URL is a path inside a JAR file.
+    if(path.substring(0, 9).equals("jar:file:"))
+    {
+      // Trim the path down to be the file system path to the directory that
+      // contains the JAR file.
+      path = path.substring(9);
+      path = path.substring(0, path.lastIndexOf(".jar!/"));
+      path = path.substring(0, path.lastIndexOf("/") + 1);
+    }
+    else
+    {
+      // The application is being run from within a development environment,
+      // so the default path is the base directory of the project repository.
+      path = "";
+    }
+
     // Connect to the file that contains the database.
     try
     {
       m_instance.m_connection =
-        DriverManager.getConnection("jdbc:sqlite:scores.db");
+        DriverManager.getConnection("jdbc:sqlite:" + path + "scores.db");
     }
     catch (Exception e)
     {
