@@ -155,6 +155,19 @@ public class Config
   }
 
   /**
+   * Sets the HTTP debug configuration value.
+   *
+   * @param enable A boolean that is <b>true</b> if HTTP accesses should be
+   *               logged to the terminal for debugging purposes.
+   */
+  public void
+  httpDebugSet(boolean enable)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_httpDebugKey, enable ? "1" : "0");
+  }
+
+  /**
    * Gets the currently selected locale.
    *
    * @return The IETF language code for the current locale.
@@ -256,6 +269,18 @@ public class Config
 
     // Security should be bypassed.
     return(true);
+  }
+  /**
+   * Sets the security bypass configuration value.
+   *
+   * @param enable A boolean that is <b>true</b> if security should be bypassed
+   *               to make it easier to develop/modify/enhance the application.
+   */
+  public void
+  securityBypassSet(boolean enable)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_securityBypassKey, enable ? "1" : "0");
   }
 
   /**

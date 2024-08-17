@@ -12,8 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import org.eclipse.jetty.util.security.Credential;
-
 /**
  * The interface for accepting a match score.
  */
@@ -46,6 +44,16 @@ public class Database
    * the configuration database table.
    */
   private static boolean m_debug = false;
+
+  /**
+   * The database key used to store the database debug configuration.
+   */
+  private static final String m_dbDebugKey = new String("dbDebug");
+
+  /**
+   * The default password for the "admin" user.
+   */
+  public static final String m_adminDefaultPassword = "FLLRocks!";
 
   /**
    * Gets the singleton for accessing the database.
@@ -260,8 +268,8 @@ public class Database
       if(result.next() == false)
       {
         // Create the admin user since it does not exist.
-        userAdd("admin", Credential.Crypt.crypt("admin", "FLLRocks!"), 1, 0, 0,
-                0, 0);
+        userAdd("admin", MD5SHA.hash("admin", m_adminDefaultPassword), 1, 0,
+                0, 0, 0);
       }
 
       // Close the SQL statement.
@@ -2705,6 +2713,45 @@ public class Database
   }
 
   /**
+   * Sets the password of a user.
+   *
+   * @param name The name of the user.
+   *
+   * @param password The password of the user.
+   *
+   * @return <b>true</b> if the password is updated successfully.
+   */
+  public boolean
+  userPasswordSet(String name, String password)
+  {
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to set the password.
+      String sql = "update user set password = " +
+                   stmt.enquoteLiteral(password) + " where name = '" + name +
+                   "'";
+
+      // Update the password of this user in the database.
+      executeUpdate(stmt, sql);
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
    * Validates the password of a user.
    *
    * @param id The ID of the user.
@@ -3075,6 +3122,42 @@ public class Database
   }
 
   /**
+   * Gets the database debug configuration value.
+   *
+   * @return <b>true</b> if databaser accesses should be logged to the terminal
+   *         for debugging purposes.
+   */
+  public boolean
+  dbDebugGet()
+  {
+    // Get the value of the configuration value from the database.
+    String debug = configValueGet(m_dbDebugKey);
+
+    // If the configuration value does not exist in the database, or has a
+    // value of zero, then database debug logging should not occur.
+    if((debug == null) || (Integer.parseInt(debug) == 0))
+    {
+      return(false);
+    }
+
+    // Database debug logging is enabled.
+    return(true);
+  }
+
+  /**
+   * Sets the database debug configuration value.
+   *
+   * @param enable A boolean that is <b>true</b> if database accesses should be
+   *               logged to the terminal for debugging purposes.
+   */
+  public void
+  dbDebugSet(boolean enable)
+  {
+    // Set or add the configuration value.
+    configValueSet(m_dbDebugKey, enable ? "1" : "0");
+  }
+
+  /**
    * Performs initial setup for the database.
    */
   public void
@@ -3097,12 +3180,8 @@ public class Database
       // Create the required tables in the database.
       m_instance.createTables();
 
-      // Get the value of the database debug configuration value.
-      String debug = configValueGet("dbDebug");
-
-      // If the configuration value exists and has a non-zero value, then
-      // database debug logging is enabled.
-      if((debug != null) && (Integer.parseInt(debug) != 0))
+      // Enable database access debugging if configured to do so.
+      if(dbDebugGet() == true)
       {
         m_debug = true;
       }

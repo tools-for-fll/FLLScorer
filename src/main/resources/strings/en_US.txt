@@ -13,6 +13,16 @@ str_no:No
 str_title:FLL Scoring System
 str_yes:Yes
 
+// Strings for the GUI
+str_gui_disable_login:Disable Logins
+str_gui_launch:Launch Web Site
+str_gui_log_db:Log DB Requests
+str_gui_log_http:Log HTTP Requests
+str_gui_reset_admin:Reset Admin Password
+str_gui_reset_admin_confirm:Are you sure you want to reset the 'admin' user's password?
+str_gui_reset_admin_msg:The 'admin' user's password has been reset to the default.
+str_gui_restart_msg:This setting will be applied the next time the application is started.
+
 // Strings for the login page
 str_login_error:Invalid username or password
 str_login_login:Login
