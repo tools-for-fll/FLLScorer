@@ -16,6 +16,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
+import org.eclipse.jetty.ee10.servlet.SessionHandler;
 import org.eclipse.jetty.ee10.servlet.security.ConstraintMapping;
 import org.eclipse.jetty.ee10.servlet.security.ConstraintSecurityHandler;
 import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketCreator;
@@ -31,6 +32,11 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
 import org.eclipse.jetty.server.handler.SecuredRedirectHandler;
+import org.eclipse.jetty.session.DatabaseAdaptor;
+import org.eclipse.jetty.session.DefaultSessionCache;
+import org.eclipse.jetty.session.JDBCSessionDataStoreFactory;
+import org.eclipse.jetty.session.SessionCache;
+import org.eclipse.jetty.session.SessionDataStore;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceFactory;
 import org.eclipse.jetty.util.resource.Resources;
@@ -61,6 +67,11 @@ public class WebServer extends HttpServlet
    * The object for the WebServer singleton.
    */
   private static WebServer m_instance = null;
+
+  /**
+   * The Database object.
+   */
+  private Database m_database = null;
 
   /**
    * The Config object.
@@ -921,12 +932,75 @@ public class WebServer extends HttpServlet
   }
 
   /**
+   * Creates a JDBC session data store factory.
+   *
+   * @param driver The name of the database driver.
+   *
+   * @param url The path to the database to use.
+   *
+   * @return The new JDBCSessionDataStoreFactory object.
+   */
+  private static JDBCSessionDataStoreFactory
+  jdbcDataStoreFactory(String driver, String url)
+  {
+    // Create a database adaptor.
+    DatabaseAdaptor databaseAdaptor = new DatabaseAdaptor();
+
+    // Provide the information about the database driver to use.
+    databaseAdaptor.setDriverInfo(driver, url);
+
+    // Create a JDBC session data store factory.
+    JDBCSessionDataStoreFactory jdbcSessionDataStoreFactory =
+      new JDBCSessionDataStoreFactory();
+
+    // Set the database adaptor to use.
+    jdbcSessionDataStoreFactory.setDatabaseAdaptor(databaseAdaptor);
+
+    // Return the newly created JDBC session data store factory.
+    return(jdbcSessionDataStoreFactory);
+  }
+
+  /**
+   * Creates a session handler using a SQL database as the data store.
+   *
+   * @param driver The name of the database driver.
+   *
+   * @param url The path to the database to use.
+   *
+   * @return The new SessionHandler object.
+   */
+  private static SessionHandler
+  sqlSessionHandler(String driver, String url)
+  {
+    // Create a session handler.
+    SessionHandler sessionHandler = new SessionHandler();
+
+    // Create a session cache.
+    SessionCache sessionCache = new DefaultSessionCache(sessionHandler);
+
+    // Set the data store for the session cache.
+    SessionDataStore sessionStore =
+      jdbcDataStoreFactory(driver, url).getSessionDataStore(sessionHandler);
+    sessionCache.setSessionDataStore(sessionStore);
+
+    // Add the session cache to the session handler.
+    sessionHandler.setSessionCache(sessionCache);
+
+    // Allow the session handler to work with HTTPS in addition to HTTP.
+    sessionHandler.setHttpOnly(false);
+
+    // Return the newly created session handler.
+    return(sessionHandler);
+  }
+
+  /**
    * Performs initial setup for the web server.
    */
   public void
   setup()
   {
-    // Get a reference to the configuration manager.
+    // Get a reference to the database and configuration manager.
+    m_database = Database.getInstance();
     m_config = Config.getInstance();
 
     // Get the HTTP debug and security bypass configuration from the database.
@@ -1038,6 +1112,13 @@ public class WebServer extends HttpServlet
     m_handler = new ServletContextHandler("/", ServletContextHandler.SESSIONS |
                                                ServletContextHandler.SECURITY);
     securedHandler.setHandler(m_handler);
+
+    // Create and add a session handler using the SQLite database to persist
+    // sessions.
+    SessionHandler sessionHandler =
+      sqlSessionHandler("org.sqlite.JDBC",
+                        "jdbc:sqlite:" + m_database.databaseFilenameGet());
+    m_handler.setSessionHandler(sessionHandler);
 
     // Add a servlet to the server for serving up the content.
     m_handler.addServlet(this, "/");

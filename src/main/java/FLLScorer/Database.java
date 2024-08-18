@@ -39,6 +39,11 @@ public class Database
   private Connection m_connection = null;
 
   /**
+   * The name of the database file.
+   */
+  private String m_databaseFile = null;
+
+  /**
    * When set to <b>true</b>, every SQL statement is printed to the terminal
    * for debugging purposes.  This is configurable via the "dbDebug" value in
    * the configuration database table.
@@ -3122,6 +3127,53 @@ public class Database
   }
 
   /**
+   * Gets the name of the database file.
+   *
+   * @return The filename of the database file.
+   */
+  public String
+  databaseFilenameGet()
+  {
+    // Return the name of the database file.
+    return(m_databaseFile);
+  }
+
+  /**
+   * Determines the name of the database file to use.  The path to the file is
+   * different for running from a JAR file versus running from within a
+   * development environment (such as VS Code).
+   */
+  private void
+  databaseFilenameSet()
+  {
+    // Get the path to this class, which will be different when run from a JAR
+    // or run from a development environment (such as VS Code).
+    String className = this.getClass().getSimpleName() + ".class";
+    m_databaseFile = this.getClass().getResource(className).toString();
+
+    // See if the URL is a path inside a JAR file.
+    if(m_databaseFile.substring(0, 9).equals("jar:file:"))
+    {
+      // Trim the path down to be the file system path to the directory that
+      // contains the JAR file.
+      m_databaseFile = m_databaseFile.substring(9);
+      m_databaseFile =
+        m_databaseFile.substring(0, m_databaseFile.lastIndexOf(".jar!/"));
+      m_databaseFile =
+        m_databaseFile.substring(0, m_databaseFile.lastIndexOf("/") + 1);
+    }
+    else
+    {
+      // The application is being run from within a development environment,
+      // so the default path is the base directory of the project repository.
+      m_databaseFile = "";
+    }
+
+    // Append the name of the database file to the path.
+    m_databaseFile += "scores.db";
+  }
+
+  /**
    * Gets the database debug configuration value.
    *
    * @return <b>true</b> if databaser accesses should be logged to the terminal
@@ -3163,34 +3215,14 @@ public class Database
   public void
   setup()
   {
-    String path;
-
-    // Get the path to this class, which will be different when run from a JAR
-    // or run from a development environment (such as VS Code).
-    path = this.getClass().getResource(this.getClass().getSimpleName() +
-                                       ".class").toString();
-
-    // See if the URL is a path inside a JAR file.
-    if(path.substring(0, 9).equals("jar:file:"))
-    {
-      // Trim the path down to be the file system path to the directory that
-      // contains the JAR file.
-      path = path.substring(9);
-      path = path.substring(0, path.lastIndexOf(".jar!/"));
-      path = path.substring(0, path.lastIndexOf("/") + 1);
-    }
-    else
-    {
-      // The application is being run from within a development environment,
-      // so the default path is the base directory of the project repository.
-      path = "";
-    }
+    // Find the name of the database file.
+    databaseFilenameSet();
 
     // Connect to the file that contains the database.
     try
     {
       m_instance.m_connection =
-        DriverManager.getConnection("jdbc:sqlite:" + path + "scores.db");
+        DriverManager.getConnection("jdbc:sqlite:" + m_databaseFile);
     }
     catch (Exception e)
     {
