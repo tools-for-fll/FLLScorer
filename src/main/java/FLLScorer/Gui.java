@@ -5,17 +5,25 @@
 
 package FLLScorer;
 
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URI;
 import java.util.Objects;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.plaf.DimensionUIResource;
 
 /**
@@ -274,25 +282,85 @@ public class Gui
     m_database = Database.getInstance();
     m_config = Config.getInstance();
 
+    // Sizes of the application window.
+    int frameWidth = 640;
+    int frameHeight = 360;
+
+    // Select the cross platform look and feel. This must happen before any
+    // elements are created!
+    try
+    {
+      String look_and_feel = UIManager.getCrossPlatformLookAndFeelClassName();
+      UIManager.setLookAndFeel(look_and_feel);
+    }
+    catch (Exception e)
+    {
+      System.out.println("LookAndFeel error: " + e);
+    }
+ 
     // Create a frame, which is the main window for the application.
     m_frame = new JFrame(m_webserver.getSSI("str_title"));
     m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    m_frame.setMinimumSize(new DimensionUIResource(320, 180));
-    m_frame.setSize(320, 180);
+    m_frame.setMinimumSize(new DimensionUIResource(frameWidth, frameHeight));
+    m_frame.setMaximumSize(new DimensionUIResource(frameWidth, frameHeight));
+    m_frame.setSize(frameWidth, frameHeight);
 
-    // Create a panel for arranging the contents of the application.
-    JPanel panel = new JPanel();
+    // Get the size of the title bar.
+    m_frame.pack();
+    Insets insets = m_frame.getInsets();
+
+    // Get the class loader for loading image resources.
+    ClassLoader classLoader = getClass().getClassLoader();
+
+    // Sizes of the buttons.
+    int buttonWidth = 239;
+    int buttonHeight = 180;
+    int buttonGap = (frameWidth - (2 * buttonWidth)) / 3;
+    int buttonY = (frameHeight - buttonHeight - insets.top) / 2;
 
     // Create a button for starting the main page in the default web browser.
     JButton button1 = new JButton(m_webserver.getSSI("str_gui_launch"));
+    try
+    {
+      Image img = ImageIO.read(classLoader.getResource("app/web.png"));
+      img = img.getScaledInstance(100, 100, 0);
+      button1.setIcon(new ImageIcon(img));
+    }
+    catch (Exception e)
+    {
+      System.out.println("Image error: " + e);
+    }
+    button1.setHorizontalTextPosition(SwingConstants.CENTER);
+    button1.setVerticalTextPosition(SwingConstants.BOTTOM);
+    button1.setFont(new Font("Arial", Font.PLAIN, 16));
     button1.addActionListener(m_launch);
-    panel.add(button1);
+    button1.setBounds(buttonGap, buttonY, buttonWidth, buttonHeight);
+    button1.setForeground(Color.BLACK);
+    button1.setBackground(Color.WHITE);
+    m_frame.add(button1);
 
     // Create a button for resetting the administrator password (a fail-safe in
     // case it is changed and the new password has been forgotten).
     JButton button2 = new JButton(m_webserver.getSSI("str_gui_reset_admin"));
+    try
+    {
+      Image img = ImageIO.read(classLoader.getResource("app/undo.png"));
+      img = img.getScaledInstance(81, 100, 0);
+      button2.setIcon(new ImageIcon(img));
+    }
+    catch (Exception e)
+    {
+      System.out.println("Image error: " + e);
+    }
+    button2.setHorizontalTextPosition(SwingConstants.CENTER);
+    button2.setVerticalTextPosition(SwingConstants.BOTTOM);
+    button2.setFont(new Font("Arial", Font.PLAIN, 16));
     button2.addActionListener(m_resetPassword);
-    panel.add(button2);
+    button2.setBounds((buttonGap * 2) + buttonWidth, buttonY, buttonWidth,
+                      buttonHeight);
+    button2.setForeground(Color.BLACK);
+    button2.setBackground(Color.WHITE);
+    m_frame.add(button2);
 
     // See if the application is running from a JAR file.  If not, it is likely
     // being run by a developer, so add some additional controls for toggling
@@ -302,30 +370,63 @@ public class Gui
     String protocol = this.getClass().getResource(className).getProtocol();
     if(Objects.equals(protocol, "file"))
     {
+      // Sizes for the checkboxes.
+      int checkboxWidth = 200;
+      int checkboxHeight = 30;
+      int checkboxGap = (frameWidth - (3 * checkboxWidth)) / 4;
+      int checkboxY = frameHeight - checkboxGap - checkboxHeight - insets.top;
+
       // Add a check box for enabling/disabling the use of accounts and logins.
       m_checkboxLogin =
         new JCheckBox(m_webserver.getSSI("str_gui_disable_login"));
       m_checkboxLogin.addActionListener(m_loginToggle);
       m_checkboxLogin.setSelected(m_config.securityBypassGet());
-      panel.add(m_checkboxLogin);
+      m_checkboxLogin.setBounds(checkboxGap, checkboxY, checkboxWidth,
+                                checkboxHeight);
+      m_checkboxLogin.setForeground(Color.BLACK);
+      m_checkboxLogin.setBackground(Color.WHITE);
+      m_checkboxLogin.setOpaque(true);
+      m_frame.add(m_checkboxLogin);
 
       // Add a check box for enabling/disabling the printing of all database
       // access SQL statements to standard output.
       m_checkboxDB = new JCheckBox(m_webserver.getSSI("str_gui_log_db"));
       m_checkboxDB.addActionListener(m_dbLogToggle);
       m_checkboxDB.setSelected(m_database.dbDebugGet());
-      panel.add(m_checkboxDB);
+      m_checkboxDB.setBounds((checkboxGap * 2) + checkboxWidth, checkboxY,
+                             checkboxWidth, checkboxHeight);
+      m_checkboxDB.setForeground(Color.BLACK);
+      m_checkboxDB.setBackground(Color.WHITE);
+      m_checkboxDB.setOpaque(true);
+      m_frame.add(m_checkboxDB);
 
       // Add a check box for enabling/disabling the printing of all HTTP
       // requests to standard output.
       m_checkboxHTTP = new JCheckBox(m_webserver.getSSI("str_gui_log_http"));
       m_checkboxHTTP.addActionListener(m_httpLogToggle);
       m_checkboxHTTP.setSelected(m_config.httpDebugGet());
-      panel.add(m_checkboxHTTP);
+      m_checkboxHTTP.setBounds((checkboxGap * 3) + (checkboxWidth * 2),
+                               checkboxY, checkboxWidth, checkboxHeight);
+      m_checkboxHTTP.setForeground(Color.BLACK);
+      m_checkboxHTTP.setBackground(Color.WHITE);
+      m_checkboxHTTP.setOpaque(true);
+      m_frame.add(m_checkboxHTTP);
     }
 
-    // Add the panel to the frame and make the frame visible.
-    m_frame.getContentPane().add(panel);
+    // Add a background image to the app.
+    try
+    {
+      Image img = ImageIO.read(classLoader.getResource("app/background.jpg"));
+      img = img.getScaledInstance(frameWidth, frameHeight, 0);
+      JLabel label = new JLabel(new ImageIcon(img));
+      m_frame.add(label).setBounds(0, 0, frameWidth, frameHeight);
+    }
+    catch (Exception e)
+    {
+      System.out.println("Image error: " + e);
+    }
+
+    // Make the frame visible.
     m_frame.setVisible(true);
   }
 }
