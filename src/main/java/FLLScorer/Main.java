@@ -10,6 +10,7 @@ public class Main
   public static void
   main(String[] args)
   {
+    System.setProperty("slf4j.internal.verbosity", "ERROR");
     Database.getInstance().setup();
     Config.getInstance().setup();
     WebServer.getInstance().setup();
