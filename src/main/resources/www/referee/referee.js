@@ -590,7 +590,7 @@ keydown(e)
 {
   // See if Ctrl-R was pressed.
   if(((e.key == 'r') || (e.key == 'R')) && (e.ctrlKey == true) &&
-     !$("#list").hasClass("hidden") && ($("dialog").length == 0))
+     !$("#list").hasClass("hidden") && ($("dialog:visible").length == 0))
   {
     // Load the scores from the server.
     loadScores();
@@ -601,7 +601,7 @@ keydown(e)
 
   // See if Ctrl-S was pressed.
   if(((e.key == 's') || (e.key == 'S')) && (e.ctrlKey == true) &&
-     !$("#list").hasClass("hidden") && ($("dialog").length == 0))
+     !$("#list").hasClass("hidden") && ($("dialog:visible").length == 0))
   {
     // Move the focus to the search bar.
     $("#search").focus();

@@ -401,7 +401,7 @@ scoresKeydown(e)
 {
   // See if Ctrl-R was pressed.
   if(((e.key == 'r') || (e.key == 'R')) && (e.ctrlKey == true) &&
-     ($("dialog").length == 0))
+     ($("dialog:visible").length == 0))
   {
     // Load the scores from the server.
     scoresLoad();
@@ -412,7 +412,7 @@ scoresKeydown(e)
 
   // See if Ctrl-S was pressed.
   if(((e.key == 's') || (e.key == 'S')) && (e.ctrlKey == true) &&
-     ($("dialog").length == 0))
+     ($("dialog:visible").length == 0))
   {
     // Move the focus to the search bar.
     $("#scores-search").focus();

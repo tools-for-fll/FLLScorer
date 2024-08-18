@@ -567,7 +567,7 @@ teamsKeydown(e)
 {
   // See if Ctrl-A was pressed.
   if(((e.key == 'a') || (e.key == 'A')) && (e.ctrlKey == true) &&
-     ($("dialog").length == 0))
+     ($("dialog:visible").length == 0))
   {
     // Add a team.
     teamsAdd();
@@ -575,7 +575,7 @@ teamsKeydown(e)
 
   // See if Ctrl-S was pressed.
   if(((e.key == 's') || (e.key == 'S')) && (e.ctrlKey == true) &&
-     ($("dialog").length == 0))
+     ($("dialog:visible").length == 0))
   {
     // Move the focus to the search bar.
     $("#teams-search").focus();
