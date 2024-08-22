@@ -183,7 +183,7 @@ public class Config
    * Sets the locale.
    *
    * @param locale The IETF langugage code for the locale; will be set to the
-   *               system setting if this is <b>null</b >.
+   *               system setting if this is <b>null</b>.
    */
   public void
   localeSet(String locale)
@@ -224,8 +224,8 @@ public class Config
   /**
    * Sets the selected season.
    *
-   * @param event The ID of the esason; the selection will be removed if this
-   *              is <b>null</b>.
+   * @param season The ID of the season; the selection will be removed if this
+   *               is <b>null</b>.
    */
   public void
   seasonSet(String season)
