@@ -113,9 +113,17 @@ public class Referee
       return;
     }
 
+    // Extract the year and scoresheet number from the season.
+    String year = season.substring(0, 4);
+    String number = season.substring(5);
+    if(number.equals("0"))
+    {
+      number = "";
+    }
+
     // See if there is an information file for this season.
-    in = classLoader.getResourceAsStream("seasons/" + season +
-                                         "/scoresheet.json");
+    in = classLoader.getResourceAsStream("seasons/" + year +
+                                         "/scoresheet" + number + ".json");
     if(in == null)
     {
       return;

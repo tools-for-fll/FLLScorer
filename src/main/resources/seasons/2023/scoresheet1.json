@@ -1,0 +1,163 @@
+{
+  "missions":
+  [
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Rolling Camera"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Roll the camera to the right of the three (3) dark blue tiles"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Movie Set Yellow Boat"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Move non-orange minifigs into the Movie Set yellow boat, touching only the yellow boat and/or other minifigs"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+          },
+          "score": [ 0, 10, 20, 30, 40, 50, 60, 70 ]
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Immersive Experience"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The three Immersive Experience screens are lowered"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Music Concert Lights"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "If the Music Concert Lights’ orange lever is rotated completely downwards, and Noah the Stage Director, using his loop, is suspended from the black elbow element next to the orange light lever"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Light Show"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of experts suspended from the light spokes at the end of the Match"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 15, 30, 45, 60 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "After the Expert(s) are suspended from the light spokes, the white pointer is raised to the blue zone"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "There must be experts on the light spokes to score the white pointer in the blue zone."
+          },
+          "rule": "M05_1 - M05_2"
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Human Operator Mission"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Audience members partially in the target area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25, 30, 35 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Audience members completely in the target area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+          },
+          "score": [ 0, 10, 20, 30, 40, 50, 60, 70 ]
+        }
+      ]
+    }
+  ]
+}

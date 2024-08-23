@@ -50,7 +50,7 @@ public class Seasons
    * A list of the season identifiers, corresponding to directory names in the
    * resources/seasons directory of the jar file.
    */
-  private ArrayList<Integer> m_index = null;
+  private ArrayList<String> m_index = null;
 
   /**
    * A list of the years for the seasons (for example, "2024-2025").
@@ -109,7 +109,7 @@ public class Seasons
   seasonIdGet()
   {
     // Return the season_id.
-    int year = Integer.parseInt(m_config.seasonGet());
+    String year = m_config.seasonGet();
     return(m_databaseId.get(m_index.indexOf(year)));
   }
 
@@ -131,29 +131,34 @@ public class Seasons
     if(paramMap.containsKey("year"))
     {
       // Get the requested year.
-      int year = Integer.parseInt(paramMap.get("year"));
+      String year = paramMap.get("year");
 
       // See if this is a known season, and it is enabled.
       if(m_index.contains(year) && m_enabled.get(m_index.indexOf(year)))
       {
         // Save the new value for the season.
-        m_config.seasonSet(Integer.toString(year));
-
-        // Update the SSI for the selected season.
-        m_webserver.registerSSI("season_selected", m_config.seasonGet());
-
-        // Update the selected event based on the new season.
-        m_events.selectDefault();
-
-        // Set the result to success.
-        result.set("result", "ok");
+        m_config.seasonSet(year);
       }
+
+      // Update the SSI for the selected season.
+      m_webserver.registerSSI("season_selected", m_config.seasonGet());
+      m_webserver.registerSSI("year_selected",
+                              m_config.seasonGet().substring(0, 4));
+
+      // Update the selected event based on the new season.
+      m_events.selectDefault();
+
+      // Set the result to success.
+      result.set("result", "ok");
     }
     else
     {
+      // Get the currently selected season.
+      String year = m_config.seasonGet();
+      int idx = m_index.indexOf(year);
+
       // Return the details of the selected season.
-      int idx = m_index.indexOf(Integer.parseInt(m_config.seasonGet()));
-      result.set("id", m_config.seasonGet());
+      result.set("id", year);
       result.set("year", m_years.get(idx));
       result.set("name", m_names.get(idx));
       result.set("result", "ok");
@@ -185,7 +190,7 @@ public class Seasons
   {
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     String locale = Config.getInstance().localeGet();
-    String name, year, latest, fragment;
+    String name, year, year2, prev, latest, fragment;
     Boolean enabled;
     JSONObject json;
     InputStream in;
@@ -198,7 +203,7 @@ public class Seasons
     m_events = Events.getInstance();
 
     // Create the arrays to keep track of the known seasons.
-    m_index = new ArrayList<Integer>();
+    m_index = new ArrayList<String>();
     m_years = new ArrayList<String>();
     m_names = new ArrayList<String>();
     m_enabled = new ArrayList<Boolean>();
@@ -227,6 +232,12 @@ public class Seasons
         break;
       }
 
+      // Get the year of this season.
+      year = json.getString("year");
+
+      // Determine if the season is enabled in the application.
+      enabled = (json.getString("disabled") == null) ? true : false;
+
       // Get the name of the season, in the currently selected locale.
       name = json.getObject("name").getString(locale);
       if(name == null)
@@ -236,27 +247,46 @@ public class Seasons
         name = json.getObject("name").getString("en_US");
       }
 
-      // Get the year of this season.
-      year = json.getString("year");
-
-      // Determine if the season is enabled in the application.
-      enabled = (json.getString("disabled") == null) ? true : false;
-
-      // Add the details of this season to the lists.
-      m_index.add(i);
+      // Add this season to the database.
+      m_index.add(Integer.toString(i) + ".0");
       m_years.add(year);
       m_names.add(name);
       m_enabled.add(enabled);
+      m_databaseId.add(m_database.seasonAdd(year + ".0", name));
+
+      // Loop through the possible alternate season scoresheets.
+      for(int j = 1; ; j++)
+      {
+        // Get the name of this possible alternate season, breaking out of the
+        // loop if it does not exist.
+        JSONObject alternate = json.getObject("name" + j);
+        if(alternate == null)
+        {
+          break;
+        }
+
+        // Get the name of this alternative season, getting the locale-specific
+        // name, or the en_US version as a backup.
+        name = alternate.getString(locale);
+        if(name == null)
+        {
+          name = alternate.getString("en_US");
+        }
+
+        // Add this alternative season to the database.
+        m_index.add(Integer.toString(i) + "." + j);
+        m_years.add(year);
+        m_names.add(name);
+        m_enabled.add(enabled);
+        m_databaseId.add(m_database.seasonAdd(year + "." + j, name));
+      }
 
       // If this season is enabled, it is the latest season found so far.
       // Therefore, save it as the latest season.
       if(enabled)
       {
-        latest = String.valueOf(i);
+        latest = Integer.toString(i) + ".0";
       }
-
-      // Add this season to the database.
-      m_databaseId.add(m_database.seasonAdd(year, name));
 
       // Register a path mapping with the web server for the logo that goes
       // with this season.
@@ -270,47 +300,120 @@ public class Seasons
       m_config.seasonSet(latest);
     }
 
-    // Set the selected season SSI fragment in the web server.
+    // Set the selected season and year SSI fragment in the web server.
     m_webserver.registerSSI("season_selected", m_config.seasonGet());
+    m_webserver.registerSSI("year_selected",
+                            m_config.seasonGet().substring(0, 4));
 
     // Generate and set the HTML fragment for displaying all the known seasons.
     fragment = "";
     for(int i = m_index.size(); i > 0; i--)
     {
-      fragment += "        <div id=\"seasons_" + m_index.get(i - 1) +
+      // Get the year of this season.
+      year = m_index.get(i - 1);
+      year = year.substring(0, 4);
+
+      // Generate the HTML for this season's tile.
+      fragment += "        <div id=\"seasons_" + year +
                   "\" class=\"seasons_tile\">\n";
-      fragment += "          <img src=\"logos/" + m_index.get(i - 1) +
-                  ".png\">\n";
-      fragment += "          <p>" + m_years.get(i - 1) + " " +
-                  m_names.get(i - 1) + "</p>\n";
+      fragment += "          <img src=\"logos/" + year + ".png\">\n";
+      if(m_index.get(i - 1).contains(".0"))
+      {
+        // There is not an alternate game for this season, so simply have the
+        // name of the season.
+        fragment += "          <p>" + m_years.get(i - 1) + " " +
+                    m_names.get(i - 1) + "</p>\n";
+      }
+      else
+      {
+        // There is at least one alternate game for this season, so create a
+        // select for choosing the alternate game.
+        fragment += "          <select id=\"scoresheet_" + year + "\">\n";
+        int j = 1;
+        while(m_index.get(i - j - 1).substring(0, 4).equals(year))
+        {
+          j++;
+        }
+        fragment += "            <option value=\"0\">" + m_years.get(i - j - 1) +
+                    " " + m_names.get(i - j) + "</option>\n";
+        for(int k = 1; k < j; k++)
+        {
+          fragment += "            <option value=\"" + k + "\">" +
+                      m_names.get(i - j + k) + "</option>\n";
+        }
+        fragment += "          </select>\n";
+        i -= j - 1;
+      }
+
+      // Close out the tile.
       fragment += "        </div>\n";
     }
+
+    // Set this fragment as the HTML element for the seasons panel.
     fragment = fragment.substring(0, fragment.length() - 1);
     m_webserver.registerSSI("seasons_html", fragment);
 
     // Generate and set the JS fragment for enabling the click handler, or
     // disabling the tile, for all the known seasons.
     fragment = "";
+    prev = "";
     for(int i = 0; i < m_index.size(); i++)
     {
-      if(m_enabled.get(i))
+      // Get the year of this season.
+      year = m_index.get(i);
+      year = year.substring(0, 4);
+
+      // If this is the same year as the previous season (meaning it is an
+      // alternate game), it has already been handled and can be skipped.
+      if(year.equals(prev))
       {
-        fragment += "  $(\"#seasons_" + m_index.get(i) +
-                    "\").click(() => { seasonsSelect(\"" + m_index.get(i) +
-                    "\"); });\n";
-        fragment += "  $(\"#seasons_" + m_index.get(i) +
-                    "\").attr(\"tabindex\", \"0\");";
-        fragment += "  $(\"#seasons_" + m_index.get(i) + "\").on(\"keyup\", " +
-                    "(event) => { if(event.key == \"Enter\") { $(\"#seasons_" +
-                    m_index.get(i) +
-                    "\").click(); event.preventDefault(); }});";
+        continue;
+      }
+
+      // Get the year of the next season.
+      if((i + + 1) < m_index.size())
+      {
+        year2 = ((i + 1) < m_index.size()) ? m_index.get(i + 1) : "";
+        year2 = year2.substring(0, 4);
       }
       else
       {
-        fragment += "  $(\"#seasons_" + m_index.get(i) +
-                    "\").addClass(\"disabled\");\n";
+        year2 = "";
       }
+
+      // See if this season is enabled.
+      if(m_enabled.get(i))
+      {
+        // Generate the Javascript to enable this season in the UI and respond
+        // to clicks.
+        fragment += "  $(\"#seasons_" + year +
+                    "\").click(() => { seasonsSelect(\"" + year + "\"); });\n";
+        fragment += "  $(\"#seasons_" + year +
+                    "\").attr(\"tabindex\", \"0\");\n";
+        fragment += "  $(\"#seasons_" + year + "\").on(\"keyup\", " +
+                    "(event) => { if(event.key == \"Enter\") { $(\"#seasons_" +
+                    year + "\").click(); event.preventDefault(); }});\n";
+
+        // Add the change event handler to the select if there are alternate
+        // games for this season.
+        if(year.equals(year2))
+        {
+          fragment += "  $(\"#scoresheet_" + year +
+                      "\").on(\"change\", () => seasonsSelect(\"" + year +
+                      "\"));\n";
+        }
+      }
+      else
+      {
+        // Generate the Javascript to disable this season in the UI.
+        fragment += "  $(\"#seasons_" + year + "\").addClass(\"disabled\");\n";
+      }
+
+      // This season is now the previous season.
+      prev = year;
     }
+
+    // Set this fragment as the Javascript element for the seasons panel.
     fragment = fragment.substring(0, fragment.length() - 1);
     m_webserver.registerSSI("seasons_js", fragment);
 

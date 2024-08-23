@@ -13,14 +13,34 @@ seasonsUpdate()
   // Deactivate all the season tiles.
   $(".seasons_tile").removeClass("active");
 
+  // Get the year for the current season.
+  var year = parseInt(seasonCurrent);
+
+  // Get the alternate scoresheet for the current season.
+  var game = parseInt(seasonCurrent.substring(5));
+
   // Activate the tile for the requested season.
-  $("#seasons_" + seasonCurrent).addClass("active");
+  $("#seasons_" + year).addClass("active");
+
+  // If there is an alternate scoresheet, select it.
+  $("#scoresheet_" + year).val(game);
 }
 
-// Selected the requested season.
+// Select the requested season.
 function
 seasonsSelect(season)
 {
+  // See if there is an alternate scoresheet for this season.
+  game = $("#scoresheet_" + season);
+  if(game.length != 0)
+  {
+    season += "." + game.val();
+  }
+  else
+  {
+    season += ".0";
+  }
+
   // There is nothing to be done if the season hasn't changed.
   if(season == seasonCurrent)
   {
