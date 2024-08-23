@@ -15,16 +15,16 @@
           {
             "en_US": "All team equipment fits in the small inspection area:"
           },
-          "type": "yesno",
-          "score": [ 0, 25 ]
+          "type": "yesno"
         }
-      ]
+      ],
+      "score_rule": "M00_1 * (min(M01, 5) + min(M02, 10) + min(M03, 5) + min(M04, 5) + min(M05, 5) + min(M06, 5) + min(M07, 5) + min(M08, 5) + min(M09, 5) + min(M10, 5) + min(M11, 5) + min(M12, 5) + min(M13, 5))"
     },
     {
       "mission": "M01",
       "name":
       {
-        "en_US": "Innovation Project Model"
+        "en_US": "Elevated Places"
       },
       "items":
       [
@@ -32,10 +32,33 @@
           "id": 1,
           "description":
           {
-            "en_US": "The Innovation Project:<br><ul><li>Is made of at least two white LEGO pieces</li><li>Measures at least as long as four LEGO studs in at least one direction</li><li>Has any part of it touching either the RePLAY logo or the gray area around the bench</li></ul>"
+            "en_US": "The robot is supported by the bridge:"
           },
           "type": "yesno",
           "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Flags clearly raised any distance, only by the Robot:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 15, 30 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The robot must be supported by the bridge to score flag points."
+          },
+          "rule": "(M01_1 * 10) - M01_2"
         }
       ]
     },
@@ -43,7 +66,7 @@
       "mission": "M02",
       "name":
       {
-        "en_US": "Step Counter"
+        "en_US": "Crane"
       },
       "items":
       [
@@ -51,14 +74,45 @@
           "id": 1,
           "description":
           {
-            "en_US": "The bottom of the pointer is on:"
+            "en_US": "The hooked blue unit is clearly lowered any distance from the guide hole:"
           },
-          "type": "enum",
-          "choices":
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
           {
-            "en_US": [ "None", "Magenta", "Yellow", "Blue" ]
+            "en_US": "The hooked blue unit is independent and supported by another blue unit:"
           },
-          "score": [ 0, 10, 15, 20 ]
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "The level 1 blue unit is completely in the blue circle:"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The hooked blue unit must be lowered in order to be supported by a blue unit."
+          },
+          "rule": "M02_1 - M02_2"
+        },
+        {
+          "description":
+          {
+            "en_US": "The hooked blue unit must be supported by a blue unit for the blue unit to score in the blue circle."
+          },
+          "rule": "M02_2 - M02_3"
         }
       ]
     },
@@ -66,7 +120,7 @@
       "mission": "M03",
       "name":
       {
-        "en_US": "Slide"
+        "en_US": "Inspection Drone"
       },
       "items":
       [
@@ -74,42 +128,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "Figures off the slide:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2" ]
-          },
-          "score": [ 0, 5, 20 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "A slide figure is completely in home:"
+            "en_US": "The inspection drone is supported by axle (A) on the bridge:"
           },
           "type": "yesno",
           "score": [ 0, 10 ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "A slide figure is held completely off the mat by the heavy tire and is touching nothing else:"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "Not enough figures off the slide for the number that are in other scoring positions."
-          },
-          "rule": "M03_1 - M03_2 - M03_3"
         }
       ]
     },
@@ -117,7 +139,7 @@
       "mission": "M04",
       "name":
       {
-        "en_US": "Bench"
+        "en_US": "Design for Wildlife"
       },
       "items":
       [
@@ -125,49 +147,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The bench is down flat:"
+            "en_US": "The bat is supported by branch (B) on the tree:"
           },
           "type": "yesno",
           "score": [ 0, 10 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "The bench is down flat and the number of cubes touching the mat in the hopscotch spaces:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3", "4" ]
-          },
-          "score": [ 0, 10, 20, 30, 40 ],
-          "pieces":
-          [
-            {
-              "name": "cube",
-              "quantity": [ 0, 1, 2, 3, 4 ]
-            }
-          ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "The backrest is completely out of both of its holes:"
-          },
-          "type": "yesno",
-          "score": [ 0, 15 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The bench must be down flat in order to score cubes in the hopscotch spaces."
-          },
-          "rule": "(M04_1 * 10) - M04_2"
         }
       ]
     },
@@ -175,7 +158,7 @@
       "mission": "M05",
       "name":
       {
-        "en_US": "Basketball"
+        "en_US": "Treehouse"
       },
       "items":
       [
@@ -183,30 +166,27 @@
           "id": 1,
           "description":
           {
-            "en_US": "There is a cube in the crate:"
+            "en_US": "Number of units supported by the tree's large branches:"
           },
-          "type": "yesno",
-          "score": [ 0, 15 ],
-          "pieces":
-          [
-            {
-              "name": "cube",
-              "quantity": [ 0, 1 ]
-            }
-          ]
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ]
+          },
+          "score": [ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "White stopper that the crate rests on:"
+            "en_US": "Number of units supported by the tree's small branches:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "None", "Middle", "Top" ]
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ]
           },
-          "score": [ 0, 15, 25 ]
+          "score": [ 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240 ]
         }
       ]
     },
@@ -214,7 +194,7 @@
       "mission": "M06",
       "name":
       {
-        "en_US": "Pull-Up Bar"
+        "en_US": "Traffic Jam"
       },
       "items":
       [
@@ -222,19 +202,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The robot passes completely through the pull-up bar’s upright frame at any time:"
+            "en_US": "The traffic jam is lifted, its moving part is independent, and it is supported by its own hinges:"
           },
           "type": "yesno",
-          "score": [ 0, 15 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "The pull-up bar holds 100% of the robot up off the mat at the end of the match:"
-          },
-          "type": "yesno",
-          "score": [ 0, 30 ]
+          "score": [ 0, 10 ]
         }
       ]
     },
@@ -242,7 +213,7 @@
       "mission": "M07",
       "name":
       {
-        "en_US": "Robot Dance"
+        "en_US": "Swing"
       },
       "items":
       [
@@ -250,20 +221,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The robot’s controller is at least partly over the dance floor in a “dancing” motion at the end of the match:"
+            "en_US": "The swing is released:"
           },
           "type": "yesno",
           "score": [ 0, 20 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The robot can not be dancing and hanging on the pull-up bar at the same time."
-          },
-          "rule": "1 - M07_1 - M06_2"
         }
       ]
     },
@@ -271,7 +232,7 @@
       "mission": "M08",
       "name":
       {
-        "en_US": "Boccia"
+        "en_US": "Elevator"
       },
       "items":
       [
@@ -279,49 +240,14 @@
           "id": 1,
           "description":
           {
-            "en_US": "Both share models have sent only one cube anywhere onto the opposing field and those cubes color-match each other:"
-          },
-          "type": "yesno",
-          "score": [ 0, 25 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "Cubes completely in your frame or target:"
+            "en_US": "The elevator’s moving parts are independent, and supported only by its hinges, and the blue car is:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ]
+            "en_US": [ "Up", "Down", "Balanced" ]
           },
-          "score": [ 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80 ],
-          "pieces":
-          [
-            {
-              "name": "cube",
-              "quantity": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
-            }
-          ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "At least one yellow cube is completely in your target:"
-          },
-          "type": "yesno",
-          "score": [ 0, 10 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "There must be a cube in the target area for there to be a yellow cube in the target area."
-          },
-          "rule": "M08_2 - M08_3"
+          "score": [ 0, 15, 20 ]
         }
       ]
     },
@@ -329,7 +255,7 @@
       "mission": "M09",
       "name":
       {
-        "en_US": "Tire Flip"
+        "en_US": "Safety Factor"
       },
       "items":
       [
@@ -337,42 +263,14 @@
           "id": 1,
           "description":
           {
-            "en_US": "The light (blue tread) tire is white center up:"
-          },
-          "type": "yesno",
-          "score": [ 0, 10 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "The heavy (black tread) tire is white center up:"
-          },
-          "type": "yesno",
-          "score": [ 0, 15 ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "Number of white-center-up tires are completely in the large target circle:"
+            "en_US": "The test building is independent and supported only by the blue beams, with this many blue beams knocked out at least half way:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2" ]
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
           },
-          "score": [ 0, 5, 10 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "Tires must be white-center-up in order to score in the large target circle."
-          },
-          "rule": "M09_1 + M09_2 - M09_3"
+          "score": [ 0, 10, 20, 30, 40, 50, 60 ]
         }
       ]
     },
@@ -380,7 +278,7 @@
       "mission": "M10",
       "name":
       {
-       "en_US": "Cell Phone"
+       "en_US": "Steel Construction"
       },
       "items":
       [
@@ -388,10 +286,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The cell phone is white side up and resting on only the mat:"
+            "en_US": "The steel structure is standing, is independent, and supported only by its hinges:"
           },
           "type": "yesno",
-          "score": [ 0, 15 ]
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -399,7 +297,7 @@
       "mission": "M11",
       "name":
       {
-        "en_US": "Treadmill"
+        "en_US": "Innovative Architecture"
       },
       "items":
       [
@@ -407,14 +305,14 @@
           "id": 1,
           "description":
           {
-            "en_US": "The robot spins the rollers so the pointer points to:"
+            "en_US": "The team-designed structure clearly bigger than a blue building unit, built only from white LEGO bricks is:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "None", "Gray", "Red", "Orange", "Yellow", "Light Green", "Dark Green" ]
+            "en_US": [ "None", "Partially in a circle", "Completely in a circle" ]
           },
-          "score": [ 0, 5, 10, 15, 20, 25, 30 ]
+          "score": [ 0, 10, 15 ]
         }
       ]
     },
@@ -422,7 +320,7 @@
       "mission": "M12",
       "name":
       {
-        "en_US": "Row Machine"
+        "en_US": "Design & Build"
       },
       "items":
       [
@@ -430,29 +328,27 @@
           "id": 1,
           "description":
           {
-            "en_US": "The free wheel is completely outside the large circle:"
+            "en_US": "Number of circles with at least one color-matching unit completely in, and flat down on the mat:"
           },
-          "type": "yesno",
-          "score": [ 0, 15 ]
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "The free wheel is completely in the small circle:"
+            "en_US": "Total height of all independent stacks at least partially in any circle:"
           },
-          "type": "yesno",
-          "score": [ 0, 15 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
+          "type": "enum",
+          "choices":
           {
-            "en_US": "The free wheel must be completely outside the large circle to be completely in the small circle."
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28" ]
           },
-          "rule": "M12_1 - M12_2"
+          "score": [ 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140 ]
         }
       ]
     },
@@ -460,7 +356,7 @@
       "mission": "M13",
       "name":
       {
-        "en_US": "Weight Machine"
+        "en_US": "Sustainability Upgrades"
       },
       "items":
       [
@@ -468,65 +364,19 @@
           "id": 1,
           "description":
           {
-            "en_US": "The stopper is under the lever and the lever setting is:"
+            "en_US": "The number of independent upgrades, supported by only by a stack which is at least partially in any circle:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "None", "Blue", "Magenta", "Yellow" ]
+            "en_US": [ "0", "1", "2", "3" ]
           },
-          "score": [ 0, 10, 15, 20 ]
+          "score": [ 0, 10, 20, 30 ]
         }
       ]
     },
     {
       "mission": "M14",
-      "name":
-      {
-        "en_US": "Health Units"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Number of health units touching either the RePLAY logo or the gray area around the bench:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
-          },
-          "score": [ 0, 5, 10, 15, 20, 25, 30, 35, 40 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "Number of health units looped over a pull-up bar post and touching no equipment:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3", "4" ]
-          },
-          "score": [ 0, 10, 20, 30, 40 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-            "description":
-            {
-              "en_US": "Too many health units have been scored."
-            },
-            "rule": "8 - M14_1 - M14_2"
-        }
-      ]
-    },
-    {
-      "mission": "M15",
       "name":
       {
         "en_US": "Precision"
@@ -547,18 +397,6 @@
           "score": [ 0, 5, 10, 20, 30, 45, 60 ]
         }
       ]
-    }
-  ],
-  "pieces":
-  [
-    {
-      "name": "cube",
-      "description":
-      {
-        "en_US": "cubes"
-      },
-      "mission": "M08",
-      "quantity": 16
     }
   ]
 }

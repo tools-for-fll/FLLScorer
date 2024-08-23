@@ -2,29 +2,10 @@
   "missions":
   [
     {
-      "mission": "M00",
-      "name":
-      {
-        "en_US": "Equipment Inspection Bonus"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "All team equipment fits in the small inspection area:"
-          },
-          "type": "yesno"
-        }
-      ],
-      "score_rule": "M00_1 * (min(M01, 5) + min(M02, 10) + min(M03, 5) + min(M04, 5) + min(M05, 5) + min(M06, 5) + min(M07, 5) + min(M08, 5) + min(M09, 5) + min(M10, 5) + min(M11, 5) + min(M12, 5) + min(M13, 5))"
-    },
-    {
       "mission": "M01",
       "name":
       {
-        "en_US": "Elevated Places"
+        "en_US": "Space Travel"
       },
       "items":
       [
@@ -32,33 +13,28 @@
           "id": 1,
           "description":
           {
-            "en_US": "The robot is supported by the bridge:"
+            "en_US": "Vehicle Payload rolled past the first track connection"
           },
           "type": "yesno",
-          "score": [ 0, 20 ]
+          "score": [ 0, 22 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "Flags clearly raised any distance, only by the Robot:"
+            "en_US": "Supply Payload rolled past the first track connection"
           },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2" ]
-          },
-          "score": [ 0, 15, 30 ]
-        }
-      ],
-      "constraints":
-      [
+          "type": "yesno",
+          "score": [ 0, 14 ]
+        },
         {
+          "id": 3,
           "description":
           {
-            "en_US": "The robot must be supported by the bridge to score flag points."
+            "en_US": "Crew Payload rolled past the first track connection"
           },
-          "rule": "(M01_1 * 10) - M01_2"
+          "type": "yesno",
+          "score": [ 0, 10 ]
         }
       ]
     },
@@ -66,7 +42,7 @@
       "mission": "M02",
       "name":
       {
-        "en_US": "Crane"
+        "en_US": "Solar Panel Array"
       },
       "items":
       [
@@ -74,45 +50,19 @@
           "id": 1,
           "description":
           {
-            "en_US": "The hooked blue unit is clearly lowered any distance from the guide hole:"
+            "en_US": "Both Solar Panels are angled toward the same Field"
           },
           "type": "yesno",
-          "score": [ 0, 20 ]
+          "score": [ 0, 22 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "The hooked blue unit is independent and supported by another blue unit:"
+            "en_US": "Your Solar Panel is angled to the other team’s Field"
           },
           "type": "yesno",
-          "score": [ 0, 15 ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "The level 1 blue unit is completely in the blue circle:"
-          },
-          "type": "yesno",
-          "score": [ 0, 15 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The hooked blue unit must be lowered in order to be supported by a blue unit."
-          },
-          "rule": "M02_1 - M02_2"
-        },
-        {
-          "description":
-          {
-            "en_US": "The hooked blue unit must be supported by a blue unit for the blue unit to score in the blue circle."
-          },
-          "rule": "M02_2 - M02_3"
+          "score": [ 0, 18 ]
         }
       ]
     },
@@ -120,7 +70,7 @@
       "mission": "M03",
       "name":
       {
-        "en_US": "Inspection Drone"
+        "en_US": "3D Printing"
       },
       "items":
       [
@@ -128,10 +78,29 @@
           "id": 1,
           "description":
           {
-            "en_US": "The inspection drone is supported by axle (A) on the bridge:"
+            "en_US": "2x4 Brick is ejected"
           },
           "type": "yesno",
-          "score": [ 0, 10 ]
+          "score": [ 0, 18 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "2x4 Brick is completely in the Northeast Planet Area"
+          },
+          "type": "yesno",
+          "score": [ 0, 4 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The 2x4 Brick must be ejected to be in the Northeast Planet Area"
+          },
+          "rule": "M03_1 - M03_2"
         }
       ]
     },
@@ -139,7 +108,7 @@
       "mission": "M04",
       "name":
       {
-        "en_US": "Design for Wildlife"
+        "en_US": "Crater Crossing"
       },
       "items":
       [
@@ -147,10 +116,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The bat is supported by branch (B) on the tree:"
+            "en_US": "All weight-bearing features of the crossing equipment crossed completely between towers from east to west, completely past the flattened Gate"
           },
           "type": "yesno",
-          "score": [ 0, 10 ]
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -158,7 +127,7 @@
       "mission": "M05",
       "name":
       {
-        "en_US": "Treehouse"
+        "en_US": "Extraction"
       },
       "items":
       [
@@ -166,27 +135,47 @@
           "id": 1,
           "description":
           {
-            "en_US": "Number of units supported by the tree's large branches:"
+            "en_US": "All four Core Samples are no longer touching the axle of the Core Site Model"
           },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ]
-          },
-          "score": [ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160 ]
+          "type": "yesno",
+          "score": [ 0, 16 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "Number of units supported by the tree's small branches:"
+            "en_US": "Gas Core Sample is touching the Mat & completely in the Lander’s Target Circle"
           },
-          "type": "enum",
-          "choices":
+          "type": "yesno",
+          "score": [ 0, 12 ]
+        },
+        {
+          "id": 3,
+          "description":
           {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" ]
+            "en_US": "Gas Core Sample is completely in Base"
           },
-          "score": [ 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210, 225, 240 ]
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 4,
+          "description":
+          {
+            "en_US": "Water Core Sample is supported only by the Food Growth Chamber"
+          },
+          "type": "yesno",
+          "score": [ 0, 8 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Gas Core Sample cannot be in the Lander’s Target Circle and in Base"
+          },
+          "rule": "-1 * M05_2 * M05_3"
         }
       ]
     },
@@ -194,7 +183,7 @@
       "mission": "M06",
       "name":
       {
-        "en_US": "Traffic Jam"
+        "en_US": "Space Station Module"
       },
       "items":
       [
@@ -202,10 +191,28 @@
           "id": 1,
           "description":
           {
-            "en_US": "The traffic jam is lifted, its moving part is independent, and it is supported by its own hinges:"
+            "en_US": "Cone Module is completely in Base"
           },
           "type": "yesno",
-          "score": [ 0, 10 ]
+          "score": [ 0, 16 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Tube Module is in the west port of the Habitation Hub"
+          },
+          "type": "yesno",
+          "score": [ 0, 16 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "Dock Module is in the east port of the Habitation Hub"
+          },
+          "type": "yesno",
+          "score": [ 0, 14 ]
         }
       ]
     },
@@ -213,7 +220,7 @@
       "mission": "M07",
       "name":
       {
-        "en_US": "Swing"
+        "en_US": "Space Walk Emergency"
       },
       "items":
       [
@@ -221,10 +228,14 @@
           "id": 1,
           "description":
           {
-            "en_US": "The swing is released:"
+            "en_US": "Astronaut “Gerhard” is in the Habitation Hub’s Airlock Chamber:"
           },
-          "type": "yesno",
-          "score": [ 0, 20 ]
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "No", "Partly", "Completely" ]
+          },
+          "score": [ 0, 18, 22 ]
         }
       ]
     },
@@ -232,7 +243,7 @@
       "mission": "M08",
       "name":
       {
-        "en_US": "Elevator"
+        "en_US": "Aerobic Exercise"
       },
       "items":
       [
@@ -240,14 +251,14 @@
           "id": 1,
           "description":
           {
-            "en_US": "The elevator’s moving parts are independent, and supported only by its hinges, and the blue car is:"
+            "en_US": "Exercise Pointer tip is in:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "Up", "Down", "Balanced" ]
+            "en_US": [ "None", "Gray", "White", "Orange" ]
           },
-          "score": [ 0, 15, 20 ]
+          "score": [ 0, 18, 20, 22 ]
         }
       ]
     },
@@ -255,7 +266,7 @@
       "mission": "M09",
       "name":
       {
-        "en_US": "Safety Factor"
+        "en_US": "Strength Exercise"
       },
       "items":
       [
@@ -263,14 +274,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The test building is independent and supported only by the blue beams, with this many blue beams knocked out at least half way:"
+            "en_US": "Strength Bar lifted so that the tooth-strip’s 4th hole is at least partly in view"
           },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
-          },
-          "score": [ 0, 10, 20, 30, 40, 50, 60 ]
+          "type": "yesno",
+          "score": [ 0, 16 ]
         }
       ]
     },
@@ -278,7 +285,7 @@
       "mission": "M10",
       "name":
       {
-       "en_US": "Steel Construction"
+       "en_US": "Food Production"
       },
       "items":
       [
@@ -286,10 +293,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The steel structure is standing, is independent, and supported only by its hinges:"
+            "en_US": "Grey weight is dropped after green, but before tan"
           },
           "type": "yesno",
-          "score": [ 0, 20 ]
+          "score": [ 0, 16 ]
         }
       ]
     },
@@ -297,7 +304,7 @@
       "mission": "M11",
       "name":
       {
-        "en_US": "Innovative Architecture"
+        "en_US": "Escape Velocity"
       },
       "items":
       [
@@ -305,14 +312,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The team-designed structure clearly bigger than a blue building unit, built only from white LEGO bricks is:"
+            "en_US": "Spacecraft stays up"
           },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Partially in a circle", "Completely in a circle" ]
-          },
-          "score": [ 0, 10, 15 ]
+          "type": "yesno",
+          "score": [ 0, 24 ]
         }
       ]
     },
@@ -320,7 +323,7 @@
       "mission": "M12",
       "name":
       {
-        "en_US": "Design & Build"
+        "en_US": "Satellite Orbits"
       },
       "items":
       [
@@ -328,27 +331,14 @@
           "id": 1,
           "description":
           {
-            "en_US": "Number of circles with at least one color-matching unit completely in, and flat down on the mat:"
+            "en_US": "Satellites on or above the area between the two lines of the Outer Orbit:"
           },
           "type": "enum",
           "choices":
           {
             "en_US": [ "0", "1", "2", "3" ]
           },
-          "score": [ 0, 10, 20, 30 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "Total height of all independent stacks at least partially in any circle:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28" ]
-          },
-          "score": [ 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125, 130, 135, 140 ]
+          "score": [ 0, 8, 16, 24 ]
         }
       ]
     },
@@ -356,7 +346,7 @@
       "mission": "M13",
       "name":
       {
-        "en_US": "Sustainability Upgrades"
+        "en_US": "Observatory"
       },
       "items":
       [
@@ -364,14 +354,14 @@
           "id": 1,
           "description":
           {
-            "en_US": "The number of independent upgrades, supported by only by a stack which is at least partially in any circle:"
+            "en_US": "The Observatory pointer tip is in:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2", "3" ]
+            "en_US": [ "None", "Gray", "White", "Orange" ]
           },
-          "score": [ 0, 10, 20, 30 ]
+          "score": [ 0, 16, 18, 20 ]
         }
       ]
     },
@@ -379,7 +369,7 @@
       "mission": "M14",
       "name":
       {
-        "en_US": "Precision"
+        "en_US": "Meteroid Deflection"
       },
       "items":
       [
@@ -387,14 +377,83 @@
           "id": 1,
           "description":
           {
-            "en_US": "Number of precision tokens left on the field:"
+            "en_US": "Meteoroids touching the Mat and in the Center Section:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 12, 24 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Meteoroids touching the Mat and in Either Side Section:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 8, 16 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "There are only two Meteroids on the field."
+          },
+          "rule": "2 - M14_1 - M14_2"
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Lander Touchdown"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Lander is intact and touching the Mat completely in:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Base", "Northeast Planet Area", "Target Circle" ]
+          },
+          "score": [ 0, 16, 20, 22 ]
+        }
+      ]
+    },
+    {
+      "mission": "P01",
+      "name":
+      {
+        "en_US": "Penalties"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Penalty discs in the southeast triangle"
           },
           "type": "enum",
           "choices":
           {
             "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
           },
-          "score": [ 0, 5, 10, 20, 30, 45, 60 ]
+          "score": [ 0, -3, -6, -9, -12, -15, -18 ]
         }
       ]
     }

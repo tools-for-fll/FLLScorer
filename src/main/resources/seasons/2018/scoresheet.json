@@ -5,7 +5,7 @@
       "mission": "M01",
       "name":
       {
-        "en_US": "Space Travel"
+        "en_US": "Pipe Removal"
       },
       "items":
       [
@@ -13,28 +13,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "Vehicle Payload rolled past the first track connection"
+            "en_US": "Broken Pipe is completely in Base"
           },
           "type": "yesno",
-          "score": [ 0, 22 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "Supply Payload rolled past the first track connection"
-          },
-          "type": "yesno",
-          "score": [ 0, 14 ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "Crew Payload rolled past the first track connection"
-          },
-          "type": "yesno",
-          "score": [ 0, 10 ]
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -42,7 +24,7 @@
       "mission": "M02",
       "name":
       {
-        "en_US": "Solar Panel Array"
+        "en_US": "Flow"
       },
       "items":
       [
@@ -50,19 +32,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "Both Solar Panels are angled toward the same Field"
+            "en_US": "Big Water is on the other team’s Field (only by turning the Pump System’s valves(s))"
           },
           "type": "yesno",
-          "score": [ 0, 22 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "Your Solar Panel is angled to the other team’s Field"
-          },
-          "type": "yesno",
-          "score": [ 0, 18 ]
+          "score": [ 0, 25 ]
         }
       ]
     },
@@ -70,7 +43,7 @@
       "mission": "M03",
       "name":
       {
-        "en_US": "3D Printing"
+        "en_US": "Pump Addition"
       },
       "items":
       [
@@ -78,29 +51,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "2x4 Brick is ejected"
+            "en_US": "Pump Addition has contact with the mat, completely inside the target area"
           },
           "type": "yesno",
-          "score": [ 0, 18 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "2x4 Brick is completely in the Northeast Planet Area"
-          },
-          "type": "yesno",
-          "score": [ 0, 4 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The 2x4 Brick must be ejected to be in the Northeast Planet Area"
-          },
-          "rule": "M03_1 - M03_2"
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -108,7 +62,7 @@
       "mission": "M04",
       "name":
       {
-        "en_US": "Crater Crossing"
+        "en_US": "Rain"
       },
       "items":
       [
@@ -116,7 +70,7 @@
           "id": 1,
           "description":
           {
-            "en_US": "All weight-bearing features of the crossing equipment crossed completely between towers from east to west, completely past the flattened Gate"
+            "en_US": "At least one Rain is out of the Rain Cloud"
           },
           "type": "yesno",
           "score": [ 0, 20 ]
@@ -127,7 +81,7 @@
       "mission": "M05",
       "name":
       {
-        "en_US": "Extraction"
+        "en_US": "Filter"
       },
       "items":
       [
@@ -135,47 +89,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "All four Core Samples are no longer touching the axle of the Core Site Model"
+            "en_US": "Lock latch is in the dropped position"
           },
           "type": "yesno",
-          "score": [ 0, 16 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "Gas Core Sample is touching the Mat & completely in the Lander’s Target Circle"
-          },
-          "type": "yesno",
-          "score": [ 0, 12 ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "Gas Core Sample is completely in Base"
-          },
-          "type": "yesno",
-          "score": [ 0, 10 ]
-        },
-        {
-          "id": 4,
-          "description":
-          {
-            "en_US": "Water Core Sample is supported only by the Food Growth Chamber"
-          },
-          "type": "yesno",
-          "score": [ 0, 8 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The Gas Core Sample cannot be in the Lander’s Target Circle and in Base"
-          },
-          "rule": "-1 * M05_2 * M05_3"
+          "score": [ 0, 30 ]
         }
       ]
     },
@@ -183,7 +100,7 @@
       "mission": "M06",
       "name":
       {
-        "en_US": "Space Station Module"
+        "en_US": "Water Treatment"
       },
       "items":
       [
@@ -191,28 +108,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "Cone Module is completely in Base"
+            "en_US": "Big Water is ejected from the Water Treatment model (only by the Toilet’s lever)"
           },
           "type": "yesno",
-          "score": [ 0, 16 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "Tube Module is in the west port of the Habitation Hub"
-          },
-          "type": "yesno",
-          "score": [ 0, 16 ]
-        },
-        {
-          "id": 3,
-          "description":
-          {
-            "en_US": "Dock Module is in the east port of the Habitation Hub"
-          },
-          "type": "yesno",
-          "score": [ 0, 14 ]
+          "score": [ 0, 20 ]
         }
       ]
     },
@@ -220,7 +119,7 @@
       "mission": "M07",
       "name":
       {
-        "en_US": "Space Walk Emergency"
+        "en_US": "Fountain"
       },
       "items":
       [
@@ -228,14 +127,17 @@
           "id": 1,
           "description":
           {
-            "en_US": "Astronaut “Gerhard” is in the Habitation Hub’s Airlock Chamber:"
+            "en_US": "Middle layer is raised (due only to a Big Water in the gray tub)"
           },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "No", "Partly", "Completely" ]
-          },
-          "score": [ 0, 18, 22 ]
+          "type": "yesno",
+          "score": [ 0, 20 ],
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1 ]
+            }
+          ]
         }
       ]
     },
@@ -243,7 +145,7 @@
       "mission": "M08",
       "name":
       {
-        "en_US": "Aerobic Exercise"
+        "en_US": "Manhole Covers"
       },
       "items":
       [
@@ -251,153 +153,23 @@
           "id": 1,
           "description":
           {
-            "en_US": "Exercise Pointer tip is in:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Gray", "White", "Orange" ]
-          },
-          "score": [ 0, 18, 20, 22 ]
-        }
-      ]
-    },
-    {
-      "mission": "M09",
-      "name":
-      {
-        "en_US": "Strength Exercise"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Strength Bar lifted so that the tooth-strip’s 4th hole is at least partly in view"
-          },
-          "type": "yesno",
-          "score": [ 0, 16 ]
-        }
-      ]
-    },
-    {
-      "mission": "M10",
-      "name":
-      {
-       "en_US": "Food Production"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Grey weight is dropped after green, but before tan"
-          },
-          "type": "yesno",
-          "score": [ 0, 16 ]
-        }
-      ]
-    },
-    {
-      "mission": "M11",
-      "name":
-      {
-        "en_US": "Escape Velocity"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Spacecraft stays up"
-          },
-          "type": "yesno",
-          "score": [ 0, 24 ]
-        }
-      ]
-    },
-    {
-      "mission": "M12",
-      "name":
-      {
-        "en_US": "Satellite Orbits"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Satellites on or above the area between the two lines of the Outer Orbit:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3" ]
-          },
-          "score": [ 0, 8, 16, 24 ]
-        }
-      ]
-    },
-    {
-      "mission": "M13",
-      "name":
-      {
-        "en_US": "Observatory"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "The Observatory pointer tip is in:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Gray", "White", "Orange" ]
-          },
-          "score": [ 0, 16, 18, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M14",
-      "name":
-      {
-        "en_US": "Meteroid Deflection"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Meteoroids touching the Mat and in the Center Section:"
+            "en_US": "Manhole Cover(s) are flipped over past vertical (and never reached Base)"
           },
           "type": "enum",
           "choices":
           {
             "en_US": [ "0", "1", "2" ]
           },
-          "score": [ 0, 12, 24 ]
+          "score": [ 0, 15, 30 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "Meteoroids touching the Mat and in Either Side Section:"
+            "en_US": "Both Manhole Covers are flipped over, and completely in separate Tripod targets"
           },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2" ]
-          },
-          "score": [ 0, 8, 16 ]
+          "type": "yesno",
+          "score": [ 0, 30 ]
         }
       ],
       "constraints":
@@ -405,17 +177,17 @@
         {
           "description":
           {
-            "en_US": "There are only two Meteroids on the field."
+            "en_US": "Both Manhole Covers must be flipped over to score the bonus"
           },
-          "rule": "2 - M14_1 - M14_2"
+          "rule": "M08_1 - (M08_2 * 2)"
         }
       ]
     },
     {
-      "mission": "M15",
+      "mission": "M09",
       "name":
       {
-        "en_US": "Lander Touchdown"
+        "en_US": "Tripod"
       },
       "items":
       [
@@ -423,14 +195,280 @@
           "id": 1,
           "description":
           {
-            "en_US": "Lander is intact and touching the Mat completely in:"
+            "en_US": "All the Tripod’s feet are touching the mat, and the Tripod is in the Tripod target:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "None", "Base", "Northeast Planet Area", "Target Circle" ]
+            "en_US": [ "None", "Partially", "Completely" ]
           },
-          "score": [ 0, 16, 20, 22 ]
+          "score": [ 0, 15, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+       "en_US": "Pipe Replacement"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "New Pipe is installed where the Broken Pipe was, and has full/flat contact with the mat"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Pipe Construction"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "New Pipe has full/flat contact with the mat, and is:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Partially", "Completely" ]
+          },
+          "score": [ 0, 15, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Sludge"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Sludge is touching visible wood of a drawn garden box"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Flower"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Flower is raised (due only to a Big Water in the brown pot)"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ],
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "At least one Rain is in the purple part, touching nothing but the Flower model"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Flower model must be raised to score the Rain in the purple part"
+          },
+          "rule": "M13_1 - M13_2"
+        }
+      ]
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Water Well"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Water Well contacting the mat inside the target area:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Partially", "Completely" ]
+          },
+          "score": [ 0, 15, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Fire"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Fire is dropped (due only to the Firetruck applying direct force to the House’s lever"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M16",
+      "name":
+      {
+        "en_US": "Water Collection"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Water Target is East of the Off-Limits line (and never reached the Off-Limit line)"
+          },
+          "type": "yesno"
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "At least one Rain is touching mat in the Water Target"
+          },
+          "type": "yesno"
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "Big Waters touching mat in the Water Target"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5" ]
+          },
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1, 2, 3, 4, 5 ]
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "description":
+          {
+            "en_US": "At least one pair of Big Waters stacked in the Water Target"
+          },
+          "type": "yesno",
+          "pieces":
+          [
+            {
+              "name": "big water",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        }
+      ],
+      "score_rule": "M16_1 * max(M16_2 * 10, (M16_3 * 10) + (M16_4 * 30))"
+    },
+    {
+      "mission": "M17",
+      "name":
+      {
+        "en_US": "Slingshot"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Slingshot is completely in the Slingshot target"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Rain AND Dirty Water completely in the Slingshot target"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Slingshot must be completely in the Slingship target to score the bonus"
+          },
+          "rule": "M17_1 - M17_2"
+        }
+      ]
+    },
+    {
+      "mission": "M18",
+      "name":
+      {
+        "en_US": "Faucet"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Water level is more blue than white (only by turning the Faucet handle)"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
         }
       ]
     },
@@ -446,16 +484,28 @@
           "id": 1,
           "description":
           {
-            "en_US": "Penalty discs in the southeast triangle"
+            "en_US": "Penalty discs in the white triangle area"
           },
           "type": "enum",
           "choices":
           {
             "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
           },
-          "score": [ 0, -3, -6, -9, -12, -15, -18 ]
+          "score": [ 0, -5, -10, -15, -20, -25, -30 ]
         }
       ]
+    }
+  ],
+  "pieces":
+  [
+    {
+      "name": "big water",
+      "description":
+      {
+        "en_US": "Big Water"
+      },
+      "mission": "M16",
+      "quantity": 5
     }
   ]
 }

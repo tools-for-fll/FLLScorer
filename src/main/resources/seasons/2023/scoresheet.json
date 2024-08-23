@@ -24,7 +24,7 @@
       "mission": "M01",
       "name":
       {
-        "en_US": "3D Cinema"
+        "en_US": "Innovation Project Model"
       },
       "items":
       [
@@ -32,10 +32,10 @@
           "id": 1,
           "description":
           {
-            "en_US": "The 3D cinema's red beam is completely to the right of the black frame"
+            "en_US": "The Innovation Project model is at least partly in the hydrogen plant target area"
           },
           "type": "yesno",
-          "score": [ 0, 20 ]
+          "score": [ 0, 10 ]
         }
       ]
     },
@@ -43,7 +43,7 @@
       "mission": "M02",
       "name":
       {
-        "en_US": "Theater Scene Change"
+        "en_US": "Oil Platform"
       },
       "items":
       [
@@ -51,21 +51,23 @@
           "id": 1,
           "description":
           {
-            "en_US": "Your theater's flag is down and the active scene color is"
+            "en_US": "Fuel units in the fuel truck"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "No", "Blue", "Pink", "Orange" ]
-          }
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "Both teams' active scenes match"
+            "en_US": "At least one fuel unit is in the fuel truck and the fuel truck is at least partly over the fueling station target"
           },
-          "type": "yesno"
+          "type": "yesno",
+          "score": [ 0, 10 ]
         }
       ],
       "constraints":
@@ -73,18 +75,17 @@
         {
           "description":
           {
-            "en_US": "The theater's flag must be down to have an active scene match."
+            "en_US": "There must be a fuel unit in the truck to score for being over the fueling station."
           },
-          "rule": "M02_1 - M02_2"
+          "rule": "(M02_1 * 10) - M02_2"
         }
-      ],
-      "score": [ 0, 10, 20, 30, 0, 30, 50, 40 ]
+      ]
     },
     {
       "mission": "M03",
       "name":
       {
-        "en_US": "Immersive Experience"
+        "en_US": "Energy Storage"
       },
       "items":
       [
@@ -92,10 +93,30 @@
           "id": 1,
           "description":
           {
-            "en_US": "The three immersive experience screens are raised"
+            "en_US": "Energy units completely in the energy storage bin"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The energy unit is completely removed from the energy storage tray"
           },
           "type": "yesno",
-          "score": [ 0, 20 ]
+          "score": [ 0, 5 ]
         }
       ]
     },
@@ -103,7 +124,7 @@
       "mission": "M04",
       "name":
       {
-        "en_US": "Masterpiece"
+        "en_US": "Solar Farm"
       },
       "items":
       [
@@ -111,17 +132,42 @@
           "id": 1,
           "description":
           {
-            "en_US": "Your team's LEGO art piece is at least partly in the museum target area"
+            "en_US": "An energy unit has been completely removed from its starting circle"
           },
-          "type": "yesno"
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Smart Grid"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Your field’s orange connector is completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "The art piece is completely supported by the pedestal"
+            "en_US": "Both teams’ orange connectors are completely raised"
           },
-          "type": "yesno"
+          "type": "yesno",
+          "score": [ 0, 10 ]
         }
       ],
       "constraints":
@@ -129,29 +175,9 @@
         {
           "description":
           {
-            "en_US": "The art piece must be partially in the museum target area to be able to score as being supported by the pedestal."
+            "en_US": "Your orange connect must be completely raised in order for both team’s orange connectors to be completely raised."
           },
-          "rule": "M04_1 - M04_2"
-        }
-      ],
-      "score": [ 0, 10, 0, 30 ]
-    },
-    {
-      "mission": "M05",
-      "name":
-      {
-        "en_US": "Augmented Reality Statue"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "The augmented reality statue's orange lever is rotated completely to the right"
-          },
-          "type": "yesno",
-          "score": [ 0, 30 ]
+          "rule": "M05_1 - M05_2"
         }
       ]
     },
@@ -159,7 +185,7 @@
       "mission": "M06",
       "name":
       {
-        "en_US": "Music Concert Light and Sound"
+        "en_US": "Hybrid Car"
       },
       "items":
       [
@@ -167,7 +193,7 @@
           "id": 1,
           "description":
           {
-            "en_US": "The lights' orange lever is rotated completely downwards"
+            "en_US": "The hybrid car is no longer touching the ramp"
           },
           "type": "yesno",
           "score": [ 0, 10 ]
@@ -176,7 +202,7 @@
           "id": 2,
           "description":
           {
-            "en_US": "The speakers' orange lever is rotated completely to the left"
+            "en_US": "The hybrid unit is in the hybrid car"
           },
           "type": "yesno",
           "score": [ 0, 10 ]
@@ -187,7 +213,7 @@
       "mission": "M07",
       "name":
       {
-        "en_US": "Hologram Performer"
+        "en_US": "Wind Turbine"
       },
       "items":
       [
@@ -195,77 +221,7 @@
           "id": 1,
           "description":
           {
-            "en_US": "The hologram performer's orange push activator is completely past the black stage set line"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M08",
-      "name":
-      {
-        "en_US": "Rolling Camera"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "The rolling camera's white pointer is left of"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Dark blue", "Dark & medium blue", "Dark, medium, & light blue" ]
-          },
-          "score": [ 0, 10, 20, 30 ]
-        }
-      ]
-    },
-    {
-      "mission": "M09",
-      "name":
-      {
-        "en_US": "Movie Set"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "The boat is touching the mat and is completely past the black scene line"
-          },
-          "type": "yesno",
-          "score": [ 0, 10 ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "The camera is touching the mat and is at least partly in the camera target area"
-          },
-          "type": "yesno",
-          "score": [ 0, 10 ]
-        }
-      ]
-    },
-    {
-      "mission": "M10",
-      "name":
-      {
-        "en_US": "Sound Mixer"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Number of sound mixer sliders that are raised"
+            "en_US": "Energy units no longer touching the wind turbine"
           },
           "type": "enum",
           "choices":
@@ -277,10 +233,10 @@
       ]
     },
     {
-      "mission": "M11",
+      "mission": "M08",
       "name":
       {
-        "en_US": "Light Show"
+        "en_US": "Watch Television"
       },
       "items":
       [
@@ -288,67 +244,7 @@
           "id": 1,
           "description":
           {
-            "en_US": "The light show's white pointer is within zone"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Yellow", "Green", "Blue" ]
-          },
-          "score": [ 0, 10, 20, 30 ]
-        }
-      ]
-    },
-    {
-      "mission": "M12",
-      "name":
-      {
-        "en_US": "Virtual Reality Artist"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "The chicken is intact and has moved from its starting position"
-          },
-          "type": "yesno"
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "The chicken is over or completely past the lavender dot"
-          },
-          "type": "yesno"
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The chicken must be intact and moved from its starting position to be over or completely past the lavender dot."
-          },
-          "rule": "M12_1 - M12_2"
-        }
-      ],
-      "score": [ 0, 10, 0, 30 ]
-    },
-    {
-      "mission": "M13",
-      "name":
-      {
-        "en_US": "Craft Creator"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "The craft machine's orange and white lid is completely open"
+            "en_US": "The television is completely raised"
           },
           "type": "yesno",
           "score": [ 0, 10 ]
@@ -357,7 +253,95 @@
           "id": 2,
           "description":
           {
-            "en_US": "The craft machine's pink latch is pointing straight down"
+            "en_US": "An energy unit is completely in the green television slot"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Dinosaur Toy"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The dinosaur toy is completely in the left home area"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The dinosaur toy lid is completely closed and the dinosaur toy contains"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "Nothing", "Energy unit", "Rechargable battery" ]
+          },
+          "score": [ 0, 10, 20 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 0 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+        "en_US": "Power Plant"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units no longer touching the power plant"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Hydroelectric Dam"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The energy unit is no longer touching the hydroelectric dam"
           },
           "type": "yesno",
           "score": [ 0, 20 ]
@@ -365,10 +349,10 @@
       ]
     },
     {
-      "mission": "M14",
+      "mission": "M12",
       "name":
       {
-        "en_US": "Audience Delivery"
+        "en_US": "Water Reservoir"
       },
       "items":
       [
@@ -376,27 +360,27 @@
           "id": 1,
           "description":
           {
-            "en_US": "Number of audience members completely in a target destination"
+            "en_US": "Looped water units completely in the water reservoir, touching the mat"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+            "en_US": [ "0", "1", "2", "3" ]
           },
-          "score": [ 0, 5, 10, 15, 20, 25, 30, 35 ]
+          "score": [ 0, 5, 10, 15 ]
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "Number of target destinations with at least one audience member completely in it"
+            "en_US": "Looped water units placed on a single red hook"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+            "en_US": [ "0", "1", "2" ]
           },
-          "score": [ 0, 5, 10, 15, 20, 25, 30, 35 ]
+          "score": [ 0, 10, 20 ]
         }
       ],
       "constraints":
@@ -404,24 +388,17 @@
         {
           "description":
           {
-            "en_US": "There must be at least one target destination."
+            "en_US": "Too many looped water units in use."
           },
-          "rule": "(M14_2 * 7) - M14_1"
-        },
-        {
-          "description":
-          {
-            "en_US": "There can not be more target destinations than delivered audience members."
-          },
-          "rule": "M14_1 - M14_2"
+          "rule": "3 - M12_1 - M12_2"
         }
       ]
     },
     {
-      "mission": "M15",
+      "mission": "M13",
       "name":
       {
-        "en_US": "Expert Delivery"
+        "en_US": "Power-To-X"
       },
       "items":
       [
@@ -429,14 +406,90 @@
           "id": 1,
           "description":
           {
-            "en_US": "Number of experts at least partly in their target destinations"
+            "en_US": "Energy units completely in the hydrogen plant target area"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2", "3", "4", "5" ]
+            "en_US": [ "0", "1", "2", "3" ]
           },
-          "score": [ 0, 10, 20, 30, 40, 50 ]
+          "score": [ 0, 5, 10, 15 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Toy Factory"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units at least partly in the slot in the back of the toy factory (or in the red hopper)"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The mini dinosaur toy has been released"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Rechargeable Battery"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Energy units completely in the rechargeable battery target area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ],
+          "pieces":
+          [
+            {
+              "name": "energy unit",
+              "quantity": [ 0, 1, 2, 3 ]
+            }
+          ]
         }
       ]
     },
@@ -485,6 +538,18 @@
           "score": [ 0, 0, 0, 0 ]
         }
       ]
+    }
+  ],
+  "pieces":
+  [
+    {
+      "name": "energy unit",
+      "description":
+      {
+        "en_US": "energy units"
+      },
+      "mission": "M15",
+      "quantity": 13
     }
   ]
 }

@@ -211,7 +211,7 @@ public class Seasons
 
     // Loop through the possible seasons.
     latest = null;
-    for(int i = 1999; ; i++)
+    for(int i = 2000; ; i++)
     {
       // See if there is an information file for this season.
       in = classLoader.getResourceAsStream("seasons/" + i + "/info.json");
@@ -334,8 +334,9 @@ public class Seasons
         {
           j++;
         }
-        fragment += "            <option value=\"0\">" + m_years.get(i - j - 1) +
-                    " " + m_names.get(i - j) + "</option>\n";
+        fragment += "            <option value=\"0\">" +
+                    m_years.get(i - j - 1) + " " + m_names.get(i - j) +
+                    "</option>\n";
         for(int k = 1; k < j; k++)
         {
           fragment += "            <option value=\"" + k + "\">" +

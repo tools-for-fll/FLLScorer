@@ -5,7 +5,7 @@
       "mission": "M01",
       "name":
       {
-        "en_US": "Pipe Removal"
+        "en_US": "Shark Shipment"
       },
       "items":
       [
@@ -13,368 +13,19 @@
           "id": 1,
           "description":
           {
-            "en_US": "Broken Pipe is completely in Base"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M02",
-      "name":
-      {
-        "en_US": "Flow"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Big Water is on the other team’s Field (only by turning the Pump System’s valves(s))"
-          },
-          "type": "yesno",
-          "score": [ 0, 25 ]
-        }
-      ]
-    },
-    {
-      "mission": "M03",
-      "name":
-      {
-        "en_US": "Pump Addition"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Pump Addition has contact with the mat, completely inside the target area"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M04",
-      "name":
-      {
-        "en_US": "Rain"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "At least one Rain is out of the Rain Cloud"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M05",
-      "name":
-      {
-        "en_US": "Filter"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Lock latch is in the dropped position"
-          },
-          "type": "yesno",
-          "score": [ 0, 30 ]
-        }
-      ]
-    },
-    {
-      "mission": "M06",
-      "name":
-      {
-        "en_US": "Water Treatment"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Big Water is ejected from the Water Treatment model (only by the Toilet’s lever)"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M07",
-      "name":
-      {
-        "en_US": "Fountain"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Middle layer is raised (due only to a Big Water in the gray tub)"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ],
-          "pieces":
-          [
-            {
-              "name": "big water",
-              "quantity": [ 0, 1 ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "mission": "M08",
-      "name":
-      {
-        "en_US": "Manhole Covers"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Manhole Cover(s) are flipped over past vertical (and never reached Base)"
+            "en_US": "Shark and tank are completely in:"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2" ]
-          },
-          "score": [ 0, 15, 30 ]
+            "en_US": [ "None", "Target 1", "Target 2" ]
+          }
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "Both Manhole Covers are flipped over, and completely in separate Tripod targets"
-          },
-          "type": "yesno",
-          "score": [ 0, 30 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "Both Manhole Covers must be flipped over to score the bonus"
-          },
-          "rule": "M08_1 - (M08_2 * 2)"
-        }
-      ]
-    },
-    {
-      "mission": "M09",
-      "name":
-      {
-        "en_US": "Tripod"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "All the Tripod’s feet are touching the mat, and the Tripod is in the Tripod target:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Partially", "Completely" ]
-          },
-          "score": [ 0, 15, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M10",
-      "name":
-      {
-       "en_US": "Pipe Replacement"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "New Pipe is installed where the Broken Pipe was, and has full/flat contact with the mat"
-          },
-          "type": "yesno",
-          "score": [ 0, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M11",
-      "name":
-      {
-        "en_US": "Pipe Construction"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "New Pipe has full/flat contact with the mat, and is:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Partially", "Completely" ]
-          },
-          "score": [ 0, 15, 20 ]
-        }
-      ]
-    },
-    {
-      "mission": "M12",
-      "name":
-      {
-        "en_US": "Sludge"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Sludge is touching visible wood of a drawn garden box"
-          },
-          "type": "yesno",
-          "score": [ 0, 30 ]
-        }
-      ]
-    },
-    {
-      "mission": "M13",
-      "name":
-      {
-        "en_US": "Flower"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Flower is raised (due only to a Big Water in the brown pot)"
-          },
-          "type": "yesno",
-          "score": [ 0, 30 ],
-          "pieces":
-          [
-            {
-              "name": "big water",
-              "quantity": [ 0, 1 ]
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "At least one Rain is in the purple part, touching nothing but the Flower model"
-          },
-          "type": "yesno",
-          "score": [ 0, 30 ]
-        }
-      ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The Flower model must be raised to score the Rain in the purple part"
-          },
-          "rule": "M13_1 - M13_2"
-        }
-      ]
-    },
-    {
-      "mission": "M14",
-      "name":
-      {
-        "en_US": "Water Well"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Water Well contacting the mat inside the target area:"
-          },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "None", "Partially", "Completely" ]
-          },
-          "score": [ 0, 15, 25 ]
-        }
-      ]
-    },
-    {
-      "mission": "M15",
-      "name":
-      {
-        "en_US": "Fire"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Fire is dropped (due only to the Firetruck applying direct force to the House’s lever"
-          },
-          "type": "yesno",
-          "score": [ 0, 25 ]
-        }
-      ]
-    },
-    {
-      "mission": "M16",
-      "name":
-      {
-        "en_US": "Water Collection"
-      },
-      "items":
-      [
-        {
-          "id": 1,
-          "description":
-          {
-            "en_US": "Water Target is East of the Off-Limits line (and never reached the Off-Limit line)"
-          },
-          "type": "yesno"
-        },
-        {
-          "id": 2,
-          "description":
-          {
-            "en_US": "At least one Rain is touching mat in the Water Target"
+            "en_US": "Shark touching only the tank floor (NOT wall)"
           },
           "type": "yesno"
         },
@@ -382,44 +33,18 @@
           "id": 3,
           "description":
           {
-            "en_US": "Big Waters touching mat in the Water Target"
+            "en_US": "Nothing touched the Shark except the tank"
           },
-          "type": "enum",
-          "choices":
-          {
-            "en_US": [ "0", "1", "2", "3", "4", "5" ]
-          },
-          "pieces":
-          [
-            {
-              "name": "big water",
-              "quantity": [ 0, 1, 2, 3, 4, 5 ]
-            }
-          ]
-        },
-        {
-          "id": 4,
-          "description":
-          {
-            "en_US": "At least one pair of Big Waters stacked in the Water Target"
-          },
-          "type": "yesno",
-          "pieces":
-          [
-            {
-              "name": "big water",
-              "quantity": [ 0, 1 ]
-            }
-          ]
+          "type": "yesno"
         }
       ],
-      "score_rule": "M16_1 * max(M16_2 * 10, (M16_3 * 10) + (M16_4 * 30))"
+      "score_rule": "M01_3 * ((M01_1 * 3) + (ceil(M01_1 / 2) * 4) + (ceil(M01_1 / 2) * M01_2 * 20))"
     },
     {
-      "mission": "M17",
+      "mission": "M02",
       "name":
       {
-        "en_US": "Slingshot"
+        "en_US": "Service Dog Action"
       },
       "items":
       [
@@ -427,16 +52,234 @@
           "id": 1,
           "description":
           {
-            "en_US": "Slingshot is completely in the Slingshot target"
+            "en_US": "Warning Fence is down"
           },
-          "type": "yesno",
-          "score": [ 0, 20 ]
+          "type": "yesno"
         },
         {
           "id": 2,
           "description":
           {
-            "en_US": "Rain AND Dirty Water completely in the Slingshot target"
+            "en_US": "Robot completely crossed the fence"
+          },
+          "type": "yesno"
+        }
+      ],
+      "score_rule": "M02_1 * M02_2 * 15"
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Animal Conservation"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Pairs of Identical Animals completely on the same side (Both Fields)"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+          },
+          "score": [ 0, 20, 40, 60, 80, 100, 120 ]
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Feeding"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Pieces of food completely in the Animal Areas"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
+          },
+          "score": [ 0, 10, 20, 30, 40, 50, 60, 70, 80 ]
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Biomimicry"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Wall supports the complete weight of the White Gecko"
+          },
+          "type": "yesno",
+          "score": [ 0, 15  ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Wall supports the complete weight of the Robot"
+          },
+          "type": "yesno",
+          "score": [ 0, 32 ]
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Milking Automation"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Milk AND Manure have all rolled out"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Milk has all rolled out, but NOT Manure"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Manure cannot have rolled out and not rolled out"
+          },
+          "rule": "1 - M06_1 - M06_2"
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Panda Release"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Slider appears fully opened clockwise"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Camera Recovery"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Camera is completely in Base"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Training and Research"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Dog and Trainer completely in the Training/Research Area"
+          },
+          "type": "yesno",
+          "score": [ 0, 12 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Zoologist completely in the Training/Research Area"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "Number of Manure Samples completely in the Training/Research Area"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25, 30, 40 ]
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+       "en_US": "Bee Keeping"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Bee is on the Beehive with NO Honey in the Beehive"
+          },
+          "type": "yesno",
+          "score": [ 0, 12 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Bee is on the Beehive and the Honey is completely in Base"
           },
           "type": "yesno",
           "score": [ 0, 15 ]
@@ -447,17 +290,17 @@
         {
           "description":
           {
-            "en_US": "The Slingshot must be completely in the Slingship target to score the bonus"
+            "en_US": "Honey is either in or not in Base"
           },
-          "rule": "M17_1 - M17_2"
+          "rule": "1 - M10_1 - M10_2"
         }
       ]
     },
     {
-      "mission": "M18",
+      "mission": "M11",
       "name":
       {
-        "en_US": "Faucet"
+        "en_US": "Prosthesis"
       },
       "items":
       [
@@ -465,15 +308,105 @@
           "id": 1,
           "description":
           {
-            "en_US": "Water level is more blue than white (only by turning the Faucet handle)"
+            "en_US": "Prosthesis fitted to the Pet, NOT held by the Ref"
           },
           "type": "yesno",
-          "score": [ 0, 25 ]
+          "score": [ 0, 9 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Prosthesis fitted to the Pet and completely in the Farm"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Pet either is or is not completely in the Farm"
+          },
+          "rule": "1 - M11_1 - M11_2"
         }
       ]
     },
     {
-      "mission": "P01",
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Seal in Base"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Seal is completely in Base, NOT broken"
+          },
+          "type": "yesno",
+          "score": [ 0, 1 ]
+        }
+      ]
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Milk in Base"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "All three Milk are completely in Base"
+          },
+          "type": "yesno",
+          "score": [ 0, 1 ]
+        }
+      ]
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Milk on Ramp"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "<i>(Select option that best fits)</i><br>A) All three milk supported by the Ramp<br>B) (A) + only things supported by & touching the Ramp<br>C) (A) + (B) + standing"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "A", "B", "C" ]
+          },
+          "score": [ 0, 2, 3, 4 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Milk can not be both in Base and on the Ramp"
+          },
+          "rule": "1 - M13_1 - ceil(M14_1 / 3)"
+        }
+      ]
+    },
+    {
+      "mission": "P",
       "name":
       {
         "en_US": "Penalties"
@@ -484,28 +417,16 @@
           "id": 1,
           "description":
           {
-            "en_US": "Penalty discs in the white triangle area"
+            "en_US": "Number of Manure Samples in the white triangle area"
           },
           "type": "enum",
           "choices":
           {
-            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+            "en_US": [ "0", "1", "2", "3", "4", "5" ]
           },
-          "score": [ 0, -5, -10, -15, -20, -25, -30 ]
+          "score": [ 0, -6, -12, -18, -24, -30 ]
         }
       ]
-    }
-  ],
-  "pieces":
-  [
-    {
-      "name": "big water",
-      "description":
-      {
-        "en_US": "Big Water"
-      },
-      "mission": "M16",
-      "quantity": 5
     }
   ]
 }
