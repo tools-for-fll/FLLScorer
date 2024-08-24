@@ -64,6 +64,10 @@ The structure of the scoresheet is as follows:
     * "rule" - An expression that evalutes to 0 or more when the constraint is
                met and less than 0 when the constraint is violated.
 
+  * "no_touch" - (Optional) A boolean that indicates that team equipment is not
+                 allowed to touch the mission model for this mission to score.
+                 This is used as a reminder to the referee during scoring.
+
 * "pieces" - An array of the constrained quantity game pieces.
 
   * "name" - The name of the game piece.

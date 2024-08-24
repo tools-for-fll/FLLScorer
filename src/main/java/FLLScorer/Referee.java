@@ -185,6 +185,10 @@ public class Referee
         name = mission.getObject("name").getString("en_US");
       }
 
+      // See if this mission has a no touch requirement (team equipment can not
+      // be touching the mission model).
+      boolean noTouch = mission.getBoolean("no_touch");
+
       // Add the mission, ID, and name to the HTML.
       html += "<div id=\"" + mission_id + "\" class=\"mission\">";
       html += "  <div class=\"mission_id\">";
@@ -196,6 +200,11 @@ public class Referee
       html += "    <span>";
       html += "      " + name;
       html += "    </span>";
+      if(noTouch)
+      {
+        html += "    <img class=\"no_touch\" src=\"referee/no_touch.png\" " +
+                "></img>\n";
+      }
       html += "  </div>";
 
       // Get the mission items and loop through them.

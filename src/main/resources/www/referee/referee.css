@@ -344,6 +344,13 @@
   margin-left: 0.25em;
 }
 
+.score_container .mission .mission_name .no_touch
+{
+  height: 2em;
+  margin-left: auto;
+  width: 2em;
+}
+
 .score_container .mission .mission_desc
 {
   grid-column: 1 / span 2;
