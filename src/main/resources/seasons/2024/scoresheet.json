@@ -97,7 +97,8 @@
           "type": "yesno",
           "score": [ 0, 20 ]
         }
-      ]
+      ],
+      "no_touch": true
     },
     {
       "mission": "M04",
@@ -134,7 +135,8 @@
           "rule": "M04_1 - M04_2"
         }
       ],
-      "score": [ 0, 10, 0, 30 ]
+      "score": [ 0, 10, 0, 30 ],
+      "no_touch": true
     },
     {
       "mission": "M05",
@@ -274,7 +276,8 @@
           },
           "score": [ 0, 10, 20, 30 ]
         }
-      ]
+      ],
+      "no_touch": true
     },
     {
       "mission": "M11",
