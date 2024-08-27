@@ -230,6 +230,17 @@ showMenu()
     }
   }
 
+  // Handles starting the WiFi information dialog.
+  function
+  wifiInfo()
+  {
+    // Hide the menu.
+    hideMenu();
+
+    // Start the WiFi information dialog.
+    updateWiFiInfo();
+  }
+
   // Handles starting the change password dialog.
   function
   passwd()
@@ -245,6 +256,7 @@ showMenu()
   if(!popup_added)
   {
     // Add the click handlers to the pop-up menu.
+    dialog.find(".wifi_info button").on("click", wifiInfo);
     dialog.find(".change_password button").on("click", passwd);
     dialog.find(".logout button").on("click", logout);
     dialog.find(".close span").on("click", hideMenu);
@@ -260,6 +272,115 @@ showMenu()
   // handling for a modal dialog (which simply closes it, instead of animating
   // the close like needed here).
   $(document).on("keydown", keyDownMenu);
+}
+
+// Shows a WiFi information dialog.
+function
+updateWiFiInfo()
+{
+  // Called when the query to the server fails.
+  function
+  onFail()
+  {
+    // Display the error message.
+    showError("<!--#str_connect_error-->", null);
+  }
+
+  // Called when the submit query to the server has completed.
+  function
+  onSubmitDone(result)
+  {
+    // See if the request was successful.
+    if(result["result"] != "ok")
+    {
+      // Display the error message.
+      showError(result["result"], null);
+    }
+    else
+    {
+      // Display a success message.
+      showMessage("<!--#str_wifi_info_success-->");
+    }
+  }
+
+  // Called when the form is submitted.
+  function
+  onSubmit()
+  {
+    // Retrieve the values from the form.
+    ssid = $(".ssid_input input").val();
+    password = $(".password_input input").val();
+
+    // Send a request to the server to change the password.
+    $.get("/admin/wifi.json?action=set&ssid=" + ssid + "&password=" + password)
+      .done(onSubmitDone)
+      .fail(onFail);
+  }
+
+  // Called when the get query to the server has completed.
+  function
+  onGetDone(result)
+  {
+    // Get the current SSID, if it exists.
+    var ssid = result["ssid"];
+    if(ssid !== null)
+    {
+      ssid = "value=\"" + ssid + "\" ";
+    }
+
+    // Get the current password, if it exists.
+    var password = result["password"];
+    if(password !== null)
+    {
+      password = "value=\"" + password + "\" ";
+    }
+
+    // Construct the WiFi information dialog.
+    var html =`
+<div class="wifi_info_container">
+  <div class="title">
+    <span>
+      <!--#str_wifi_info_title-->
+    </span>
+  </div>
+  <div class="ssid">
+    <span>
+      <!--#str_wifi_info_ssid-->
+    </span>
+  </div>
+  <div class="ssid_input">
+    <input id="ssid" type="text" placeholder="&#xf11c;" ${ssid}/>
+  </div>
+  <div class="password">
+    <span>
+      <!--#str_wifi_info_password-->
+    </span>
+  </div>
+  <div class="password_input">
+    <input id="password" type="text" placeholder="&#xf11c;" ${password}/>
+  </div>
+  <div class="buttons">
+    <button id="wifi_info_cancel" class="gray">
+      <!--#str_button_cancel-->
+    </button>
+    <button id="wifi_info_change" class="green">
+      <!--#str_button_change-->
+    </button>
+  </div>
+</div>`;
+
+    // Show the WiFi information dialog.
+    showPopup(html,
+              {
+                "wifi_info_cancel": null,
+                "wifi_info_change": onSubmit
+              });
+  }
+
+  // Get the current WiFi information.
+  $.getJSON("/admin/wifi.json?action=get")
+    .done(onGetDone)
+    .fail(onFail);
 }
 
 // Shows a password change dialog.

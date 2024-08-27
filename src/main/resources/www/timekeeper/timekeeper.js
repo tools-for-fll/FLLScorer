@@ -24,7 +24,7 @@ displayTime(time)
   sheet.setAttribute("id", "timekeeper_css");
 
   // Determine the color to use for the timer.
-  if((time <= 0) || ($("#button_reset").prop("disabled") == false))
+  if((time <= 0) || ($("#btn_reset").prop("disabled") == false))
   {
     color = "var(--color-bright-red)";
   }
@@ -212,27 +212,27 @@ wsMessage(e)
   if(e.data.substring(0, 7) === "m:run")
   {
     // Enable the timer cancel button.
-    $("#button_start").prop("disabled", true);
-    $("#button_cancel").prop("disabled", false);
-    $("#button_reset").prop("disabled", true);
+    $("#btn_start").prop("disabled", true);
+    $("#btn_cancel").prop("disabled", false);
+    $("#btn_reset").prop("disabled", true);
   }
 
   // See if this is a mode stop message.
   else if(e.data.substring(0, 6) === "m:stop")
   {
     // Enable the timer reset button.
-    $("#button_start").prop("disabled", true);
-    $("#button_cancel").prop("disabled", true);
-    $("#button_reset").prop("disabled", false);
+    $("#btn_start").prop("disabled", true);
+    $("#btn_cancel").prop("disabled", true);
+    $("#btn_reset").prop("disabled", false);
   }
 
   // See if this is a mode reset message.
   else if(e.data.substring(0, 7) === "m:reset")
   {
     // Enable the timer start button.
-    $("#button_start").prop("disabled", false);
-    $("#button_cancel").prop("disabled", true);
-    $("#button_reset").prop("disabled", true);
+    $("#btn_start").prop("disabled", false);
+    $("#btn_cancel").prop("disabled", true);
+    $("#btn_reset").prop("disabled", true);
   }
 
   // See if this is a time message.
@@ -261,27 +261,27 @@ function
 ready()
 {
   // Set the function to call when the "menu" button is pressed.
-  $("#button_menu").click(showMenu);
+  $("#btn_menu").click(showMenu);
 
   // Set the function to call when the "test" button is pressed.
-  $("#button_test").click(showTest);
+  $("#btn_test").click(showTest);
 
   // Set the function to call when the "start" button is pressed.
-  $("#button_start").click(startMatch);
+  $("#btn_start").click(startMatch);
 
   // Set the function to call when the "cancel" button is pressed.
-  $("#button_cancel").click(cancelMatch);
+  $("#btn_cancel").click(cancelMatch);
 
   // Set the function to call when the "reset" button is pressed.
-  $("#button_reset").click(resetMatch);
+  $("#btn_reset").click(resetMatch);
 
   // Display the not connected match length as the starting timer value.
   displayTime(-1);
 
   // Enable the start button and disable the cancel and reset buttons.
-  $("#button_start").prop("disabled", false);
-  $("#button_cancel").prop("disabled", true);
-  $("#button_reset").prop("disabled", true);
+  $("#btn_start").prop("disabled", false);
+  $("#btn_cancel").prop("disabled", true);
+  $("#btn_reset").prop("disabled", true);
 
   // A key listener to enter/exit fullscreen mode when Ctrl+F is pressed.
   $(document).keypress(function(e)

@@ -51,9 +51,18 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * The interface for accepting requests for dynamically generated pages.
  */
-interface DynamicHandler
+interface DynamicPageHandler
 {
   byte[] run(String path, HashMap<String, String> paramMap);
+}
+
+/**
+ * The interface for accepting requests for dynamically generated server side
+ * includes (SSI).
+ */
+interface DynamicSSIHandler
+{
+  String run(String name, HashMap<String, String> paramMap);
 }
 
 /**
@@ -123,6 +132,17 @@ public class WebServer extends HttpServlet
   private ArrayList<String> m_SSIValues;
 
   /**
+   * The list of names for the dynamic Server Side Includes.
+   */
+  private ArrayList<String> m_dynamicSSINames;
+
+  /**
+   * The list of handlers for the dynamic Server Side Includes, stored in the
+   * same order as <i>m_dynamicSSINames</i>.
+   */
+  private ArrayList<DynamicSSIHandler> m_dynamicSSIHandlers;
+
+  /**
    * The list of paths that are dynamically generated.
    */
   private ArrayList<String> m_dynamicPaths;
@@ -131,7 +151,7 @@ public class WebServer extends HttpServlet
    * The list of handlers for dynmically generated content, stored in the same
    * order as <i>m_dynamicPaths</i>.
    */
-  private ArrayList<DynamicHandler> m_dynamicHandlers;
+  private ArrayList<DynamicPageHandler> m_dynamicHandlers;
 
   /**
    * The list of source paths that are mapped (allowing internal resources to
@@ -236,6 +256,37 @@ public class WebServer extends HttpServlet
   }
 
   /**
+   * Associates a string with a corresponding dynamic handler as a Server Side
+   * Include
+   *
+   * @param name The name.
+   *
+   * @param handler The method that generates the dynamic content when it is
+   *                requested.
+   */
+  public void
+  registerDynamicSSI(String name, DynamicSSIHandler handler)
+  {
+    // Loop through the existing dynamic SSIs.
+    for(int i = 0; i < m_dynamicSSINames.size(); i++)
+    {
+      // See if these names match.
+      if(name.equalsIgnoreCase(m_dynamicSSINames.get(i)))
+      {
+        // The names match, so update the handler.
+        m_dynamicSSIHandlers.set(i, handler);
+
+        // Done.
+        return;
+      }
+    }
+
+    // This is a new name, so add it and the value to the dyanmic SSI lists.
+    m_dynamicSSINames.add(name);
+    m_dynamicSSIHandlers.add(handler);
+  }
+
+  /**
    * Associated a handler for dynamic content with a web path.
    *
    * @param path The web path to server dynamically.
@@ -244,7 +295,7 @@ public class WebServer extends HttpServlet
    *                requested.
    */
   public void
-  registerDynamicFile(String path, DynamicHandler handler)
+  registerDynamicFile(String path, DynamicPageHandler handler)
   {
     // Add the values to the dynamic handler lists.
     m_dynamicPaths.add("www" + path);
@@ -319,10 +370,12 @@ public class WebServer extends HttpServlet
    *
    * @param response The response text.
    *
+   * @param paramMap The parameters from the request.
+   *
    * @return The processed response text.
    */
   private byte[]
-  processSSI(byte[] response)
+  processSSI(byte[] response, HashMap<String, String> paramMap)
   {
     String resp, name, value;
     int start, end;
@@ -358,6 +411,24 @@ public class WebServer extends HttpServlet
 
           // The remainder of the list does not need to be searched.
           break;
+        }
+      }
+
+      // See if the SSI tag was found.
+      if(value.equals(""))
+      {
+        // Loop through then known dynamic SSI substitutions.
+        for(int idx = 0; idx < m_dynamicSSINames.size(); idx++)
+        {
+          // See if this substitution name matches.
+          if(name.equalsIgnoreCase(m_dynamicSSINames.get(idx)))
+          {
+            // Update the value to the dynamic substitution value.
+            value = m_dynamicSSIHandlers.get(idx).run(name, paramMap);
+
+            // The remainder of the list does not need to be searched.
+            break;
+          }
         }
       }
 
@@ -433,7 +504,9 @@ public class WebServer extends HttpServlet
       String key = keys.nextElement();
 
       // Get this parameter's value and add it to the parameter map.
-      if(!key.equals("authenticated_user"))
+      if(!key.equals("authenticated_user") && !key.equals("role_admin") &&
+         !key.equals("role_host") && !key.equals("role_judge") &&
+         !key.equals("role_referee") && !key.equals("role_timekeeper"))
       {
         paramMap.put(key, request.getParameter(key));
       }
@@ -443,6 +516,13 @@ public class WebServer extends HttpServlet
     if(request.getRemoteUser() != null)
     {
       paramMap.put("authenticated_user", request.getRemoteUser());
+      paramMap.put("role_admin", request.isUserInRole("admin") ? "1" : "0");
+      paramMap.put("role_host", request.isUserInRole("host") ? "1" : "0");
+      paramMap.put("role_judge", request.isUserInRole("juge") ? "1" : "0");
+      paramMap.put("role_referee",
+                   request.isUserInRole("referee") ? "1" : "0");
+      paramMap.put("role_timekeeper",
+                   request.isUserInRole("timekeeper") ? "1" : "0");
     }
 
     // Loop through the dynamic paths.
@@ -470,7 +550,7 @@ public class WebServer extends HttpServlet
     if(setMimeType(response, path))
     {
       // Perform SSI processing on the response.
-      resp = processSSI(resp);
+      resp = processSSI(resp, paramMap);
     }
 
     // Set the content length and write the response.
@@ -562,11 +642,15 @@ public class WebServer extends HttpServlet
       {
         // Split this parameter into its key/value.
         String[] items = params[i].split("=");
+        String key = items[0];
+        String value = (items.length == 1) ? "" : items[1];
 
         // Add this key/value to the parameter map.
-        if(!items[0].equals("authenticated_user"))
+        if(!key.equals("authenticated_user") && !key.equals("role_admin") &&
+           !key.equals("role_host") && !key.equals("role_judge") &&
+           !key.equals("role_referee") && !key.equals("role_timekeeper"))
         {
-          paramMap.put(items[0], items[1]);
+          paramMap.put(key, value);
         }
       }
     }
@@ -575,6 +659,13 @@ public class WebServer extends HttpServlet
     if(request.getRemoteUser() != null)
     {
       paramMap.put("authenticated_user", request.getRemoteUser());
+      paramMap.put("role_admin", request.isUserInRole("admin") ? "1" : "0");
+      paramMap.put("role_host", request.isUserInRole("host") ? "1" : "0");
+      paramMap.put("role_judge", request.isUserInRole("juge") ? "1" : "0");
+      paramMap.put("role_referee",
+                   request.isUserInRole("referee") ? "1" : "0");
+      paramMap.put("role_timekeeper",
+                   request.isUserInRole("timekeeper") ? "1" : "0");
     }
 
     // Loop through the dynamic paths.
@@ -615,7 +706,7 @@ public class WebServer extends HttpServlet
     if(setMimeType(response, path))
     {
       // Perform SSI processing on the response.
-      resp = processSSI(resp);
+      resp = processSSI(resp, paramMap);
     }
 
     // Set the content length and write the response.
@@ -694,6 +785,17 @@ public class WebServer extends HttpServlet
       {
         // Return the corresponding value.
         return(m_SSIValues.get(i));
+      }
+    }
+
+    // Loop through the dynamic SSI names.
+    for(int i = 0; i < m_dynamicSSINames.size(); i++)
+    {
+      // See if this name matches.
+      if(name.equalsIgnoreCase(m_dynamicSSINames.get(i)))
+      {
+        // Return the corresponding dynamic value.
+        return(m_dynamicSSIHandlers.get(i).run(name, null));
       }
     }
 
@@ -1013,8 +1115,10 @@ public class WebServer extends HttpServlet
     m_useSSI = new ArrayList<Boolean>();
     m_SSINames = new ArrayList<String>();
     m_SSIValues = new ArrayList<String>();
+    m_dynamicSSINames = new ArrayList<String>();
+    m_dynamicSSIHandlers = new ArrayList<DynamicSSIHandler>();
     m_dynamicPaths = new ArrayList<String>();
-    m_dynamicHandlers = new ArrayList<DynamicHandler>();
+    m_dynamicHandlers = new ArrayList<DynamicPageHandler>();
     m_pathMappingSrc = new ArrayList<String>();
     m_pathMappingDest = new ArrayList<String>();
 
@@ -1047,6 +1151,10 @@ public class WebServer extends HttpServlet
     loadFragment("html_body_end", "body_end.html");
     loadFragment("html_body_start", "body_start.html");
     loadFragment("html_head", "head.html");
+    loadFragment("html_links_wifi", "links_wifi.html");
+    loadFragment("html_menu_bar_item", "menu_bar_item.html");
+    loadFragment("html_popup_menu_admin", "popup_menu_admin.html");
+    loadFragment("html_popup_menu_user", "popup_menu_user.html");
     loadFragment("html_popup_menu", "popup_menu.html");
 
     // Load the en_US strings, then overlay them with the strings for the

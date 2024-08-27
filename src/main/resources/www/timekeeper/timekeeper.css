@@ -144,7 +144,7 @@
   padding: 2vh 2vw;
 }
 
-#button_start, #button_cancel, #button_reset
+#btn_start, #btn_cancel, #btn_reset
 {
   background-color: var(--background-color);
   border: 0.1vw solid var(--accent-color);
@@ -155,7 +155,7 @@
   width: 100%;
 }
 
-#button_start:disabled, #button_cancel:disabled, #button_reset:disabled
+#btn_start:disabled, #btn_cancel:disabled, #btn_reset:disabled
 {
   border: 0.1vw solid var(--disable-color);
   border-radius: 10vmin;
@@ -178,11 +178,12 @@
   justify-content: center;
 }
 
-#button_menu, #button_test
+#btn_menu, #btn_test
 {
   background-color: var(--background-color);
   border: 0;
   color: var(--foreground-color);
+  font-size: 3em;
   padding: 0.5vw;
 }
 

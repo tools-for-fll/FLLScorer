@@ -29,6 +29,12 @@ str_login_login:Login
 str_login_password:Password
 str_login_username:Username
 
+// Strings for the WiFi information dialog.
+str_wifi_info_password:Password:
+str_wifi_info_ssid:SSID:
+str_wifi_info_success:WiFi information updated.
+str_wifi_info_title:WiFi Information
+
 // Strings for the passowrd change dialog.
 str_password_change:Change Password
 str_password_current:Current password
@@ -59,6 +65,7 @@ str_status_teams:Teams
 // Strings for the popup menu.
 str_popup_menu_change_password:Change Password
 str_popup_menu_logout:Logout
+str_popup_menu_wifi_info:WiFi Information
 
 // Strings for the about popup
 str_about_copyright:Copyright &copy; 2024 Brian Kircher

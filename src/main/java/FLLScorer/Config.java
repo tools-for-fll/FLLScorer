@@ -41,6 +41,16 @@ public class Config
     new String("securityBypass");
 
   /**
+   * The database key used to store the WiFi SSID.
+   */
+  private static final String m_wifiSSID = "wifiSSID";
+
+  /**
+   * The database key used to store the WiFi password.
+   */
+  private static final String m_wifiPassword = "wifiPassword";
+
+  /**
    * The object for the Config singleton.
    */
   private static Config m_instance = null;
@@ -281,6 +291,54 @@ public class Config
   {
     // Set or add the configuration value.
     m_database.configValueSet(m_securityBypassKey, enable ? "1" : "0");
+  }
+
+  /**
+   * Gets the WiFi SSID value.
+   *
+  * @return The SSID of the WiFi network.
+   */
+  public String
+  wifiSSIDGet()
+  {
+    // Return the SSID of the WiFi network.
+    return(m_database.configValueGet(m_wifiSSID));
+  }
+
+  /**
+   * Sets the WiFi SSID value.
+   *
+   * @param ssid The SSID of the WiFi network.
+   */
+  public void
+  wifiSSIDSet(String ssid)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_wifiSSID, ssid);
+  }
+
+  /**
+   * Gets the WiFi password value.
+   *
+  * @return The password of the WiFi network.
+   */
+  public String
+  wifiPasswordGet()
+  {
+    // Return the password of the WiFi network.
+    return(m_database.configValueGet(m_wifiPassword));
+  }
+
+  /**
+   * Sets the WiFi password value.
+   *
+   * @param ssid The password of the WiFi network.
+   */
+  public void
+  wifiPasswordSet(String password)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_wifiPassword, password);
   }
 
   /**

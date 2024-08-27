@@ -10,9 +10,14 @@ import java.io.ByteArrayOutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+
+import org.bspfsystems.simplejson.JSONObject;
+import org.bspfsystems.simplejson.SimpleJSONObject;
+import org.bspfsystems.simplejson.parser.JSONParser;
 
 import io.nayuki.qrcodegen.QrCode;
 
@@ -27,6 +32,11 @@ public class Links
    * The object for the Links singleton.
    */
   private static Links m_instance = null;
+
+  /**
+   * The Config object.
+   */
+  private Config m_config = null;
 
   /**
    * The Webserver object.
@@ -252,9 +262,103 @@ public class Links
   private byte[]
   serveWiFi(String path, HashMap<String, String> paramMap)
   {
+    // Get the WiFi information from the database.
+    String ssid = m_config.wifiSSIDGet();
+    String password = m_config.wifiPasswordGet();
+
     // Generate a QR code for joining the WiFi network.
-    return(serveQrCode("WIFI:T:WPA;S:network;P:password;;"));
+    return(serveQrCode("WIFI:T:WPA;S:" + ssid + ";P:" + password + ";;"));
   }
+
+  /**
+   * Handles requests for /admin/wifi.json.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  private byte[]
+  serveWiFiInfo(String path, HashMap<String, String> paramMap)
+  {
+    JSONObject result = new SimpleJSONObject();
+    String action;
+
+    // Get the action.
+    action = paramMap.containsKey("action") ? paramMap.get("action") : "get";
+
+    // See if the action is "get".
+    if(action.equals("get"))
+    {
+      // Get the current WiFi information and put it into the response.
+      result.set("ssid", m_config.wifiSSIDGet());
+      result.set("password", m_config.wifiPasswordGet());
+
+      // Success.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, see if the action is "set" and the required parameters are
+    // present.
+    else if(action.equals("set") && paramMap.containsKey("ssid") &&
+            paramMap.containsKey("password"))
+    {
+      // Update the WiFi information based on the request.
+      m_config.wifiSSIDSet(paramMap.get("ssid"));
+      m_config.wifiPasswordSet(paramMap.get("password"));
+
+      // Success.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, this is an unknown request.
+    else
+    {
+      result.set("result", "error");
+    }
+
+    // Convert the response into a byte array and return it.
+    try
+    {
+      String json = JSONParser.format(JSONParser.serialize(result));
+      return(json.getBytes(StandardCharsets.UTF_8));
+    }
+    catch(Exception e)
+    {
+      return("{}".getBytes(StandardCharsets.UTF_8));
+    }
+  }
+
+  /**
+   * Handles SSI requests for links_wifi.
+   *
+   * @param name The name of the SSI.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return The replacement for the SSI.
+   */
+  public String
+  serveSSI(String name, HashMap<String, String> paramMap)
+  {
+    // Get the WiFi information from the database.
+    String ssid = m_config.wifiSSIDGet();
+    String password = m_config.wifiPasswordGet();
+
+    // There is no replacement if the WiFi information is not known.
+    if(ssid.equals("") && password.equals(""))
+    {
+      return("");
+    }
+
+    // Otherwise, provide the HTML fragment for the WiFi panel as the
+    // replacement.
+    else
+    {
+      return("<!--#html_links_wifi-->");
+    }
+ }
 
   /**
    * Performs initial setup for the links handler.
@@ -262,8 +366,15 @@ public class Links
   public void
   setup()
   {
-    // Get a reference to the web server.
+    // Get a reference to the configuration and web server.
+    m_config = Config.getInstance();
     m_webserver = WebServer.getInstance();
+
+    // Register the dynamic handler for the wifi.json file.
+    m_webserver.registerDynamicFile("/admin/wifi.json", this::serveWiFiInfo);
+
+    // Register the dynamic SSI handler for the WiFi links panel.
+    m_webserver.registerDynamicSSI("links_wifi", this::serveSSI);
 
     // Register the dynamic handlers for the various QR code PNGs.
     m_webserver.registerDynamicFile("/links/admin.png", this::serveAdmin);

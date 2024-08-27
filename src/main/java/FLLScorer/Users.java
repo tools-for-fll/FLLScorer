@@ -565,6 +565,103 @@ public class Users
   }
 
   /**
+   * Handles SSI requests for menu_bar_item and popup_meu.
+   *
+   * @param name The name of the SSI.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return The replacement for the SSI.
+   */
+  private String
+  serveSSI(String name, HashMap<String, String> paramMap)
+  {
+    enum userType
+    {
+      unauthenticated,
+      user,
+      role,
+      admin
+    };
+    userType type;
+
+    // Determine the user type.
+    if(!paramMap.containsKey("authenticated_user"))
+    {
+      type = userType.unauthenticated;
+    }
+    else
+    {
+      String user = paramMap.get("authenticated_user");
+
+      if(user.equals("admin") || user.equals("host") || user.equals("judge") ||
+         user.equals("referee") || user.equals("timekeeper"))
+      {
+        type = userType.role;
+      }
+      else
+      {
+        type = userType.user;
+      }
+
+      if(paramMap.containsKey("role_admin") &&
+         (paramMap.get("role_admin").equals("1")))
+      {
+        type = userType.admin;
+      }
+    }
+
+    // See if this is the menu_bar_item substitution.
+    if(name.equals("menu_bar_item"))
+    {
+      // Insert the menu bar item HTML for admins, role-based logins, and
+      // user-based logins.
+      if((type == userType.user) || (type == userType.role) ||
+         (type == userType.admin))
+      {
+        return("<!--#html_menu_bar_item-->");
+      }
+
+      // Otherwise, provide no substitution for unauthenticated accesses.
+      else
+      {
+        return("");
+      }
+    }
+
+    // See if this is the popup_menu substitution.
+    if(name.equals("popup_menu"))
+    {
+      // Provide the full admin popup menu HTML for admins.
+      if(type == userType.admin)
+      {
+        return("<!--#html_popup_menu_admin-->");
+      }
+
+      // Provide the user popup menu HTML for user-based logins.
+      else if(type == userType.user)
+      {
+        return("<!--#html_popup_menu_user-->");
+      }
+
+      // Provide the generic popup menu HTML for role-based logins.
+      else if(type == userType.role)
+      {
+        return("<!--#html_popup_menu-->");
+      }
+
+      // Otherwise, provide no substitution for unauthenticated accesses.
+      else
+      {
+        return("");
+      }
+    }
+
+    // Remove this item as it is unknown.
+    return("");
+  }
+
+  /**
    * Performs initial setup for the users handler.
    */
   public void
@@ -604,5 +701,9 @@ public class Users
 
     // Register the dynamic handler for the password.json file.
     m_webserver.registerDynamicFile("/password.json", this::servePassword);
+
+    // Register the dynamic SSI handlers for user-specific web content.
+    m_webserver.registerDynamicSSI("menu_bar_item", this::serveSSI);
+    m_webserver.registerDynamicSSI("popup_menu", this::serveSSI);
   }
 }
