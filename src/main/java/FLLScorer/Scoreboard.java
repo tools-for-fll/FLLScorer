@@ -164,6 +164,7 @@ public class Scoreboard
       a_match2.add(idx, -100);
       a_match3.add(idx, -100);
       a_match4.add(idx, -100);
+      a_high.add(idx, -100);
     }
 
     // A list of information about the scores.
@@ -222,7 +223,7 @@ public class Scoreboard
       high = (a_match2.get(idx) > high) ? a_match2.get(idx) : high;
       high = (a_match3.get(idx) > high) ? a_match3.get(idx) : high;
       high = (a_match4.get(idx) > high) ? a_match4.get(idx) : high;
-      a_high.add(idx, high);
+      a_high.set(idx, high);
     }
 
     // Loop through all the teams, sorting them into placement order (with
