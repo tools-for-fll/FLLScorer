@@ -15,6 +15,11 @@ import java.util.Locale;
 public class Config
 {
   /**
+   * The database key used to store the accent color.
+   */
+  private static final String m_accentKey = new String("accent-color");
+
+  /**
    * The database key used to store the current event.
    */
   private static final String m_eventKey = new String("event");
@@ -41,14 +46,14 @@ public class Config
     new String("securityBypass");
 
   /**
-   * The database key used to store the WiFi SSID.
-   */
-  private static final String m_wifiSSID = "wifiSSID";
-
-  /**
    * The database key used to store the WiFi password.
    */
   private static final String m_wifiPassword = "wifiPassword";
+
+  /**
+   * The database key used to store the WiFi SSID.
+   */
+  private static final String m_wifiSSID = "wifiSSID";
 
   /**
    * The object for the Config singleton.
@@ -100,6 +105,42 @@ public class Config
   private
   Config()
   {
+  }
+
+  /**
+   * Gets the currently selected accent color.
+   *
+   * @return The currently selected accent color.
+   */
+  public String
+  accentColorGet()
+  {
+    String accent_color;
+
+    // Get the accent color from the database.
+    accent_color = m_database.configValueGet(m_accentKey);
+
+    // Set the default accent color if there is not one specified in the
+    // database.
+    if(accent_color == null)
+    {
+      accent_color = "--color-cyan";
+    }
+
+    // Return the accent color.
+    return(accent_color);
+  }
+
+  /**
+   * Sets the accent color.
+   *
+   * @param accent_color The accent color.
+   */
+  public void
+  accentColorSet(String accent_color)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_accentKey, accent_color);
   }
 
   /**
@@ -294,30 +335,6 @@ public class Config
   }
 
   /**
-   * Gets the WiFi SSID value.
-   *
-  * @return The SSID of the WiFi network.
-   */
-  public String
-  wifiSSIDGet()
-  {
-    // Return the SSID of the WiFi network.
-    return(m_database.configValueGet(m_wifiSSID));
-  }
-
-  /**
-   * Sets the WiFi SSID value.
-   *
-   * @param ssid The SSID of the WiFi network.
-   */
-  public void
-  wifiSSIDSet(String ssid)
-  {
-    // Set or add the configuration value.
-    m_database.configValueSet(m_wifiSSID, ssid);
-  }
-
-  /**
    * Gets the WiFi password value.
    *
   * @return The password of the WiFi network.
@@ -339,6 +356,30 @@ public class Config
   {
     // Set or add the configuration value.
     m_database.configValueSet(m_wifiPassword, password);
+  }
+
+  /**
+   * Gets the WiFi SSID value.
+   *
+  * @return The SSID of the WiFi network.
+   */
+  public String
+  wifiSSIDGet()
+  {
+    // Return the SSID of the WiFi network.
+    return(m_database.configValueGet(m_wifiSSID));
+  }
+
+  /**
+   * Sets the WiFi SSID value.
+   *
+   * @param ssid The SSID of the WiFi network.
+   */
+  public void
+  wifiSSIDSet(String ssid)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_wifiSSID, ssid);
   }
 
   /**

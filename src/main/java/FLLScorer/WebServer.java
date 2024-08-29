@@ -1144,6 +1144,9 @@ public class WebServer extends HttpServlet
     // Set the locale as a Server Side Include.
     registerSSI("locale", m_config.localeGet());
 
+    // Set the accent color as a Server Side Include.
+    registerSSI("accent-color", m_config.accentColorGet());
+
     // Set the match length as a Server Side Include.
     registerSSI("match_len", "150");
 

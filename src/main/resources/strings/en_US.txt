@@ -63,6 +63,7 @@ str_status_season:Season
 str_status_teams:Teams
 
 // Strings for the popup menu.
+str_popup_menu_accent_color:Accent Color
 str_popup_menu_change_password:Change Password
 str_popup_menu_logout:Logout
 str_popup_menu_wifi_info:WiFi Information

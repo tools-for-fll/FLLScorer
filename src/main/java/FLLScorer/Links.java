@@ -271,6 +271,69 @@ public class Links
   }
 
   /**
+   * Handles requests for /admin/accent.json.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  private byte[]
+  serveAccentColor(String path, HashMap<String, String> paramMap)
+  {
+    JSONObject result = new SimpleJSONObject();
+    String action;
+
+    // Get the action.
+    action = paramMap.containsKey("action") ? paramMap.get("action") : "get";
+
+    // See if the action is "get".
+    if(action.equals("get"))
+    {
+      // Get the current accent color and put it into the response.
+      result.set("accent-color", m_config.accentColorGet());
+
+      // Success.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, see if the action is "set" and the required parameters are
+    // present.
+    else if(action.equals("set") && paramMap.containsKey("accent-color"))
+    {
+      // Get the new accent color.
+      String color = paramMap.get("accent-color");
+
+      // Update the accent color based on the request.
+      m_config.accentColorSet(color);
+
+     // Update the accent color SSI.
+      m_webserver.registerSSI("accent-color", color);
+
+      // Success.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, this is an unknown request.
+    else
+    {
+      result.set("result", "error");
+    }
+
+    // Convert the response into a byte array and return it.
+    try
+    {
+      String json = JSONParser.format(JSONParser.serialize(result));
+      return(json.getBytes(StandardCharsets.UTF_8));
+    }
+    catch(Exception e)
+    {
+      return("{}".getBytes(StandardCharsets.UTF_8));
+    }
+  }
+
+  /**
    * Handles requests for /admin/wifi.json.
    *
    * @param path The path from the request.
@@ -370,7 +433,9 @@ public class Links
     m_config = Config.getInstance();
     m_webserver = WebServer.getInstance();
 
-    // Register the dynamic handler for the wifi.json file.
+    // Register the dynamic handler for the accent.json and wifi.json files.
+    m_webserver.registerDynamicFile("/admin/accent.json",
+                                    this::serveAccentColor);
     m_webserver.registerDynamicFile("/admin/wifi.json", this::serveWiFiInfo);
 
     // Register the dynamic SSI handler for the WiFi links panel.

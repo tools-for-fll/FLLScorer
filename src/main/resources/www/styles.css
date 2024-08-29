@@ -7,7 +7,7 @@
 
 :root
 {
-  --accent-color: var(--color-cyan);
+  --accent-color: var(<!--#accent-color-->);
   --background-color: var(--color-black);
   --border-color: var(--color-gray3);
   --color-black: #000000;
@@ -385,12 +385,12 @@ select
   {
     display: grid;
     grid-template-columns: 3em 1fr 3em;
-    grid-template-rows: 3em 1fr 4em 2em 4em 2em 4em 1fr 3em;
+    grid-template-rows: 3em 1fr 4em 2em 4em 2em 4em 2em 4em 1fr 3em;
     height: 100%;
     width: 100%;
   }
 
-  .wifi_info
+  .accent_color
   {
     align-items: center;
     display: flex;
@@ -401,7 +401,7 @@ select
     width: 100%;
   }
 
-  .change_password
+  .wifi_info
   {
     align-items: center;
     display: flex;
@@ -412,12 +412,23 @@ select
     width: 100%;
   }
 
-  .logout
+  .change_password
   {
     align-items: center;
     display: flex;
     grid-column: 2;
     grid-row: 7;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .logout
+  {
+    align-items: center;
+    display: flex;
+    grid-column: 2;
+    grid-row: 9;
     height: 100%;
     justify-content: center;
     width: 100%;
@@ -517,6 +528,106 @@ select
     > div button
     {
       font-size: 1.5em;
+    }
+  }
+}
+
+.accent_color_container
+{
+  background-color: var(--background-color);
+  border: 0.25em solid var(--accent-color);
+  border-radius: 1em;
+  color: var(--foreground-color);
+  display: grid;
+  font-size: 1.5em;
+  grid-template-rows: 2em 0.5em 2em 0.5em 2em;
+  padding: 1em;
+  width: 20em;
+
+  .title
+  {
+    align-items: center;
+    display: flex;
+    font-size: 1.5em;
+    grid-row: 1;
+    justify-content: center;
+  }
+
+  .colors
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 3;
+    justify-content: center;
+
+    .active
+    {
+      border: 0.25em solid var(--color-white);
+    }
+
+    button
+    {
+      height: 2em;
+      margin: 0 0.25em;
+      width: 2em;
+    }
+
+    #btn_red
+    {
+      background-color: var(--color-red);
+    }
+
+    #btn_orange
+    {
+      background-color: var(--color-orange);
+    }
+
+    #btn_yellow
+    {
+      background-color: var(--color-yellow);
+    }
+
+    #btn_green
+    {
+      background-color: var(--color-green);
+    }
+
+    #btn_cyan
+    {
+      background-color: var(--color-cyan);
+    }
+
+    #btn_blue
+    {
+      background-color: var(--color-blue);
+    }
+
+    #btn_violet
+    {
+      background-color: var(--color-violet);
+    }
+
+    #btn_magenta
+    {
+      background-color: var(--color-magenta);
+    }
+  }
+
+  .buttons
+  {
+    align-items: center;
+    display: flex;
+    grid-row: 5;
+    justify-content: center;
+
+    button
+    {
+      margin-left: 0.5em;
+    }
+
+    button:first-of-type
+    {
+      margin-left: 0;
     }
   }
 }
