@@ -292,6 +292,8 @@ public class Seasons
       // with this season.
       m_webserver.registerPathMapping("/logos/" + i + ".png",
                                       "seasons/" + i + "/logo.png");
+      m_webserver.registerPathMapping("/logos/" + i + ".gif",
+                                      "seasons/" + i + "/logo.gif");
     }
 
     // If there is not a season selected, select the latest season.
