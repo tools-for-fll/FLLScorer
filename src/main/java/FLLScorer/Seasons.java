@@ -47,6 +47,11 @@ public class Seasons
   private Events m_events = null;
 
   /**
+   * The Timekeeper object.
+   */
+  private TimeKeeper m_timekeeper = null;
+
+  /**
    * A list of the season identifiers, corresponding to directory names in the
    * resources/seasons directory of the jar file.
    */
@@ -61,6 +66,11 @@ public class Seasons
    * A list of the names for the season (for example, "Submerged").
    */
   private ArrayList<String> m_names = null;
+
+  /**
+   * A list of the match lengths for the season.
+   */
+  private ArrayList<Integer> m_matchLens = null;
 
   /**
    * A list of boolean that are <b>true<b> if the season is enabled (meaning
@@ -126,6 +136,7 @@ public class Seasons
   serveSeasons(String path, HashMap<String, String> paramMap)
   {
     JSONObject result = new SimpleJSONObject();
+    int idx;
 
     // See if the year was provided.
     if(paramMap.containsKey("year"))
@@ -134,16 +145,24 @@ public class Seasons
       String year = paramMap.get("year");
 
       // See if this is a known season, and it is enabled.
-      if(m_index.contains(year) && m_enabled.get(m_index.indexOf(year)))
+      idx = m_index.indexOf(year);
+      if((idx != -1) && m_enabled.get(idx))
       {
         // Save the new value for the season.
         m_config.seasonSet(year);
+      }
+      else
+      {
+        idx = m_index.indexOf(m_config.seasonGet());
       }
 
       // Update the SSI for the selected season.
       m_webserver.registerSSI("season_selected", m_config.seasonGet());
       m_webserver.registerSSI("year_selected",
                               m_config.seasonGet().substring(0, 4));
+
+      // Update the match length in the time keeper.
+      m_timekeeper.matchLength(m_matchLens.get(idx));
 
       // Update the selected event based on the new season.
       m_events.selectDefault();
@@ -155,7 +174,7 @@ public class Seasons
     {
       // Get the currently selected season.
       String year = m_config.seasonGet();
-      int idx = m_index.indexOf(year);
+      idx = m_index.indexOf(year);
 
       // Return the details of the selected season.
       result.set("id", year);
@@ -194,18 +213,21 @@ public class Seasons
     Boolean enabled;
     JSONObject json;
     InputStream in;
+    int matchLen;
 
-    // Get references to the web server, database, and the configuration
-    // manager.
+    // Get references to the web server, database, configuration manager,
+    // events, and timekeeper objects.
     m_webserver = WebServer.getInstance();
     m_database = Database.getInstance();
     m_config = Config.getInstance();
     m_events = Events.getInstance();
+    m_timekeeper = TimeKeeper.getInstance();
 
     // Create the arrays to keep track of the known seasons.
     m_index = new ArrayList<String>();
     m_years = new ArrayList<String>();
     m_names = new ArrayList<String>();
+    m_matchLens = new ArrayList<Integer>();
     m_enabled = new ArrayList<Boolean>();
     m_databaseId = new ArrayList<Integer>();
 
@@ -235,6 +257,13 @@ public class Seasons
       // Get the year of this season.
       year = json.getString("year");
 
+      // Get the match length, defaulting to 150 seconds if it is not supplied.
+      matchLen = json.getInteger("match_len");
+      if(matchLen == 0)
+      {
+        matchLen = 150;
+      }
+
       // Determine if the season is enabled in the application.
       enabled = (json.getString("disabled") == null) ? true : false;
 
@@ -251,6 +280,7 @@ public class Seasons
       m_index.add(Integer.toString(i) + ".0");
       m_years.add(year);
       m_names.add(name);
+      m_matchLens.add(matchLen);
       m_enabled.add(enabled);
       m_databaseId.add(m_database.seasonAdd(year + ".0", name));
 
@@ -273,10 +303,19 @@ public class Seasons
           name = alternate.getString("en_US");
         }
 
+        // Get the match length, defaulting to 150 seconds if it is not
+        // supplied.
+        matchLen = json.getInteger("match_len" + j);
+        if(matchLen == 0)
+        {
+          matchLen = 150;
+        }
+
         // Add this alternative season to the database.
         m_index.add(Integer.toString(i) + "." + j);
         m_years.add(year);
         m_names.add(name);
+        m_matchLens.add(matchLen);
         m_enabled.add(enabled);
         m_databaseId.add(m_database.seasonAdd(year + "." + j, name));
       }
@@ -306,6 +345,13 @@ public class Seasons
     m_webserver.registerSSI("season_selected", m_config.seasonGet());
     m_webserver.registerSSI("year_selected",
                             m_config.seasonGet().substring(0, 4));
+
+    // Update the match length in the time keeper.
+    int idx = m_index.indexOf(m_config.seasonGet());
+    if(idx != -1)
+    {
+      m_timekeeper.matchLength(m_matchLens.get(idx));
+    }
 
     // Generate and set the HTML fragment for displaying all the known seasons.
     fragment = "";

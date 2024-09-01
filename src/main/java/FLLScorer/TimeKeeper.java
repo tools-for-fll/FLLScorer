@@ -114,7 +114,8 @@ public class TimeKeeper
   {
     // If the timer is stopped and the current match time matches the current
     // match length, adjust the current match time to the new match length.
-    if((m_state == TimerState.STOP) && (m_matchTime == m_matchLen))
+    if(((m_state == TimerState.STOP) || (m_state == TimerState.RESET)) &&
+       (m_matchTime == m_matchLen))
     {
       m_matchTime = matchLen;
     }
