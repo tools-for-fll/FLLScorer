@@ -108,7 +108,7 @@ public class Links
         for(InetAddress address : Collections.list(addresses))
         {
           // Ignore this address if it is un-interesting.
-          if(address.isLinkLocalAddress())
+          if(address.isLinkLocalAddress() || !address.isSiteLocalAddress())
           {
             continue;
           }
