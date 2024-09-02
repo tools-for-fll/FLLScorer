@@ -8,9 +8,10 @@ package FLLScorer;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
+import java.net.NetworkInterface;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -42,6 +43,11 @@ public class Links
    * The Webserver object.
    */
   private WebServer m_webserver = null;
+
+  /**
+   * The string with the host name or IP address of the local machine.
+   */
+  private String m_localIP = null;
 
   /**
    * Gets the Links singleton object, creating it if necessary.
@@ -78,26 +84,40 @@ public class Links
   private String
   getIP()
   {
-    InetAddress IP;
-
     // Catch (and ignore) any errors that may occur.
     try
     {
-      // Create a socket.
-      Socket socket = new Socket();
+      // Get a list of all the network interfaces.
+      Enumeration<NetworkInterface> nets =
+        NetworkInterface.getNetworkInterfaces();
 
-      // Attempt to connect that socket to Google (an arbitrarily chosen web
-      // site).
-      socket.connect(new InetSocketAddress("google.com", 80));
+      // Loop through all the network interfaces.
+      for(NetworkInterface netint : Collections.list(nets))
+      {
+        // Skip this interface if is un-interesting.
+        if((netint.isLoopback()) || netint.isVirtual() ||
+            netint.isPointToPoint() || !netint.isUp())
+        {
+          continue;
+        }
 
-      // Get the local IP address of the socket.
-      IP = socket.getLocalAddress();
+        // Get all the IP addresses for this network interface.
+        Enumeration<InetAddress> addresses = netint.getInetAddresses();
 
-      // Close the socket.
-      socket.close();
+        // Loop through all the IP addresses.
+        for(InetAddress address : Collections.list(addresses))
+        {
+          // Ignore this address if it is un-interesting.
+          if(address.isLinkLocalAddress())
+          {
+            continue;
+          }
 
-      // Return the String version of the local IP address.
-      return(IP.getHostAddress());
+          // Return the hostname, or alternatively the IP address, for this
+          // address.
+          return(address.getHostName());
+        }
+      }
     }
     catch(Exception e)
     {
@@ -167,7 +187,7 @@ public class Links
   serveAdmin(String path, HashMap<String, String> paramMap)
   {
     // Generate a QR code for the admin web page.
-    return(serveQrCode("https://" + getIP() + ":8443/admin"));
+    return(serveQrCode("https://" + m_localIP + ":8443/admin"));
   }
 
   /**
@@ -183,7 +203,7 @@ public class Links
   serveJudge(String path, HashMap<String, String> paramMap)
   {
     // Generate a QR code for the judge's web page.
-    return(serveQrCode("https://" + getIP() + ":8443/judge"));
+    return(serveQrCode("https://" + m_localIP + ":8443/judge"));
   }
 
   /**
@@ -199,7 +219,7 @@ public class Links
   serveReferee(String path, HashMap<String, String> paramMap)
   {
     // Generate a QR code for the referee's web page.
-    return(serveQrCode("https://" + getIP() + ":8443/referee"));
+    return(serveQrCode("https://" + m_localIP + ":8443/referee"));
   }
 
   /**
@@ -215,7 +235,7 @@ public class Links
   serveScoreboard(String path, HashMap<String, String> paramMap)
   {
     // Generate a QR code for the scoreboard web page.
-    return(serveQrCode("https://" + getIP() + ":8443/scoreboard"));
+    return(serveQrCode("https://" + m_localIP + ":8443/scoreboard"));
   }
 
   /**
@@ -231,7 +251,7 @@ public class Links
   serveTimekeeper(String path, HashMap<String, String> paramMap)
   {
     // Generate a QR code for the time keeper's web page.
-    return(serveQrCode("https://" + getIP() + ":8443/timekeeper"));
+    return(serveQrCode("https://" + m_localIP + ":8443/timekeeper"));
   }
 
   /**
@@ -247,7 +267,7 @@ public class Links
   serveTimer(String path, HashMap<String, String> paramMap)
   {
     // Generate a QR code for the timer web page.
-    return(serveQrCode("https://" + getIP() + ":8443/timer"));
+    return(serveQrCode("https://" + m_localIP + ":8443/timer"));
   }
 
   /**
@@ -432,6 +452,9 @@ public class Links
     // Get a reference to the configuration and web server.
     m_config = Config.getInstance();
     m_webserver = WebServer.getInstance();
+
+    // Get the hostname or IP of the local machine.
+    m_localIP = getIP();
 
     // Register the dynamic handler for the accent.json and wifi.json files.
     m_webserver.registerDynamicFile("/admin/accent.json",
