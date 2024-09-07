@@ -1039,3 +1039,36 @@ select
     }
   }
 }
+
+.html_error_container
+{
+  align-items: center;
+  display: flex;
+  height: 100dvh;
+  justify-content: center;
+  width: 100dvw;
+
+  .box
+  {
+    border: 0.25em solid var(--accent-color);
+    border-radius: 1em;
+    padding: 1em;
+  }
+
+  .title
+  {
+    align-items: center;
+    display: flex;
+    font-size: 2.5em;
+    justify-content: center;
+    padding-bottom: 0.5em;
+  }
+
+  .message
+  {
+    align-items: center;
+    display: flex;
+    font-size: 1.5em;
+    justify-content: center;
+  }
+}

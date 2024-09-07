@@ -44,6 +44,14 @@ str_password_new:New password
 str_password_success:Password changed
 str_password_verify:Verify new password
 
+// Strings for the 403 page.
+str_403_message:You do not have permission to access this page.
+str_403_title:Unauthorized
+
+// Strings for the 404 page.
+str_404_message:The requested resource could not be found.
+str_404_title:Not Found
+
 // Strings for the admin page
 str_admin_title:<!--#str_title--> : Admin
 

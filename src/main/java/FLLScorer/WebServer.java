@@ -525,6 +525,40 @@ public class WebServer extends HttpServlet
                    request.isUserInRole("timekeeper") ? "1" : "0");
     }
 
+    // The user must have the admin or host role to access the admin pages.
+    if((path.length() >= 10) && path.substring(0, 10).equals("www/admin/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host"))
+    {
+      path = "www/403.html";
+    }
+
+    // The user must have the admin, host, or judge role to access the judging
+    // pages.
+    if((path.length() >= 10) && path.substring(0, 10).equals("www/judge/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !request.isUserInRole("judge"))
+    {
+      path = "www/403.html";
+    }
+
+    // The user must have the admin, host, or referee role to access the
+    // referee pages.
+    if((path.length() >= 12) && path.substring(0, 12).equals("www/referee/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !request.isUserInRole("referee"))
+    {
+      path = "www/403.html";
+    }
+
+    // The user must have the admin, host, or timekeeper role to access the
+    // timekeeper pages.
+    if((path.length() >= 15) && path.substring(0, 15).equals("www/timekeeper/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !request.isUserInRole("timekeeper"))
+    {
+      path = "www/403.html";
+    }
+
     // Loop through the dynamic paths.
     for(int i = 0; i < m_dynamicPaths.size(); i++)
     {
@@ -668,6 +702,40 @@ public class WebServer extends HttpServlet
                    request.isUserInRole("timekeeper") ? "1" : "0");
     }
 
+    // The user must have the admin or host role to access the admin pages.
+    if((path.length() >= 10) && path.substring(0, 10).equals("www/admin/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host"))
+    {
+      path = "www/403.html";
+    }
+
+    // The user must have the admin, host, or judge role to access the judging
+    // pages.
+    if((path.length() >= 10) && path.substring(0, 10).equals("www/judge/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !request.isUserInRole("judge"))
+    {
+      path = "www/403.html";
+    }
+
+    // The user must have the admin, host, or referee role to access the
+    // referee pages.
+    if((path.length() >= 12) && path.substring(0, 12).equals("www/referee/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !request.isUserInRole("referee"))
+    {
+      path = "www/403.html";
+    }
+
+    // The user must have the admin, host, or timekeeper role to access the
+    // timekeeper pages.
+    if((path.length() >= 15) && path.substring(0, 15).equals("www/timekeeper/") &&
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !request.isUserInRole("timekeeper"))
+    {
+      path = "www/403.html";
+    }
+
     // Loop through the dynamic paths.
     for(int i = 0; i < m_dynamicPaths.size(); i++)
     {
@@ -693,8 +761,8 @@ public class WebServer extends HttpServlet
       InputStream in = classLoader.getResourceAsStream(path);
       if(in == null)
       {
-        // The resource doesn't exist, so return the root HTML page instead.
-        path = "www/index.html";
+        // The resource doesn't exist, so return the 404 HTML page instead.
+        path = "www/404.html";
         in = classLoader.getResourceAsStream(path);
       }
 
@@ -1003,6 +1071,7 @@ public class WebServer extends HttpServlet
     {
       roles.add("judge");
     }
+    roles.add("user");
     if(referee != 0)
     {
       roles.add("referee");
@@ -1239,21 +1308,16 @@ public class WebServer extends HttpServlet
       new ConstraintSecurityHandler();
 
     // Add a constraint for the administration page.
-    addConstraint(securityHandler, Constraint.from("admin", "host"),
-                  "/admin/*");
+    addConstraint(securityHandler, Constraint.from("user"), "/admin/*");
 
     // Add a constraint for the judge page.
-    addConstraint(securityHandler, Constraint.from("admin", "host", "judge"),
-                  "/judge/*");
+    addConstraint(securityHandler, Constraint.from("user"), "/judge/*");
 
     // Add a constraint for the referee page.
-    addConstraint(securityHandler, Constraint.from("admin", "host", "referee"),
-                  "/referee/*");
+    addConstraint(securityHandler, Constraint.from("user"), "/referee/*");
 
     // Add a constraint for the timekeeper page.
-    addConstraint(securityHandler,
-                  Constraint.from("admin", "host", "timekeeper"),
-                  "/timekeeper/*");
+    addConstraint(securityHandler, Constraint.from("user"), "/timekeeper/*");
 
     // Allow anyone to access everything else.
     addConstraint(securityHandler, Constraint.ALLOWED, "/*");
