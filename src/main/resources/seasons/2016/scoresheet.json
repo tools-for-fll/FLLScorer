@@ -1,0 +1,403 @@
+{
+  "missions":
+  [
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Using Recycled Materials"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Green Bin containing at least one matching Yellow or Blue Bar, all from the other team, completely in either Safety:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 60, 120, 180, 240 ]
+        }
+      ]
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Methane"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Methane is in the Truck's engine compartment:"
+          },
+          "type": "yesno",
+          "score": [ 0, 40 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Methane is in the Factory's Power Station:"
+          },
+          "type": "yesno",
+          "score": [ 0, 40 ]
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Transport"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Truck supports all of the Yellow Bin's weight:"
+          },
+          "type": "yesno",
+          "score": [ 0, 50 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The Yellow Bin is completely east of the Truck's Guide:"
+          },
+          "type": "yesno",
+          "score": [ 0, 60 ]
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Sorting"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of Yellow/Blue Bars that are in their matching Green Bin and completely in your West Transfer Area and/or completely on your West Transfer:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ]
+          },
+          "score": [ 0, 7, 14, 21, 28, 35, 42, 49, 56, 63, 70, 77, 84, 91, 98, 105 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Number of Yellow/Blue Bars that are in their matching Green Bin but never completely in your West Transfer Area:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ]
+          },
+          "score": [ 0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "Number of Black Bars that are part of a scoring Flower Box or in their original Setup position:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ]
+          },
+          "score": [ 0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96 ]
+        },
+        {
+          "id": 4,
+          "description":
+          {
+            "en_US": "Number of Black Bars that in their matching Green Bin, or in the Landfill Bin:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
+          },
+          "score": [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ]
+        },
+        {
+          "id": 5,
+          "description":
+          {
+            "en_US": "Number of Black Bars that are anywhere else:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" ]
+          },
+          "score": [ 0, -8, -16, -24, -32, -40, -48, -56, -64, -72, -80, -88, -96 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Too many Yellow/Blue Bars in use"
+          },
+          "rule": "15 - M04_1 - M04_2"
+        },
+        {
+          "description":
+          {
+            "en_US": "All Black Bars are not accounted for"
+          },
+          "rule": "M04_3 + M04_4 + M04_5 - 12"
+        },
+        {
+          "description":
+          {
+            "en_US": "Too many Black Bars in use"
+          },
+          "rule": "12 - M04_3 - M04_4 - M04_5"
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Careers"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "At least one Person is completely in the Sorter Area:"
+          },
+          "type": "yesno",
+          "score": [ 0, 60 ]
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Scrap Cars"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Engine/Windshield unit is installed in the unfolded Car in the proper space and direction:"
+          },
+          "type": "yesno",
+          "score": [ 0, 65 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The Car is completely folded and completely in the East Transfer Area:"
+          },
+          "type": "yesno",
+          "score": [ 0, 50 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Car can not score both conditions"
+          },
+          "rule": "1 - M06_1 - M06_2"
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Cleanup"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of Plastic Bags completely in Safety:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 30, 60 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Number of Animals completely in any circle which is completely empty of Plastic Bags:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 20, 40, 60 ]
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "The Chicken is completely in the small circle:"
+          },
+          "type": "yesno",
+          "score": [ 0, 35 ]
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Composting"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Compost is ejected, but not completely in Safety:"
+          },
+          "type": "yesno",
+          "score": [ 0, 60 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "The Compost is completely in Safety:"
+          },
+          "type": "yesno",
+          "score": [ 0, 80 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Compost can not be in two places at once"
+          },
+          "rule": "1 - M08_1 - M08_2"
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Salvage"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Valuables are completely in Safety:"
+          },
+          "type": "yesno",
+          "score": [ 0, 60 ]
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+       "en_US": "Demolition"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "None of the Building's twelve beams is left standing in Setup position:"
+          },
+          "type": "yesno",
+          "score": [ 0, 85 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Purchasing Decisions"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of Toy Planes completely in Safety:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 40, 80 ]
+        }
+      ]
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Repurposing"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Compost is perfectly nested inside one of the Packages from which a Toy Plane has been removed, and the Package is in original condition:"
+          },
+          "type": "yesno",
+          "score": [ 0, 40 ]
+        }
+      ]
+    }
+  ]
+}
