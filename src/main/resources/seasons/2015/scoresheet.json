@@ -1,0 +1,454 @@
+{
+  "missions":
+  [
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Reverse Engineering"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Basket in Base"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Your model is in Base, and is “identical”"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The basket must be in base for the model to score"
+          },
+          "rule": "M01_1 - M01_2"
+        }
+      ]
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Opening Doors"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Door opened by pushing handle down"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Project-Based Learning"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Loops on scale"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
+          },
+          "score": [ 0, 20, 30, 40, 50, 60, 70, 80, 90 ]
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Apprenticeship"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Model presented to Referee"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Touching circle, not in Base, people Bound"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The model must be presented to the referee to score on the table"
+          },
+          "rule": "M04_1 - M04_2"
+        }
+      ]
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Search Engine"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Only Slider caused wheel to spin 1+ times"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Only correct loop removed"
+          },
+          "type": "yesno",
+          "score": [ 0, 45 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The wheel must be spun in order to remove the correct loop"
+          },
+          "rule": "M05_1 - M05_2"
+        }
+      ]
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Sports"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Ball shot from east/north of “Shot Lines” toward Net"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Ball touching mat in Net at end of match"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The ball must be shot in order to be a goal"
+          },
+          "rule": "M06_1 - M06_2"
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Robotics Competition"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Only Robotics Insert installed"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Loop no longer touching model"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The insert must be installed to score the loop no longer touching the model"
+          },
+          "rule": "M07_1 - M07_2"
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Using the Right Senses"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Loop no longer touching model"
+          },
+          "type": "yesno",
+          "score": [ 0, 40 ]
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "Remote Communication/Learning"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Referee saw robot pull slider west"
+          },
+          "type": "yesno",
+          "score": [ 0, 40 ]
+        }
+      ]
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+       "en_US": "Thinking Outside the Box"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Idea model not touching Box, Box never in Base"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Bulb faces UP"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The Idea model must be removed from the box in order for the bulb to face up"
+          },
+          "rule": "M10_1 - M10_2"
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Community Learning"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Loop no longer touching model"
+          },
+          "type": "yesno",
+          "score": [ 0, 25 ]
+        }
+      ]
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Cloud Access"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "SD card is UP due to inserted “key”"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Engagement"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Yellow section moved south"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Dial major marker Color"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "n/a", "red", "orange", "green", "blue", "red", "blue", "green", "orange", "red" ]
+          }
+        },
+        {
+          "id": 3,
+          "description":
+          {
+            "en_US": "Ticks past major marker"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "n/a", "0", "1", "2", "3", "4", "5" ]
+          }
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The model must be engaged to turn the dial"
+          },
+          "rule": "(M13_1 * 9) - M13_2"
+        },
+        {
+          "description":
+          {
+            "en_US": "The dial color and ticks past the major mark must both be set or both be n/a"
+          },
+          "rule": "((M13_2 - 0.5) / abs(M13_2 - 0.5)) * ((M13_3 - 0.5) / abs(M13_3 - 0.5))"
+        }
+      ],
+      "score_rule": "(M01 + M02 + M03 + M04 + M05 + M06 + M07 + M08 + M09 + M10 + M11 + M12 + M14 + M15) * (M13_1 * ((M13_2 * 6) + M13_3 + 3)) / 100"
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Adapting to Changing Conditions"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Model rotated 90-ish degrees CCW"
+          },
+          "type": "yesno",
+          "score": [ 0, 15 ]
+        }
+      ]
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Penalties"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Robot, Sprawl, Junk Penalties"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
+          },
+          "score": [ 0, -10, -20, -30, -40, -50, -60, -70, -80 ]
+        }
+      ]
+    }
+  ]
+}

@@ -727,7 +727,8 @@ public class Referee
             message = message.replace("${piece}", piece);
 
             // Append this error message to the existing result.
-            result.set("result", res + pieces_mission.get(name) + ":" + message + "\n");
+            result.set("result",
+                       res + pieces_mission.get(name) + ":" + message + "\n");
           }
         });
 
