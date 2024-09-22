@@ -1,0 +1,483 @@
+{
+  "areas":
+  [
+    {
+      "name":
+      {
+        "en_US": "Innovation Project"
+      },
+      "sections":
+      [
+        {
+          "name":
+          {
+            "en_US": "Identify"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Unclear definition of the problem"
+              },
+              "2":
+              {
+                "en_US": "Partially clear definition of the problem"
+              },
+              "3":
+              {
+                "en_US": "Clear definition of the problem"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Minimal evidence of research"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of research from one or more sources"
+              },
+              "3":
+              {
+                "en_US": "Clear, detailed research from a variety of sources"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Design"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of an effective project plan"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of an effective project plan"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of an effective project plan"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Minimal evidence that development process involved all team members"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence that development process involved all team members"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence that development process involved all team members"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Create"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Minimal explanation of innovation in solution"
+              },
+              "2":
+              {
+                "en_US": "Simple explanation of innovation in solution"
+              },
+              "3":
+              {
+                "en_US": "Detailed explanation of innovation in solution"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Unclear model/drawing that represents the solution"
+              },
+              "2":
+              {
+                "en_US": "Simple model/drawing that represents the solution"
+              },
+              "3":
+              {
+                "en_US": "Detailed model/drawing that represents the solution"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Iterate"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal sharing of their solution with others"
+              },
+              "2":
+              {
+                "en_US": "Solution shared with at least one person/group"
+              },
+              "3":
+              {
+                "en_US": "Solution shared with multiple people/groups"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of improvements based on feedback"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of improvements based on feedback"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of improvements based on feedback"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Communicate"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Unclear explanation of the solution and its potential impact on others"
+              },
+              "2":
+              {
+                "en_US": "Partially clear explanation of solution and its potential impact on others"
+              },
+              "3":
+              {
+                "en_US": "Clear explanation of solution and its potential impact on others"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Presentation shows minimal pride or enthusiasm for their work"
+              },
+              "2":
+              {
+                "en_US": "Presentation shows partial pride or enthusiasm for their work"
+              },
+              "3":
+              {
+                "en_US": "Presentation clearly shows pride or enthusiasm for their work"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name":
+      {
+        "en_US": "Robot Design"
+      },
+      "sections":
+      [
+        {
+          "name":
+          {
+            "en_US": "Identify"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of mission strategy"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of mission strategy"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of mission strategy"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Minimal use of building or coding resources"
+              },
+              "2":
+              {
+                "en_US": "Some use of building or coding resources"
+              },
+              "3":
+              {
+                "en_US": "Clear use of building or coding resources to support their mission strategy"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Design"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Minimal evidence that all team members contributed ideas"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence that all team members contributed ideas"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence that all team members contributed ideas"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of building and coding skills in all team members"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of building and coding skills in all team members"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of building and coding skills in all team members"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Create"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Unclear explanation of attachments and their purpose"
+              },
+              "2":
+              {
+                "en_US": "Simple explanation of attachments and their purpose"
+              },
+              "3":
+              {
+                "en_US": "Clear explanation of innovative attachments and their purpose"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Unclear explanation of code and/or sensor use"
+              },
+              "2":
+              {
+                "en_US": "Simple explanation of code and/or sensor use"
+              },
+              "3":
+              {
+                "en_US": "Clear explanation of innovative code and/or sensor use"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Iterate"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of testing their robot and code"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of testing their robot and code"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of repeated testing of their robot and code"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Minimal evidence of improvements based on testing"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of improvements based on testing"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of improvements based on testing"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Communicate"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Unclear explanation of process and lessons learned"
+              },
+              "2":
+              {
+                "en_US": "Simple explanation of process and lessons learned"
+              },
+              "3":
+              {
+                "en_US": "Detailed explanation of process and lessons learned"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": "Team shows minimal pride or enthusiasm for their work"
+              },
+              "2":
+              {
+                "en_US": "Team shows partial pride or enthusiasm for their work"
+              },
+              "3":
+              {
+                "en_US": "Team clearly shows pride or enthusiasm for their work"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

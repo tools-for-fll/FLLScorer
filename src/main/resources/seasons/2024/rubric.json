@@ -1,0 +1,678 @@
+{
+  "areas":
+  [
+    {
+      "name":
+      {
+        "en_US": "Innovation Project"
+      },
+      "sections":
+      [
+        {
+          "name":
+          {
+            "en_US": "Identify"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Problem not clearly defined"
+              },
+              "2":
+              {
+                "en_US": "Partially clear definition of the problem"
+              },
+              "3":
+              {
+                "en_US": "Clear definition of the problem"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal research"
+              },
+              "2":
+              {
+                "en_US": "Partial research from more than one source"
+              },
+              "3":
+              {
+                "en_US": "Clear, detailed research from a variety of sources"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Design"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of an inclusive selection process"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of an inclusive selection process"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of an inclusive selection process"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of an effective plan"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of an effective plan"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of an effective plan"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Create"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal development of innovative solution"
+              },
+              "2":
+              {
+                "en_US": "Partial development of innovative solution"
+              },
+              "3":
+              {
+                "en_US": "Clear development of innovative solution"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Unclear model/drawing of solution"
+              },
+              "2":
+              {
+                "en_US": "Simple model/drawing that helps to share the solution"
+              },
+              "3":
+              {
+                "en_US": "Detailed model/drawing that helps to share the solution"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Iterate"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal sharing of their solution"
+              },
+              "2":
+              {
+                "en_US": "Shared their solution with user OR professional"
+              },
+              "3":
+              {
+                "en_US": "Shared their solution with user AND professional"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of improvements in their solution"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of improvements in their solution"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of improvements in their solution"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Communicate"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Presentation minimally engaging"
+              },
+              "2":
+              {
+                "en_US": "Presentation partially engaging"
+              },
+              "3":
+              {
+                "en_US": "Presentation engaging"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Solution and its potential impact on others unclear"
+              },
+              "2":
+              {
+                "en_US": "Solution and its potential impact on others partially clear"
+              },
+              "3":
+              {
+                "en_US": "Solution and its potential impact on others clear"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name":
+      {
+        "en_US": "Robot Design"
+      },
+      "sections":
+      [
+        {
+          "name":
+          {
+            "en_US": "Identify"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Unclear mission strategy"
+              },
+              "2":
+              {
+                "en_US": "Partially clear mission strategy"
+              },
+              "3":
+              {
+                "en_US": "Clear mission strategy"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Limited evidence of building and coding skills in all team members"
+              },
+              "2":
+              {
+                "en_US": "Inconsistent evidence of building and coding skills in all team members"
+              },
+              "3":
+              {
+                "en_US": "Consistent evidence of building and coding skills in all team members"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Design"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of an effective plan"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of an effective plan"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of an effective plan"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal explanation of robot and code’s features"
+              },
+              "2":
+              {
+                "en_US": "Partial explanation of robot and code’s features"
+              },
+              "3":
+              {
+                "en_US": "Clear explanation of robot and code’s features"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Create"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Limited explanation of their robot and its attachment and sensor functionality"
+              },
+              "2":
+              {
+                "en_US": "Simple explanation of their robot and its attachment and sensor functionality"
+              },
+              "3":
+              {
+                "en_US": "Detailed explanation of their robot and its attachment and sensor functionality"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Unclear explanation of how code makes their robot act"
+              },
+              "2":
+              {
+                "en_US": "Partially clear explanation of how code makes their robot act"
+              },
+              "3":
+              {
+                "en_US": "Clear explanation of how code makes their robot act"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Iterate"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence of testing their robot and code"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence of testing their robot and code"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence of testing their robot and code"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence their robot and code was improved"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence their robot and code was improved"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence their robot and code was improved"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Communicate"
+          },
+          "items":
+          [
+            {
+              "1":
+              {
+                "en_US": "Unclear explanation of robot design process"
+              },
+              "2":
+              {
+                "en_US": "Partially clear explanation of robot design process"
+              },
+              "3":
+              {
+                "en_US": "Clear explanation of robot design process"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            },
+            {
+              "1":
+              {
+                "en_US": "Minimal evidence that all team members were involved"
+              },
+              "2":
+              {
+                "en_US": "Partial evidence that all team members were involved"
+              },
+              "3":
+              {
+                "en_US": "Clear evidence that all team members were involved"
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name":
+      {
+        "en_US": "Core Values"
+      },
+      "sections":
+      [
+        {
+          "name":
+          {
+            "en_US": "Discovery"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": ""
+              },
+              "2":
+              {
+                "en_US": ""
+              },
+              "3":
+              {
+                "en_US": ""
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Innovation"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": ""
+              },
+              "2":
+              {
+                "en_US": ""
+              },
+              "3":
+              {
+                "en_US": ""
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Impact"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": ""
+              },
+              "2":
+              {
+                "en_US": ""
+              },
+              "3":
+              {
+                "en_US": ""
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Inclusion"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": ""
+              },
+              "2":
+              {
+                "en_US": ""
+              },
+              "3":
+              {
+                "en_US": ""
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Teamwork"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": ""
+              },
+              "2":
+              {
+                "en_US": ""
+              },
+              "3":
+              {
+                "en_US": ""
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Teamwork"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": ""
+              },
+              "2":
+              {
+                "en_US": ""
+              },
+              "3":
+              {
+                "en_US": ""
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        },
+        {
+          "name":
+          {
+            "en_US": "Fun"
+          },
+          "items":
+          [
+            {
+              "isCoreValues": true,
+              "1":
+              {
+                "en_US": ""
+              },
+              "2":
+              {
+                "en_US": ""
+              },
+              "3":
+              {
+                "en_US": ""
+              },
+              "4":
+              {
+                "en_US": ""
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
