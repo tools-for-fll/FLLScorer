@@ -2,9 +2,14 @@
   "areas":
   [
     {
+      "type": "project",
       "name":
       {
         "en_US": "Innovation Project"
+      },
+      "short_name":
+      {
+        "en_US": "IP"
       },
       "sections":
       [
@@ -12,6 +17,10 @@
           "name":
           {
             "en_US": "Identify"
+          },
+          "description":
+          {
+            "en_US": "Team had a clearly defined problem that was well researched."
           },
           "items":
           [
@@ -58,6 +67,10 @@
           {
             "en_US": "Design"
           },
+          "description":
+          {
+            "en_US": "Team generated innovative ideas independently before selecting and planning which one to develop."
+          },
           "items":
           [
             {
@@ -102,6 +115,10 @@
           "name":
           {
             "en_US": "Create"
+          },
+          "description":
+          {
+            "en_US": "Team developed an original idea or built on an existing one with a prototype model/drawing to represent their solution."
           },
           "items":
           [
@@ -148,6 +165,10 @@
           {
             "en_US": "Iterate"
           },
+          "description":
+          {
+            "en_US": "Team shared their ideas, collected feedback, and included improvements in their solution."
+          },
           "items":
           [
             {
@@ -193,6 +214,10 @@
           {
             "en_US": "Communicate"
           },
+          "description":
+          {
+            "en_US": "Team shared a creative and effective presentation of their current solution and its impact on their users."
+          },
           "items":
           [
             {
@@ -236,9 +261,14 @@
       ]
     },
     {
+      "type": "robot_design",
       "name":
       {
         "en_US": "Robot Design"
+      },
+      "short_name":
+      {
+        "en_US": "RD"
       },
       "sections":
       [
@@ -246,6 +276,10 @@
           "name":
           {
             "en_US": "Identify"
+          },
+          "description":
+          {
+            "en_US": "Team had a clearly defined mission strategy and explored building and coding skills they needed."
           },
           "items":
           [
@@ -292,6 +326,10 @@
           {
             "en_US": "Design"
           },
+          "description":
+          {
+            "en_US": "Team produced innovative designs and a clear plan, seeking guidance as needed."
+          },
           "items":
           [
             {
@@ -336,6 +374,10 @@
           "name":
           {
             "en_US": "Create"
+          },
+          "description":
+          {
+            "en_US": "Team developed an effective robot and code solution matching their mission strategy."
           },
           "items":
           [
@@ -382,6 +424,10 @@
           {
             "en_US": "Iterate"
           },
+          "description":
+          {
+            "en_US": "Team repeatedly tested their robot and code to identify areas for improvement and incorporated the findings into their current solution."
+          },
           "items":
           [
             {
@@ -427,6 +473,10 @@
           {
             "en_US": "Communicate"
           },
+          "description":
+          {
+            "en_US": "Team’s explanation of the robot design process was effective and showed how all team members have been involved."
+          },
           "items":
           [
             {
@@ -470,9 +520,14 @@
       ]
     },
     {
+      "type": "core_values",
       "name":
       {
         "en_US": "Core Values"
+      },
+      "short_name":
+      {
+        "en_US": "CV"
       },
       "sections":
       [
@@ -481,10 +536,13 @@
           {
             "en_US": "Discovery"
           },
+          "description":
+          {
+            "en_US": "Team explored new skills and ideas."
+          },
           "items":
           [
             {
-              "isCoreValues": true,
               "1":
               {
                 "en_US": ""
@@ -509,10 +567,13 @@
           {
             "en_US": "Innovation"
           },
+          "description":
+          {
+            "en_US": "Team used creativity and persistence to solve problems."
+          },
           "items":
           [
             {
-              "isCoreValues": true,
               "1":
               {
                 "en_US": ""
@@ -537,10 +598,13 @@
           {
             "en_US": "Impact"
           },
+          "description":
+          {
+            "en_US": "Team applied what they learned to improve their world."
+          },
           "items":
           [
             {
-              "isCoreValues": true,
               "1":
               {
                 "en_US": ""
@@ -565,10 +629,13 @@
           {
             "en_US": "Inclusion"
           },
+          "description":
+          {
+            "en_US": "Team demonstrated respect and embraced their differences."
+          },
           "items":
           [
             {
-              "isCoreValues": true,
               "1":
               {
                 "en_US": ""
@@ -593,38 +660,13 @@
           {
             "en_US": "Teamwork"
           },
-          "items":
-          [
-            {
-              "isCoreValues": true,
-              "1":
-              {
-                "en_US": ""
-              },
-              "2":
-              {
-                "en_US": ""
-              },
-              "3":
-              {
-                "en_US": ""
-              },
-              "4":
-              {
-                "en_US": ""
-              }
-            }
-          ]
-        },
-        {
-          "name":
+          "description":
           {
-            "en_US": "Teamwork"
+            "en_US": "Team clearly showed they had worked as a team throughout their journey."
           },
           "items":
           [
             {
-              "isCoreValues": true,
               "1":
               {
                 "en_US": ""
@@ -649,10 +691,13 @@
           {
             "en_US": "Fun"
           },
+          "description":
+          {
+            "en_US": "Teams clearly had fun and celebrated what they have achieved – as individuals and a group."
+          },
           "items":
           [
             {
-              "isCoreValues": true,
               "1":
               {
                 "en_US": ""

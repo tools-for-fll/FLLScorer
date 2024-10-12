@@ -91,6 +91,14 @@ str_links_timekeeper:Time Keeper
 str_links_timer:Timer
 str_links_wifi:WiFi
 
+// Strings for the judge page
+str_judge_discard:Discard
+str_judge_discard_conf:Are you sure you want to discard the changes to this rubric?
+str_judge_heading:Judge : Team List
+str_judge_save:Save
+str_judge_save_fail:Failed to save the rubric!
+str_judge_title:<!--#str_title--> : Judge
+
 // Strings for the referee page
 str_referee_discard:Discard
 str_referee_discard_conf:Are you sure you want to discard the changes to this scoresheet?

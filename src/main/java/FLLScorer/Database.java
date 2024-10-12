@@ -216,7 +216,7 @@ public class Database
                      "  team_id integer, " +
                      "  project integer, " +
                      "  robot_design integer, " +
-                     "  core_values integer " +
+                     "  core_values integer, " +
                      "  rubric char " +
                      ")";
     String user = "create table if not exists user " +
@@ -2146,10 +2146,12 @@ public class Database
                     "project, robot_design, core_values, rubric) values (" +
                     season_id + ", " + event_id + ", " + team_id + ", " +
                     project + ", " + robot_design + "," + core_values + "," +
-                    rubric + ")";
+                    ((rubric == null) ? null : stmt.enquoteLiteral(rubric)) +
+                    ")";
       String sql3 = "update judging set project = " + project +
                     ", robot_design = " + robot_design + ", core_values = " +
-                    core_values + ", rubric = " + rubric +
+                    core_values + ", rubric = " +
+                    ((rubric == null) ? null : stmt.enquoteLiteral(rubric)) +
                     " where season_id = " + season_id + " and event_id = " +
                     event_id + " and team_id = " + team_id;
 
@@ -2264,13 +2266,17 @@ public class Database
         {
           projects.add(result.getInt("project"));
         }
+        if(robotDesigns != null)
+        {
+          robotDesigns.add(result.getInt("robot_design"));
+        }
         if(coreValues != null)
         {
           coreValues.add(result.getInt("core_values"));
         }
         if(rubrics != null)
         {
-          rubrics.add(result.getString("rubrics"));
+          rubrics.add(result.getString("rubric"));
         }
       }
 
@@ -2288,14 +2294,68 @@ public class Database
   }
 
   /**
+   * Gets the rubric for a team.
+   *
+   * @param season_id The ID of the season.
+   *
+   * @param event_id The ID of the event.
+   *
+   * @param team_id The ID of the team.
+   *
+   * @return The rubric data for this team.
+   */
+  public String
+  judgingGet(int season_id, int event_id, int team_id)
+  {
+    String rubric = null;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to get a judging result.
+      String sql = "select rubric from judging where season_id = " +
+                   season_id + " and event_id = " + event_id +
+                   " and team_id = " + team_id;
+
+      // Get the rubric from the database.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // See if the query was successful.
+      if(result.next())
+      {
+        // Extract the rubric from the results.
+        rubric = result.getString("rubric");
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+
+      // Return the rubric.
+      return(rubric);
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(null);
+    }
+  }
+
+  /**
    * Removes a judging result from the database.
    *
-   * @param id The ID of the judging result.
+   * @param season_id The ID of the season.
+   *
+   * @param event_id The ID of the event.
+   *
+   * @param team_id The ID of the team.
    *
    * @return <b>true</b> if the judging result is removed successfully.
    */
   public boolean
-  judgingRemove(int id)
+  judgingRemove(int season_id, int event_id, int team_id)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -2304,7 +2364,8 @@ public class Database
       Statement stmt = m_connection.createStatement();
 
       // The SQL statement to remove the judging result.
-      String sql = "delete from judging where id = " + id;
+      String sql = "delete from judging where season_id = " + season_id +
+                   " and event_id = " + event_id + " and team_id = " + team_id;
 
       // Delete this judging result from the database.
       executeUpdate(stmt, sql);

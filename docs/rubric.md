@@ -27,13 +27,22 @@ The structure of the scoresheet is as follows:
 
 * "areas" - An array of judging areas.
 
+  * "type" - The judging area; one of "project", "robot_design", or
+             "core_values".
+
   * "name" - An associative array containing the name of the judging area in
              various languages.
+
+  * "short_name" - An associative array contains the short name of the judging
+                   area in various languages.
 
   * "sections" - An array of sections within the rubric for this judging area.
 
     * "name" - An associative array containing the name of the section in
                various languages.
+
+    * "description" - An associative array containing the description of the
+                      section in various languages.
 
     * "items" - An array of judging items within this section.
 

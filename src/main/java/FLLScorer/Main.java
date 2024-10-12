@@ -21,6 +21,7 @@ public class Main
     Scores.getInstance().setup();
     Users.getInstance().setup();
     Links.getInstance().setup();
+    Judge.getInstance().setup();
     Referee.getInstance().setup();
     TimeKeeper.getInstance().setup();
     Timer.getInstance().setup();

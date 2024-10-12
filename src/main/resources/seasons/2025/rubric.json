@@ -2,9 +2,14 @@
   "areas":
   [
     {
+      "type": "project",
       "name":
       {
         "en_US": "Innovation Project"
+      },
+      "short_name":
+      {
+        "en_US": "IP"
       },
       "sections":
       [
@@ -12,6 +17,10 @@
           "name":
           {
             "en_US": "Identify"
+          },
+          "description":
+          {
+            "en_US": "Team had a clearly defined problem that was well researched."
           },
           "items":
           [
@@ -59,6 +68,10 @@
           {
             "en_US": "Design"
           },
+          "description":
+          {
+            "en_US": "Team worked together while creating a project plan and devloping their ideas."
+          },
           "items":
           [
             {
@@ -104,6 +117,10 @@
           "name":
           {
             "en_US": "Create"
+          },
+          "description":
+          {
+            "en_US": "Team developed an original idea or built on an existing one with a prototype model/drawing to represent their solution."
           },
           "items":
           [
@@ -151,6 +168,10 @@
           {
             "en_US": "Iterate"
           },
+          "description":
+          {
+            "en_US": "Team shared their ideas with others, collected feedback, and included improvements to their solution."
+          },
           "items":
           [
             {
@@ -195,6 +216,10 @@
           "name":
           {
             "en_US": "Communicate"
+          },
+          "description":
+          {
+            "en_US": "Team shared an effective presentation of their solution, its impact on others, and celebrated their team's progress."
           },
           "items":
           [
@@ -241,9 +266,14 @@
       ]
     },
     {
+      "type": "robot_design",
       "name":
       {
         "en_US": "Robot Design"
+      },
+      "short_name":
+      {
+        "en_US": "RD"
       },
       "sections":
       [
@@ -251,6 +281,10 @@
           "name":
           {
             "en_US": "Identify"
+          },
+          "description":
+          {
+            "en_US": "Team determined which missions to attempt, explored building and coding resources, and sought guidance as needed."
           },
           "items":
           [
@@ -298,6 +332,10 @@
           {
             "en_US": "Design"
           },
+          "description":
+          {
+            "en_US": "Team members worked collaboratively on their designs and developed the building and coding skill needed."
+          },
           "items":
           [
             {
@@ -344,6 +382,10 @@
           {
             "en_US": "Create"
           },
+          "description":
+          {
+            "en_US": "Team developed original designs or improved on existing ones according to their mission strategy."
+          },
           "items":
           [
             {
@@ -388,6 +430,10 @@
           "name":
           {
             "en_US": "Iterate"
+          },
+          "description":
+          {
+            "en_US": "Team repeatedly tested their robot and code to identify areas for improvement and incorporated the findings into their solution."
           },
           "items":
           [
@@ -434,6 +480,10 @@
           "name":
           {
             "en_US": "Communicate"
+          },
+          "description":
+          {
+            "en_US": "Team effectively explained what they learned from the robot design process and celebrated their progress."
           },
           "items":
           [

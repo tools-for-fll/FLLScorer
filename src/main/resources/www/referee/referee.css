@@ -427,7 +427,7 @@
     grid-column: 1;
     grid-row: 1;
     justify-content: left;
-    margin-left: 0.5em;
+    margin-left: 0.25em;
   }
 
   .list_container .body .row .match1
@@ -559,7 +559,7 @@
     grid-column: 1;
     grid-row: 1;
     justify-content: left;
-    margin-left: 0.5em;
+    margin-left: 0.25em;
   }
 
   .list_container .body .row .match1
