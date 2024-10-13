@@ -223,12 +223,12 @@ scoresLoad()
       // are none.
       html += `
     <div class="row">
-      <div class="number"><span>-</span></div>
-      <div class="name"><span><!--#str_scores_none--></span></div>
-      <div class="match1"><span>-</span></div>
-      <div class="match2"><span>-</span></div>
-      <div class="match3"><span>-</span></div>
-      <div class="match4"><span>-</span></div>
+      <span class="number">-</span>
+      <span class="name"><!--#str_scores_none--></span>
+      <span class="match1">-</span>
+      <span class="match2">-</span>
+      <span class="match3">-</span>
+      <span class="match4">-</span>
     </div>`;
     }
 
@@ -275,16 +275,12 @@ scoresLoad()
       // Add the row for this score.
       html += `
     <div id="score${id}" class="row">
-      <div id="score${id}_number" class="number">
-        <span>
-          ${result["scores"][i]["number"]}
-        </span>
-      </div>
-      <div id="score${id}_name" class="name">
-        <span>
-          ${result["scores"][i]["name"]}
-        </span>
-      </div>`;
+      <span id="score${id}_number" class="number">
+        ${result["scores"][i]["number"]}
+      </span>
+      <span id="score${id}_name" class="name">
+        ${result["scores"][i]["name"]}
+      </span>`;
       addScore(i, id, 1);
       addScore(i, id, 2);
       addScore(i, id, 3);
@@ -399,6 +395,23 @@ scoresSearch()
 function
 scoresKeydown(e)
 {
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+
   // See if Ctrl-R was pressed.
   if(((e.key == 'r') || (e.key == 'R')) && (e.ctrlKey == true) &&
      ($("dialog:visible").length == 0))

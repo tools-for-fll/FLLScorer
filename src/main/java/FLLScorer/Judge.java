@@ -156,7 +156,7 @@ public class Judge
     JSONObject teamRubric = null;
     try
     {
-      String rubricData = m_database.judgingGet(season_id, event_id, id);
+      String rubricData = m_database.judgingRubricGet(season_id, event_id, id);
       if(rubricData != null)
       {
         teamRubric = JSONParser.deserializeObject(rubricData);
@@ -197,7 +197,7 @@ public class Judge
       }
 
       // Generate the header item for this judging area.
-      html += "<div class=\"area_name\">";
+      html += "<div class=\"area_name\" tabindex=\"0\">";
       html += "<span class=\"name\">" + area_name + "</span>";
       html += "<span class=\"short_name\">" + area_name_short + "</span>";
       html += "</div>";
@@ -444,6 +444,7 @@ public class Judge
   {
     int project, robot_design, core_values;
     JSONObject scores;
+    boolean complete;
 
     // See if this JSON string is empty.
     if(json.equals("{}"))
@@ -468,6 +469,9 @@ public class Judge
     project = -1;
     robot_design = -1;
     core_values = -1;
+
+    // Assume the rubric is complete until a missing entry is found.
+    complete = true;
 
     // Catch and ignore any errors.
     try
@@ -555,6 +559,11 @@ public class Judge
                                (core_values + score));
               }
             }
+            else
+            {
+              // The rubric is not complete.
+              complete = false;
+            }
           }
         }
       }
@@ -562,6 +571,14 @@ public class Judge
     catch(Exception e)
     {
       System.out.println("JSON error: " + e);
+    }
+
+    // Do not provide scores for this rubric unless it is complete.
+    if(!complete)
+    {
+      project = -1;
+      robot_design = -1;
+      core_values = -1;
     }
 
     // Save the rubric for this team.

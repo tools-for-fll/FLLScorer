@@ -58,10 +58,9 @@ str_admin_title:<!--#str_title--> : Admin
 // Strings for the menu
 str_menu_about:About
 str_menu_events:Events
-str_menu_judging:Judging
+str_menu_rubrics:Rubrics
 str_menu_scores:Scores
 str_menu_seasons:Seasons
-str_menu_standings:Standings
 str_menu_teams:Teams
 str_menu_users:Users
 
@@ -175,7 +174,7 @@ str_teams_load_failed:Failed to fetch the team list!
 str_teams_list_actions:Actions
 str_teams_list_at_event:At Event
 str_teams_list_name:Name
-str_teams_list_number:Number
+str_teams_list_number:Team #
 str_teams_none:None
 
 // Strings for the scores page
@@ -190,8 +189,22 @@ str_scores_match3:Match 3
 str_scores_match4:Match 4
 str_scores_name:Name
 str_scores_none:None
-str_scores_number:Number
+str_scores_number:Team #
 str_scores_unknown_match:Unknown match!
+
+// Strings for the rubrics page.
+str_rubrics_action:Actions
+str_rubrics_core:Core Values
+str_rubrics_delete:Are you sure you want to delete this rubric?
+str_rubrics_delete_error:Failed to remove the rubric!
+str_rubrics_exchange:Exchange Rubrics
+str_rubrics_exchange_error:Failed to exchange rubrics!
+str_rubrics_load_failed:Failed to fetch the rubrics list!
+str_rubrics_name:Name
+str_rubrics_none:None
+str_rubrics_number:Team #
+str_rubrics_project:Project
+str_rubrics_robot:Robot Design
 
 // Strings for the users page
 str_users_add:Add User

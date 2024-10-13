@@ -50,12 +50,12 @@ public class Scores
   /**
    * Gets the Scores singleton object, creating it if necessary.
    *
-   * @return Returns the Score singleton.
+   * @return Returns the Scores singleton.
    */
   public static Scores
   getInstance()
   {
-    // Create the Score object if required.
+    // Create the Scores object if required.
     if(m_instance == null)
     {
         m_instance = new Scores();
@@ -194,7 +194,8 @@ public class Scores
   /**
    * Lists the scores of the teams.
    *
-   * @param result
+   * @param result The JSON object that is used to communicate the result back
+   *               to the client.
    */
   private void
   list(JSONObject result)
@@ -302,7 +303,7 @@ public class Scores
   }
 
   /**
-   * Handles requests for /admin/teams/teams.json.
+   * Handles requests for /admin/scores/scores.json.
    *
    * @param path The path from the request.
    *

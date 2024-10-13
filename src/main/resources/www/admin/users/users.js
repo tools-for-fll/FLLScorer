@@ -409,13 +409,13 @@ usersLoad()
       // none.
       html += `
     <div class="row">
-      <div class="name"><!--#str_users_none--></div>
-      <div class="admin">-</div>
-      <div class="host">-</div>
-      <div class="judge">-</div>
-      <div class="referee">-</div>
-      <div class="timekeeper">-</div>
-      <div class="actions">-</div>
+      <span class="name"><!--#str_users_none--></span>
+      <span class="admin">-</span>
+      <span class="host">-</span>
+      <span class="judge">-</span>
+      <span class="referee">-</span>
+      <span class="timekeeper">-</span>
+      <span class="actions">-</span>
     </div>`;
     }
 
@@ -438,9 +438,9 @@ usersLoad()
       // Add the row for this user.
       html += `
     <div id="user${id}" class="row">
-      <div id="user${id}_name" class="name">
+      <span id="user${id}_name" class="name">
         ${result["users"][i]["name"]}
-      </div>
+      </span>
       <div class="admin">
         <span id="user${id}_admin" class="fa fa-fw ${admin}"
               onclick="usersSelect(${id}, 'admin');" tabindex="0"></span>
@@ -594,6 +594,23 @@ usersKeydown(e)
   {
     // Add a user.
     usersAdd();
+  }
+
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
   }
 
   // See if Ctrl-S was pressed.

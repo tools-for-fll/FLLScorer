@@ -416,10 +416,10 @@ teamsLoad()
       // none.
       html += `
     <div class="row">
-      <div class="number">-</div>
-      <div class="name"><!--#str_teams_none--></div>
-      <div class="at_event">-</div>
-      <div class="actions">-</div>
+      <span class="number">-</span>
+      <span class="name"><!--#str_teams_none--></span>
+      <span class="at_event">-</span>
+      <span class="actions">-</span>
     </div>`;
     }
 
@@ -433,12 +433,12 @@ teamsLoad()
       // Add the row for this team.
       html += `
     <div id="team${id}" class="row">
-      <div id="team${id}_number" class="number">
+      <span id="team${id}_number" class="number">
         ${result["teams"][i]["number"]}
-      </div>
-      <div id="team${id}_name" class="name">
+      </span>
+      <span id="team${id}_name" class="name">
         ${result["teams"][i]["name"]}
-      </div>
+      </span>
       <div class="at_event">
         <span id="team${id}_select" class="fa fa-fw ${icon}"
               onclick="teamsSelect(${id});" tabindex="0"></span>
@@ -571,6 +571,23 @@ teamsKeydown(e)
   {
     // Add a team.
     teamsAdd();
+  }
+
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
   }
 
   // See if Ctrl-S was pressed.

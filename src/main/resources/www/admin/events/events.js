@@ -426,11 +426,11 @@ eventsLoad()
       // are none.
       html += `
     <div class="row">
-      <div class="date">-</div>
-      <div class="matches">-</div>
-      <div class="name"><!--#str_events_none--></div>
-      <div class="select">-</div>
-      <div class="actions">-</div>
+      <span class="date">-</span>
+      <span class="matches">-</span>
+      <span class="name"><!--#str_events_none--></span>
+      <span class="select">-</span>
+      <span class="actions">-</span>
     </div>`;
     }
 
@@ -446,15 +446,15 @@ eventsLoad()
       // Add the row for this event.
       html += `
     <div class="row">
-      <div id="event${id}_date" class="date">
+      <span id="event${id}_date" class="date">
         ${result["events"][i]["date"]}
-      </div>
-      <div id="event${id}_matches" class="matches">
+      </span>
+      <span id="event${id}_matches" class="matches">
         ${result["events"][i]["matches"]}
-      </div>
-      <div id="event${id}_name" class="name">
+      </span>
+      <span id="event${id}_name" class="name">
         ${result["events"][i]["name"]}
-      </div>
+      </span>
       <div class="select">
         <span id="event${id}_select" class="fa fa-fw ${_class}"
               onclick="eventsSelect(${id});" tabindex="0"></span>
@@ -581,6 +581,23 @@ eventsKeydown(e)
   {
     // Add an event.
     eventsAdd();
+  }
+
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
   }
 
   // See if Ctrl-S was pressed.

@@ -84,6 +84,28 @@ seasonsSelect(season)
     .fail(onError);
 }
 
+// Handles keydown events.
+function
+seasonsKeydown(e)
+{
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+}
+
 // Handles setup of the season tab.
 function
 seasonsSetup()
@@ -93,4 +115,15 @@ seasonsSetup()
 
   // Select the default season.
   seasonsUpdate();
+
+  // Add a keydown event listener.
+  document.addEventListener("keydown", seasonsKeydown);
+}
+
+// Handles cleanup of the seasons tab.
+function
+seasonsCleanup()
+{
+  // Remove the keydown event listener.
+  document.removeEventListener("keydown", seasonsKeydown);
 }

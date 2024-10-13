@@ -263,6 +263,19 @@ loadRubric(id)
     for(let i = 0; i < areas.length; i++)
     {
       areas.eq(i).on("click", () => areaSelect(i));
+      areas.eq(i).on("keyup", (event) =>
+                              {
+                                // See if the space or enter key was pressed.
+                                if((event.key == " ") ||
+                                   (event.key == "Enter"))
+                                {
+                                  // "Convert" the key press to a mouse click.
+                                  areas.eq(i).click();
+
+                                  // Prevent the normal handling of this key.
+                                  event.preventDefault();
+                                }
+                              });
     }
 
     // Select the first judging area.

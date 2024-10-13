@@ -19,6 +19,7 @@ public class Main
     Events.getInstance().setup();
     Teams.getInstance().setup();
     Scores.getInstance().setup();
+    Rubrics.getInstance().setup();
     Users.getInstance().setup();
     Links.getInstance().setup();
     Judge.getInstance().setup();

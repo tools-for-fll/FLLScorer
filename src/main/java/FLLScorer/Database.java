@@ -2294,7 +2294,7 @@ public class Database
   }
 
   /**
-   * Gets the rubric for a team.
+   * Gets the judging results from the database.
    *
    * @param season_id The ID of the season.
    *
@@ -2302,13 +2302,25 @@ public class Database
    *
    * @param team_id The ID of the team.
    *
-   * @return The rubric data for this team.
+   * @param project The array for the project score; can be <b>null</b> if the
+   *                the project score is not required.
+   *
+   * @param robot The array for the robot design score; can be <b>null</b> if
+   *              the robot design score is not requried.
+   *
+   * @param core The array for the core values score; can be <b>null</b> if the
+   *             core values score is not required.
+   *
+   * @param rubric The array for the rubric choices; can be <b>null</b> if the
+   *               rubric choices are not required.
+   *
+   * @return <b>true</b> if the judging score is retrieved successfully.
    */
-  public String
-  judgingGet(int season_id, int event_id, int team_id)
+  public boolean
+  judgingGet(int season_id, int event_id, int team_id,
+             ArrayList<Integer> project, ArrayList<Integer> robot,
+             ArrayList<Integer> core, ArrayList<String> rubric)
   {
-    String rubric = null;
-
     // Catch (and ignore) any errors that may occur.
     try
     {
@@ -2316,30 +2328,45 @@ public class Database
       Statement stmt = m_connection.createStatement();
 
       // The SQL statement to get a judging result.
-      String sql = "select rubric from judging where season_id = " +
-                   season_id + " and event_id = " + event_id +
-                   " and team_id = " + team_id;
+      String sql = "select project, robot_design, core_values, rubric from " +
+                   "judging where season_id = " + season_id +
+                   " and event_id = " + event_id + " and team_id = " + team_id;
 
-      // Get the rubric from the database.
+      // Get the judging result from the database.
       ResultSet result = executeQuery(stmt, sql);
 
       // See if the query was successful.
       if(result.next())
       {
-        // Extract the rubric from the results.
-        rubric = result.getString("rubric");
+        // Extract the scores from the results.
+        if(project != null)
+        {
+          project.add(result.getInt("project"));
+        }
+        if(robot != null)
+        {
+          robot.add(result.getInt("robot_design"));
+        }
+        if(core != null)
+        {
+          core.add(result.getInt("core_values"));
+        }
+        if(rubric != null)
+        {
+          rubric.add(result.getString("rubric"));
+        }
       }
 
       // Close the SQL statement.
       stmt.close();
 
-      // Return the rubric.
-      return(rubric);
+      // Success.
+      return(true);
     }
     catch (Exception e)
     {
       System.out.println("JDBC error: " + e);
-      return(null);
+      return(false);
     }
   }
 
@@ -2381,6 +2408,56 @@ public class Database
 
     // Success.
     return(true);
+  }
+
+  /**
+   * Gets the rubric for a team.
+   *
+   * @param season_id The ID of the season.
+   *
+   * @param event_id The ID of the event.
+   *
+   * @param team_id The ID of the team.
+   *
+   * @return The rubric data for this team.
+   */
+  public String
+  judgingRubricGet(int season_id, int event_id, int team_id)
+  {
+    String rubric = null;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL statement to get a judging result.
+      String sql = "select rubric from judging where season_id = " +
+                   season_id + " and event_id = " + event_id +
+                   " and team_id = " + team_id;
+
+      // Get the rubric from the database.
+      ResultSet result = executeQuery(stmt, sql);
+
+      // See if the query was successful.
+      if(result.next())
+      {
+        // Extract the rubric from the results.
+        rubric = result.getString("rubric");
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+
+      // Return the rubric.
+      return(rubric);
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(null);
+    }
   }
 
   /**

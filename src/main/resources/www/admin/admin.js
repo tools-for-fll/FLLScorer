@@ -8,8 +8,7 @@ const seasonsButton = "<!--#str_menu_seasons-->";
 const eventsButton = "<!--#str_menu_events-->";
 const teamsButton = "<!--#str_menu_teams-->";
 const scoresButton = "<!--#str_menu_scores-->";
-const judgingButton = "<!--#str_menu_judging-->";
-const standingsButton = "<!--#str_menu_standings-->";
+const rubricsButton = "<!--#str_menu_rubrics-->";
 const usersButton = "<!--#str_menu_users-->";
 const aboutButton = "<!--#str_menu_about-->";
 
@@ -297,8 +296,7 @@ ready()
   $("#btn_events").html(eventsButton);
   $("#btn_teams").html(teamsButton);
   $("#btn_scores").html(scoresButton);
-  $("#btn_judging").html(judgingButton);
-  $("#btn_standings").html(standingsButton);
+  $("#btn_rubrics").html(rubricsButton);
   $("#btn_users").html(usersButton);
   $("#btn_about").html(aboutButton);
 
@@ -308,8 +306,7 @@ ready()
   $("#btn_events").click(function() { showTab("events"); });
   $("#btn_teams").click(function() { showTab("teams"); });
   $("#btn_scores").click(function() { showTab("scores"); });
-  $("#btn_judging").click(function() { showTab("judging"); });
-  $("#btn_standings").click(function() { showTab("standings"); });
+  $("#btn_rubrics").click(function() { showTab("rubrics"); });
   $("#btn_users").click(function() { showTab("users"); });
   $("#btn_about").click(showAbout);
 
