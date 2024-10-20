@@ -317,7 +317,7 @@
   border-radius: 1em;
   display: grid;
   grid-template-columns: 5em 1fr;
-  margin: 0.5em;
+  margin: 1.5em 0.5em;
   padding: 0.5em;
 }
 
