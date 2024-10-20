@@ -86,6 +86,7 @@ str_links_admin:Admin
 str_links_judge:Judge
 str_links_referee:Referee
 str_links_scoreboard:Scoreboard
+str_links_standings:Standings
 str_links_timekeeper:Time Keeper
 str_links_timer:Timer
 str_links_wifi:WiFi
@@ -131,6 +132,16 @@ str_scoreboard_name:Name
 str_scoreboard_number:Team #
 str_scoreboard_place:Place
 str_scoreboard_title:<!--#str_title--> : Scoreboard
+
+// Strings for the standings page
+str_standings_event1:Event 1
+str_standings_event2:Event 2
+str_standings_name:Name
+str_standings_number:Team #
+str_standings_place:Place
+str_standings_score:Score
+str_standings_subtitle:League Standings
+str_standings_title:<!--#str_title--> : Standings
 
 // Strings for the season page
 str_seasons_error:Could not update the season!

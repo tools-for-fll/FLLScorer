@@ -1,0 +1,179 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+html, body
+{
+  font-size: 1.75vw;
+}
+
+.left
+{
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.center
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gray
+{
+  background-color: var(--color-gray3);
+}
+
+.container
+{
+  display: grid;
+  height: 100vh;
+  grid-template-rows: 2.5% 20.5% 2.5% repeat(9, 8%) 2.5%;
+  grid-template-columns: 2.5% repeat(2, 10%) 45% repeat(3, 10%) 2.5%;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    ". .     .     .     .     .     .     ."
+    ". logo1 logo1 event event logo2 logo2 ."
+    ". .     .     .     .     .     .     ."
+    ". plt   numt  namet scrt  e1t   e2t   ."
+    ". pl0   num0  name0 scr0  e10   e20   ."
+    ". pl1   num1  name1 scr1  e11   e21   ."
+    ". pl2   num2  name2 scr2  e12   e22   ."
+    ". pl3   num3  name3 scr3  e13   e23   ."
+    ". pl4   num4  name4 scr4  e14   e24   ."
+    ". pl5   num5  name5 scr5  e15   e25   ."
+    ". pl6   num6  name6 scr6  e16   e26   ."
+    ". pl7   num7  name7 scr7  e17   e27   ."
+    ". .     .     .     .     .     .     ." ;
+}
+
+.logo1
+{
+  align-items: center;
+  display: flex;
+  grid-area: logo1;
+  justify-content: center;
+  max-height: 100%;
+  object-fit: contain;
+  width: 100%;
+
+  img
+  {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.event
+{
+  grid-area: event;
+  font-size: 200%;
+}
+
+.logo2
+{
+  align-items: center;
+  display: flex;
+  grid-area: logo2;
+  justify-content: center;
+  max-height: 100%;
+  object-fit: contain;
+  width: 100%;
+
+  img
+  {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.plt
+{
+  background-color: var(--accent-color);
+  grid-area: plt;
+}
+
+.numt
+{
+  background-color: var(--accent-color);
+  grid-area: numt;
+}
+
+.namet
+{
+  background-color: var(--accent-color);
+  grid-area: namet;
+}
+
+.scrt
+{
+  background-color: var(--accent-color);
+  grid-area: scrt;
+}
+
+.e1t
+{
+  background-color: var(--accent-color);
+  grid-area: e1t;
+}
+
+.e2t
+{
+  background-color: var(--accent-color);
+  grid-area: e2t;
+}
+
+.pl0 { grid-area: pl0; }
+.num0 { grid-area: num0; }
+.name0 { grid-area: name0; }
+.scr0 { grid-area: scr0; }
+.e10 { grid-area: e10; }
+.e20 { grid-area: e20; }
+.pl1 { grid-area: pl1; }
+.num1 { grid-area: num1; }
+.name1 { grid-area: name1; }
+.scr1 { grid-area: scr1; }
+.e11 { grid-area: e11; }
+.e21 { grid-area: e21; }
+.pl2 { grid-area: pl2; }
+.num2 { grid-area: num2; }
+.name2 { grid-area: name2; }
+.scr2 { grid-area: scr2; }
+.e12 { grid-area: e12; }
+.e22 { grid-area: e22; }
+.pl3 { grid-area: pl3; }
+.num3 { grid-area: num3; }
+.name3 { grid-area: name3; }
+.scr3 { grid-area: scr3; }
+.e13 { grid-area: e13; }
+.e23 { grid-area: e23; }
+.pl4 { grid-area: pl4; }
+.num4 { grid-area: num4; }
+.name4 { grid-area: name4; }
+.scr4 { grid-area: scr4; }
+.e14 { grid-area: e14; }
+.e24 { grid-area: e24; }
+.pl5 { grid-area: pl5; }
+.num5 { grid-area: num5; }
+.name5 { grid-area: name5; }
+.scr5 { grid-area: scr5; }
+.e15 { grid-area: e15; }
+.e25 { grid-area: e25; }
+.pl6 { grid-area: pl6; }
+.num6 { grid-area: num6; }
+.name6 { grid-area: name6; }
+.scr6 { grid-area: scr6; }
+.e16 { grid-area: e16; }
+.e26 { grid-area: e26; }
+.pl7 { grid-area: pl7; }
+.num7 { grid-area: num7; }
+.name7 { grid-area: name7; }
+.scr7 { grid-area: scr7; }
+.e17 { grid-area: e17; }
+.e27 { grid-area: e27; }
