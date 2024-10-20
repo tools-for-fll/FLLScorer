@@ -1336,7 +1336,7 @@ public class WebServer extends HttpServlet
     // Create a form authenticator to present the actual login to the user.
     FormAuthenticator authenticator =
       new FormAuthenticator("/login/login.html", "/login/login.html?error=yes",
-                            false);
+                            true);
     authenticator.setAlwaysSaveUri(true);
     securityHandler.setAuthenticator(authenticator);
 
