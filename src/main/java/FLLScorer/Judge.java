@@ -651,7 +651,7 @@ public class Judge
     // Convert the response into a byte array and return it.
     try
     {
-      String ret = JSONParser.format(JSONParser.serialize(result));
+      String ret = JSONParser.serialize(result);
       return(ret.getBytes(StandardCharsets.UTF_8));
     }
     catch(Exception e)

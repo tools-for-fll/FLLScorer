@@ -353,7 +353,7 @@ public class Scoreboard
     // Convert the response into a byte array and return it.
     try
     {
-      String json = JSONParser.format(JSONParser.serialize(result));
+      String json = JSONParser.serialize(result);
       return(json.getBytes(StandardCharsets.UTF_8));
     }
     catch(Exception e)

@@ -740,6 +740,10 @@ public class Referee
       {
         result.set("cv", sheet.getInteger("CV_1") + 1);
       }
+      if(!sheet.isNull("GP_1"))
+      {
+        result.set("cv", sheet.getInteger("GP_1") + 1);
+      }
 
       // Success.
       if(result.getString("result") == null)
@@ -886,7 +890,7 @@ public class Referee
     // Convert the response into a byte array and return it.
     try
     {
-      String ret = JSONParser.format(JSONParser.serialize(result));
+      String ret = JSONParser.serialize(result);
       return(ret.getBytes(StandardCharsets.UTF_8));
     }
     catch(Exception e)

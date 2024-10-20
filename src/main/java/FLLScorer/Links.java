@@ -239,6 +239,22 @@ public class Links
   }
 
   /**
+   * Serve a PNG with a QR code for the web page of the standings.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  private byte[]
+  serveStandings(String path, HashMap<String, String> paramMap)
+  {
+    // Generate a QR code for the standings web page.
+    return(serveQrCode("https://" + m_localIP + ":8443/standings"));
+  }
+
+  /**
    * Serve a PNG with a QR code for the web page for the time keeper.
    *
    * @param path The path from the request.
@@ -344,7 +360,7 @@ public class Links
     // Convert the response into a byte array and return it.
     try
     {
-      String json = JSONParser.format(JSONParser.serialize(result));
+      String json = JSONParser.serialize(result);
       return(json.getBytes(StandardCharsets.UTF_8));
     }
     catch(Exception e)
@@ -404,7 +420,7 @@ public class Links
     // Convert the response into a byte array and return it.
     try
     {
-      String json = JSONParser.format(JSONParser.serialize(result));
+      String json = JSONParser.serialize(result);
       return(json.getBytes(StandardCharsets.UTF_8));
     }
     catch(Exception e)
@@ -470,6 +486,8 @@ public class Links
     m_webserver.registerDynamicFile("/links/referee.png", this::serveReferee);
     m_webserver.registerDynamicFile("/links/scoreboard.png",
                                     this::serveScoreboard);
+    m_webserver.registerDynamicFile("/links/standings.png",
+                                    this::serveStandings);
     m_webserver.registerDynamicFile("/links/timekeeper.png",
                                     this::serveTimekeeper);
     m_webserver.registerDynamicFile("/links/timer.png", this::serveTimer);
