@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONObject;
+import org.bspfsystems.simplejson.SimpleJSONArray;
 import org.bspfsystems.simplejson.SimpleJSONObject;
 import org.bspfsystems.simplejson.parser.JSONParser;
 
@@ -124,6 +125,99 @@ public class Seasons
   }
 
   /**
+   * Lists the seasons.
+   *
+   * @param result The JSON object into which the seasons are placed.
+   */
+  private void
+  list(JSONObject result)
+  {
+    // Create a JSON array to hold the seasons.
+    SimpleJSONArray seasons = new SimpleJSONArray();
+
+    // Loop through all of the seasons.
+    for(int idx = 0; idx < m_index.size(); idx++)
+    {
+      // Create a JSON object for this season.
+      JSONObject season = new SimpleJSONObject();
+
+      // Populate the JSON object with the details of this season.
+      season.set("index", m_index.get(idx));
+      season.set("year", m_years.get(idx));
+      season.set("name", m_names.get(idx));
+      season.set("matchLen", m_matchLens.get(idx));
+      season.set("enabled", m_enabled.get(idx));
+
+      // Add this season to the seasons array.
+      seasons.add(season);
+    }
+
+    // Add the completed seasons array into the JSON response.
+    result.set("seasons", seasons);
+
+    // Success.
+    result.set("result", "ok");
+  }
+
+  /**
+   * Gets the current season.
+   *
+   * @param result The JSON object into which the result is placed.
+   */
+  private void
+  get(JSONObject result)
+  {
+    // Get the currently selected season.
+    String year = m_config.seasonGet();
+    int idx = m_index.indexOf(year);
+
+    // Return the details of the selected season.
+    result.set("id", year);
+    result.set("year", m_years.get(idx));
+    result.set("name", m_names.get(idx));
+
+    // Success.
+    result.set("result", "ok");
+  }
+
+  /**
+   * Sets the active season.
+   *
+   * @param result The JSON object into which the result is placed.
+   *
+   * @param year The season that is being selected.
+   */
+  private void
+  set(JSONObject result, String year)
+  {
+    // See if this is a known season, and it is enabled.
+    int idx = m_index.indexOf(year);
+    if((idx != -1) && m_enabled.get(idx))
+    {
+      // Save the new value for the season.
+      m_config.seasonSet(year);
+    }
+    else
+    {
+      idx = m_index.indexOf(m_config.seasonGet());
+    }
+
+    // Update the SSI for the selected season.
+    m_webserver.registerSSI("season_selected", m_config.seasonGet());
+    m_webserver.registerSSI("year_selected",
+                            m_config.seasonGet().substring(0, 4));
+
+    // Update the match length in the time keeper.
+    m_timekeeper.matchLength(m_matchLens.get(idx));
+
+    // Update the selected event based on the new season.
+    m_events.selectDefault();
+
+    // Set the result to success.
+    result.set("result", "ok");
+  }
+
+  /**
    * Handles requests for /admin/seasons/seasons.json.
    *
    * @param path The path from the request.
@@ -136,64 +230,50 @@ public class Seasons
   serveSeasons(String path, HashMap<String, String> paramMap)
   {
     JSONObject result = new SimpleJSONObject();
-    int idx;
 
-    // See if the year was provided.
-    if(paramMap.containsKey("year"))
+    // See if there is an action request.
+    if(paramMap.containsKey("action"))
     {
-      // Get the requested year.
-      String year = paramMap.get("year");
-
-      // See if this is a known season, and it is enabled.
-      idx = m_index.indexOf(year);
-      if((idx != -1) && m_enabled.get(idx))
+      // See if the action is "get", for getting the current season.
+      if(paramMap.get("action").equals("get"))
       {
-        // Save the new value for the season.
-        m_config.seasonSet(year);
+        // Get the current season.
+        get(result);
       }
+
+      // See if the action is "set", for setting the season.
+      if(paramMap.get("action").equals("set") && paramMap.containsKey("year"))
+      {
+        // Set the season.
+        set(result, paramMap.get("year"));
+      }
+
+      // See if the action is "list", for listing the seasons.
+      else if(paramMap.get("action").equals("list"))
+      {
+        // List the seasons.
+        list(result);
+      }
+
+      // Otherwise, return an error.
       else
       {
-        idx = m_index.indexOf(m_config.seasonGet());
+        result.set("result", "error");
       }
-
-      // Update the SSI for the selected season.
-      m_webserver.registerSSI("season_selected", m_config.seasonGet());
-      m_webserver.registerSSI("year_selected",
-                              m_config.seasonGet().substring(0, 4));
-
-      // Update the match length in the time keeper.
-      m_timekeeper.matchLength(m_matchLens.get(idx));
-
-      // Update the selected event based on the new season.
-      m_events.selectDefault();
-
-      // Set the result to success.
-      result.set("result", "ok");
     }
+
+    // Otherwise, the list of seasons should be provided.
     else
     {
-      // Get the currently selected season.
-      String year = m_config.seasonGet();
-      idx = m_index.indexOf(year);
-
-      // Return the details of the selected season.
-      result.set("id", year);
-      result.set("year", m_years.get(idx));
-      result.set("name", m_names.get(idx));
-      result.set("result", "ok");
-    }
-
-    // If there is not result, set an error.
-    if(result.getString("result") == null)
-    {
-      result.set("result", "error");
+      // List the seasons.
+      list(result);
     }
 
     // Convert the response into a byte array and return it.
     try
     {
-      String json = JSONParser.serialize(result);
-      return(json.getBytes(StandardCharsets.UTF_8));
+      String ret = JSONParser.serialize(result);
+      return(ret.getBytes(StandardCharsets.UTF_8));
     }
     catch(Exception e)
     {
@@ -209,7 +289,7 @@ public class Seasons
   {
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     String locale = Config.getInstance().localeGet();
-    String name, year, year2, prev, latest, fragment;
+    String name, year, latest, fragment;
     Boolean enabled;
     JSONObject json;
     InputStream in;
@@ -352,119 +432,6 @@ public class Seasons
     {
       m_timekeeper.matchLength(m_matchLens.get(idx));
     }
-
-    // Generate and set the HTML fragment for displaying all the known seasons.
-    fragment = "";
-    for(int i = m_index.size(); i > 0; i--)
-    {
-      // Get the year of this season.
-      year = m_index.get(i - 1);
-      year = year.substring(0, 4);
-
-      // Generate the HTML for this season's tile.
-      fragment += "        <div id=\"seasons_" + year +
-                  "\" class=\"seasons_tile\">\n";
-      fragment += "          <img src=\"logos/" + year + ".png\">\n";
-      if(m_index.get(i - 1).contains(".0"))
-      {
-        // There is not an alternate game for this season, so simply have the
-        // name of the season.
-        fragment += "          <p>" + m_years.get(i - 1) + " " +
-                    m_names.get(i - 1) + "</p>\n";
-      }
-      else
-      {
-        // There is at least one alternate game for this season, so create a
-        // select for choosing the alternate game.
-        fragment += "          <select id=\"scoresheet_" + year + "\">\n";
-        int j = 1;
-        while(m_index.get(i - j - 1).substring(0, 4).equals(year))
-        {
-          j++;
-        }
-        fragment += "            <option value=\"0\">" +
-                    m_years.get(i - j - 1) + " " + m_names.get(i - j) +
-                    "</option>\n";
-        for(int k = 1; k < j; k++)
-        {
-          fragment += "            <option value=\"" + k + "\">" +
-                      m_names.get(i - j + k) + "</option>\n";
-        }
-        fragment += "          </select>\n";
-        i -= j - 1;
-      }
-
-      // Close out the tile.
-      fragment += "        </div>\n";
-    }
-
-    // Set this fragment as the HTML element for the seasons panel.
-    fragment = fragment.substring(0, fragment.length() - 1);
-    m_webserver.registerSSI("seasons_html", fragment);
-
-    // Generate and set the JS fragment for enabling the click handler, or
-    // disabling the tile, for all the known seasons.
-    fragment = "";
-    prev = "";
-    for(int i = 0; i < m_index.size(); i++)
-    {
-      // Get the year of this season.
-      year = m_index.get(i);
-      year = year.substring(0, 4);
-
-      // If this is the same year as the previous season (meaning it is an
-      // alternate game), it has already been handled and can be skipped.
-      if(year.equals(prev))
-      {
-        continue;
-      }
-
-      // Get the year of the next season.
-      if((i + + 1) < m_index.size())
-      {
-        year2 = ((i + 1) < m_index.size()) ? m_index.get(i + 1) : "";
-        year2 = year2.substring(0, 4);
-      }
-      else
-      {
-        year2 = "";
-      }
-
-      // See if this season is enabled.
-      if(m_enabled.get(i))
-      {
-        // Generate the Javascript to enable this season in the UI and respond
-        // to clicks.
-        fragment += "  $(\"#seasons_" + year +
-                    "\").click(() => { seasonsSelect(\"" + year + "\"); });\n";
-        fragment += "  $(\"#seasons_" + year +
-                    "\").attr(\"tabindex\", \"0\");\n";
-        fragment += "  $(\"#seasons_" + year + "\").on(\"keyup\", " +
-                    "(event) => { if(event.key == \"Enter\") { $(\"#seasons_" +
-                    year + "\").click(); event.preventDefault(); }});\n";
-
-        // Add the change event handler to the select if there are alternate
-        // games for this season.
-        if(year.equals(year2))
-        {
-          fragment += "  $(\"#scoresheet_" + year +
-                      "\").on(\"change\", () => seasonsSelect(\"" + year +
-                      "\"));\n";
-        }
-      }
-      else
-      {
-        // Generate the Javascript to disable this season in the UI.
-        fragment += "  $(\"#seasons_" + year + "\").addClass(\"disabled\");\n";
-      }
-
-      // This season is now the previous season.
-      prev = year;
-    }
-
-    // Set this fragment as the Javascript element for the seasons panel.
-    fragment = fragment.substring(0, fragment.length() - 1);
-    m_webserver.registerSSI("seasons_js", fragment);
 
     // Register the dynamic handler for the season.json file.
     m_webserver.registerDynamicFile("/admin/seasons/seasons.json",

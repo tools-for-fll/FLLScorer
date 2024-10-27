@@ -79,7 +79,171 @@ seasonsSelect(season)
   }
 
   // Send the updated season to the server.
-  $.getJSON("/admin/seasons/seasons.json?year=" + season)
+  $.getJSON("/admin/seasons/seasons.json?action=set&year=" + season)
+    .done(onDone)
+    .fail(onError);
+}
+
+// Loads the list of seasons from the server.
+function
+seasonsLoad()
+{
+  // Called when the JSON request has completed.
+  function
+  onDone(result)
+  {
+    // See if an error was reported by the server.
+    if(result["result"] == "error")
+    {
+      // Reflect the error to the user.
+      onError();
+    }
+    else
+    {
+      // Generate a HTML fragment with tiles for each season.
+      var html = "";
+
+      // Loop through the seasons.
+      for(var idx = result["seasons"].length - 1; idx >= 0; idx--)
+      {
+        // Get the pertinent details about this season.
+        var index = result["seasons"][idx]["index"];
+        var year = result["seasons"][idx]["year"];
+        var name = result["seasons"][idx]["name"];
+        var enabled = result["seasons"][idx]["enabled"];
+
+        // Get the year of this season.
+        var season = index.substring(0, 4);
+
+        // Generate the HTML for this season's tile.
+        html += `<div id="seasons_${season}" class="seasons_tile` +
+                `${enabled ? "" : " disabled"}">`;
+        html += `<img src="logos/${season}.png">`;
+
+        // See if this season has an alternate game.
+        if(index.includes(".0"))
+        {
+          // There is not an alternate game for this season, so simply have the
+          // name of the season.
+          html += `<p>${year} ${name}</p>`;
+        }
+        else
+        {
+          // There is at least one alternate game for this season, so create a
+          // select for choosing the alternate game.
+          html += `<select id="scoresheet_${season}">`;
+
+          // Get the number of alternative games for this season.
+          var idx2 = 0;
+          while(result["seasons"][idx - idx2 - 1]["index"].substring(0, 4) ===
+                season)
+          {
+            idx2++;
+          }
+
+          // Add an option for the standard game for the season.
+          html += `<option value="0">` +
+                  `${result["seasons"][idx - idx2]["year"]} ` +
+                  `${result["seasons"][idx - idx2]["name"]}</option>`;
+
+          // Loop through the alternate games.
+          for(var idx3 = 1; idx3 <= idx2; idx3++)
+          {
+            // Add an option for this alternate game.
+            html += `<option value="${idx3}">` +
+                    `${result["seasons"][idx - idx2 + idx3]["name"]}</option>`;
+          }
+
+          // Close out the select.
+          html += `</select>`;
+
+          // Decrement the index into the seasons by the number of alternate
+          // games (so they are not listed twice).
+          idx -= idx2;
+        }
+
+        // Close out the tile.
+        html += `</div>`;
+      }
+
+      // Insert the HTML fragment into the container, displaying the tiles for
+      // all the seasons.
+      $(".seasons_container").html(html);
+
+      // Loop through the seasons, adding action handlers to each of the tiles
+      // where appropriate.
+      var prev = "";
+      for(var idx = result["seasons"].length - 1; idx >= 0; idx--)
+      {
+        // Get the year of this season.
+        const season = result["seasons"][idx]["index"].substring(0, 4);
+
+        // If this is the same year as the previous season (meaning it is an
+        // alternate game), it has already been handled and can be skipped.
+        if(season === prev)
+        {
+          continue;
+        }
+
+        // Get the year of the next season.
+        var season2;
+        if(idx != 0)
+        {
+          season2 = result["seasons"][idx - 1]["index"].substring(0, 4);
+        }
+        else
+        {
+          season2 = "";
+        }
+
+        // See if this season is enabled.
+        if(result["seasons"][idx]["enabled"])
+        {
+          // Add the click handlers to this tile, and set the tab index so that
+          // it can be reached via keyboard navigation.
+          $(`#seasons_${season}`).click(() => { seasonsSelect(`${season}`); });
+          $(`#seasons_${season}`).attr("tabindex", "0");
+          $(`#seasons_${season}`).on("keyup",
+            (event) =>
+            {
+              if(event.key == "Enter")
+              {
+                $(`#seasons_${season}`).click();
+                event.preventDefault();
+              }
+            });
+
+          // Add the change event handler to the select if there are alternate
+          // games for this season.
+          if(season === season2)
+          {
+            $(`#scoresheet_${season}`).on("change",
+              () => seasonsSelect(`${season}`));
+          }
+        }
+
+        // This season is now the previous season.
+        prev = season;
+      }
+
+      // Update the display to show the new season as active.
+      seasonsUpdate();
+
+      // Update the status since the season has changed.
+      updateStatus();
+    }
+  };
+
+  // Called when the JSON request fails.
+  function
+  onError()
+  {
+    // Display an error message.
+    showError("<!--#str_seasons_error-->", null);
+  }
+
+  // Get the list of seasons from the server.
+  $.getJSON("/admin/seasons/seasons.json?action=list")
     .done(onDone)
     .fail(onError);
 }
@@ -101,8 +265,18 @@ seasonsKeydown(e)
       document.exitFullscreen();
     }
 
-    // Do not allow this key event to further propagated.
+    // Do not allow this key event to further propagate.
     e.stopPropagation();
+  }
+
+  // See if Ctrl-R was pressed.
+  if(((e.key == 'r') || (e.key == 'R')) && (e.ctrlKey == true))
+  {
+    // Re-load the seasons from the server.
+    seasonsLoad();
+
+    // Do not allow this key event to further propagate.
+    e.stopPropatation();
   }
 }
 
@@ -110,8 +284,8 @@ seasonsKeydown(e)
 function
 seasonsSetup()
 {
-  // Add the click handlers, or disable the tiles, for the various seasons.
-<!--#seasons_js-->
+  // Load the seasons.
+  seasonsLoad();
 
   // Select the default season.
   seasonsUpdate();

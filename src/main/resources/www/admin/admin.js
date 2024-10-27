@@ -215,7 +215,7 @@ updateStatus()
   }
 
   // Fetch the season name from the server.
-  $.getJSON("/admin/seasons/seasons.json")
+  $.getJSON("/admin/seasons/seasons.json?action=get")
     .done(seasonDone)
     .fail(seasonFail);
 }
