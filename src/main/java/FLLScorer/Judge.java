@@ -146,11 +146,19 @@ public class Judge
     int season_id = m_season.seasonIdGet();
     int event_id = m_event.eventIdGet();
 
-    // Get the current locale.
-    String locale = m_config.localeGet();
-
     // Load the current season's rubric if necessary.
     loadRubric();
+
+    // Add the current locale to the JSON response.
+    result.set("locale", m_config.localeGet());
+
+    // Add the season's rubric to the JSON response.
+    result.set("rubric", m_rubric);
+
+    // Add information about the team to the JSON response.
+    result.set("id", id);
+    result.set("number", m_database.teamNumberGet(season_id, id));
+    result.set("name", m_database.teamNameGet(season_id, id));
 
     // Get the selections for this team.
     JSONObject teamRubric = null;
@@ -167,177 +175,8 @@ public class Judge
       System.out.println("JSON error: " + e);
     }
 
-    // Construct the HTML for the rubric starting with an empty string.
-    String html = "";
-
-    // Get the judging areas from the rubric.
-    JSONArray areas = m_rubric.getArray("areas");
-
-    // Generate the header, listing the judging areas.
-    html += "<div class=\"area\">";
-
-    // Loop through the areas.
-    for(int i = 0; i < areas.size(); i++)
-    {
-      // Get the JSON object for this area.
-      JSONObject area = areas.getObject(i);
-
-      // Get the long name for this area.
-      String area_name = area.getObject("name").getString(locale);
-      if(area_name == null)
-      {
-        area_name = area.getObject("name").getString("en_US");
-      }
-
-      // Get the short name for this area.
-      String area_name_short = area.getObject("short_name").getString(locale);
-      if(area_name_short == null)
-      {
-        area_name_short = area.getObject("short_name").getString("en_US");
-      }
-
-      // Generate the header item for this judging area.
-      html += "<div class=\"area_name\" tabindex=\"0\">";
-      html += "<span class=\"name\">" + area_name + "</span>";
-      html += "<span class=\"short_name\">" + area_name_short + "</span>";
-      html += "</div>";
-    }
-
-    // Close the header div.
-    html += "</div>";
-
-    // Loop through the areas.
-    for(int i = 0; i < areas.size(); i++)
-    {
-      // Create a div for this judging area.
-      html += "<div class=\"items\" style=\"display: none;\">";
-
-      // Get the JSON object for sections in this area.
-      JSONArray sections = areas.getObject(i).getArray("sections");
-
-      // Loop through the sections in this area.
-      for(int j = 0; j < sections.size(); j++)
-      {
-        // Get the JSON object for this section.
-        JSONObject section = sections.getObject(j);
-
-        // Get the name for this section.
-        String name = section.getObject("name").getString(locale);
-        if(name == null)
-        {
-          name = section.getObject("name").getString("en_US");
-        }
-
-        // Get the description for this section.
-        String desc = section.getObject("description").getString(locale);
-        if(desc == null)
-        {
-          desc = section.getObject("description").getString("en_US");
-        }
-
-        // Create the header for this section.
-        html += "<div class=\"section\">";
-        html += "<span class=\"name\">" + name + "</span>";
-        html += "<hr>";
-        html += "<span class=\"description\">" + desc + "</span>";
-
-        // Get the items for this section.
-        JSONArray items = section.getArray("items");
-
-        // Loop through the items.
-        for(int k = 0; k < items.size(); k++)
-        {
-          // Get the JSON object for this item.
-          JSONObject item = items.getObject(k);
-
-          // If this is a Core Values item, set the Core Values class to add
-          // to the buttons.
-          String core = item.isSet("isCoreValues") ? " core" : "";
-
-          // Construct the ID for this item.
-          String item_id = "R" + i + "_" + j + "_" + k;
-
-          // Determine if this item has a selection in this team's rubric.
-          int selected = -1;
-          if((teamRubric != null) && teamRubric.isSet(item_id))
-          {
-            selected = teamRubric.getInteger(item_id);
-          }
-
-          // Create a div for this item.
-          html += "<hr>";
-          html += "<div id=\"" + item_id + "\" class=\"select\">";
-
-          // Add the first select for this item.
-          desc = item.getObject("1").getString(locale);
-          if(desc == null)
-          {
-            desc = item.getObject("1").getString("en_US");
-          }
-          html += "<button onclick=\"itemToggle('#" + item_id +
-                  "', this);\" class=\"sel1" + core +
-                  ((selected == 0) ? " selected" : "") +
-                  "\"><span>1</span></button>";
-          html += "<span class=\"desc1\">" + desc + "</span>";
-
-          // Add the second select for this item.
-          desc = item.getObject("2").getString(locale);
-          if(desc == null)
-          {
-            desc = item.getObject("2").getString("en_US");
-          }
-          html += "<button onclick=\"itemToggle('#" + item_id +
-                  "', this);\" class=\"sel2" + core +
-                  ((selected == 1) ? " selected": "") +
-                  "\"><span>2</span></button>";
-          html += "<span class=\"desc2\">" + desc + "</span>";
-
-          // Add the third select for this item.
-          desc = item.getObject("3").getString(locale);
-          if(desc == null)
-          {
-            desc = item.getObject("3").getString("en_US");
-          }
-          html += "<button onclick=\"itemToggle('#" + item_id +
-                  "', this);\" class=\"sel3" + core +
-                  ((selected == 2) ? " selected" : "") +
-                  "\"><span>3</span></button>";
-          html += "<span class=\"desc3\">" + desc + "</span>";
-
-          // Add the fourth select for this item.
-          desc = item.getObject("4").getString(locale);
-          if(desc == null)
-          {
-            desc = item.getObject("4").getString("en_US");
-          }
-          html += "<button onclick=\"itemToggle('#" + item_id +
-                  "', this);\" class=\"sel4" + core +
-                  ((selected == 3) ? " selected" : "") +
-                  "\"><span>4</span></button>";
-          html += "<span class=\"desc4\">" + desc + "</span>";
-
-          // Close the div for this select.
-          html += "</div>";
-        }
-
-        // Close the div for this section.
-        html += "</div>";
-      }
-
-      // Close the div for this juging area.
-      html += "</div>";
-    }
-
-    // Add the number of judging areas to the JSON response.
-    result.set("area_count", areas.size());
-
-    // Add information about the team to the JSON response.
-    result.set("id", id);
-    result.set("number", m_database.teamNumberGet(season_id, id));
-    result.set("name", m_database.teamNameGet(season_id, id));
-
-    // Add the rubric HTML to the JSON response.
-    result.set("rubric", html);
+    // Add the team's rubric choices to the JSON response.
+    result.set("choices", teamRubric);
 
     // Success.
     result.set("result", "ok");

@@ -231,8 +231,199 @@ loadRubric(id)
       return;
     }
 
-    // Replace the rubric container body with the HTML rubric from the server.
-    $(".rubric_container .body").html(result["rubric"]);
+    // Get the locale from the response.
+    var locale = result["locale"];
+
+    // Get the team's rubric choices, if they exist.
+    var choices = result.hasOwnProperty("choices") ? result["choices"] : null;
+
+    // Construct the HTML for the rubric starting with an empty string.
+    var html = "";
+
+    // Get the judging areas from the rubric.
+    var areas = result["rubric"]["areas"];
+
+    // Generate the header, listing the judging areas.
+    html += `<div class="area">`;
+
+    // Loop through the areas.
+    for(var i = 0; i < areas.length; i++)
+    {
+      // Get the JSON object for this area.
+      var area = areas[i];
+
+      // Get the long name for this area.
+      var area_name;
+      if(area["name"].hasOwnProperty(locale))
+      {
+        area_name = area["name"][locale];
+      }
+      else
+      {
+        area_name = area["name"]["en_US"];
+      }
+
+      // Get the short name for this area.
+      var area_name_short;
+      if(area["short_name"].hasOwnProperty(locale))
+      {
+        area_name_short = area["short_name"][locale];
+      }
+      else
+      {
+        area_name_short = area["short_name"]["en_US"];
+      }
+
+      // Generate the header item for this judging area.
+      html += `<div class="area_name" tabindex="0">`;
+      html += `<span class="name">${area_name}</span>`;
+      html += `<span class="short_name">${area_name_short}</span>`;
+      html += `</div>`;
+    }
+
+    // Close the header div.
+    html += `</div>`;
+
+    // Loop through the areas.
+    for(var i = 0; i < areas.length; i++)
+    {
+      // Create a div for this judging area.
+      html += `<div class="items" style="display: none;">`;
+
+      // Get the JSON object for sections in this area.
+      var sections = areas[i]["sections"];
+
+      // Loop through the sections in this area.
+      for(var j = 0; j < sections.length; j++)
+      {
+        // Get the JSON object for this section.
+        var section = sections[j];
+
+        // Get the name for this section.
+        var name;
+        if(section["name"].hasOwnProperty(locale))
+        {
+          name = section["name"][locale];
+        }
+        else
+        {
+          name = section["name"]["en_US"];
+        }
+
+        // Get the description for this section.
+        var desc;
+        if(section["description"].hasOwnProperty(locale))
+        {
+          desc = section["description"][locale];
+        }
+        else
+        {
+          desc = section["description"]["en_US"];
+        }
+
+        // Create the header for this section.
+        html += `<div class="section">`;
+        html += `<span class="name">${name}</span>`;
+        html += `<hr>`;
+        html += `<span class="description">${desc}</span>`;
+
+        // Get the items for this section.
+        var items = section["items"];
+
+        // Loop through the items.
+        for(var k = 0; k < items.length; k++)
+        {
+          // Get the JSON object for this item.
+          var item = items[k];
+
+          // If this is a Core Values item, set the Core Values class to add
+          // to the buttons.
+          var core = item.hasOwnProperty("isCoreValues") ? " core" : "";
+
+          // Construct the ID for this item.
+          var item_id = `R${i}_${j}_${k}`;
+
+          // Determine if this item has a selection in this team's rubric.
+          var selected = -1;
+          if((choices != null) && choices.hasOwnProperty(item_id))
+          {
+            selected = choices[item_id];
+          }
+
+          // Create a div for this item.
+          html += `<hr>`;
+          html += `<div id=${item_id}" class="select">`;
+
+          // Add the first select for this item.
+          if(item["1"].hasOwnProperty(locale))
+          {
+            desc = item["1"][locale];
+          }
+          else
+          {
+            desc = item["1"]["en_US"];
+          }
+          html += `<button onclick="itemToggle('#${item_id}', this);" ` +
+                  `class="sel1${core}${(selected == 0) ? " selected" : ""}">` +
+                  `<span>1</span></button>`;
+          html += `<span class="desc1">${desc}</span>`;
+
+          // Add the second select for this item.
+          if(item["2"].hasOwnProperty(locale))
+          {
+            desc = item["2"][locale];
+          }
+          else
+          {
+            desc = item["2"]["en_US"];
+          }
+          html += `<button onclick="itemToggle('#${item_id}', this);" ` +
+                  `class="sel2${core}${(selected == 1) ? " selected": ""}">` +
+                  `<span>2</span></button>`;
+          html += `<span class="desc2">${desc}</span>`;
+
+          // Add the third select for this item.
+          if(item["3"].hasOwnProperty(locale))
+          {
+            desc = item["3"][locale];
+          }
+          else
+          {
+            desc = item["3"]["en_US"];
+          }
+          html += `<button onclick="itemToggle('#${item_id}', this);" ` +
+                  `class="sel3${core}${(selected == 2) ? " selected" : ""}">` +
+                  `<span>3</span></button>`;
+          html += `<span class="desc3">${desc}</span>`;
+
+          // Add the fourth select for this item.
+          if(item["4"].hasOwnProperty(locale))
+          {
+            desc = item["4"][locale];
+          }
+          else
+          {
+            desc = item["4"]["en_US"];
+          }
+          html += `<button onclick="itemToggle('#${item_id}', this);" ` +
+                  `class="sel4${core}${(selected == 3) ? " selected" : ""}">` +
+                  `<span>4</span></button>`;
+          html += `<span class="desc4">${desc}</span>`;
+
+          // Close the div for this select.
+          html += `</div>`;
+        }
+
+        // Close the div for this section.
+        html += `</div>`;
+      }
+
+      // Close the div for this juging area.
+      html += `</div>`;
+    }
+
+    // Replace the rubric container body with the HTML rubric.
+    $(".rubric_container .body").html(html);
 
     // Save the team ID and match.
     teamID = id;
@@ -249,7 +440,7 @@ loadRubric(id)
     $("#rubric").removeClass("hidden");
 
     // See if two or three areas are present.
-    if(result["area_count"] != 3)
+    if(areas.length != 3)
     {
       $(".area").addClass("area2");
     }
