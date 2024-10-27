@@ -356,7 +356,7 @@ public class Standings
       {
         // See if the preceeding team has a judging score, and it has a lower
         // score than the current team.
-        if((scores.get(sort.get(idx2)) != -1) &&
+        if((scores.get(sort.get(idx2)) == -1) ||
            (scores.get(sort.get(idx2)) < scores.get(sort.get(idx))))
          {
           // Remove the current team from it's location in the sort array and
@@ -478,7 +478,7 @@ public class Standings
     }
 
     // Add the robot game Core Values scores to the judging Core Values scores.
-    for(int idx = 0; idx < teams.size(); idx++)
+    for(int idx = 0; (idx < teams.size()) && (idx < robotCore.size()); idx++)
     {
       Integer cv1 = core.get(idx);
       if(cv1 == null)
@@ -564,6 +564,44 @@ public class Standings
       getJudgingRankings(season_id, events.get(idx), eventTeams, robotCore,
                          judgingProject, judgingRobot, judgingCore);
 
+      // The number of teams in each ranking area.
+      int teamsRobotGame = 0;
+      int teamsProject = 0;
+      int teamsRobotDesign = 0;
+      int teamsCoreValues = 0;
+
+      // Loop through all the teams.
+      for(int idx2 = 0; idx2 < ids.size(); idx2++)
+      {
+        // If this team exists and has a robot game rank, increment the count
+        // of robot game teams.
+        if((idx2 < robotRanks.size()) && (robotRanks.get(idx2) != -1))
+        {
+          teamsRobotGame++;
+        }
+
+        // If this team exists and has a project rank, increment the count of
+        // project teams.
+        if((idx2 < judgingProject.size()) && (judgingProject.get(idx2) != -1))
+        {
+          teamsProject++;
+        }
+
+        // If this team exists and has a robot design rank, increment the count
+        // of robot design teams.
+        if((idx2 < judgingRobot.size()) && (judgingRobot.get(idx2) != -1))
+        {
+          teamsRobotDesign++;
+        }
+
+        // If the team exists and has a core values rank, increment the count
+        // of core values teams.
+        if((idx2 < judgingCore.size()) && (judgingCore.get(idx2) != -1))
+        {
+          teamsCoreValues++;
+        }
+      }
+
       // Loop through the teams.
       for(int idx2 = 0; idx2 < ids.size(); idx2++)
       {
@@ -583,7 +621,7 @@ public class Standings
         {
           // This team has a robot game ranking, so use it to determine their
           // robot game score.
-          if(eventTeams.size() == 1)
+          if(teamsRobotGame == 1)
           {
             // There is only a single team at the event, so assign the maximum
             // points.
@@ -592,8 +630,8 @@ public class Standings
           else
           {
             // Compute the number of robot game points that this team earned.
-            score += (((100 * (eventTeams.size() - robotRanks.get(teamIdx))) /
-                       (eventTeams.size() - 1)) + 100);
+            score += (((100 * (teamsRobotGame - robotRanks.get(teamIdx))) /
+                       (teamsRobotGame - 1)) + 100);
           }
         }
 
@@ -602,7 +640,7 @@ public class Standings
         {
           // This team has an Innovation Project ranking, so use it to
           // determine the Innovation Project score.
-          if(eventTeams.size() == 1)
+          if(teamsProject == 1)
           {
             // There is only a single team at the event, so assign the maximum
             // points.
@@ -612,9 +650,8 @@ public class Standings
           {
             // Compute the number of Innovation Project points that this team
             // earned.
-            score += (((100 * (eventTeams.size() -
-                               judgingProject.get(teamIdx))) /
-                       (eventTeams.size() - 1)) + 100);
+            score += (((100 * (teamsProject - judgingProject.get(teamIdx))) /
+                       (teamsProject - 1)) + 100);
           }
         }
 
@@ -623,7 +660,7 @@ public class Standings
         {
           // This team has a Robot Design ranking, so use it to determine the
           // Robot Design score.
-          if(eventTeams.size() == 1)
+          if(teamsRobotDesign == 1)
           {
             // There is only a single team at the event, so assign the maximum
             // points.
@@ -632,9 +669,8 @@ public class Standings
           else
           {
             // Compute the number of Robot Design points that this team earned.
-            score += (((100 * (eventTeams.size() -
-                               judgingRobot.get(teamIdx))) /
-                       (eventTeams.size() - 1)) + 100);
+            score += (((100 * (teamsRobotDesign - judgingRobot.get(teamIdx))) /
+                       (teamsRobotDesign - 1)) + 100);
           }
         }
 
@@ -643,7 +679,7 @@ public class Standings
         {
           // This team has a Core Values ranking, so use it to determine the
           // Core Values score.
-          if(eventTeams.size() == 1)
+          if(teamsCoreValues == 1)
           {
             // There is only a single team at the event, so assign the maximum
             // points.
@@ -652,8 +688,8 @@ public class Standings
           else
           {
             // Compute the number of Core Values points that this team earned.
-            score += (((100 * (eventTeams.size() - judgingCore.get(teamIdx))) /
-                       (eventTeams.size() - 1)) + 100);
+            score += (((100 * (teamsCoreValues - judgingCore.get(teamIdx))) /
+                       (teamsCoreValues - 1)) + 100);
           }
         }
 
