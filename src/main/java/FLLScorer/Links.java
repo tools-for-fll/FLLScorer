@@ -446,7 +446,8 @@ public class Links
     String password = m_config.wifiPasswordGet();
 
     // There is no replacement if the WiFi information is not known.
-    if(ssid.equals("") && password.equals(""))
+    if(((ssid == null) || ssid.equals("")) &&
+       ((password == null) || password.equals("")))
     {
       return("");
     }
