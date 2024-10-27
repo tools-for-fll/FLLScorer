@@ -216,7 +216,7 @@ public class Scoreboard
     }
 
     // Loop through all the teams to find their high score.
-    for(int idx = 0; idx < teams.size(); idx++)
+    for(int idx = 0; idx < a_ids.size(); idx++)
     {
       // Get the high score.
       int high = a_match1.get(idx);
@@ -229,7 +229,7 @@ public class Scoreboard
     // Loop through all the teams, sorting them into placement order (with
     // equally-placed teams and teams without any scores remaining in team
     // number order).
-    for(int i = 0; i < a_numbers.size(); i++)
+    for(int i = 0; i < a_ids.size(); i++)
     {
       // This team does not need to get moved if it does not have any scores.
       if(a_high.get(i) == -100)
@@ -268,7 +268,7 @@ public class Scoreboard
 
     // Loop through all the teams, assigning places (with equally-placed teams
     // sharing the highest place).
-    for(int i = 0; i < a_numbers.size(); i++)
+    for(int i = 0; i < a_ids.size(); i++)
     {
       // Do not assign a place if this team has no scores.
       if(a_high.get(i) == -100)
@@ -297,7 +297,7 @@ public class Scoreboard
 
     // Loop through the teams.
     JSONArray scores = new SimpleJSONArray();
-    for(int i = 0; i < a_numbers.size(); i++)
+    for(int i = 0; i < a_ids.size(); i++)
     {
       // Add this team's scores to the score array.
       JSONObject score = new SimpleJSONObject();
