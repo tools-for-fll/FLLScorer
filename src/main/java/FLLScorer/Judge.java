@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONArray;
 import org.bspfsystems.simplejson.JSONObject;
+import org.bspfsystems.simplejson.SimpleJSONArray;
 import org.bspfsystems.simplejson.SimpleJSONObject;
 import org.bspfsystems.simplejson.parser.JSONParser;
 
@@ -213,8 +214,8 @@ public class Judge
     m_database.judgingEnumerate(season_id, event_id, null, null, null, ids2,
                                 project, robot, core, rubric);
 
-    // Start with an empty HTML fragment for the team list.
-    String html = "";
+    // Create a JSON array for the team list.
+    JSONArray teams = new SimpleJSONArray();
 
     // Loop through the teams.
     for(int i = 0; i < numbers.size(); i++)
@@ -248,22 +249,17 @@ public class Judge
         }
       }
 
-      // Generate the HTML fragment for this team.
-      html += "<div class=\"row\">";
-      html += "<div class=\"name\">";
-      html += "<span>";
-      html += numbers.get(i) + " : " + names.get(i);
-      html += "</span>";
-      html += "</div>";
-      html += "<div class=\"action\">";
-      html += "<button class=\"" + color + "\" onclick=\"loadRubric(" +
-              ids.get(i) + ");\">Edit</button>";
-      html += "</div>";
-      html += "</div>";
+      // Add this team to the JSON array.
+      JSONObject team = new SimpleJSONObject();
+      team.set("id", ids.get(i));
+      team.set("number", numbers.get(i));
+      team.set("name", names.get(i));
+      team.set("color", color);
+      teams.addEntry(team);
     }
 
-    // Add the HTML fragment to the JSON response.
-    result.set("html", html);
+    // Add the team list JSON array to the JSON response.
+    result.set("teams", teams);
 
     // Success.
     result.set("result", "ok");

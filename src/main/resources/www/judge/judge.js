@@ -189,8 +189,31 @@ loadTeams()
       return;
     }
 
-    // Insert the HTML into the list body.
-    $(".list_container .body").html(result["html"]);
+    // Start with an empty HTML fragment for the team list.
+    html = "";
+
+    // Loop through the teams.
+    for(var idx = 0; idx < result["teams"].length; idx++)
+    {
+      // Get this team.
+      var team = result["teams"][idx];
+
+      // Generate the HTML fragment for this team.
+      html += `<div class="row">`;
+      html += `<div class="name">`;
+      html += `<span>`;
+      html += `${team["number"]} : ${team["name"]}`;
+      html += `</span>`;
+      html += `</div>`;
+      html += `<div class="action">`;
+      html += `<button class="${team["color"]}" ` +
+              `onclick="loadRubric(${team["id"]});">Edit</button>`;
+      html += `</div>`;
+      html += `</div>`;
+    }
+
+    // Insert the generated HTML into the list body.
+    $(".list_container .body").html(html);
 
     // Hide the rubric and show the team list.
     $("#list").removeClass("hidden");
@@ -352,7 +375,7 @@ loadRubric(id)
 
           // Create a div for this item.
           html += `<hr>`;
-          html += `<div id=${item_id}" class="select">`;
+          html += `<div id="${item_id}" class="select">`;
 
           // Add the first select for this item.
           if(item["1"].hasOwnProperty(locale))

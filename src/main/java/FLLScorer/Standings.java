@@ -214,13 +214,8 @@ public class Standings
       Integer s2 = core2.get(idx);
       Integer s3 = core3.get(idx);
       Integer s4 = core4.get(idx);
-      System.out.println((s1 == null) ? 0 : s1);
-      System.out.println((s2 == null) ? 0 : s2);
-      System.out.println((s3 == null) ? 0 : s3);
-      System.out.println((s4 == null) ? 0 : s4);
       cv.add(team_idx, (((s1 == null) ? 0 : s1) + ((s2 == null) ? 0 : s2) +
                         ((s3 == null) ? 0 : s3) + ((s4 == null) ? 0 : s4)));
-      System.out.println(cv.get(team_idx));
     }
 
     // Loop through all the teams to find their high score.
