@@ -158,137 +158,14 @@ public class Referee
     int season_id = m_season.seasonIdGet();
     int event_id = m_event.eventIdGet();
 
-    // Get the current locale.
-    String locale = m_config.localeGet();
-
     // Load the current season's scoresheet if necessary.
     loadScoresheet();
 
-    // Construct the HTML for the scoresheet starting with an empty string.
-    String html = "";
+    // Add the current locale to the JSON response.
+    result.set("locale", m_config.localeGet());
 
-    // Get the missions from the scoresheet.
-    JSONArray missions = m_scoresheet.getArray("missions");
-
-    // Loop through the missions.
-    for(int i = 0; i < missions.size(); i++)
-    {
-      // Get the JSON object for this mission, and the mission ID from that.
-      JSONObject mission = missions.getObject(i);
-      String mission_id = mission.getString("mission");
-
-      // Get the name of the mission.  If it is not available in the current
-      // locale, default back to en_US.
-      String name = mission.getObject("name").getString(locale);
-      if(name == null)
-      {
-        name = mission.getObject("name").getString("en_US");
-      }
-
-      // See if this mission has a no touch requirement (team equipment can not
-      // be touching the mission model).
-      boolean noTouch = mission.getBoolean("no_touch");
-
-      // Add the mission, ID, and name to the HTML.
-      html += "<div id=\"" + mission_id + "\" class=\"mission\">";
-      html += "  <div class=\"mission_id\">";
-      html += "    <span>";
-      html += "      " + mission_id;
-      html += "    </span>";
-      html += "  </div>";
-      html += "  <div class=\"mission_name\">";
-      html += "    <span>";
-      html += "      " + name;
-      html += "    </span>";
-      if(noTouch)
-      {
-        html += "    <img class=\"no_touch\" src=\"referee/no_touch.png\" " +
-                "></img>\n";
-      }
-      html += "  </div>";
-
-      // Get the mission items and loop through them.
-      JSONArray items = mission.getArray("items");
-      for(int j = 0; j < items.size(); j++)
-      {
-        // Get the JSON object for this mission item, and the ID for it.
-        JSONObject item = items.getObject(j);
-        Integer item_id = item.getInteger("id");
-
-        // Get the description for this mission item.  If the description is
-        // not available in the current locale, default back to en_US.
-        String description = item.getObject("description").getString(locale);
-        if(description == null)
-        {
-          description = item.getObject("description").getString("en_US");
-        }
-
-        // Add the description of this item to the HTML.
-        html += "  <hr class=\"mission_item\">";
-        html += "  <div class=\"mission_desc\">";
-        html += "    <span>";
-        html += "      " + description;
-        html += "    </span>";
-        html += "  </div>";
-        html += "  <div id=\"" + mission_id + "_" + item_id +
-                "\" class=\"mission_sel\">";
-
-        // See if this item has a yes/no selection.
-        if(item.getString("type").equals("yesno"))
-        {
-          // Add a yes and no button to the selection HTML.
-          html += "    <button onclick=\"itemToggle('#" + mission_id + "_" +
-                  item_id.toString() + "', this);\">" +
-                  m_webserver.getSSI("str_no") + "</button>";
-          html += "    <button onclick=\"itemToggle('#" + mission_id + "_" +
-                  item_id.toString() + "', this);\">" +
-                  m_webserver.getSSI("str_yes") + "</button>";
-        }
-
-        // Otherwise, see if this item has an enumeration selection.
-        else if(item.getString("type").equals("enum"))
-        {
-          // Get the array of choices.  If they are not available in the current
-          // locale, default back to en_US.
-          JSONArray choices = item.getObject("choices").getArray(locale);
-          if(choices == null)
-          {
-            choices = item.getObject("choices").getArray("en_US");
-          }
-
-          // Loop through the item choices.
-          for(int k = 0; k < choices.size(); k++)
-          {
-            // Add a button for this choice to the HTML.
-            html += "    <button onclick=\"itemToggle('#" + mission_id + "_" +
-                    item_id.toString() + "', this);\">" +
-                    choices.getString(k) + "</button>";
-          }
-        }
-
-        // Otherwise, the selection type is unknown.
-        else
-        {
-          html += "    <button>ERROR!</button>";
-        }
-
-        // End this item.
-        html += "  </div>";
-      }
-
-      // Add the mission error message contaianer.
-      html += "  <div class=\"error\">";
-      html += "    <hr class=\"mission_item\">";
-      html += "    <div class=\"mission_error\">";
-      html += "    </div>";
-      html += "  </div>";
-
-      // End this mission.
-      html += "</div>";
-    }
-
-    // Add the scoresheet HTML to the JSON response.
-    result.set("scoresheet", html);
+    // Add the season's scoresheet to the JSON response.
+    result.set("scoresheet", m_scoresheet);
 
     // Add information about the team to the JSON response.
     result.set("id", id);

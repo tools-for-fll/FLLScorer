@@ -477,9 +477,136 @@ loadMatch(id, match)
       return;
     }
 
-    // Replace the score container body with the HTML scoresheet from the
-    // server.
-    $(".score_container .body").html(result["scoresheet"]);
+    // Construct the HTML for the scoresheet starting with an empty string.
+    var html = "";
+
+    // Get the locale from the response.
+    var locale = result["locale"];
+
+    // Get the missions from the scoresheet.
+    var missions = result["scoresheet"]["missions"];
+
+    // Loop through the missions.
+    for(var i = 0; i < missions.length; i++)
+    {
+      // Get the JSON object for this mission, and the mission ID from that.
+      var mission = missions[i];
+      var mission_id = mission["mission"];
+
+      // Get the name of the mission.  If it is not available in the current
+      // locale, default to en_US.
+      console.log(mission["name"]);
+      var name;
+      if(mission["name"].hasOwnProperty(locale))
+      {
+        name = mission["name"][locale];
+      }
+      else
+      {
+        name = mission["name"]["en_US"];
+      }
+
+      // See if this mission has a no touch requirement (team equipment can not
+      // be touching the mission model).
+      var noTouch = mission.hasOwnProperty("no_touch");
+
+      // Add the mission, ID, and name to the HTML.
+      html += `<div id="${mission_id}" class="mission">`;
+      html += `<div class="mission_id">`;
+      html += `<span>${mission_id}</span>`;
+      html += `</div>`;
+      html += `<div class="mission_name">`;
+      html += `<span>${name}</span>`;
+      if(noTouch)
+      {
+        html += `<img class="no_touch" src="referee/no_touch.png"></img>`;
+      }
+      html += `</div>`;
+
+      // Get the mission items and loop through them.
+      var items = mission["items"];
+      for(var j = 0; j < items.length; j++)
+      {
+        // Get the JSON object for this mission item, and the ID for it.
+        var item = items[j];
+        var item_id = item["id"];
+
+        // Get the description for this mission item.  If the description is
+        // not available in the current locale, default back to en_US.
+        var description;
+        if(item["description"].hasOwnProperty(locale))
+        {
+          description = item["description"][locale];
+        }
+        else
+        {
+          description = item["description"]["en_US"];
+        }
+
+        // Add the description of this item to the HTML.
+        html += `<hr class="mission_item">`;
+        html += `<div class="mission_desc">`;
+        html += `<span>${description}</span>`;
+        html += `</div>`;
+        html += `<div id="${mission_id}_${item_id}" class="mission_sel">`;
+
+        // See if this item has a yes/no selection.
+        if(item["type"] === "yesno")
+        {
+          // Add a yes and no button to the selection HTML.
+          html += `<button onclick="itemToggle('#${mission_id}_${item_id}', ` +
+                  `this);"><!--#str_no--></button>`;
+          html += `<button onclick="itemToggle('#${mission_id}_${item_id}', ` +
+                  `this);"><!--#str_yes--></button>`;
+        }
+
+        // Otherwise, see if this item has an enumeration selection.
+        else if(item["type"] === "enum")
+        {
+          // Get the array of choices.  If they are not available in the current
+          // locale, default back to en_US.
+          var choices;
+          if(item["choices"].hasOwnProperty(locale))
+          {
+            choices = item["choices"][locale];
+          }
+          else
+          {
+            choices = item["choices"]["en_US"];
+          }
+
+          // Loop through the item choices.
+          for(var k = 0; k < choices.length; k++)
+          {
+            // Add a button for this choice to the HTML.
+            html += `<button onclick="itemToggle('#${mission_id}_` +
+                    `${item_id}', this);">${choices[k]}</button>`;
+          }
+        }
+
+        // Otherwise, the selection type is unknown.
+        else
+        {
+          html += `<button>ERROR!</button>`;
+        }
+
+        // End this item.
+        html += `</div>`;
+      }
+
+      // Add the mission error message contaianer.
+      html += `<div class="error">`;
+      html += `<hr class="mission_item">`;
+      html += `<div class="mission_error">`;
+      html += `</div>`;
+      html += `</div>`;
+
+      // End this mission.
+      html += `</div>`;
+    }
+
+    // Replace the score container body with the HTML scoresheet.
+    $(".score_container .body").html(html);
 
     // See if this match has already been scored (partially or fully).
     if(result["sheet"] != null)
