@@ -210,6 +210,8 @@
       {
         align-items: center;
         background-color: var(--color-gray3);
+        border: solid var(--accent-color);
+        border-width: 0 0 0.05em 0;
         color: var(--color-gray12);
         cursor: pointer;
         display: flex;
@@ -219,6 +221,7 @@
         &.selected
         {
           background-color: unset;
+          border-width: 0 0.05em 0 0.05em;
           color: unset;
         }
 
