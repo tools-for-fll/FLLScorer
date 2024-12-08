@@ -495,7 +495,6 @@ loadMatch(id, match)
 
       // Get the name of the mission.  If it is not available in the current
       // locale, default to en_US.
-      console.log(mission["name"]);
       var name;
       if(mission["name"].hasOwnProperty(locale))
       {
