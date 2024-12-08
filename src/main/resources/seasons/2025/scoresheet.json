@@ -89,7 +89,7 @@
           "id": 2,
           "description":
           {
-            "en_US": "The shark is touching the mat at least partly in the shark habitat"
+            "en_US": "The shark is touching the mat and is at least partly in the shark habitat"
           },
           "type": "yesno",
           "score": [ 0, 10 ]
