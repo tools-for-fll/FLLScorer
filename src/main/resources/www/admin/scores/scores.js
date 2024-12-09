@@ -341,6 +341,18 @@ scoresLoad()
     .fail(onFail);
 }
 
+// Downloads the scores as a CSV.
+function
+scoresDownload()
+{
+  // Create a link element and click it, triggering the CSV download.
+  Object.assign(document.createElement('a'),
+                {
+                  href: "/admin/scores/scores.csv",
+                  download: "scores.csv"
+                }).click();
+}
+
 // Searches for items in the score list.
 function
 scoresSearch()
@@ -458,6 +470,7 @@ scoresSetup()
   // Add event handlers for elements on the scores tab.
   $("#scores-search").on("keyup", scoresSearch);
   $("#scores-refresh").on("click", scoresLoad);
+  $("#scores-download").on("click", scoresDownload);
 
   // Add a keydown event listener.
   document.addEventListener("keydown", scoresKeydown);

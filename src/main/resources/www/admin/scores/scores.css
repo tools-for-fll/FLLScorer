@@ -152,6 +152,11 @@
   padding: 0 0.1em;
 }
 
+.scores_container .fa:not([class*="disabled"])
+{
+  cursor: pointer;
+}
+
 .scores_container .search .input
 {
   align-items: center;

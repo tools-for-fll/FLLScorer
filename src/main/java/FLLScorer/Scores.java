@@ -312,7 +312,7 @@ public class Scores
    * @return An array of bytes to return to the client.
    */
   private byte[]
-  serveScores(String path, HashMap<String, String> paramMap)
+  serveScoresJSON(String path, HashMap<String, String> paramMap)
   {
     JSONObject result = new SimpleJSONObject();
 
@@ -374,6 +374,167 @@ public class Scores
   }
 
   /**
+   * Handles requests for /admin/scores/scores.csv.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  private byte[]
+  serveScoresCSV(String path, HashMap<String, String> paramMap)
+  {
+    String csv = new String();
+    int season_id = m_season.seasonIdGet();
+    int event_id = m_event.eventIdGet();
+    int matches;
+
+    // Get the number of matches at this event.
+    if(event_id != -1)
+    {
+      matches = m_database.eventGetMatches(event_id);
+    }
+    else
+    {
+      matches = 3;
+    }
+
+    // A list of information about teams, maintained in team number order.
+    ArrayList<Integer> ids = new ArrayList<Integer>();
+    ArrayList<Integer> numbers = new ArrayList<Integer>();
+    ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> match1 = new ArrayList<Integer>();
+    ArrayList<Integer> cv1 = new ArrayList<Integer>();
+    ArrayList<Integer> match2 = new ArrayList<Integer>();
+    ArrayList<Integer> cv2 = new ArrayList<Integer>();
+    ArrayList<Integer> match3 = new ArrayList<Integer>();
+    ArrayList<Integer> cv3 = new ArrayList<Integer>();
+    ArrayList<Integer> match4 = new ArrayList<Integer>();
+    ArrayList<Integer> cv4 = new ArrayList<Integer>();
+
+    // Enumerate the teams from the database for this season.
+    m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
+
+    // Set the score indicator for each team to no score available.
+    for(int idx = 0; idx < numbers.size(); idx++)
+    {
+      match1.add(idx, -1);
+      cv1.add(idx, -1);
+      match2.add(idx, -1);
+      cv2.add(idx, -1);
+      match3.add(idx, -1);
+      cv3.add(idx, -1);
+      match4.add(idx, -1);
+      cv4.add(idx, -1);
+    };
+
+    // A list of information about the scores.
+    ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Integer> score1 = new ArrayList<Integer>();
+    ArrayList<Integer> core1 = new ArrayList<Integer>();
+    ArrayList<Integer> score2 = new ArrayList<Integer>();
+    ArrayList<Integer> core2 = new ArrayList<Integer>();
+    ArrayList<Integer> score3 = new ArrayList<Integer>();
+    ArrayList<Integer> core3 = new ArrayList<Integer>();
+    ArrayList<Integer> score4 = new ArrayList<Integer>();
+    ArrayList<Integer> core4 = new ArrayList<Integer>();
+
+    // Enumerate the scores for this event.
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, core1,
+                              null, score2, core2, null, score3, core3, null,
+                              score4, core4, null);
+
+    // Loop through all the scores
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      // Ignore this score if it is not for a team at this event (should not
+      // happen).
+      int team_idx = ids.indexOf(teams.get(idx));
+      if(team_idx == -1)
+      {
+        continue;
+      }
+
+      // Save the match 1 score, if it exists.
+      if(score1.get(idx) != null)
+      {
+        match1.set(team_idx, score1.get(idx));
+      }
+      if(core1.get(idx) != null)
+      {
+        cv1.set(team_idx, core1.get(idx));
+      }
+
+      // Save the match 2 score, if it exists.
+      if(score2.get(idx) != null)
+      {
+        match2.set(team_idx, score2.get(idx));
+      }
+      if(core2.get(idx) != null)
+      {
+        cv2.set(team_idx, core2.get(idx));
+      }
+
+      // Save the match 3 score, if it exists.
+      if(score3.get(idx) != null)
+      {
+        match3.set(team_idx, score3.get(idx));
+      }
+      if(core3.get(idx) != null)
+      {
+        cv3.set(team_idx, core3.get(idx));
+      }
+
+      // Save the match 4 score, if it exists.
+      if(score4.get(idx) != null)
+      {
+        match4.set(team_idx, score4.get(idx));
+      }
+      if(core4.get(idx) != null)
+      {
+        cv4.set(team_idx, core4.get(idx));
+      }
+    }
+
+    // Add the header to the CSV string.
+    if(matches == 3)
+    {
+      csv += "number,name,match1,match2,match3,cv1,cv2,cv3\n";
+    }
+    else
+    {
+      csv += "number,name,match1,match2,match3,match4,cv1,cv2,cv3,cv4\n";
+    }
+
+    // Loop through the teams.
+    for(int i = 0; i < numbers.size(); i++)
+    {
+      // Add this team's scores to the CSV string.
+      csv += numbers.get(i);
+      csv += "," + names.get(i);
+      csv += "," + ((match1.get(i) == -1) ? "" : match1.get(i));
+      csv += "," + ((match2.get(i) == -1) ? "" : match2.get(i));
+      csv += "," + ((match3.get(i) == -1) ? "" : match3.get(i));
+      if(matches == 4)
+      {
+        csv += "," + ((match4.get(i) == -1) ? "" : match4.get(i));
+      }
+      csv += "," + ((cv1.get(i) == -1) ? "" : cv1.get(i));
+      csv += "," + ((cv2.get(i) == -1) ? "" : cv2.get(i));
+      csv += "," + ((cv3.get(i) == -1) ? "" : cv3.get(i));
+      if(matches == 4)
+      {
+        csv += "," + ((cv4.get(i) == -1) ? "" : cv4.get(i));
+      }
+      csv += "\n";
+    }
+
+    // Convert the response into a byte array and return it.
+    return(csv.getBytes(StandardCharsets.UTF_8));
+  }
+
+  /**
    * Performs initial setup for the scores handler.
    */
   public void
@@ -387,6 +548,8 @@ public class Scores
 
     // Register the dynamic handler for the scores.json file.
     m_webserver.registerDynamicFile("/admin/scores/scores.json",
-                                    this::serveScores);
+                                    this::serveScoresJSON);
+    m_webserver.registerDynamicFile("/admin/scores/scores.csv",
+                                    this::serveScoresCSV);
   }
 }
