@@ -7,6 +7,8 @@ package FLLScorer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.bspfsystems.simplejson.JSONArray;
@@ -374,6 +376,62 @@ public class Scores
   }
 
   /**
+   * Compares two sets of team scores to determine the placement order.
+   *
+   * @param a1 The match 1 score for the first team.
+   *
+   * @param a2 The match 2 scores for the first team.
+   *
+   * @param a3 The match 3 score for the first team.
+   *
+   * @param a4 The match 4 score for the first team.
+   *
+   * @param b1 The match 1 score for the second team.
+   *
+   * @param b2 The match 2 score for the second team.
+   *
+   * @param b3 The match 3 score for the second team.
+   *
+   * @param b4 The match 4 score for the second team.
+   *
+   * @return 1 if the first team places higher than the second team, -1 if the
+   *         second team places higher than the first team, and 0 if the teams
+   *         are tied.
+   */
+  private int
+  scoresCompare(int a1, int a2, int a3, int a4, int b1, int b2, int b3, int b4)
+  {
+    // Convert the scores into integer arrays.
+    Integer a[] = { a1, a2, a3, a4 };
+    Integer b[] = { b1, b2, b3, b4 };
+
+    // Sort the array in descrending order.
+    Arrays.sort(a, Collections.reverseOrder());
+    Arrays.sort(b, Collections.reverseOrder());
+
+    // Loop through the four scores.
+    for(int idx = 0; idx < 4; idx++)
+    {
+      // See if the second team places higher than the first team, based on
+      // this score.
+      if(a[idx] < b[idx])
+      {
+        return(-1);
+      }
+
+      // See if hte first team places higher than the seocnd team, based on
+      // this score.
+      if(a[idx] > b[idx])
+      {
+        return(1);
+      }
+    }
+
+    // All of the scores match, so the teams are tied.
+    return(0);
+  }
+
+  /**
    * Handles requests for /admin/scores/scores.csv.
    *
    * @param path The path from the request.
@@ -431,6 +489,7 @@ public class Scores
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Integer> high = new ArrayList<Integer>();
     ArrayList<Integer> score1 = new ArrayList<Integer>();
     ArrayList<Integer> core1 = new ArrayList<Integer>();
     ArrayList<Integer> score2 = new ArrayList<Integer>();
@@ -448,6 +507,8 @@ public class Scores
     // Loop through all the scores
     for(int idx = 0; idx < teams.size(); idx++)
     {
+      int max = -1;
+
       // Ignore this score if it is not for a team at this event (should not
       // happen).
       int team_idx = ids.indexOf(teams.get(idx));
@@ -460,6 +521,10 @@ public class Scores
       if(score1.get(idx) != null)
       {
         match1.set(team_idx, score1.get(idx));
+        if(score1.get(idx) > max)
+        {
+          max = score1.get(idx);
+        }
       }
       if(core1.get(idx) != null)
       {
@@ -470,6 +535,10 @@ public class Scores
       if(score2.get(idx) != null)
       {
         match2.set(team_idx, score2.get(idx));
+        if(score2.get(idx) > max)
+        {
+          max = score2.get(idx);
+        }
       }
       if(core2.get(idx) != null)
       {
@@ -480,6 +549,10 @@ public class Scores
       if(score3.get(idx) != null)
       {
         match3.set(team_idx, score3.get(idx));
+        if(score3.get(idx) > max)
+        {
+          max = score3.get(idx);
+        }
       }
       if(core3.get(idx) != null)
       {
@@ -490,29 +563,110 @@ public class Scores
       if(score4.get(idx) != null)
       {
         match4.set(team_idx, score4.get(idx));
+        if(score4.get(idx) > max)
+        {
+          max = score4.get(idx);
+        }
       }
       if(core4.get(idx) != null)
       {
         cv4.set(team_idx, core4.get(idx));
       }
+
+      // Save the high score.
+      high.add(team_idx, max);
+    }
+
+    // Generate an array that has a default mapping of teams to their place.
+    ArrayList<Integer> place = new ArrayList<Integer>();
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      place.add(idx, idx);
+    }
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      place.add(teams.size() + idx, -1);
+    }
+
+    // Loop through all the teams, placing them into the correct placement
+    // order.
+    for(int idx1 = 0; idx1 < (teams.size() - 1); idx1++)
+    {
+      // Compare this team against all the following teams.
+      for(int idx2 = idx1 + 1; idx2 < teams.size(); idx2++)
+      {
+        // Get the current places for these two teams.
+        int p1 = place.get(idx1);
+        int p2 = place.get(idx2);
+
+        // See if the first team has a lower score than the second team.
+        if(scoresCompare(match1.get(p1), match2.get(p1), match3.get(p1),
+                         match4.get(p1), match1.get(p2), match2.get(p2),
+                         match3.get(p2), match4.get(p2)) < 0)
+        {
+          // Swap the places of the two teams.
+          place.set(idx1, p2);
+          place.set(idx2, p1);
+        }
+      }
+    }
+
+    // Loop through all the teams converting the ordering of the teams into
+    // their assigned places (giving tying teams the same place).
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      // If this is the first team, set it to first place.
+      if(idx == 0)
+      {
+        place.set(teams.size() + place.get(idx), 1);
+        continue;
+      }
+
+      // Get the index of this team and the previous team.
+      int p1 = place.indexOf(idx - 1);
+      int p2 = place.indexOf(idx);
+
+      // See if these two teams have the same scores.
+      if(scoresCompare(match1.get(p1), match2.get(p1), match3.get(p1),
+                       match4.get(p1), match1.get(p2), match2.get(p2),
+                       match3.get(p2), match4.get(p2)) == 0)
+      {
+        // Give this team the same place as the previous team.
+        place.set(teams.size() + place.get(idx),
+                  place.get(teams.size() + place.get(idx - 1)));
+      }
+      else
+      {
+        // Give this team the current place.
+        place.set(teams.size() + place.get(idx), idx + 1);
+      }
+    }
+
+    // Removing the mapping from the start of the placement array.
+    for(int idx = 0; idx < teams.size(); idx++)
+    {
+      place.remove(0);
     }
 
     // Add the header to the CSV string.
     if(matches == 3)
     {
-      csv += "number,name,match1,match2,match3,cv1,cv2,cv3\n";
+      csv += "Number,Name,Place,High,Match 1,Match 2,Match 3,CV 1,CV 2,CV 3\n";
     }
     else
     {
-      csv += "number,name,match1,match2,match3,match4,cv1,cv2,cv3,cv4\n";
+      csv += "Number,Name,Place,High,Match 1,Match 2,Match 3,Match 4,CV 1," +
+             "CV 2,CV 3,CV 4\n";
     }
 
     // Loop through the teams.
     for(int i = 0; i < numbers.size(); i++)
     {
-      // Add this team's scores to the CSV string.
+      // Add this team's information and scores to the CSV string.
       csv += numbers.get(i);
       csv += "," + names.get(i);
+      csv += "," + ((high.get(i) == -1) ? "" : place.get(i));
+      csv += "," + ((high.get(i) == -1) ? "" : high.get(i));
       csv += "," + ((match1.get(i) == -1) ? "" : match1.get(i));
       csv += "," + ((match2.get(i) == -1) ? "" : match2.get(i));
       csv += "," + ((match3.get(i) == -1) ? "" : match3.get(i));
