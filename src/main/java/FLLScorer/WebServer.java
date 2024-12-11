@@ -1204,7 +1204,6 @@ public class WebServer extends HttpServlet
 
     // Set the application version as a Server Side Include.
     String version = Main.class.getPackage().getImplementationVersion();
-    System.out.println(version);
     if((version == null) ||
        (version.substring(version.length() - 6).equals("-dirty")) ||
        (version.substring(0, 7).equals("master-")))
