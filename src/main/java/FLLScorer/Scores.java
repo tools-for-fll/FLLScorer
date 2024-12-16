@@ -409,6 +409,14 @@ public class Scores
     Arrays.sort(a, Collections.reverseOrder());
     Arrays.sort(b, Collections.reverseOrder());
 
+    // See if the first team does not have any scores.
+    if(a[0] == -1)
+    {
+      // The teams either sort the same, or the second team places higher than
+      // the first team, based on if the second team has any scores.
+      return((b[0] == -1) ? 0 : -1);
+    }
+
     // Loop through the four scores.
     for(int idx = 0; idx < 4; idx++)
     {
@@ -419,7 +427,7 @@ public class Scores
         return(-1);
       }
 
-      // See if hte first team places higher than the seocnd team, based on
+      // See if the first team places higher than the seocnd team, based on
       // this score.
       if(a[idx] > b[idx])
       {
@@ -462,6 +470,7 @@ public class Scores
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> high = new ArrayList<Integer>();
     ArrayList<Integer> match1 = new ArrayList<Integer>();
     ArrayList<Integer> cv1 = new ArrayList<Integer>();
     ArrayList<Integer> match2 = new ArrayList<Integer>();
@@ -477,6 +486,7 @@ public class Scores
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)
     {
+      high.add(idx, -1);
       match1.add(idx, -1);
       cv1.add(idx, -1);
       match2.add(idx, -1);
@@ -489,7 +499,6 @@ public class Scores
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
-    ArrayList<Integer> high = new ArrayList<Integer>();
     ArrayList<Integer> score1 = new ArrayList<Integer>();
     ArrayList<Integer> core1 = new ArrayList<Integer>();
     ArrayList<Integer> score2 = new ArrayList<Integer>();
@@ -574,26 +583,26 @@ public class Scores
       }
 
       // Save the high score.
-      high.add(team_idx, max);
+      high.set(team_idx, max);
     }
 
     // Generate an array that has a default mapping of teams to their place.
     ArrayList<Integer> place = new ArrayList<Integer>();
-    for(int idx = 0; idx < teams.size(); idx++)
+    for(int idx = 0; idx < numbers.size(); idx++)
     {
       place.add(idx, idx);
     }
-    for(int idx = 0; idx < teams.size(); idx++)
+    for(int idx = 0; idx < numbers.size(); idx++)
     {
-      place.add(teams.size() + idx, -1);
+      place.add(numbers.size() + idx, -1);
     }
 
     // Loop through all the teams, placing them into the correct placement
     // order.
-    for(int idx1 = 0; idx1 < (teams.size() - 1); idx1++)
+    for(int idx1 = 0; idx1 < (numbers.size() - 1); idx1++)
     {
       // Compare this team against all the following teams.
-      for(int idx2 = idx1 + 1; idx2 < teams.size(); idx2++)
+      for(int idx2 = idx1 + 1; idx2 < numbers.size(); idx2++)
       {
         // Get the current places for these two teams.
         int p1 = place.get(idx1);
@@ -613,12 +622,12 @@ public class Scores
 
     // Loop through all the teams converting the ordering of the teams into
     // their assigned places (giving tying teams the same place).
-    for(int idx = 0; idx < teams.size(); idx++)
+    for(int idx = 0; idx < numbers.size(); idx++)
     {
       // If this is the first team, set it to first place.
       if(idx == 0)
       {
-        place.set(teams.size() + place.get(idx), 1);
+        place.set(numbers.size() + place.get(idx), 1);
         continue;
       }
 
@@ -632,18 +641,18 @@ public class Scores
                        match3.get(p2), match4.get(p2)) == 0)
       {
         // Give this team the same place as the previous team.
-        place.set(teams.size() + place.get(idx),
-                  place.get(teams.size() + place.get(idx - 1)));
+        place.set(numbers.size() + place.get(idx),
+                  place.get(numbers.size() + place.get(idx - 1)));
       }
       else
       {
         // Give this team the current place.
-        place.set(teams.size() + place.get(idx), idx + 1);
+        place.set(numbers.size() + place.get(idx), idx + 1);
       }
     }
 
     // Removing the mapping from the start of the placement array.
-    for(int idx = 0; idx < teams.size(); idx++)
+    for(int idx = 0; idx < numbers.size(); idx++)
     {
       place.remove(0);
     }

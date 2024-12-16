@@ -110,7 +110,7 @@ public class Standings
         return(-1);
       }
 
-      // See if hte first team places higher than the seocnd team, based on
+      // See if the first team places higher than the seocnd team, based on
       // this score.
       if(a[idx] > b[idx])
       {
