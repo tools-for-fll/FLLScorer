@@ -35,7 +35,7 @@ str_wifi_info_ssid:SSID:
 str_wifi_info_success:WiFi information updated.
 str_wifi_info_title:WiFi Information
 
-// Strings for the passowrd change dialog.
+// Strings for the password change dialog.
 str_password_change:Change Password
 str_password_current:Current password
 str_password_incorrect:Current password is incorrect!
@@ -57,6 +57,7 @@ str_admin_title:<!--#str_title--> : Admin
 
 // Strings for the menu
 str_menu_about:About
+str_menu_config:Config
 str_menu_events:Events
 str_menu_rubrics:Rubrics
 str_menu_scores:Scores
@@ -90,6 +91,15 @@ str_links_standings:Standings
 str_links_timekeeper:Time Keeper
 str_links_timer:Timer
 str_links_wifi:WiFi
+
+// Strings for the configuration page
+str_config_accent_color:Accent Color
+str_config_appearance:Appearance
+str_config_error_color:Error Color
+str_config_load_failed:Failed to fetch the configuration!
+str_config_wifi_password:Password
+str_config_wifi_section:WiFi Information
+str_config_wifi_ssid:SSID
 
 // Strings for the judge page
 str_judge_discard:Discard

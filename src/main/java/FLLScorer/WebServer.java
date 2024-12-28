@@ -1219,9 +1219,6 @@ public class WebServer extends HttpServlet
     // Set the locale as a Server Side Include.
     registerSSI("locale", m_config.localeGet());
 
-    // Set the accent color as a Server Side Include.
-    registerSSI("accent-color", m_config.accentColorGet());
-
     // Set the match length as a Server Side Include.
     registerSSI("match_len", "150");
 
@@ -1231,7 +1228,6 @@ public class WebServer extends HttpServlet
     loadFragment("html_head", "head.html");
     loadFragment("html_links_wifi", "links_wifi.html");
     loadFragment("html_menu_bar_item", "menu_bar_item.html");
-    loadFragment("html_popup_menu_admin", "popup_menu_admin.html");
     loadFragment("html_popup_menu_user", "popup_menu_user.html");
     loadFragment("html_popup_menu", "popup_menu.html");
 

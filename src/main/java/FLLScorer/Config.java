@@ -5,7 +5,13 @@
 
 package FLLScorer;
 
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Locale;
+
+import org.bspfsystems.simplejson.JSONObject;
+import org.bspfsystems.simplejson.SimpleJSONObject;
+import org.bspfsystems.simplejson.parser.JSONParser;
 
 /**
  * Handles storing the configuration values for the application.
@@ -18,6 +24,11 @@ public class Config
    * The database key used to store the accent color.
    */
   private static final String m_accentKey = new String("accent-color");
+
+  /**
+   * The database key used to store the error color.
+   */
+  private static final String m_errorKey = new String("error-color");
 
   /**
    * The database key used to store the current event.
@@ -64,6 +75,11 @@ public class Config
    * The object for accessing the database.
    */
   private Database m_database = null;
+
+  /**
+   * The object for accessing the web server.
+   */
+  private WebServer m_webserver = null;
 
   /**
    * The current event.
@@ -141,6 +157,48 @@ public class Config
   {
     // Set or add the configuration value.
     m_database.configValueSet(m_accentKey, accent_color);
+
+    // Update the SSI for the accent color.
+    m_webserver.registerSSI("accent-color", accent_color);
+  }
+
+  /**
+   * Gets the currently selected error color.
+   *
+   * @return The currently selected error color.
+   */
+  public String
+  errorColorGet()
+  {
+    String error_color;
+
+    // Get the error color from the database.
+    error_color = m_database.configValueGet(m_errorKey);
+
+    // Set the default error color if there is not one specified in the
+    // database.
+    if(error_color == null)
+    {
+      error_color = "--color-red";
+    }
+
+    // Return the error color.
+    return(error_color);
+  }
+
+  /**
+   * Sets the error color.
+   *
+   * @param error_color The error color.
+   */
+  public void
+  errorColorSet(String error_color)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_errorKey, error_color);
+
+    // Update the SSI for the error color.
+    m_webserver.registerSSI("error-color", error_color);
   }
 
   /**
@@ -361,7 +419,7 @@ public class Config
   /**
    * Gets the WiFi SSID value.
    *
-  * @return The SSID of the WiFi network.
+   * @return The SSID of the WiFi network.
    */
   public String
   wifiSSIDGet()
@@ -380,6 +438,92 @@ public class Config
   {
     // Set or add the configuration value.
     m_database.configValueSet(m_wifiSSID, ssid);
+  }
+
+  /**
+   * Handles requests for /admin/admin/config.json.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  public byte[]
+  serveConfig(String path, HashMap<String, String> paramMap)
+  {
+    JSONObject result = new SimpleJSONObject();
+    String action;
+
+    // Extract the action from the hash map.
+    action = paramMap.containsKey("action") ? paramMap.get("action") : null;
+
+    // See if the action was provided.
+    if(action == null)
+    {
+      // Set the result to indicate that the action was missing.
+      result.set("result", "missing action");
+    }
+
+    // Otherwise, see if the action is to get the configuration values.
+    else if(action.equals("get"))
+    {
+      // Return the configuration values.
+      result.set("accent", accentColorGet());
+      result.set("error", errorColorGet());
+      result.set("wifi_ssid", wifiSSIDGet());
+      result.set("wifi_password", wifiPasswordGet());
+
+      // This request was successful.
+      result.set("result", "ok");
+    }
+
+    // Otherwise, see if the action is to set configuration values.
+    else if(action.equals("set"))
+    {
+      // Save the accent color if it was provided.
+      if(paramMap.containsKey("accent"))
+      {
+        accentColorSet(paramMap.get("accent"));
+      }
+
+      // Save the error color if it was provided.
+      if(paramMap.containsKey("error"))
+      {
+        errorColorSet(paramMap.get("error"));
+      }
+
+      // Save the WiFi SSID if it was provided.
+      if(paramMap.containsKey("wifi_ssid"))
+      {
+        wifiSSIDSet(paramMap.get("wifi_ssid"));
+      }
+
+      // Save the WiFi password if it was provided.
+      if(paramMap.containsKey("wifi_password"))
+      {
+        wifiPasswordSet(paramMap.get("wifi_password"));
+      }
+
+      // This request was successful.
+      result.set("result", "ok");
+    }
+    else
+    {
+      // Set the result to indicate that the action is unknown.
+      result.set("result", "unknown action");
+    }
+
+    // Convert the response into a byte array and return it.
+    try
+    {
+      String json = JSONParser.serialize(result);
+      return(json.getBytes(StandardCharsets.UTF_8));
+    }
+    catch(Exception e)
+    {
+      return("{}".getBytes(StandardCharsets.UTF_8));
+    }
   }
 
   /**
@@ -405,5 +549,24 @@ public class Config
 
     // Get the stored value, if any, of the season.
     m_season = m_database.configValueGet(m_seasonKey);
+  }
+
+  /**
+   * Finishes the setup for the configuration settings.  This should be called
+   * after the WebServer is setup, so that it can access the web server.
+   */
+  public void
+  finishSetup()
+  {
+    // Get a reference to the web server.
+    m_webserver = WebServer.getInstance();
+
+    // Set the accent and error colors as a Server Side Includes.
+    m_webserver.registerSSI("accent-color", accentColorGet());
+    m_webserver.registerSSI("error-color", errorColorGet());
+
+    // Register the dynamic handler for the config.json file.
+    m_webserver.registerDynamicFile("/admin/config/config.json",
+                                    this::serveConfig);
   }
 }

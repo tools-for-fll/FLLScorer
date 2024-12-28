@@ -14,6 +14,7 @@ public class Main
     Database.getInstance().setup();
     Config.getInstance().setup();
     WebServer.getInstance().setup();
+    Config.getInstance().finishSetup();
     Scoreboard.getInstance().setup();
     Standings.getInstance().setup();
     Seasons.getInstance().setup();

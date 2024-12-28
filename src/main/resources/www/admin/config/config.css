@@ -1,0 +1,140 @@
+/*
+ * Copyright (c) 2024 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+.config_container
+{
+  margin: 1em;
+  overflow: scroll;
+
+  hr
+  {
+    border: 0.1em solid var(--accent-color);
+    margin: 1.5em 0;
+  }
+
+  .section
+  {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+
+    .fa-chevron-down,
+    .fa-chevron-right
+    {
+      cursor: pointer;
+    }
+  }
+
+  table
+  {
+    margin-left: 1em;
+
+    tr
+    {
+      td:first-of-type
+      {
+        span
+        {
+          display: flex;
+          font-size: 1.5em;
+          margin-bottom: 0.5em;
+          margin-right: 1em;
+        }
+      }
+
+      #accent_color
+      {
+        color: var(--accent-color);
+      }
+
+      #error_color
+      {
+        background-color: var(--error-color);
+      }
+
+      .flex
+      {
+        align-items: center;
+        display: flex;
+        margin-bottom: 1em;
+      }
+
+      .colors
+      {
+        align-items: center;
+        display: flex;
+        margin-bottom: 1em;
+
+        button
+        {
+          font-size: 1.5em;
+          height: 2em;
+          margin: 0 0.25em;
+          width: 2em;
+
+          &.selected
+          {
+            border: 0.25em solid var(--color-white);
+          }
+        }
+
+        #btn_accent_red,
+        #btn_error_red
+        {
+          background-color: var(--color-red);
+        }
+
+        #btn_accent_orange,
+        #btn_error_orange
+        {
+          background-color: var(--color-orange);
+        }
+
+        #btn_accent_yellow,
+        #btn_error_yellow
+        {
+          background-color: var(--color-yellow);
+        }
+
+        #btn_accent_green,
+        #btn_error_green
+        {
+          background-color: var(--color-green);
+        }
+
+        #btn_accent_cyan,
+        #btn_error_cyan
+        {
+          background-color: var(--color-cyan);
+        }
+
+        #btn_accent_blue,
+        #btn_error_blue
+        {
+          background-color: var(--color-blue);
+        }
+
+        #btn_accent_violet,
+        #btn_error_violet
+        {
+          background-color: var(--color-violet);
+        }
+
+        #btn_accent_magenta,
+        #btn_error_magenta
+        {
+          background-color: var(--color-magenta);
+        }
+      }
+
+      #wifi_ssid,
+      #wifi_password
+      {
+        font-size: 1.5em;
+      }
+    }
+  }
+}

@@ -632,14 +632,8 @@ public class Users
     // See if this is the popup_menu substitution.
     if(name.equals("popup_menu"))
     {
-      // Provide the full admin popup menu HTML for admins.
-      if(type == userType.admin)
-      {
-        return("<!--#html_popup_menu_admin-->");
-      }
-
       // Provide the user popup menu HTML for user-based logins.
-      else if(type == userType.user)
+      if((type == userType.user) || (type == userType.admin))
       {
         return("<!--#html_popup_menu_user-->");
       }

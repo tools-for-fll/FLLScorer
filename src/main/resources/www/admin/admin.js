@@ -4,6 +4,7 @@
 // license file in the root directory of this project.
 
 // Strings for the menu items.
+const configButton = "<!--#str_menu_config-->";
 const seasonsButton = "<!--#str_menu_seasons-->";
 const eventsButton = "<!--#str_menu_events-->";
 const teamsButton = "<!--#str_menu_teams-->";
@@ -292,6 +293,7 @@ ready()
   }
 
   // Insert the button names.
+  $("#btn_config").html(configButton);
   $("#btn_seasons").html(seasonsButton);
   $("#btn_events").html(eventsButton);
   $("#btn_teams").html(teamsButton);
@@ -302,6 +304,7 @@ ready()
 
   // Add the click handlers for the various tabs.
   $("#btn_menu").click(showMenu);
+  $("#btn_config").click(function() { showTab("config"); });
   $("#btn_seasons").click(function() { showTab("seasons"); });
   $("#btn_events").click(function() { showTab("events"); });
   $("#btn_teams").click(function() { showTab("teams"); });
