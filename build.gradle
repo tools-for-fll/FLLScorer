@@ -9,7 +9,7 @@
 plugins {
   // Apply the application plugin to add support for building a CLI application in Java.
   id 'application'
-  id 'com.palantir.git-version' version '0.12.3'
+  id 'com.palantir.git-version' version '3.1.0'
 }
 
 def details = versionDetails()
@@ -53,8 +53,9 @@ tasks.named('test') {
 jar {
   manifest {
     attributes "Main-Class": "FLLScorer.Main"
-    attributes "Implementation-Version": details.branchName + "-" +
-      details.gitHash + (details.isCleanTag ? "" : "-dirty")
+    attributes "Implementation-Version": details.lastTag + 
+      ((details.commitDistance == 0) ? "" : "-" + details.commitDistance +
+        "-" + details.gitHash) + (details.isCleanTag ? "" : "-dirty")
   }
 
   duplicatesStrategy = "include"
