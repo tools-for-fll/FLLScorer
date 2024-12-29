@@ -29,6 +29,16 @@ public class Timer
   private static Timer m_instance = null;
 
   /**
+   * The current state of the timer display enable.
+   */
+  private boolean m_displayEnable = Config.getInstance().timerEnableGet();
+
+  /**
+   * THe current location of the timer display.
+   */
+  private String m_displayLocation = Config.getInstance().timerLocationGet();
+
+  /**
    * Gets the Timer singleton object, creating it if necessary.
    *
    * @return Returns the Timer singleton.
@@ -47,6 +57,30 @@ public class Timer
   }
 
   /**
+   * Sets the timer enable state.
+   *
+   * @param enable The timer display enable state.
+   */
+  public void
+  displayEnable(boolean enable)
+  {
+    // Save the new timer display enable state.
+    m_displayEnable = enable;
+  }
+
+  /**
+   * Sets the timer location.
+   *
+   * @param location The timer location.
+   */
+  public void
+  displayLocation(String location)
+  {
+    // Save the new timer display location.
+    m_displayLocation = location;
+  }
+
+  /**
    * The constructor.  This is private so that the object can only be created
    * via the getIntance() method.
    */
@@ -61,7 +95,15 @@ public class Timer
   @WebSocket
   public static class TimerSocket implements Runnable
   {
-    private TimeKeeper m_instance = TimeKeeper.getInstance();
+    /**
+     * The object for the TimeKeeper singleton.
+     */
+    private TimeKeeper m_timeKeeper = TimeKeeper.getInstance();
+
+    /**
+     * The object for the Timer singleton.
+     */
+    private Timer m_timer = Timer.getInstance();
 
     /**
      * The session for this WebSocket.
@@ -72,7 +114,19 @@ public class Timer
      * The cached state of the match timer; used to detect when the timer has
      * changed state.
      */
-    private TimeKeeper.TimerState m_state = m_instance.state();
+    private TimeKeeper.TimerState m_state = m_timeKeeper.state();
+
+    /**
+     * The cached state of the timer display; used to detect when the timer
+     * display has changed state.
+     */
+    private boolean m_displayEnable = m_timer.m_displayEnable;
+
+    /**
+     * The cached location of the timer display; used to detect when the timer
+     * location has changed.
+     */
+    private String m_displayLocation = m_timer.m_displayLocation;
 
     /**
      * The time, in milliseconds, at which the update was sent to the
@@ -141,8 +195,21 @@ public class Timer
         m_session.sendText("m:reset", Callback.NOOP);
       }
 
+      // Send the current state of the timer display.
+      if(m_displayEnable)
+      {
+        m_session.sendText("s:timer_enable", Callback.NOOP);
+      }
+      else
+      {
+        m_session.sendText("s:timer_disable", Callback.NOOP);
+      }
+
+      // Send the current location of the timer display.
+      m_session.sendText("s:timer_" + m_displayLocation, Callback.NOOP);
+
       // Send the current match time via the WebSocket.
-      m_session.sendText("t:" + m_instance.matchTime(), Callback.NOOP);
+      m_session.sendText("t:" + m_timeKeeper.matchTime(), Callback.NOOP);
 
       // Loop while the session is still active.
       while (m_session != null)
@@ -151,10 +218,10 @@ public class Timer
         now = java.lang.System.currentTimeMillis();
 
         // See if the state of the timer has changed.
-        if(m_state != m_instance.state())
+        if(m_state != m_timeKeeper.state())
         {
           // Update the cached timer state.
-          m_state = m_instance.state();
+          m_state = m_timeKeeper.state();
 
           // See if the timer is now running.
           if(m_state == TimeKeeper.TimerState.RUN)
@@ -182,7 +249,34 @@ public class Timer
           }
 
           // Send the current match time via the WebSocket.
-          m_session.sendText("t:" + m_instance.matchTime(), Callback.NOOP);
+          m_session.sendText("t:" + m_timeKeeper.matchTime(), Callback.NOOP);
+        }
+
+        // See if the state of the timer display changed.
+        if(m_displayEnable != m_timer.m_displayEnable)
+        {
+          // Get the new state of the timer display.
+          m_displayEnable = m_timer.m_displayEnable;
+
+          // Send the new state of the timer display.
+          if(m_displayEnable)
+          {
+            m_session.sendText("s:timer_enable", Callback.NOOP);
+          }
+          else
+          {
+            m_session.sendText("s:timer_disable", Callback.NOOP);
+          }
+        }
+
+        // See if the location of the timer display changed.
+        if(m_displayLocation != m_timer.m_displayLocation)
+        {
+          // Get the new location of the timer display.
+          m_displayLocation = m_timer.m_displayLocation;
+
+          // Send the new location of the timer display.
+          m_session.sendText("s:timer_" + m_displayLocation, Callback.NOOP);
         }
 
         // See if the timer is not running.
@@ -220,13 +314,13 @@ public class Timer
           if((now - m_lastSend) >= 1000)
           {
             // Get the time elapsed in the match.
-            long elapsed = m_instance.timeElapsed();
+            long elapsed = m_timeKeeper.timeElapsed();
 
             // Send the current match time via the WebSocket.
-            m_session.sendText("t:" + m_instance.matchTime(), Callback.NOOP);
+            m_session.sendText("t:" + m_timeKeeper.matchTime(), Callback.NOOP);
 
             // See if the timer is now stopped.
-            if(m_instance.state() == TimeKeeper.TimerState.STOP)
+            if(m_timeKeeper.state() == TimeKeeper.TimerState.STOP)
             {
               // Set the last send time to a second ago, so that the delay
               // before the next check will be short.
@@ -239,7 +333,8 @@ public class Timer
               // past).  This ensures that the next send check occurs
               // reasonably close to the timer second boundary, even if this
               // one ended up being a bit delayed.
-              m_lastSend = m_instance.startTime() + ((elapsed / 1000) * 1000);
+              m_lastSend = (m_timeKeeper.startTime() +
+                            ((elapsed / 1000) * 1000));
             }
           }
 

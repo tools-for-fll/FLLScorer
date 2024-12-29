@@ -22,6 +22,18 @@ var timer = null;
 // The current screen of data to display.
 var index = 0;
 
+// The current enable state for the timer display.
+var timer_enable = "<!--#timer-enable-->";
+
+// The current location for the timer display.
+var timer_location = "<!--#timer-location-->";
+
+// The WebSocket for communicating with the server.
+var ws = null;
+
+// The state of the timer display.
+var state = "reset";
+
 // Loads the scoreboard data from the server.
 function
 loadData()
@@ -182,6 +194,220 @@ runTimer()
   }
 }
 
+// Enables the timer display.
+function
+showTimer()
+{
+  // Show the timer display in the current location.
+  $(".timer_bg").addClass("timer_bg_" + timer_location);
+  $(".timer").addClass("timer_" + timer_location);
+}
+
+// Disables the timer display.
+function
+hideTimer()
+{
+  // Remove the timer display in both locations.
+  $(".timer_bg").removeClass("timer_bg_top").removeClass("timer_bg_center");
+  $(".timer").removeClass("timer_top").removeClass("timer_center");
+}
+
+// Displays the time remaining in the match.
+function
+displayTime(time)
+{
+  var sheet, color;
+
+  // Delete the timer style sheet if it exists.
+  sheet = document.getElementById("timer_css");
+  if(sheet != null)
+  {
+    sheet.parentNode.removeChild(sheet);
+  }
+
+  // Create a new timer style sheet.
+  sheet = document.createElement("style");
+  sheet.setAttribute("id", "timer_css");
+
+  // Determine the color to use for the timer.
+  if((time <= 0) || (state === "stop"))
+  {
+    color = "var(--color-bright-red)";
+  }
+  else if(time <= 30)
+  {
+    color = "var(--color-bright-yellow)";
+  }
+  else
+  {
+    color = "var(--color-bright-green)";
+  }
+
+  // Set the styles based on the current values of the time digits.
+  if(time == -1)
+  {
+    sheet.innerHTML = ".nc {background-color: " + color +
+                      ";margin: 0.1vw;border-radius: 1vw;}";
+  }
+  else
+  {
+    sheet.innerHTML = ".m" + parseInt(time / 60) + "{background-color: " +
+                      color + ";" + "margin: 0.1vw;border-radius: 1vw;}.t" +
+                      parseInt((time % 60) / 10) + "{background-color: " +
+                      color + ";margin: 0.1vw;border-radius: 1vw;}.o" +
+                      (time % 10) + "{background-color: " + color +
+                      ";margin: 0.1vw;border-radius: 1vw;}";
+  }
+
+  // Add the style sheet to the document.
+  document.body.appendChild(sheet);
+}
+
+// Connects to the server WebSocket interface.
+function
+wsConnect()
+{
+  // Create a new WebSocket.
+  ws = new WebSocket(window.location.origin.replace("https", "wss") +
+                     "/timer/timer.ws");
+
+  // Set the functions to call when a message is received for the WebSocket is
+  // closed.
+  ws.onmessage = wsMessage;
+  ws.onclose = wsClose;
+}
+
+// Called when a message is received from the WebSocket.
+function
+wsMessage(e)
+{
+  // See if this is a mode run message.
+  if(e.data.substring(0, 7) === "m:run")
+  {
+    // Set the state to run.
+    state = "run";
+
+    // Show the timer display if it is enabled.
+    if(timer_enable === "1")
+    {
+      showTimer();
+    }
+  }
+
+  // See if this is a mode stop message.
+  else if(e.data.substring(0, 6) === "m:stop")
+  {
+    // Set the state to stop.
+    state = "stop";
+  }
+
+  // See if this is a mode reset message.
+  else if(e.data.substring(0, 7) === "m:reset")
+  {
+    // Set the state to reset.
+    state = "reset";
+
+    // Hide the timer display (which is a NOP if the timer display is
+    // disabled).
+    hideTimer();
+  }
+
+  // See if this is a timer display enable message.
+  else if(e.data.substring(0, 14) === "s:timer_enable")
+  {
+    // Enable the timer display.
+    timer_enable = "1";
+
+    // Show the timer display if the timer is not in the reset state.
+    if(state !== "reset")
+    {
+      showTimer();
+    }
+  }
+
+  // See if this is a timer display disable message.
+  else if(e.data.substring(0, 15) === "s:timer_disable")
+  {
+    // Disable the timer display.
+    timer_enable = "0";
+
+    // Hide the timer display.
+    hideTimer();
+  }
+
+  // See if this is a timer top message.
+  else if(e.data.substring(0, 11) === "s:timer_top")
+  {
+    // Change the timer display location to the top.
+    timer_location = "top";
+
+    // Move the timer display to the new location if the timer display is
+    // enabled and the timer is not reset.
+    if((timer_enable === "1") && (state !== "reset"))
+    {
+      hideTimer();
+      showTimer();
+    }
+  }
+
+  // See if this is a timer center message.
+  else if(e.data.substring(0, 14) === "s:timer_center")
+  {
+    // Change the timer display location to the center.
+    timer_location = "center";
+
+    // Move the timer display to the new location if the timer display is
+    // enabled and the timer is not reset.
+    if(state !== "reset")
+    {
+      hideTimer();
+      showTimer();
+    }
+  }
+
+  // See if this is a time message.
+  else if(e.data.substring(0, 2) === "t:")
+  {
+    // Display the provided time.
+    displayTime(parseInt(e.data.substring(2)));
+  }
+}
+
+// Called when the WebSocket closes.
+function
+wsClose()
+{
+  // Change the time display to indicate that the server connection has been
+  // lost.
+  displayTime(-1);
+
+  // Attempt to reconnect to the server after a second (to avoid flooding the
+  // network with requests).
+  setTimeout(wsConnect, 1000);
+}
+
+// Handles keydown events.
+function
+onKeydown(e)
+{
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+}
+
 // Handles setup of the scoreboard.
 function
 ready()
@@ -196,25 +422,14 @@ ready()
   $(".m3t").html(match3Score);
   $(".m4t").html(match4Score);
 
-  // A key listener to enter/exit fullscreen mode when Ctrl+F is pressed.
-  $(document).keypress(function(e)
-  {
-    if(e.keyCode == 6)
-    {
-      if(!document.fullscreenElement)
-      {
-        document.documentElement.requestFullscreen();
-      }
-      else
-      {
-        document.exitFullscreen();
-      }
-      return(false);
-    }
-  });
+  // Add a keydown event listener.
+  document.addEventListener("keydown", onKeydown);
 
   // Manually run the scoreboard the first time.
   runTimer();
+
+  // Connect to the server via a WebSocket.
+  wsConnect();
 }
 
 // Set the function to call when the page is ready.

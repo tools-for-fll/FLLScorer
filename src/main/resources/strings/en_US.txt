@@ -97,6 +97,11 @@ str_config_accent_color:Accent Color
 str_config_appearance:Appearance
 str_config_error_color:Error Color
 str_config_load_failed:Failed to fetch the configuration!
+str_config_scoreboard_section:Scoreboard
+str_config_scoreboard_timer:Show timer?
+str_config_scoreboard_timer_center:Center
+str_config_scoreboard_timer_location:Location
+str_config_scoreboard_timer_top:Top
 str_config_wifi_password:Password
 str_config_wifi_section:WiFi Information
 str_config_wifi_ssid:SSID

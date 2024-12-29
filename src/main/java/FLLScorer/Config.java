@@ -31,6 +31,17 @@ public class Config
   private static final String m_errorKey = new String("error-color");
 
   /**
+   * The database key used to store the timer enable state.
+   */
+  private static final String m_timerEnableKey = new String("timer-enable");
+
+  /**
+   * The database key used to store the timer location.
+   */
+  private static final String m_timerLocationKey =
+    new String("timer-location");
+
+  /**
    * The database key used to store the current event.
    */
   private static final String m_eventKey = new String("event");
@@ -80,6 +91,11 @@ public class Config
    * The object for accessing the web server.
    */
   private WebServer m_webserver = null;
+
+  /**
+   * The object for accessing the timer.
+   */
+  private Timer m_timer = null;
 
   /**
    * The current event.
@@ -199,6 +215,110 @@ public class Config
 
     // Update the SSI for the error color.
     m_webserver.registerSSI("error-color", error_color);
+  }
+
+  /**
+   * Gets the currently selected timer enable state.
+   *
+   * @return The currently selected timer enable state.
+   */
+  public boolean
+  timerEnableGet()
+  {
+    String enable;
+
+    // Get the timer enable state from the database.
+    enable = m_database.configValueGet(m_timerEnableKey);
+
+    // Set the default timer enable state if there is not one specified in the
+    // database.
+    if(enable == null)
+    {
+      enable = "0";
+    }
+
+    // Return the timer enable state.
+    return(enable.equals("0") ? false : true);
+  }
+
+  /**
+   * Sets the timer enable state.
+   *
+   * @param enable The timer enable state.
+   */
+  public void
+  timerEnableSet(boolean enable)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_timerEnableKey, enable ? "1" : "0");
+
+    // Update the SSI for the timer enable.
+    m_webserver.registerSSI("timer-enable", enable ? "1" : "0");
+
+    // Get an instance pointer to the Timer object if it does not yet exist.
+    if(m_timer == null)
+    {
+      m_timer = Timer.getInstance();
+    }
+
+    // If the Timer object exists, inform it of the new timer display enable
+    // state.
+    if(m_timer != null)
+    {
+      m_timer.displayEnable(enable);
+    }
+  }
+
+  /**
+   * Gets the currently selected timer location.
+   *
+   * @return The currently selected timer location.
+   */
+  public String
+  timerLocationGet()
+  {
+    String location;
+
+    // Get the timer location from the database.
+    location = m_database.configValueGet(m_timerLocationKey);
+
+    // Set the default timer location if there is not one specified in the
+    // database.
+    if(location == null)
+    {
+      location = "top";
+    }
+
+    // Return the timer location.
+    return(location);
+  }
+
+  /**
+   * Sets the timer location.
+   *
+   * @param location The timer location.
+   */
+  public void
+  timerLocationSet(String location)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_timerLocationKey, location);
+
+    // Update the SSI for the timer location.
+    m_webserver.registerSSI("timer-location", location);
+
+    // Get an instance pointer to the Timer object if it does not yet exist.
+    if(m_timer == null)
+    {
+      m_timer = Timer.getInstance();
+    }
+
+    // If the Timer object exists, inform it of the new timer display enable
+    // state.
+    if(m_timer != null)
+    {
+      m_timer.displayLocation(location);
+    }
   }
 
   /**
@@ -471,6 +591,8 @@ public class Config
       // Return the configuration values.
       result.set("accent", accentColorGet());
       result.set("error", errorColorGet());
+      result.set("timer_enable", timerEnableGet());
+      result.set("timer_location", timerLocationGet());
       result.set("wifi_ssid", wifiSSIDGet());
       result.set("wifi_password", wifiPasswordGet());
 
@@ -481,32 +603,50 @@ public class Config
     // Otherwise, see if the action is to set configuration values.
     else if(action.equals("set"))
     {
+      // If no valid values are set, ensure that an error is returned.
+      result.set("result", "unknown values");
+
       // Save the accent color if it was provided.
       if(paramMap.containsKey("accent"))
       {
         accentColorSet(paramMap.get("accent"));
+        result.set("result", "ok");
       }
 
       // Save the error color if it was provided.
       if(paramMap.containsKey("error"))
       {
         errorColorSet(paramMap.get("error"));
+        result.set("result", "ok");
+      }
+
+      // Save the timer enable state if it was provided.
+      if(paramMap.containsKey("timer_enable"))
+      {
+        timerEnableSet(paramMap.get("timer_enable").equals("1"));
+        result.set("result", "ok");
+      }
+
+      // Save the timer location if it was provided.
+      if(paramMap.containsKey("timer_location"))
+      {
+        timerLocationSet(paramMap.get("timer_location"));
+        result.set("result", "ok");
       }
 
       // Save the WiFi SSID if it was provided.
       if(paramMap.containsKey("wifi_ssid"))
       {
         wifiSSIDSet(paramMap.get("wifi_ssid"));
+        result.set("result", "ok");
       }
 
       // Save the WiFi password if it was provided.
       if(paramMap.containsKey("wifi_password"))
       {
         wifiPasswordSet(paramMap.get("wifi_password"));
+        result.set("result", "ok");
       }
-
-      // This request was successful.
-      result.set("result", "ok");
     }
     else
     {
@@ -564,6 +704,8 @@ public class Config
     // Set the accent and error colors as a Server Side Includes.
     m_webserver.registerSSI("accent-color", accentColorGet());
     m_webserver.registerSSI("error-color", errorColorGet());
+    m_webserver.registerSSI("timer-enable", timerEnableGet() ? "1" : "0");
+    m_webserver.registerSSI("timer-location", timerLocationGet());
 
     // Register the dynamic handler for the config.json file.
     m_webserver.registerDynamicFile("/admin/config/config.json",

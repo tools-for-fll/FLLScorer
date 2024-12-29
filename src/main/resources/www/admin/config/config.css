@@ -130,6 +130,17 @@
         }
       }
 
+      #label_timer_top
+      {
+        font-size: 1.5em;
+        margin-right: 1em;
+      }
+
+      #label_timer_center
+      {
+        font-size: 1.5em;
+      }
+
       #wifi_ssid,
       #wifi_password
       {

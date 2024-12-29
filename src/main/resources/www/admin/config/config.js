@@ -97,6 +97,95 @@ configError(evt)
     .fail(onFail);
 }
 
+// Handles changes to the timer enable.
+function
+configTimerEnable()
+{
+  var target = $("#btn_timer").find(".fa-check");
+
+  // Called when the query to the server has completed.
+  function
+  onDone(result)
+  {
+    // Display a failure if the result was not success.
+    if(result["result"] !== "ok")
+    {
+      onFail(result);
+      return;
+    }
+
+    // Toggle the visibility of the timer enable and the timer location.
+    if(target.is(":visible"))
+    {
+      target.hide();
+      $("#row_timer_location").hide();
+    }
+    else
+    {
+      target.show();
+      $("#row_timer_location").show();
+    }
+  }
+
+  // Called when the query to the server fails.
+  function
+  onFail(result)
+  {
+    // Display an error message.
+    showError("<!--#str_config_load_failed-->", null);
+  }
+
+  // Send a request to the server to change the timer enable.
+  $.getJSON("/admin/config/config.json?action=set&timer_enable=" +
+            (target.is(":visible") ? "0" : "1"))
+    .done(onDone)
+    .fail(onFail);
+}
+
+// Handles changes to the timer location.
+function
+configTimerLocation(evt)
+{
+  var choices = $("#row_timer_location").find(".fa-check");
+  var target = $(evt.currentTarget);
+
+  // There is nothing to do if the currently selected location was clicked.
+  if(target.find(".fa-check").is(":visible"))
+  {
+    return;
+  }
+
+  // Called when the query to the server has completed.
+  function
+  onDone(result)
+  {
+    // Display a failure if the result was not success.
+    if(result["result"] !== "ok")
+    {
+      onFail(result);
+      return;
+    }
+
+    // Change the radio select to the selected location.
+    choices.hide();
+    target.find(".fa-check").show();
+  }
+
+  // Called when the query to the server fails.
+  function
+  onFail(result)
+  {
+    // Display an error message.
+    showError("<!--#str_config_load_failed-->", null);
+  }
+
+  // Send a request to the server to change the timer location.
+  $.getJSON("/admin/config/config.json?action=set&timer_location=" +
+            target.attr("id").substring(10))
+    .done(onDone)
+    .fail(onFail);
+}
+
 // Handles changes to the WiFi SSID.
 function
 configWiFiSSID(evt)
@@ -218,6 +307,31 @@ configLoad()
         addClass("selected");
     }
 
+    // If the timer enable is present, set it in the configuration screen.
+    if(result.hasOwnProperty("timer_enable") &&
+       (result["timer_enable"] == true))
+    {
+      $(".config_container #btn_timer .fa-check").show();
+      $(".config_container #row_timer_location").show();
+    }
+    else
+    {
+      $(".config_container #btn_timer .fa-check").hide();
+      $(".config_container #row_timer_location").hide();
+    }
+
+    // If the timer location is present, set it in the configuration screen.
+    $(".config_container #row_timer_location .fa-check").hide();
+    if(result.hasOwnProperty("timer_location") &&
+       (result["timer_location"] === "center"))
+    {
+      $(".config_container #btn_timer_center .fa-check").show();
+    }
+    else
+    {
+      $(".config_container #btn_timer_top .fa-check").show();
+    }
+
     // If the WiFi SSID is present, set it in the configuration screen.
     if(result.hasOwnProperty("wifi_ssid"))
     {
@@ -293,11 +407,19 @@ configSetup()
   $(".section .fa-chevron-down").on("click", configHideShow);
   $(".section .fa-chevron-down").on("keyup", configKeyUp);
 
-  // Add the key up handler for the color buttons.
+  // Add the click and key up handler for the color buttons.
   $(".config_container button[id^=btn_accent_]").on("click", configAccent);
   $(".config_container button[id^=btn_accent_]").on("keyup", configKeyUp);
   $(".config_container button[id^=btn_error_]").on("click", configError);
   $(".config_container button[id^=btn_error_]").on("keyup", configKeyUp);
+
+  // Add the click and key up handlers for the timer buttons.
+  $(".config_container #btn_timer").on("click", configTimerEnable);
+  $(".config_container #btn_timer").on("keyup", configKeyUp);
+  $(".config_container #btn_timer_top").on("click", configTimerLocation);
+  $(".config_container #btn_timer_top").on("keyup", configKeyUp);
+  $(".config_container #btn_timer_center").on("click", configTimerLocation);
+  $(".config_container #btn_timer_center").on("keyup", configKeyUp);
 
   // Add the change handlers for the WiFi credential inputs.
   $(".config_container #wifi_ssid").on("change", configWiFiSSID);

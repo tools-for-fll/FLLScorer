@@ -120,6 +120,28 @@ wsClose()
   setTimeout(wsConnect, 1000);
 }
 
+// Handles keydown events.
+function
+onKeydown(e)
+{
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+}
+
 // Handles pre-loading sound files and attaching javascript actions to buttons
 // in the timer.
 function
@@ -128,22 +150,8 @@ ready()
   // Display the not connected match length as the starting timer value.
   displayTime(-1);
 
-  // A key listener to enter/exit fullscreen mode when Ctrl+F is pressed.
-  $(document).keypress(function(e)
-  {
-    if(e.keyCode == 6)
-    {
-      if(!document.fullscreenElement)
-      {
-        document.documentElement.requestFullscreen();
-      }
-      else
-      {
-        document.exitFullscreen();
-      }
-      return(false);
-    }
-  });
+  // Add a keydown event listener.
+  document.addEventListener("keydown", onKeydown);
 
   // Connect to the server via a WebSocket.
   wsConnect();

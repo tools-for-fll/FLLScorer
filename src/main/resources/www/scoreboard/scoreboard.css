@@ -237,3 +237,165 @@ html, body
 .m27 { grid-area: m27; }
 .m37 { grid-area: m37; }
 .m47 { grid-area: m47; }
+
+.timer
+{
+  display: none;
+}
+
+.timer_bg_top
+{
+  display: grid;
+  gap: 0 0;
+  grid-template-areas:
+    ". bg ."
+    ". .  .";
+    grid-template-columns: 22.5% 55% 22.5%;
+    grid-template-rows: 25.5% 74.5%;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.timer_bg_center
+{
+  display: grid;
+  gap: 0 0;
+  grid-template-areas:
+    ". .  ."
+    ". bg ."
+    ". .  .";
+    grid-template-columns: 22.5% 55% 22.5%;
+    grid-template-rows: 37.25% 25.5% 37.25%;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.bg
+{
+  background-color: var(--shadow);
+  grid-area: bg;
+}
+
+.timer_top
+{
+  display: grid;
+  gap: 0 0;
+  grid-template-areas:
+    ".  .   .   .   .   .  .  .  .  .   .   .   .   .  .  .   .   .   .   .  ."
+    ". h11 h12 h13 h14 h15 .  .  . t11 t12 t13 t14 t15 . o11 o12 o13 o14 o15 ."
+    ". h21  .   .   .  h25 .  .  . t21  .   .   .  t25 . o21  .   .   .  o25 ."
+    ". h31  .   .   .  h35 . c31 . t31  .   .   .  t35 . o31  .   .   .  o35 ."
+    ". h41 h42 h43 h44 h45 .  .  . t41 t42 t43 t44 t45 . o41 o42 o43 o44 o45 ."
+    ". h51  .   .   .  h55 . c51 . t51  .   .   .  t55 . o51  .   .   .  o55 ."
+    ". h61  .   .   .  h65 .  .  . t61  .   .   .  t65 . o61  .   .   .  o65 ."
+    ". h71 h72 h73 h74 h75 .  .  . t71 t72 t73 t74 t75 . o71 o72 o73 o74 o75 ."
+    ".  .   .   .   .   .  .  .  .  .   .   .   .   .  .  .   .   .   .   .  .";
+  grid-template-columns: 30% repeat(19, 1fr) 30%;
+  grid-template-rows: 2.5% repeat(7, 1fr) 77%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.timer_center
+{
+  display: grid;
+  gap: 0 0;
+  grid-template-areas:
+    ".  .   .   .   .   .  .  .  .  .   .   .   .   .  .  .   .   .   .   .  ."
+    ". h11 h12 h13 h14 h15 .  .  . t11 t12 t13 t14 t15 . o11 o12 o13 o14 o15 ."
+    ". h21  .   .   .  h25 .  .  . t21  .   .   .  t25 . o21  .   .   .  o25 ."
+    ". h31  .   .   .  h35 . c31 . t31  .   .   .  t35 . o31  .   .   .  o35 ."
+    ". h41 h42 h43 h44 h45 .  .  . t41 t42 t43 t44 t45 . o41 o42 o43 o44 o45 ."
+    ". h51  .   .   .  h55 . c51 . t51  .   .   .  t55 . o51  .   .   .  o55 ."
+    ". h61  .   .   .  h65 .  .  . t61  .   .   .  t65 . o61  .   .   .  o65 ."
+    ". h71 h72 h73 h74 h75 .  .  . t71 t72 t73 t74 t75 . o71 o72 o73 o74 o75 ."
+    ".  .   .   .   .   .  .  .  .  .   .   .   .   .  .  .   .   .   .   .  .";
+  grid-template-columns: 30% repeat(19, 1fr) 30%;
+  grid-template-rows: 39.75% repeat(7, 1fr) 39.75%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.h11 { grid-area: h11; }
+.h12 { grid-area: h12; }
+.h13 { grid-area: h13; }
+.h14 { grid-area: h14; }
+.h15 { grid-area: h15; }
+.h21 { grid-area: h21; }
+.h25 { grid-area: h25; }
+.h31 { grid-area: h31; }
+.h35 { grid-area: h35; }
+.h41 { grid-area: h41; }
+.h42 { grid-area: h42; }
+.h43 { grid-area: h43; }
+.h44 { grid-area: h44; }
+.h45 { grid-area: h45; }
+.h51 { grid-area: h51; }
+.h55 { grid-area: h55; }
+.h61 { grid-area: h61; }
+.h65 { grid-area: h65; }
+.h71 { grid-area: h71; }
+.h72 { grid-area: h72; }
+.h73 { grid-area: h73; }
+.h74 { grid-area: h74; }
+.h75 { grid-area: h75; }
+.c31 { grid-area: c31; }
+.c51 { grid-area: c51; }
+.t11 { grid-area: t11; }
+.t12 { grid-area: t12; }
+.t13 { grid-area: t13; }
+.t14 { grid-area: t14; }
+.t15 { grid-area: t15; }
+.t21 { grid-area: t21; }
+.t25 { grid-area: t25; }
+.t31 { grid-area: t31; }
+.t35 { grid-area: t35; }
+.t41 { grid-area: t41; }
+.t42 { grid-area: t42; }
+.t43 { grid-area: t43; }
+.t44 { grid-area: t44; }
+.t45 { grid-area: t45; }
+.t51 { grid-area: t51; }
+.t55 { grid-area: t55; }
+.t61 { grid-area: t61; }
+.t65 { grid-area: t65; }
+.t71 { grid-area: t71; }
+.t72 { grid-area: t72; }
+.t73 { grid-area: t73; }
+.t74 { grid-area: t74; }
+.t75 { grid-area: t75; }
+.o11 { grid-area: o11; }
+.o12 { grid-area: o12; }
+.o13 { grid-area: o13; }
+.o14 { grid-area: o14; }
+.o15 { grid-area: o15; }
+.o21 { grid-area: o21; }
+.o25 { grid-area: o25; }
+.o31 { grid-area: o31; }
+.o35 { grid-area: o35; }
+.o41 { grid-area: o41; }
+.o42 { grid-area: o42; }
+.o43 { grid-area: o43; }
+.o44 { grid-area: o44; }
+.o45 { grid-area: o45; }
+.o51 { grid-area: o51; }
+.o55 { grid-area: o55; }
+.o61 { grid-area: o61; }
+.o65 { grid-area: o65; }
+.o71 { grid-area: o71; }
+.o72 { grid-area: o72; }
+.o73 { grid-area: o73; }
+.o74 { grid-area: o74; }
+.o75 { grid-area: o75; }
