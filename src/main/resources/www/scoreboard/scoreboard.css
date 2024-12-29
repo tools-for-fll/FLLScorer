@@ -72,22 +72,22 @@ html, body
   display: grid;
   height: 100vh;
   grid-template-rows: 2.5% 20.5% 2.5% repeat(9, 8%) 2.5%;
-  grid-template-columns: 2.5% repeat(2, 7.5%) 5% 37.5% 7.5% 2.5% 5% repeat(3, 7.5%) 2.5%;
+  grid-template-columns: 2.5% repeat(2, 7.5%) 5% 37.5% repeat(2, 7.5%) 2.5% 5% repeat(2, 7.5%) 2.5%;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
     ". .     .     .     .     .     .     .     .     .     .     ."
     ". logo1 logo1 logo1 event event event event logo2 logo2 logo2 ."
     ". .     .     .     .     .     .     .     .     .     .     ."
-    ". plt   numt  namet namet hight m1t   m1t   m2t   m3t   m4t   ."
-    ". pl0   num0  name0 name0 high0 m10   m10   m20   m30   m40   ."
-    ". pl1   num1  name1 name1 high1 m11   m11   m21   m31   m41   ."
-    ". pl2   num2  name2 name2 high2 m12   m12   m22   m32   m42   ."
-    ". pl3   num3  name3 name3 high3 m13   m13   m23   m33   m43   ."
-    ". pl4   num4  name4 name4 high4 m14   m14   m24   m34   m44   ."
-    ". pl5   num5  name5 name5 high5 m15   m15   m25   m35   m45   ."
-    ". pl6   num6  name6 name6 high6 m16   m16   m26   m36   m46   ."
-    ". pl7   num7  name7 name7 high7 m17   m17   m27   m37   m47   ."
+    ". plt   numt  namet namet hight m1t   m2t   m2t   m3t   m4t   ."
+    ". pl0   num0  name0 name0 high0 m10   m20   m20   m30   m40   ."
+    ". pl1   num1  name1 name1 high1 m11   m21   m21   m31   m41   ."
+    ". pl2   num2  name2 name2 high2 m12   m22   m22   m32   m42   ."
+    ". pl3   num3  name3 name3 high3 m13   m23   m23   m33   m43   ."
+    ". pl4   num4  name4 name4 high4 m14   m24   m24   m34   m44   ."
+    ". pl5   num5  name5 name5 high5 m15   m25   m25   m35   m45   ."
+    ". pl6   num6  name6 name6 high6 m16   m26   m26   m36   m46   ."
+    ". pl7   num7  name7 name7 high7 m17   m27   m27   m37   m47   ."
     ". .     .     .     .     .     .     .     .     .     .     ." ;
 }
 
