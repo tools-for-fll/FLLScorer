@@ -156,6 +156,7 @@ public class Standings
       match3.add(idx, -100);
       match4.add(idx, -100);
       high.add(idx, -100);
+      cv.add(idx, null);
     }
 
     // A list of information about the scores.
@@ -214,7 +215,7 @@ public class Standings
       Integer s2 = core2.get(idx);
       Integer s3 = core3.get(idx);
       Integer s4 = core4.get(idx);
-      cv.add(team_idx, (((s1 == null) ? 0 : s1) + ((s2 == null) ? 0 : s2) +
+      cv.set(team_idx, (((s1 == null) ? 0 : s1) + ((s2 == null) ? 0 : s2) +
                         ((s3 == null) ? 0 : s3) + ((s4 == null) ? 0 : s4)));
     }
 
@@ -358,7 +359,7 @@ public class Standings
         // score than the current team.
         if((scores.get(sort.get(idx2)) == -1) ||
            (scores.get(sort.get(idx2)) < scores.get(sort.get(idx))))
-         {
+        {
           // Remove the current team from it's location in the sort array and
           // then insert it back into the position where the preceeding team is
           // located.
@@ -367,7 +368,7 @@ public class Standings
           // This team has been placed in the right place, so no further
           // preceeding teams need to be examined.
           break;
-         }
+        }
       }
     }
 
@@ -446,14 +447,18 @@ public class Standings
     m_database.judgingEnumerate(season_id, event_id, null, null, null, ids,
                                 project, robot, core, null);
 
-    // Append empty scores/teams to the judging list to match up the number of
-    // teams at the event.
-    while(ids.size() < teams.size())
+    // Insert empty scores to the judging list for teams that do not have any
+    // judging scores at the event.
+    for(int idx = 0; idx < teams.size(); idx++)
     {
-      ids.add(-1);
-      project.add(-1);
-      robot.add(-1);
-      core.add(-1);
+      int idx2 = ids.indexOf(teams.get(idx));
+      if(idx2 == -1)
+      {
+        ids.add(idx, -1);
+        project.add(idx, -1);
+        robot.add(idx, -1);
+        core.add(idx, -1);
+      }
     }
 
     // Sort the judging scores to match the team list order.
@@ -468,13 +473,12 @@ public class Standings
         continue;
       }
 
-      // Remove this team and its scores from its current position and insert
-      // it into the correct position, so that these arrays match the order of
-      // the teams array.
-      ids.add(idx, ids.remove(idx2));
-      project.add(idx, project.remove(idx2));
-      robot.add(idx, robot.remove(idx2));
-      core.add(idx, core.remove(idx2));
+      // Swap these two entries, so that these arrays match the order of the
+      // teams array.
+      Collections.swap(ids, idx, idx2);
+      Collections.swap(project, idx, idx2);
+      Collections.swap(robot, idx, idx2);
+      Collections.swap(core, idx, idx2);
     }
 
     // Add the robot game Core Values scores to the judging Core Values scores.
@@ -490,7 +494,14 @@ public class Standings
       {
         cv2 = 0;
       }
-      core.set(idx, cv1 + cv2);
+      if((cv1 + cv2) == 0)
+      {
+        core.set(idx, -1);
+      }
+      else
+      {
+        core.set(idx, cv1 + cv2);
+      }
     }
 
     // Rank the teams in the various judging areas.
