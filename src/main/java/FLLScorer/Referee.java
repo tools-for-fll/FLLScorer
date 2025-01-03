@@ -10,12 +10,21 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.bspfsystems.simplejson.JSONArray;
 import org.bspfsystems.simplejson.JSONObject;
 import org.bspfsystems.simplejson.SimpleJSONArray;
 import org.bspfsystems.simplejson.SimpleJSONObject;
 import org.bspfsystems.simplejson.parser.JSONParser;
+import org.eclipse.jetty.ee10.websocket.server.JettyServerUpgradeRequest;
+import org.eclipse.jetty.ee10.websocket.server.JettyServerUpgradeResponse;
+import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketCreator;
+import org.eclipse.jetty.websocket.api.Callback;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketOpen;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 import com.fathzer.soft.javaluator.DoubleEvaluator;
 import com.fathzer.soft.javaluator.StaticVariableSet;
@@ -66,6 +75,12 @@ public class Referee
    * The season for the currently loaded JSON scoresheet.
    */
   private String m_scoresheetSeason = null;
+
+  /**
+   * The time of the last score update; used to determine when to push changes
+   * to the active referees.
+   */
+  private long m_lastUpdate = 0;
 
   /**
    * Gets the Referee singleton object, creating it if necessary.
@@ -365,6 +380,9 @@ public class Referee
     {
       // Success.
       result.set("result", "ok");
+
+      // There are changes that need to be sent to the active referees.
+      m_lastUpdate = java.lang.System.currentTimeMillis();
     }
   }
 
@@ -678,6 +696,9 @@ public class Referee
     {
       // Success.
       result.set("result", "ok");
+
+      // There are changes that need to be sent to the active referees.
+      m_lastUpdate = java.lang.System.currentTimeMillis();
     }
   }
 
@@ -777,6 +798,219 @@ public class Referee
   }
 
   /**
+   * The WebSocket for the referee.
+   */
+  @WebSocket
+  public static class RefereeSocket implements Runnable
+  {
+    /**
+     * The object for the Referee singleton.
+     */
+    private Referee m_instance = Referee.getInstance();
+
+    /**
+     * The session for this WebSocket.
+     */
+    private Session m_session;
+
+    /**
+     * The time, in milliseconds, at which the update was sent to the
+     * WebSocket.
+     */
+    private long m_lastSend = 0;
+
+    /**
+     * Called when the WebSocket is first opened.
+     *
+     * @param session The session for this WebSocket.
+     */
+    @OnWebSocketOpen
+    public void
+    onOpen(Session session)
+    {
+      // Save the session.
+      m_session = session;
+
+      // Start the thread that handles sending updates via the WebSocket.
+      new Thread(this).start();
+    }
+
+    /**
+     * Called when the WebSocket is closed.
+     *
+     * @param closeCode The code for why the WebSocket was closed.
+     *
+     * @param closeReasonPhrase The reason the WebSocket was closed.
+     */
+    @OnWebSocketClose
+    public void
+    onClose(int closeCode, String closeReasonPhrase)
+    {
+      // Clear the stored session, which causes the background thread to exit.
+      m_session = null;
+    }
+
+    /**
+     * The code that runs in the referee thread.
+     */
+    @Override
+    public void
+    run()
+    {
+      // Loop while the session is still active.
+      while (m_session != null)
+      {
+        // Get the current time.
+        long now = java.lang.System.currentTimeMillis();
+
+        // See if there are score updates to be sent.
+        if(m_instance.m_lastUpdate > m_lastSend)
+        {
+          // Capture the time of the update that is being performed.
+          now = m_instance.m_lastUpdate;
+
+          // Arrays to hold the score data from the database.
+          ArrayList<Integer> teamNumber = new ArrayList<Integer>();
+          ArrayList<String> match1Sheet = new ArrayList<String>();
+          ArrayList<Integer> match1Score = new ArrayList<Integer>();
+          ArrayList<String> match2Sheet = new ArrayList<String>();
+          ArrayList<Integer> match2Score = new ArrayList<Integer>();
+          ArrayList<String> match3Sheet = new ArrayList<String>();
+          ArrayList<Integer> match3Score = new ArrayList<Integer>();
+          ArrayList<String> match4Sheet = new ArrayList<String>();
+          ArrayList<Integer> match4Score = new ArrayList<Integer>();
+
+          // Get the scores for this event.
+          m_instance.m_database.
+            scoreEnumerate(m_instance.m_season.seasonIdGet(),
+                           m_instance.m_event.eventIdGet(), null, teamNumber,
+                           match1Score, null, match1Sheet, match2Score, null,
+                           match2Sheet, match3Score, null, match3Sheet,
+                           match4Score, null, match4Sheet);
+
+          // Loop through the tests that have scores (or scoresheets).
+          for(int idx = 0; idx < teamNumber.size(); idx++)
+          {
+            int state;
+
+            // Determine the state of this team's first round.
+            if(match1Sheet.get(idx) == null)
+            {
+              state = 0;
+            }
+            else if(match1Score.get(idx) == null)
+            {
+              state = 1;
+            }
+            else
+            {
+              state = 2;
+            }
+
+            // Send this team's first round state to the client.
+            m_session.sendText("m1:" + teamNumber.get(idx) + ":" + state,
+                               Callback.NOOP);
+
+            // Determine the state of this team's second round.
+            if(match2Sheet.get(idx) == null)
+            {
+              state = 0;
+            }
+            else if(match2Score.get(idx) == null)
+            {
+              state = 1;
+            }
+            else
+            {
+              state = 2;
+            }
+
+            // Send this team's second round state to the client.
+            m_session.sendText("m2:" + teamNumber.get(idx) + ":" + state,
+                               Callback.NOOP);
+
+            // Determine the state of this team's third round.
+            if(match3Sheet.get(idx) == null)
+            {
+              state = 0;
+            }
+            else if(match3Score.get(idx) == null)
+            {
+              state = 1;
+            }
+            else
+            {
+              state = 2;
+            }
+
+            // Send this team's third round state to the client.
+            m_session.sendText("m3:" + teamNumber.get(idx) + ":" + state,
+                               Callback.NOOP);
+
+            // Determine the state of this team's fourth round.
+            if(match4Sheet.get(idx) == null)
+            {
+              state = 0;
+            }
+            else if(match4Score.get(idx) == null)
+            {
+              state = 1;
+            }
+            else
+            {
+              state = 2;
+            }
+
+            // Send this team's fourth round state to the client.
+            m_session.sendText("m4:" + teamNumber.get(idx) + ":" + state,
+                               Callback.NOOP);
+          }
+
+          // Set the last send time to the update time.  It is possible that
+          // another update came in during the time it took to send this
+          // update, but it will get sent out the next time through the loop.
+          m_lastSend = now;
+        }
+        else if((now - m_lastSend) > 1000)
+        {
+          // Send a NOP via the WebSocket (to keep it from timing out and
+          // closing).
+          m_session.sendText("nop", Callback.NOOP);
+
+          // Increment the last send time by a second.  This effectively
+          // precludes the possibility of a missed update.
+          m_lastSend += 1000;
+        }
+
+        // Delay for half a second.
+        try
+        {
+          TimeUnit.MILLISECONDS.sleep(500);
+        }
+        catch(InterruptedException e)
+        {
+        }
+      }
+    }
+  }
+
+  /**
+   * A creator for referee WebSockets.
+   */
+  private static class RefereeSocketCreator implements JettyWebSocketCreator
+  {
+    // Creates a WebSocket for the incoming request.
+    @Override
+    public Object
+    createWebSocket(JettyServerUpgradeRequest jettyServerUpgradeRequest,
+                    JettyServerUpgradeResponse jettyServerUpgradeResponse)
+    {
+      // Create a new referee WebSocket for this request.
+      return(new RefereeSocket());
+    }
+  }
+
+  /**
    * Performs initial setup for the referee page.
    */
   public void
@@ -793,5 +1027,9 @@ public class Referee
     // Register the dynamic handler for the referee.json file.
     m_webserver.registerDynamicFile("/referee/referee.json",
                                     this::serveRefereeJson);
+
+    // Register the WebSocket that supports the referee page.
+    m_webserver.addWebSocket("/referee/referee.ws", new RefereeSocketCreator(),
+                             5000);
   }
 }

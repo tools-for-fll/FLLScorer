@@ -151,14 +151,15 @@ discard()
   function
   discardSheet()
   {
-    // Either close this window or load the current scores.
+    // Either close this window or display the score list.
     if(closeOnExit)
     {
       window.close();
     }
     else
     {
-      loadScores();
+      $("#score").addClass("hidden");
+      $("#list").removeClass("hidden");
     }
   }
 
@@ -192,14 +193,15 @@ save()
       return;
     }
 
-    // Either close this window or load the current scores.
+    // Either close this window or display the score list.
     if(closeOnExit)
     {
       window.close();
     }
     else
     {
-      loadScores();
+      $("#score").addClass("hidden");
+      $("#list").removeClass("hidden");
     }
   }
 
@@ -248,14 +250,15 @@ publish()
       return;
     }
 
-    // Either close this window or load the current scores.
+    // Either close this window or display the score list.
     if(closeOnExit)
     {
       window.close();
     }
     else
     {
-      loadScores();
+      $("#score").addClass("hidden");
+      $("#list").removeClass("hidden");
     }
   }
 
@@ -414,7 +417,7 @@ loadScores()
 
       // Add the HTML for this row/team.
       html += `
-        <div class="row">
+        <div class="row" id="team${id}">
           <div class="name">
             <span>
               ${result["scores"][i]["number"]} : ${result["scores"][i]["name"]}
@@ -670,6 +673,63 @@ loadMatch(id, match)
     .fail(fail);
 }
 
+// Connects to the server WebSocket interface.
+function
+wsConnect()
+{
+  // Create a new WebSocket.
+  ws = new WebSocket(window.location.origin.replace("https", "wss") +
+                     "/referee/referee.ws");
+
+  // Set the functions to call when a message is received for the WebSocket is
+  // closed.
+  ws.onmessage = wsMessage;
+  ws.onclose = wsClose;
+}
+
+// Called when a message is received from the WebSocket.
+function
+wsMessage(e)
+{
+  // Split the message into based on a colon as a separator.
+  var fields = e.data.split(":");
+
+  // See if there are the correct number of fields and a valid match number.
+  if((fields.length == 3) && ((fields[0] === "m1") || (fields[0] === "m2") ||
+                              (fields[0] === "m3") || (fields[0] === "m4")))
+  {
+    // Get the button corresponding to this team/match.
+    var button = $("#team" + fields[1] + " .match" +
+                   fields[0].substring(1, 2) + " button");
+
+    // Remove any colors from this button.
+    button.removeClass("red yellow green");
+
+    // Set the button color based on this match's state.
+    if(fields[2] == 2)
+    {
+      button.addClass("green");
+    }
+    else if(fields[2] == 1)
+    {
+      button.addClass("red");
+    }
+    else
+    {
+      button.addClass("yellow");
+    }
+  }
+}
+
+// Called when the WebSocket closes.
+function
+wsClose()
+{
+  // Attempt to reconnect to the server after a second (to avoid flooding the
+  // network with requests).
+  setTimeout(wsConnect, 1000);
+}
+
 // Searches for items in the referee list.
 function
 search()
@@ -820,6 +880,9 @@ ready()
 
   // Add a keydown event listener.
   document.addEventListener("keydown", keydown);
+
+  // Connect to the server via a WebSocket.
+  wsConnect();
 }
 
 // Set the function to call when the page is ready.
