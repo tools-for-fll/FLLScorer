@@ -695,7 +695,7 @@ wsMessage(e)
   var fields = e.data.split(":");
 
   // See if there are the correct number of fields and a valid match number.
-  if((fields.length == 3) && ((fields[0] === "m1") || (fields[0] === "m2") ||
+  if((fields.length == 4) && ((fields[0] === "m1") || (fields[0] === "m2") ||
                               (fields[0] === "m3") || (fields[0] === "m4")))
   {
     // Get the button corresponding to this team/match.

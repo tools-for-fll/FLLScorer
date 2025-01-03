@@ -891,14 +891,15 @@ public class Referee
           // Loop through the tests that have scores (or scoresheets).
           for(int idx = 0; idx < teamNumber.size(); idx++)
           {
-            int state;
+            Integer state, score;
 
             // Determine the state of this team's first round.
+            score = match1Score.get(idx);
             if(match1Sheet.get(idx) == null)
             {
               state = 0;
             }
-            else if(match1Score.get(idx) == null)
+            else if(score == null)
             {
               state = 1;
             }
@@ -908,15 +909,17 @@ public class Referee
             }
 
             // Send this team's first round state to the client.
-            m_session.sendText("m1:" + teamNumber.get(idx) + ":" + state,
+            m_session.sendText("m1:" + teamNumber.get(idx) + ":" + state +
+                               ":" + ((score == null) ? "" : score),
                                Callback.NOOP);
 
             // Determine the state of this team's second round.
+            score = match2Score.get(idx);
             if(match2Sheet.get(idx) == null)
             {
               state = 0;
             }
-            else if(match2Score.get(idx) == null)
+            else if(score == null)
             {
               state = 1;
             }
@@ -926,15 +929,17 @@ public class Referee
             }
 
             // Send this team's second round state to the client.
-            m_session.sendText("m2:" + teamNumber.get(idx) + ":" + state,
+            m_session.sendText("m2:" + teamNumber.get(idx) + ":" + state +
+                               ":" + ((score == null) ? "" : score),
                                Callback.NOOP);
 
             // Determine the state of this team's third round.
+            score = match3Score.get(idx);
             if(match3Sheet.get(idx) == null)
             {
               state = 0;
             }
-            else if(match3Score.get(idx) == null)
+            else if(score == null)
             {
               state = 1;
             }
@@ -944,15 +949,17 @@ public class Referee
             }
 
             // Send this team's third round state to the client.
-            m_session.sendText("m3:" + teamNumber.get(idx) + ":" + state,
+            m_session.sendText("m3:" + teamNumber.get(idx) + ":" + state +
+                               ":" + ((score == null) ? "" : score),
                                Callback.NOOP);
 
             // Determine the state of this team's fourth round.
+            score = match4Score.get(idx);
             if(match4Sheet.get(idx) == null)
             {
               state = 0;
             }
-            else if(match4Score.get(idx) == null)
+            else if(score == null)
             {
               state = 1;
             }
@@ -962,7 +969,8 @@ public class Referee
             }
 
             // Send this team's fourth round state to the client.
-            m_session.sendText("m4:" + teamNumber.get(idx) + ":" + state,
+            m_session.sendText("m4:" + teamNumber.get(idx) + ":" + state +
+                               ":" + ((score == null) ? "" : score),
                                Callback.NOOP);
           }
 
