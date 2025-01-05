@@ -1203,7 +1203,7 @@ public class WebServer extends HttpServlet
     registerMimeType(".wav", "audio/wav", false);
 
     // Set the application version as a Server Side Include.
-    String version = Main.class.getPackage().getImplementationVersion();
+    String version = getClass().getPackage().getImplementationVersion();
     if(version == null)
     {
       version = "&lt;development&gt;";

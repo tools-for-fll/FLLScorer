@@ -10,7 +10,7 @@ str_button_delete:Delete
 str_button_ok:OK
 str_connect_error:Could not connect to the server!
 str_no:No
-str_title:FLL Scoring System
+str_title:FLLScorer
 str_yes:Yes
 
 // Strings for the GUI

@@ -5,7 +5,7 @@
 
 package FLLScorer;
 
-public class Main
+public class FLLScorer
 {
   public static void
   main(String[] args)
