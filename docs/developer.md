@@ -31,10 +31,13 @@ guides the design of the corresponding sections of the application.
 - Desktop - This is where the main adminstration and configuration occurs.  The
   _Admin_ page, with all of its sub-pages, is intended for desktop use, and is
   therefore designed with that as a target (meaning that it is not necessarily
-  mobile-friendly).
+  mobile-friendly).  Given that the activities handled within the _Admin_ page
+  are typically performed on the same computer that runs the application (and
+  are much easier to accomplish with a physical keyboard), this is not seen as
+  overly problematic.
 
 - Mobile - This is where the majority of the work during the running of an
-  event takes place.  The _Judge_ page, _Referee_ page, and _Time Keeper_ page
+  event takes place.  The _Judge_ page, _Referee_ page, and _Time Keeper_ pages
   are all used by the corresponding volunteers during an event, and are
   therefore designed to work well on a modile device (following mobile-first
   design practices).  CSS media queries (<tt>@media</tt>) are used to adjust
@@ -44,14 +47,17 @@ guides the design of the corresponding sections of the application.
 
 - Projector - There are two audience displays, allowing the attendees to see
   pertinent information about the event.  These are the _Scoreboard_ page and
-  the _Timer_ page.  Similar to desktop, they are intended for projection onto
-  a large screen (or wall), and are not necessarily mobile-friendly.
+  the _Timer_ page.  Additionally, there is the _Standings_ page for displaying
+  the league standings, if that feature is utilized by an organizer (and would
+  normally be displayed at the end of the event).  Similar to desktop, they are
+  intended for projection onto a large screen (or wall), and are not
+  necessarily mobile-friendly.
 
 There are a common set of colors in the base CSS file (<tt>styles.css</tt>)
 that are used throughout the remainder of the CSS to select colors.  The web
-interface is primarily black and white, with an accent color (defined as an
-accent color in the CSS); utilizing this accent color name allows the accent
-color to be changed across the entire web interface with a one-line change in
+interface is primarily black and white, with a accent and error colors (defined
+such in the CSS); utilizing the accent and error color names allows those
+colors to be changed across the entire web interface with a one-line change in
 the base CSS.
 
 ## Configuration conveniences
