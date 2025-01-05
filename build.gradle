@@ -42,7 +42,7 @@ dependencies {
 
 application {
   // Define the main class for the application.
-  mainClass = 'FLLScorer.Main'
+  mainClass = 'FLLScorer.FLLScorer'
 }
 
 tasks.named('test') {
@@ -52,7 +52,7 @@ tasks.named('test') {
 
 jar {
   manifest {
-    attributes "Main-Class": "FLLScorer.Main"
+    attributes "Main-Class": "FLLScorer.FLLScorer"
     attributes "Implementation-Version": details.lastTag + 
       ((details.commitDistance == 0) ? "" : "-" + details.commitDistance +
         "-" + details.gitHash) + (details.isCleanTag ? "" : "-dirty")
