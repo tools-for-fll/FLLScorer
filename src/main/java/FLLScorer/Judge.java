@@ -97,7 +97,6 @@ public class Judge
   private void
   loadRubric()
   {
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     String fragment;
     InputStream in;
 
@@ -114,7 +113,7 @@ public class Judge
     String year = season.substring(0, 4);
 
     // See if there is an information file for this season.
-    in = classLoader.getResourceAsStream("seasons/" + year + "/rubric.json");
+    in = ResourceStream.getResourceStream("seasons/" + year + "/rubric.json");
     if(in == null)
     {
       return;

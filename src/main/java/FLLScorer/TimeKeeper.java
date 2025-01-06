@@ -5,7 +5,7 @@
 
 package FLLScorer;
 
-import java.net.URL;
+import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.AudioInputStream;
@@ -267,9 +267,9 @@ public class TimeKeeper
     // A try/catch to handle exceptions.
     try
     {
-      // The the URL for the requested audio file.
-      URL resource = Thread.currentThread().getContextClassLoader().
-                       getResource("sounds/" + file);
+      // The InputStream for the requested audio file.
+      InputStream resource = ResourceStream.getResourceStream("sounds/" +
+                                                              file);
 
       // Get an audio input stream from this file.
       AudioInputStream audioIn = AudioSystem.getAudioInputStream(resource);

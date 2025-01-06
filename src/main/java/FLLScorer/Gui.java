@@ -309,9 +309,6 @@ public class Gui
     m_frame.pack();
     Insets insets = m_frame.getInsets();
 
-    // Get the class loader for loading image resources.
-    ClassLoader classLoader = getClass().getClassLoader();
-
     // Sizes of the buttons.
     int buttonWidth = 239;
     int buttonHeight = 180;
@@ -322,7 +319,8 @@ public class Gui
     JButton button1 = new JButton(m_webserver.getSSI("str_gui_launch"));
     try
     {
-      Image img = ImageIO.read(classLoader.getResource("app/web.png"));
+      Image img =
+        ImageIO.read(ResourceStream.getResourceStream("app/web.png"));
       img = img.getScaledInstance(100, 100, 0);
       button1.setIcon(new ImageIcon(img));
     }
@@ -344,7 +342,8 @@ public class Gui
     JButton button2 = new JButton(m_webserver.getSSI("str_gui_reset_admin"));
     try
     {
-      Image img = ImageIO.read(classLoader.getResource("app/undo.png"));
+      Image img =
+        ImageIO.read(ResourceStream.getResourceStream("app/undo.png"));
       img = img.getScaledInstance(81, 100, 0);
       button2.setIcon(new ImageIcon(img));
     }
@@ -416,7 +415,8 @@ public class Gui
     // Add a background image to the app.
     try
     {
-      Image img = ImageIO.read(classLoader.getResource("app/background.jpg"));
+      Image img =
+        ImageIO.read(ResourceStream.getResourceStream("app/background.jpg"));
       img = img.getScaledInstance(frameWidth, frameHeight, 0);
       JLabel label = new JLabel(new ImageIcon(img));
       m_frame.add(label).setBounds(0, 0, frameWidth, frameHeight);

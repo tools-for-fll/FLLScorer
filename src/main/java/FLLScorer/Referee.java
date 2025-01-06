@@ -115,7 +115,6 @@ public class Referee
   private void
   loadScoresheet()
   {
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     String fragment;
     InputStream in;
 
@@ -137,8 +136,8 @@ public class Referee
     }
 
     // See if there is an information file for this season.
-    in = classLoader.getResourceAsStream("seasons/" + year +
-                                         "/scoresheet" + number + ".json");
+    in = ResourceStream.getResourceStream("seasons/" + year + "/scoresheet" +
+                                          number + ".json");
     if(in == null)
     {
       return;

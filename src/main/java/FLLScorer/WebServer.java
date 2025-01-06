@@ -754,20 +754,18 @@ public class WebServer extends HttpServlet
     // handler, or the dynamic handler chose to not return a response).
     if(resp == null)
     {
-      // Get the class loader, so that resources can be read.
-      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-      // Create an input stream for the given resource.
-      InputStream in = classLoader.getResourceAsStream(path);
+      // Get an InputStream for the given path.
+      InputStream in = ResourceStream.getResourceStream(path);
       if(in == null)
       {
-        // The resource doesn't exist, so return the 404 HTML page instead.
-        path = "www/404.html";
-        in = classLoader.getResourceAsStream(path);
+        // The path does not exists, so get the InputStream for the 404 page.
+        in = ResourceStream.getResourceStream("www/404.html");
       }
 
       // Read the bytes from the resource.
       resp = in.readAllBytes();
+
+      in.close();
     }
 
     // Set the mime type for this request.
@@ -884,9 +882,8 @@ public class WebServer extends HttpServlet
     String fragment, line;
     boolean skip;
 
-    // Use the class loader to open this resource file.
-    InputStream in = Thread.currentThread().getContextClassLoader().
-                       getResourceAsStream("fragments/" + file);
+    // Open this resource file.
+    InputStream in = ResourceStream.getResourceStream("fragments/" + file);
     if(in == null)
     {
       return;
@@ -963,9 +960,9 @@ public class WebServer extends HttpServlet
     String line;
     int pos;
 
-    // Use the class loader to open this resource file.
-    InputStream in = Thread.currentThread().getContextClassLoader().
-                       getResourceAsStream("strings/" + locale + ".txt");
+    // Open this resource file.
+    InputStream in = ResourceStream.getResourceStream("strings/" + locale +
+                                                      ".txt");
     if(in == null)
     {
       // Do nothing since the resource file could not be loaded.

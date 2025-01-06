@@ -287,7 +287,6 @@ public class Seasons
   public void
   setup()
   {
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     String locale = Config.getInstance().localeGet();
     String name, year, latest, fragment;
     Boolean enabled;
@@ -316,7 +315,7 @@ public class Seasons
     for(int i = 2000; ; i++)
     {
       // See if there is an information file for this season.
-      in = classLoader.getResourceAsStream("seasons/" + i + "/info.json");
+      in = ResourceStream.getResourceStream("seasons/" + i + "/info.json");
       if(in == null)
       {
         break;
