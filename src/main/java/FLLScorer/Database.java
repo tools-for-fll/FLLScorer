@@ -5,12 +5,15 @@
 
 package FLLScorer;
 
+import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The interface for accepting a match score.
@@ -42,6 +45,11 @@ public class Database
    * The name of the database file.
    */
   private String m_databaseFile = null;
+
+  /**
+   * The lock that protects concurrent access to the log file.
+   */
+  private Lock m_lock = new ReentrantLock(true);
 
   /**
    * When set to <b>true</b>, every SQL statement is printed to the terminal
@@ -86,6 +94,39 @@ public class Database
   private
   Database()
   {
+  }
+
+  /**
+   * Logs a SQL statement into a log file.
+   *
+   * @param sql The SQL query.
+   */
+  private void
+  Log(String sql)
+  {
+    // Lock the log file.
+    m_lock.lock();
+
+    // Attempt to log the SQL statement to the log file, catching (and
+    // ignoring) any errors that may occur.
+    try
+    {
+      // Open the log file.
+      FileWriter file = new FileWriter("log.txt", true);
+
+      // Write this SQL statement to the log file.
+      file.write(sql + "\n");
+
+      // Close the log file.
+      file.close();
+    }
+    catch(Exception e)
+    {
+      System.out.println("FileWriter error: " + e);
+    }
+
+    // Unlock the log file.
+    m_lock.unlock();
   }
 
   /**
@@ -143,6 +184,9 @@ public class Database
     {
       System.out.println(sql);
     }
+
+    // Log this statement.
+    Log(sql);
 
     // Execute the SQL statement.
     return(stmt.executeUpdate(sql));
