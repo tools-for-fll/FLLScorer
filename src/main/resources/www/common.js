@@ -9,7 +9,7 @@ $.fn.extend({showModal: function()
                         {
                           return this.each(function()
                                            {
-                                             if(this.tagName=== "DIALOG")
+                                             if(this.tagName === "DIALOG")
                                              {
                                                this.showModal();
                                              }
@@ -23,7 +23,7 @@ $.fn.extend({close: function()
                     {
                       return this.each(function()
                                        {
-                                         if(this.tagName=== "DIALOG")
+                                         if(this.tagName === "DIALOG")
                                          {
                                            this.close();
                                          }
