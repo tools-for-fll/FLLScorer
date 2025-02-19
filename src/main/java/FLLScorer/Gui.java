@@ -7,6 +7,7 @@ package FLLScorer;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Insets;
@@ -24,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.plaf.DimensionUIResource;
 
 /**
  * Provides a simple GUI on the host computer, providing the minimal "get out
@@ -297,13 +297,15 @@ public class Gui
     {
       System.out.println("LookAndFeel error: " + e);
     }
- 
+
     // Create a frame, which is the main window for the application.
     m_frame = new JFrame(m_webserver.getSSI("str_title"));
     m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    m_frame.setMinimumSize(new DimensionUIResource(frameWidth, frameHeight));
-    m_frame.setMaximumSize(new DimensionUIResource(frameWidth, frameHeight));
+    m_frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
+    m_frame.setPreferredSize(new Dimension(frameWidth, frameHeight));
+    m_frame.setMaximumSize(new Dimension(frameWidth, frameHeight));
     m_frame.setSize(frameWidth, frameHeight);
+    m_frame.setResizable(false);
 
     // Get the size of the title bar.
     m_frame.pack();
