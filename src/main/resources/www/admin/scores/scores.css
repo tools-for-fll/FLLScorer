@@ -28,7 +28,7 @@
 .scores_container .body
 {
   grid-row: 2;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .scores_container .search

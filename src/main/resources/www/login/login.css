@@ -54,6 +54,12 @@ table
   border-spacing: 0;
 }
 
+html
+{
+  height: 100dvh;
+  overflow: hidden;
+}
+
 body
 {
   align-items: center;
@@ -63,6 +69,7 @@ body
   font-family: Arial;
   height: 100dvh;
   justify-content: center;
+  position: fixed;
   width: 100dvw;
 }
 

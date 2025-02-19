@@ -59,6 +59,12 @@
   --transparent: #00000000;
 }
 
+html
+{
+  height: 100dvh;
+  overflow: hidden;
+}
+
 html, body
 {
   background-color: var(--background-color);
@@ -210,6 +216,14 @@ select
   background-color: var(--color-yellow);
   border-color: var(--color-dark-yellow);
   color: var(--foreground-color);
+}
+
+.tiles
+{
+  height: 100dvh;
+  position: fixed;
+  overflow-y: auto;
+  width: 100dvw;
 }
 
 .popup_menu

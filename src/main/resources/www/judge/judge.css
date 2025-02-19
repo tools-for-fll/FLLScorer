@@ -11,6 +11,7 @@
   gap: 0 0;
   grid-template-rows: 4em 1fr 4em;
   height: 100dvh;
+  position: fixed;
   width: 100dvw;
 
   @media (width > 1366px)
@@ -70,7 +71,7 @@
   .body
   {
     grid-row: 2;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .row
     {
@@ -169,6 +170,7 @@
   gap: 0 0;
   grid-template-rows: 4em 1fr 4em;
   height: 100dvh;
+  position: fixed;
   width: 100dvw;
 
   .header

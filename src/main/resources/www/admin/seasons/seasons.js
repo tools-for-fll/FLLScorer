@@ -166,6 +166,11 @@ seasonsLoad()
         html += `</div>`;
       }
 
+      // Add some space at the end of the list of seasons.
+      html += `<br clear="all">`;
+      html += `<br>`;
+      html += `<br>`;
+
       // Insert the HTML fragment into the container, displaying the tiles for
       // all the seasons.
       $(".seasons_container").html(html);

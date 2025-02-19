@@ -12,7 +12,9 @@
   grid-auto-flow: row;
   grid-template-rows: 3em 1fr 3em;
   height: 100dvh;
+  position: fixed;
   transition: 300ms;
+  width: 100dvw;
 }
 
 .main_container .menu
@@ -50,7 +52,7 @@
   background-color: var(--background-color);
   display: none;
   grid-row: 2;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .main_container .status

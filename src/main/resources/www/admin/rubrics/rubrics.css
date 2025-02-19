@@ -27,7 +27,7 @@
   .body
   {
     grid-row: 2;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     .row
     {

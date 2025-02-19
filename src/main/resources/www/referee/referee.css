@@ -11,6 +11,7 @@
   gap: 0 0;
   grid-template-rows: 4em 1fr 4em;
   height: 100dvh;
+  position: fixed;
   width: 100dvw;
 }
 
@@ -56,7 +57,7 @@
 .list_container .body
 {
   grid-row: 2;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .list_container .body .row
@@ -188,6 +189,7 @@
   gap: 0 0;
   grid-template-rows: 4em 1fr 4em;
   height: 100dvh;
+  position: fixed;
   width: 100dvw;
 }
 
@@ -200,7 +202,7 @@
   font-size: 2em;
   grid-row: 1;
   justify-content: center;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .score_container .header .match1
@@ -246,7 +248,7 @@
 .score_container .body
 {
   grid-row: 2;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .score_container .footer

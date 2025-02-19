@@ -7,8 +7,9 @@
 
 .config_container
 {
-  margin: 1em;
-  overflow: scroll;
+  height: 100%;
+  overflow-y: auto;
+  padding: 1em;
 
   hr
   {

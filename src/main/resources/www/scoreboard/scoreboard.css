@@ -12,15 +12,15 @@ html, body
 
 .left
 {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: left;
 }
 
 .center
 {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
 }
 
@@ -31,24 +31,21 @@ html, body
 
 .logo1
 {
-  width: 100%;
   max-height: 100%;
   object-fit: contain;
+  width: 100%;
 }
 
 .logo2
 {
-  width: 100%;
   max-height: 100%;
   object-fit: contain;
+  width: 100%;
 }
 
 .container3
 {
   display: grid;
-  height: 100vh;
-  grid-template-rows: 2.5% 20.5% 2.5% repeat(9, 8%) 2.5%;
-  grid-template-columns: 2.5% repeat(2, 7.5%) 5% 45% 7.5% 2.5% 5% repeat(2, 7.5%) 2.5%;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -65,14 +62,17 @@ html, body
     ". pl6   num6  name6 name6 high6 m16   m16   m26   m36   ."
     ". pl7   num7  name7 name7 high7 m17   m17   m27   m37   ."
     ". .     .     .     .     .     .     .     .     .     ." ;
+  grid-template-columns: 2.5% repeat(2, 7.5%) 5% 45% 7.5% 2.5% 5% repeat(2, 7.5%) 2.5%;
+  grid-template-rows: 2.5% 20.5% 2.5% repeat(9, 8%) 2.5%;
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  width: 100vw;
 }
 
 .container4
 {
   display: grid;
-  height: 100vh;
-  grid-template-rows: 2.5% 20.5% 2.5% repeat(9, 8%) 2.5%;
-  grid-template-columns: 2.5% repeat(2, 7.5%) 5% 37.5% repeat(2, 7.5%) 2.5% 5% repeat(2, 7.5%) 2.5%;
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas:
@@ -89,6 +89,12 @@ html, body
     ". pl6   num6  name6 name6 high6 m16   m26   m26   m36   m46   ."
     ". pl7   num7  name7 name7 high7 m17   m27   m27   m37   m47   ."
     ". .     .     .     .     .     .     .     .     .     .     ." ;
+  grid-template-columns: 2.5% repeat(2, 7.5%) 5% 37.5% repeat(2, 7.5%) 2.5% 5% repeat(2, 7.5%) 2.5%;
+  grid-template-rows: 2.5% 20.5% 2.5% repeat(9, 8%) 2.5%;
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  width: 100vw;
 }
 
 .logo1
@@ -101,14 +107,14 @@ html, body
 
 .logo1 img
 {
-  max-width: 100%;
   max-height: 100%;
+  max-width: 100%;
 }
 
 .event
 {
-  grid-area: event;
   font-size: 200%;
+  grid-area: event;
 }
 
 .logo2
@@ -121,8 +127,8 @@ html, body
 
 .logo2 img
 {
-  max-width: 100%;
   max-height: 100%;
+  max-width: 100%;
 }
 
 .plt
@@ -250,13 +256,13 @@ html, body
   grid-template-areas:
     ". bg ."
     ". .  .";
-    grid-template-columns: 22.5% 55% 22.5%;
-    grid-template-rows: 25.5% 74.5%;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
+  grid-template-columns: 22.5% 55% 22.5%;
+  grid-template-rows: 25.5% 74.5%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .timer_bg_center
@@ -267,13 +273,13 @@ html, body
     ". .  ."
     ". bg ."
     ". .  .";
-    grid-template-columns: 22.5% 55% 22.5%;
-    grid-template-rows: 37.25% 25.5% 37.25%;
-    height: 100%;
-    left: 0;
-    position: absolute;
-    top: 0;
-    width: 100%;
+  grid-template-columns: 22.5% 55% 22.5%;
+  grid-template-rows: 37.25% 25.5% 37.25%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
 }
 
 .bg

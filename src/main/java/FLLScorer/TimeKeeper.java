@@ -5,6 +5,7 @@
 
 package FLLScorer;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
@@ -268,11 +269,15 @@ public class TimeKeeper
     try
     {
       // The InputStream for the requested audio file.
-      InputStream resource = ResourceStream.getResourceStream("sounds/" +
-                                                              file);
+      InputStream resource =
+        ResourceStream.getResourceStream("sounds/" + file);
+
+      // Created a buffered input stream for the audio file.
+      InputStream bufferedResource = new BufferedInputStream(resource);
 
       // Get an audio input stream from this file.
-      AudioInputStream audioIn = AudioSystem.getAudioInputStream(resource);
+      AudioInputStream audioIn =
+        AudioSystem.getAudioInputStream(bufferedResource);
 
       // Create a Clip object for playing the contents of the file.
       Clip clip = AudioSystem.getClip();

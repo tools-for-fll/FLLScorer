@@ -426,7 +426,8 @@ public class Gui
       System.out.println("Image error: " + e);
     }
 
-    // Make the frame visible.
+    // Make the frame visible in the middle of the screen.
+    m_frame.setLocationRelativeTo(null);
     m_frame.setVisible(true);
   }
 }
