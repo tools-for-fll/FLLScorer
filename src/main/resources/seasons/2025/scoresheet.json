@@ -34,8 +34,7 @@
           {
             "en_US": "The coral tree is hanging on the coral tree support"
           },
-          "type": "yesno",
-          "score": [ 0, 20 ]
+          "type": "yesno"
         },
         {
           "id": 2,
@@ -43,8 +42,7 @@
           {
             "en_US": "The bottom of the coral tree is in its holder"
           },
-          "type": "yesno",
-          "score": [ 0, 10 ]
+          "type": "yesno"
         },
         {
           "id": 3,
@@ -52,20 +50,10 @@
           {
             "en_US": "The coral buds are flipped up"
           },
-          "type": "yesno",
-          "score": [ 0, 20 ]
+          "type": "yesno"
         }
       ],
-      "constraints":
-      [
-        {
-          "description":
-          {
-            "en_US": "The coral tree must be on the support to score being in the holder."
-          },
-          "rule": "M01_1 - M01_2"
-        }
-      ],
+      "score": [ 0, 20, 0, 30, 20, 40, 20, 50 ],
       "no_touch": true
     },
     {
