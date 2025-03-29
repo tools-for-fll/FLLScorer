@@ -552,7 +552,8 @@ public class WebServer extends HttpServlet
 
     // The user must have the admin, host, or timekeeper role to access the
     // timekeeper pages.
-    if((path.length() >= 15) && path.substring(0, 15).equals("www/timekeeper/") &&
+    if((path.length() >= 15) &&
+       path.substring(0, 15).equals("www/timekeeper/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
        !request.isUserInRole("timekeeper"))
     {
@@ -586,6 +587,9 @@ public class WebServer extends HttpServlet
       // Perform SSI processing on the response.
       resp = processSSI(resp, paramMap);
     }
+
+    // Disable caching of this resource.
+    response.setHeader("Cache-Control", "no-cache");
 
     // Set the content length and write the response.
     response.setContentLength(resp.length);
@@ -729,7 +733,8 @@ public class WebServer extends HttpServlet
 
     // The user must have the admin, host, or timekeeper role to access the
     // timekeeper pages.
-    if((path.length() >= 15) && path.substring(0, 15).equals("www/timekeeper/") &&
+    if((path.length() >= 15) &&
+       path.substring(0, 15).equals("www/timekeeper/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
        !request.isUserInRole("timekeeper"))
     {
@@ -774,6 +779,9 @@ public class WebServer extends HttpServlet
       // Perform SSI processing on the response.
       resp = processSSI(resp, paramMap);
     }
+
+    // Disable caching of this resource.
+    response.setHeader("Cache-Control", "no-cache");
 
     // Set the content length and write the response.
     response.setContentLength(resp.length);
