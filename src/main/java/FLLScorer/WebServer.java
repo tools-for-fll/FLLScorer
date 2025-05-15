@@ -527,7 +527,8 @@ public class WebServer extends HttpServlet
 
     // The user must have the admin or host role to access the admin pages.
     if((path.length() >= 10) && path.substring(0, 10).equals("www/admin/") &&
-       !request.isUserInRole("admin") && !request.isUserInRole("host"))
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !m_securityBypass)
     {
       path = "www/403.html";
     }
@@ -536,7 +537,7 @@ public class WebServer extends HttpServlet
     // pages.
     if((path.length() >= 10) && path.substring(0, 10).equals("www/judge/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
-       !request.isUserInRole("judge"))
+       !request.isUserInRole("judge") && !m_securityBypass)
     {
       path = "www/403.html";
     }
@@ -545,7 +546,7 @@ public class WebServer extends HttpServlet
     // referee pages.
     if((path.length() >= 12) && path.substring(0, 12).equals("www/referee/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
-       !request.isUserInRole("referee"))
+       !request.isUserInRole("referee") && !m_securityBypass)
     {
       path = "www/403.html";
     }
@@ -555,7 +556,7 @@ public class WebServer extends HttpServlet
     if((path.length() >= 15) &&
        path.substring(0, 15).equals("www/timekeeper/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
-       !request.isUserInRole("timekeeper"))
+       !request.isUserInRole("timekeeper") && !m_securityBypass)
     {
       path = "www/403.html";
     }
@@ -708,7 +709,8 @@ public class WebServer extends HttpServlet
 
     // The user must have the admin or host role to access the admin pages.
     if((path.length() >= 10) && path.substring(0, 10).equals("www/admin/") &&
-       !request.isUserInRole("admin") && !request.isUserInRole("host"))
+       !request.isUserInRole("admin") && !request.isUserInRole("host") &&
+       !m_securityBypass)
     {
       path = "www/403.html";
     }
@@ -717,7 +719,7 @@ public class WebServer extends HttpServlet
     // pages.
     if((path.length() >= 10) && path.substring(0, 10).equals("www/judge/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
-       !request.isUserInRole("judge"))
+       !request.isUserInRole("judge") && !m_securityBypass)
     {
       path = "www/403.html";
     }
@@ -726,7 +728,7 @@ public class WebServer extends HttpServlet
     // referee pages.
     if((path.length() >= 12) && path.substring(0, 12).equals("www/referee/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
-       !request.isUserInRole("referee"))
+       !request.isUserInRole("referee") && !m_securityBypass)
     {
       path = "www/403.html";
     }
@@ -736,7 +738,7 @@ public class WebServer extends HttpServlet
     if((path.length() >= 15) &&
        path.substring(0, 15).equals("www/timekeeper/") &&
        !request.isUserInRole("admin") && !request.isUserInRole("host") &&
-       !request.isUserInRole("timekeeper"))
+       !request.isUserInRole("timekeeper") && !m_securityBypass)
     {
       path = "www/403.html";
     }
