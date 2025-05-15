@@ -115,7 +115,7 @@ public class Database
       FileWriter file = new FileWriter("log.txt", true);
 
       // Write this SQL statement to the log file.
-      file.write(sql + "\n");
+      file.write(sql + ";\n");
 
       // Close the log file.
       file.close();
