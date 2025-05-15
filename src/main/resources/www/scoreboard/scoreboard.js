@@ -97,7 +97,17 @@ runTimer()
     // Set the number of matches in the scoreboard.
     if((data != null) && (data["matches"] != null) && (data["matches"] == 4))
     {
-      $(".container3").removeClass("container3").addClass("container4");
+      $(".scores").removeClass("container2").removeClass("container3").
+        addClass("container4");
+      $(".m3t").show()
+      $(".m30").show();
+      $(".m31").show();
+      $(".m32").show();
+      $(".m33").show();
+      $(".m34").show();
+      $(".m35").show();
+      $(".m36").show();
+      $(".m37").show();
       $(".m4t").show();
       $(".m40").show();
       $(".m41").show();
@@ -108,9 +118,43 @@ runTimer()
       $(".m46").show();
       $(".m47").show();
     }
+    else if((data != null) && (data["matches"] != null) &&
+            (data["matches"] == 3))
+    {
+      $(".scores").removeClass("container2").addClass("container3").
+        removeClass("container4");
+      $(".m3t").show()
+      $(".m30").show();
+      $(".m31").show();
+      $(".m32").show();
+      $(".m33").show();
+      $(".m34").show();
+      $(".m35").show();
+      $(".m36").show();
+      $(".m37").show();
+      $(".m4t").hide();
+      $(".m40").hide();
+      $(".m41").hide();
+      $(".m42").hide();
+      $(".m43").hide();
+      $(".m44").hide();
+      $(".m45").hide();
+      $(".m46").hide();
+      $(".m47").hide();
+    }
     else
     {
-      $(".container4").removeClass("container4").addClass("container3");
+      $(".scores").addClass("container2").removeClass("container3").
+        removeClass("container4");
+      $(".m3t").hide()
+      $(".m30").hide();
+      $(".m31").hide();
+      $(".m32").hide();
+      $(".m33").hide();
+      $(".m34").hide();
+      $(".m35").hide();
+      $(".m36").hide();
+      $(".m37").hide();
       $(".m4t").hide();
       $(".m40").hide();
       $(".m41").hide();

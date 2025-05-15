@@ -383,12 +383,19 @@ loadScores()
     }
 
     // Set the number of matches based on the response.
-    if(result["matches"] == 3)
+    if(result["matches"] == 2)
     {
+      $(".body").addClass("two_matches");
+      $(".body").removeClass("three_matches");
+    }
+    else if(result["matches"] == 3)
+    {
+      $(".body").removeClass("two_matches");
       $(".body").addClass("three_matches");
     }
     else
     {
+      $(".body").removeClass("two_matches");
       $(".body").removeClass("three_matches");
     }
 

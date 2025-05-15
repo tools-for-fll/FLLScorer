@@ -73,6 +73,11 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
+.list_container .two_matches .row
+{
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .list_container .body .row:nth-child(even of :not([style*="display: none"]))
 {
   background-color: var(--color-gray3);
@@ -137,6 +142,11 @@
   content: "<!--#str_referee_m3-->"
 }
 
+.list_container .two_matches .row .match3
+{
+  display: none;
+}
+
 .list_container .body .row .match4
 {
   align-items: center;
@@ -151,6 +161,7 @@
   content: "<!--#str_referee_m4-->"
 }
 
+.list_container .two_matches .row .match4,
 .list_container .three_matches .row .match4
 {
   display: none;
@@ -424,6 +435,11 @@
     grid-template-columns: 3fr repeat(3, 1fr);
   }
 
+  .list_container .two_matches .row
+  {
+    grid-template-columns: 2fr repeat(2, 1fr);
+  }
+
   .list_container .body .row .name
   {
     grid-column: 1;
@@ -450,12 +466,18 @@
     grid-row: 1;
   }
 
+  .list_container .two_matches .row .match3
+  {
+    display: none;
+  }
+
   .list_container .body .row .match4
   {
     grid-column: 5;
     grid-row: 1;
   }
 
+  .list_container .two_matches .row .match4,
   .list_container .three_matches .row .match4
   {
     display: none;
@@ -550,6 +572,11 @@
     grid-template-columns: 3fr repeat(3, 1fr);
   }
 
+  .list_container .two_matches .row
+  {
+    grid-template-columns: 2fr repeat(2, 1fr);
+  }
+
   .list_container .body .row button
   {
     font-size: 1.5em;
@@ -597,6 +624,11 @@
     content: "<!--#str_referee_match3-->"
   }
 
+  .list_container .two_matches .row .match3
+  {
+    display: none;
+  }
+
   .list_container .body .row .match4
   {
     grid-column: 5;
@@ -608,6 +640,7 @@
     content: "<!--#str_referee_match4-->"
   }
 
+  .list_container .two_matches .row .match4,
   .list_container .three_matches .row .match4
   {
     display: none;

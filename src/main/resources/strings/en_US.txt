@@ -181,6 +181,7 @@ str_events_list_matches:Matches
 str_events_list_name:Name
 str_events_list_select:Select
 str_events_list_three:3
+str_events_list_two:2
 str_events_none:None
 
 // Strings for the teams page

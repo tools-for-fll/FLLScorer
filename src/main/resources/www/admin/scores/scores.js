@@ -67,6 +67,10 @@ scoresExchange(id, match)
     <select>`;
     for(var i = 1; i <= 4; i++)
     {
+      if((i == 3) && $(".scores_container .heading").hasClass("two_matches"))
+      {
+        break;
+      }
       if((i == 4) && $(".scores_container .heading").hasClass("three_matches"))
       {
         break;
@@ -205,14 +209,25 @@ scoresLoad()
 
     // Set the number of matches in the score list based on the number of
     // matches at this event.
-    if(result["matches"] == 3)
+    if(result["matches"] == 2)
     {
+      $(".scores_container .heading").addClass("two_matches");
+      $(".scores_container .heading").removeClass("three_matches");
+      $(".scores_container .body").addClass("two_matches");
+      $(".scores_container .body").removeClass("three_matches");
+    }
+    else if(result["matches"] == 3)
+    {
+      $(".scores_container .heading").removeClass("two_matches");
       $(".scores_container .heading").addClass("three_matches");
+      $(".scores_container .body").removeClass("two_matches");
       $(".scores_container .body").addClass("three_matches");
     }
     else
     {
+      $(".scores_container .heading").removeClass("two_matches");
       $(".scores_container .heading").removeClass("three_matches");
+      $(".scores_container .body").removeClass("two_matches");
       $(".scores_container .body").removeClass("three_matches");
     }
 

@@ -8,7 +8,7 @@
 function
 eventsEditorHtml(title, date, matches, name)
 {
-  var select3, select4;
+  var select2, select3, select4;
 
   // Change the date input to an appropriate HTML input value specifier.
   if(date !== "")
@@ -23,12 +23,20 @@ eventsEditorHtml(title, date, matches, name)
   // Set the selected attributes based on the number of matches.
   if(matches == "4")
   {
+    select2 = "";
     select3 = "";
     select4 = " selected";
   }
+  else if(matches == "3")
+  {
+    select2 = "";
+    select3 = " selected";
+    select4 = "";
+  }
   else
   {
-    select3 = " selected";
+    select2 = " selected";
+    select3 = "";
     select4 = "";
   }
 
@@ -58,6 +66,7 @@ eventsEditorHtml(title, date, matches, name)
     </div>
     <div class="input">
       <select id="events-editor-matches">
+        <option value=2${select2}><!--#str_events_list_two--></option>
         <option value=3${select3}><!--#str_events_list_three--></option>
         <option value=4${select4}><!--#str_events_list_four--></option>
       </select>
@@ -160,7 +169,7 @@ eventsAdd()
     }
 
     // Fail if the number of matches is invalid.
-    else if((matches != 3) && (matches != 4))
+    else if((matches != 2) && (matches != 3) && (matches != 4))
     {
       onFail("<!--#str_events_invalid_matches-->");
     }
@@ -276,7 +285,7 @@ eventsEdit(id)
     }
 
     // Fail if the number of matches is invalid.
-    else if((matches != 3) && (matches != 4))
+    else if((matches != 2) && (matches != 3) && (matches != 4))
     {
       onFail("<!--#str_events_invalid_matches-->");
     }
