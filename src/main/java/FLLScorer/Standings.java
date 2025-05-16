@@ -90,11 +90,12 @@ public class Standings
    *         are tied.
    */
   private int
-  scoresCompare(int a1, int a2, int a3, int a4, int b1, int b2, int b3, int b4)
+  scoresCompare(float a1, float a2, float a3, float a4, float b1, float b2,
+                float b3, float b4)
   {
     // Convert the scores into integer arrays.
-    Integer a[] = { a1, a2, a3, a4 };
-    Integer b[] = { b1, b2, b3, b4 };
+    Float a[] = { a1, a2, a3, a4 };
+    Float b[] = { b1, b2, b3, b4 };
 
     // Sort the array in descrending order.
     Arrays.sort(a, Collections.reverseOrder());
@@ -142,32 +143,32 @@ public class Standings
                    ArrayList<Integer> ranks, ArrayList<Integer> cv)
   {
     // A list of information about teams, maintained in team number order.
-    ArrayList<Integer> match1 = new ArrayList<Integer>();
-    ArrayList<Integer> match2 = new ArrayList<Integer>();
-    ArrayList<Integer> match3 = new ArrayList<Integer>();
-    ArrayList<Integer> match4 = new ArrayList<Integer>();
-    ArrayList<Integer> high = new ArrayList<Integer>();
+    ArrayList<Float> match1 = new ArrayList<Float>();
+    ArrayList<Float> match2 = new ArrayList<Float>();
+    ArrayList<Float> match3 = new ArrayList<Float>();
+    ArrayList<Float> match4 = new ArrayList<Float>();
+    ArrayList<Float> high = new ArrayList<Float>();
 
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < teams.size(); idx++)
     {
-      match1.add(idx, -100);
-      match2.add(idx, -100);
-      match3.add(idx, -100);
-      match4.add(idx, -100);
-      high.add(idx, -100);
+      match1.add(idx, (float)-100);
+      match2.add(idx, (float)-100);
+      match3.add(idx, (float)-100);
+      match4.add(idx, (float)-100);
+      high.add(idx, (float)-100);
       cv.add(idx, null);
     }
 
     // A list of information about the scores.
     ArrayList<Integer> ids2 = new ArrayList<Integer>();
-    ArrayList<Integer> score1 = new ArrayList<Integer>();
+    ArrayList<Float> score1 = new ArrayList<Float>();
     ArrayList<Integer> core1 = new ArrayList<Integer>();
-    ArrayList<Integer> score2 = new ArrayList<Integer>();
+    ArrayList<Float> score2 = new ArrayList<Float>();
     ArrayList<Integer> core2 = new ArrayList<Integer>();
-    ArrayList<Integer> score3 = new ArrayList<Integer>();
+    ArrayList<Float> score3 = new ArrayList<Float>();
     ArrayList<Integer> core3 = new ArrayList<Integer>();
-    ArrayList<Integer> score4 = new ArrayList<Integer>();
+    ArrayList<Float> score4 = new ArrayList<Float>();
     ArrayList<Integer> core4 = new ArrayList<Integer>();
 
     // Enumerate the scores for this event.
@@ -223,7 +224,7 @@ public class Standings
     for(int idx = 0; idx < teams.size(); idx++)
     {
       // Get the high score.
-      int max = match1.get(idx);
+      float max = match1.get(idx);
       max = (match2.get(idx) > max) ? match2.get(idx) : max;
       max = (match3.get(idx) > max) ? match3.get(idx) : max;
       max = (match4.get(idx) > max) ? match4.get(idx) : max;

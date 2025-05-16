@@ -247,11 +247,18 @@ scoresLoad()
     </div>`;
     }
 
+    // Adds a score to the display.
     function
     addScore(idx, id, match)
     {
-      const score = result["scores"][idx]["match" + match];
+      // Get the score for this match.
+      var score = result["scores"][idx]["match" + match];
+      if((score !== "") && (score == Math.floor(score)))
+      {
+        score = parseInt(score);
+      }
 
+      // Add the HTML for this score column.
       html += `
       <div id="score${id}_match${match}" class="match${match}">
         <div class="match_score">
@@ -393,9 +400,16 @@ wsMessage(e)
   if((fields.length == 4) && ((fields[0] === "m1") || (fields[0] === "m2") ||
                               (fields[0] === "m3") || (fields[0] === "m4")))
   {
+    // Get the score from the update.
+    var score = fields[3];
+    if((score !== "") && (score == Math.floor(score)))
+    {
+      score = parseInt(score);
+    }
+
     // Update the score.
     $("#score" + fields[1] + "_match" + fields[0].substring(1, 2) + "_score").
-      html(fields[3]);
+      html(score);
   }
 }
 

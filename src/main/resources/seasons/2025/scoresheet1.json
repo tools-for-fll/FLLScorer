@@ -1,0 +1,232 @@
+{
+  "missions":
+  [
+    {
+      "mission": "M00",
+      "name":
+      {
+        "en_US": "Match Time Remaining"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Time Remaining (Seconds)"
+          },
+          "type": "number",
+          "min": 0,
+          "max": 90
+        }
+      ],
+      "score_rule": "M00_1 / 100"
+    },
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Move the Submersible"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Yellow Flag is Down"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Submersible Is Completely On Alliance Team's Side"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Deliver the Diver"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Diver Is Suspended From:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Yellow Bar or Side of Ship", "Basket on the Mast" ]
+          },
+          "score": [ 0, 10, 30 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Resetting The Habitat"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Artificial Habitat Is:"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "None", "Stacked Vertically", "Fully Reset" ]
+          },
+          "score": [ 0, 25, 30 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Recover The Wrecked Ship"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Research Vessel is Upright Anywhere On The Mat or In Home"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Research Vessel Loop Is Latched On The Right Side Port"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Reunite The Krakens"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "The Unknown Creature Is Touching The Kraken Tentacles"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Don't Disturb The Ocean Floor"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number Of Reef Segments Upright, Touching The Mat, AND Partly In Starting Circle"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 5, 10, 15 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Water Sample Is Upright, Touching The Mat, AND Partly In It's Starting Circle"
+          },
+          "type": "yesno",
+          "score": [ 0, 5 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Human Operator"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Krill Partly In Left/Red Port"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Krill Completely In Left/Red Port"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5" ]
+          },
+          "score": [ 0, 10, 20, 30, 40, 50 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "There are too many Krill in scoring position."
+          },
+          "rule": "5 - M07_1 - M07_2"
+        }
+      ],
+      "no_touch": true
+    }
+  ]
+}

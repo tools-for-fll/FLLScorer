@@ -397,6 +397,17 @@
   background-color: var(--accent-color);
 }
 
+.score_container .mission .mission_sel input[type="number"]
+{
+  background-color: var(--background-color);
+  border: 0;
+  border-bottom: 0.05em solid var(--foreground-color);
+  color: var(--foreground-color);
+  font-size: 1.5em;
+  text-align: center;
+  width: 100%;
+}
+
 .score_container .mission hr
 {
   border: 0.05em solid var(--accent-color);

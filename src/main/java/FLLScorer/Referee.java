@@ -207,7 +207,7 @@ public class Referee
         // Add the scoresheet to the JSON response, if it exists.
         if(sheet != null)
         {
-         result.set("sheet", sheet);
+          result.set("sheet", sheet);
         }
       });
 
@@ -250,13 +250,13 @@ public class Referee
 
     // A list of information about scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
-    ArrayList<Integer> score1 = new ArrayList<Integer>();
+    ArrayList<Float> score1 = new ArrayList<Float>();
     ArrayList<String> match1_sheet = new ArrayList<String>();
-    ArrayList<Integer> score2 = new ArrayList<Integer>();
+    ArrayList<Float> score2 = new ArrayList<Float>();
     ArrayList<String> match2_sheet = new ArrayList<String>();
-    ArrayList<Integer> score3 = new ArrayList<Integer>();
+    ArrayList<Float> score3 = new ArrayList<Float>();
     ArrayList<String> match3_sheet = new ArrayList<String>();
-    ArrayList<Integer> score4 = new ArrayList<Integer>();
+    ArrayList<Float> score4 = new ArrayList<Float>();
     ArrayList<String> match4_sheet = new ArrayList<String>();
 
     // Enumerate the scores for this event.
@@ -455,7 +455,7 @@ public class Referee
       JSONArray missions = m_scoresheet.getArray("missions");
 
       // Start with zero points.
-      int points = 0;
+      float points = 0;
 
       // Loop through the missions.
       for(int i = 0; i < missions.size(); i++)
@@ -593,7 +593,7 @@ public class Referee
         if(rule != null)
         {
           // Evaluate this rule and add the resulting points to the score.
-          points += Math.round(eval.evaluate(rule, vars));
+          points += eval.evaluate(rule, vars);
         }
       }
 
@@ -674,7 +674,7 @@ public class Referee
     }
 
     // Get the score and remove it from the JSON response.
-    int score = result.getInteger("score");
+    float score = result.getFloat("score");
     result.unset("score");
 
     // Get the core values score and remove it from the JSON response.
@@ -871,13 +871,13 @@ public class Referee
           // Arrays to hold the score data from the database.
           ArrayList<Integer> teamNumber = new ArrayList<Integer>();
           ArrayList<String> match1Sheet = new ArrayList<String>();
-          ArrayList<Integer> match1Score = new ArrayList<Integer>();
+          ArrayList<Float> match1Score = new ArrayList<Float>();
           ArrayList<String> match2Sheet = new ArrayList<String>();
-          ArrayList<Integer> match2Score = new ArrayList<Integer>();
+          ArrayList<Float> match2Score = new ArrayList<Float>();
           ArrayList<String> match3Sheet = new ArrayList<String>();
-          ArrayList<Integer> match3Score = new ArrayList<Integer>();
+          ArrayList<Float> match3Score = new ArrayList<Float>();
           ArrayList<String> match4Sheet = new ArrayList<String>();
-          ArrayList<Integer> match4Score = new ArrayList<Integer>();
+          ArrayList<Float> match4Score = new ArrayList<Float>();
 
           // Get the scores for this event.
           m_instance.m_database.
@@ -890,7 +890,8 @@ public class Referee
           // Loop through the tests that have scores (or scoresheets).
           for(int idx = 0; idx < teamNumber.size(); idx++)
           {
-            Integer state, score;
+            Integer state;
+            Float score;
 
             // Determine the state of this team's first round.
             score = match1Score.get(idx);

@@ -190,23 +190,23 @@ runTimer()
       $(".name" + i).html(data["scores"][index + i]["name"]);
       if(data["scores"][index + i]["high"] != null)
       {
-        $(".high" + i).html(data["scores"][index + i]["high"]);
+        $(".high" + i).html(parseInt(data["scores"][index + i]["high"]));
       }
       if(data["scores"][index + i]["m1"] != null)
       {
-        $(".m1" + i).html(data["scores"][index + i]["m1"]);
+        $(".m1" + i).html(parseInt(data["scores"][index + i]["m1"]));
       }
       if(data["scores"][index + i]["m2"] != null)
       {
-        $(".m2" + i).html(data["scores"][index + i]["m2"]);
+        $(".m2" + i).html(parseInt(data["scores"][index + i]["m2"]));
       }
       if(data["scores"][index + i]["m3"] != null)
       {
-        $(".m3" + i).html(data["scores"][index + i]["m3"]);
+        $(".m3" + i).html(parseInt(data["scores"][index + i]["m3"]));
       }
       if(data["scores"][index + i]["m4"] != null)
       {
-        $(".m4" + i).html(data["scores"][index + i]["m4"]);
+        $(".m4" + i).html(parseInt(data["scores"][index + i]["m4"]));
       }
 
       // If this is an odd row, set the background to gray.

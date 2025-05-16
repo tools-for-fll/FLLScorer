@@ -95,11 +95,12 @@ public class Scoreboard
    *         are tied.
    */
   private int
-  scoresCompare(int a1, int a2, int a3, int a4, int b1, int b2, int b3, int b4)
+  scoresCompare(float a1, float a2, float a3, float a4, float b1, float b2,
+                float b3, float b4)
   {
     // Convert the scores into integer arrays.
-    Integer a[] = { a1, a2, a3, a4 };
-    Integer b[] = { b1, b2, b3, b4 };
+    Float a[] = { a1, a2, a3, a4 };
+    Float b[] = { b1, b2, b3, b4 };
 
     // Sort the array in descrending order.
     Arrays.sort(a, Collections.reverseOrder());
@@ -148,11 +149,11 @@ public class Scoreboard
     ArrayList<Integer> a_place = new ArrayList<Integer>();
     ArrayList<Integer> a_numbers = new ArrayList<Integer>();
     ArrayList<String> a_names = new ArrayList<String>();
-    ArrayList<Integer> a_high = new ArrayList<Integer>();
-    ArrayList<Integer> a_match1 = new ArrayList<Integer>();
-    ArrayList<Integer> a_match2 = new ArrayList<Integer>();
-    ArrayList<Integer> a_match3 = new ArrayList<Integer>();
-    ArrayList<Integer> a_match4 = new ArrayList<Integer>();
+    ArrayList<Float> a_high = new ArrayList<Float>();
+    ArrayList<Float> a_match1 = new ArrayList<Float>();
+    ArrayList<Float> a_match2 = new ArrayList<Float>();
+    ArrayList<Float> a_match3 = new ArrayList<Float>();
+    ArrayList<Float> a_match4 = new ArrayList<Float>();
 
     // Enumerate the teams from the database for this season.
     m_database.teamEnumerate(season_id, event_id, a_ids, a_numbers, a_names);
@@ -160,19 +161,19 @@ public class Scoreboard
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < a_numbers.size(); idx++)
     {
-      a_match1.add(idx, -100);
-      a_match2.add(idx, -100);
-      a_match3.add(idx, -100);
-      a_match4.add(idx, -100);
-      a_high.add(idx, -100);
+      a_match1.add(idx, (float)-100);
+      a_match2.add(idx, (float)-100);
+      a_match3.add(idx, (float)-100);
+      a_match4.add(idx, (float)-100);
+      a_high.add(idx, (float)-100);
     }
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
-    ArrayList<Integer> score1 = new ArrayList<Integer>();
-    ArrayList<Integer> score2 = new ArrayList<Integer>();
-    ArrayList<Integer> score3 = new ArrayList<Integer>();
-    ArrayList<Integer> score4 = new ArrayList<Integer>();
+    ArrayList<Float> score1 = new ArrayList<Float>();
+    ArrayList<Float> score2 = new ArrayList<Float>();
+    ArrayList<Float> score3 = new ArrayList<Float>();
+    ArrayList<Float> score4 = new ArrayList<Float>();
 
     // Enumerate the scores for this event.
     m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
@@ -219,7 +220,7 @@ public class Scoreboard
     for(int idx = 0; idx < a_ids.size(); idx++)
     {
       // Get the high score.
-      int high = a_match1.get(idx);
+      float high = a_match1.get(idx);
       high = (a_match2.get(idx) > high) ? a_match2.get(idx) : high;
       high = (a_match3.get(idx) > high) ? a_match3.get(idx) : high;
       high = (a_match4.get(idx) > high) ? a_match4.get(idx) : high;
@@ -307,7 +308,7 @@ public class Scoreboard
       }
       score.set("num", a_numbers.get(i));
       score.set("name", a_names.get(i));
-      int points = a_high.get(i);
+      float points = a_high.get(i);
       if(points != -100)
       {
         score.set("high", (points < 0) ? 0 : points);

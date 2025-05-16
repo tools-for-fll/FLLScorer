@@ -33,8 +33,21 @@ computeEnable()
     missions = ".mission_sel:not(#CV_1)";
   }
 
+  // Get the number of mission items, number of mission items with selections
+  // make, and the number of missions items with non-empty inputs.
+  var mission_count = $(missions).length;
+  var mission_select = $(missions + " .selected").length;
+  var mission_input = 0;
+  for(var idx = 0; idx < $(missions + " input").length; idx++)
+  {
+    if($(missions + " input").eq(idx).val() !== "")
+    {
+      mission_input++;
+    }
+  }
+
   // See if there are selections for the entire scoresheet.
-  if($(missions).length == $(missions + " .selected").length)
+  if((mission_select + mission_input) === mission_count)
   {
     // The entire scoresheet has selections, so enable the compute button.
     $("#compute").removeAttr("disabled");
@@ -68,7 +81,7 @@ setScore(score)
   {
     // Update the score.
     $("#compute").addClass("has_score");
-    $("#compute").html(score);
+    $("#compute").html(parseInt(score));
 
     // Enable the publish button.
     $("#publish").removeAttr("disabled");
@@ -106,6 +119,20 @@ itemToggle(mission_sel, button)
   modified = true;
 }
 
+// Called when a text input changes.
+function
+itemChange()
+{
+  // Update the publish and compute buttons.
+  computeEnable();
+
+  // Remove the computed score if it exists.
+  setScore(-1);
+
+  // The scoresheet has been modified.
+  modified = true;
+}
+
 // Gets the JSON representation of the current selection state of the
 // scoresheet.
 function
@@ -117,6 +144,36 @@ getSheetJSON()
   // Loop through all of the mission selections.
   for(var mission of $(".mission_sel"))
   {
+    // See if this mission item is an input field.
+    var input = $(mission).find("input");
+    if(input.length !== 0)
+    {
+      // Get the value of this input.
+      var value = parseFloat(input.val());
+
+      // If there is a minimum value, bump the value up to the minimum if it is
+      // less than the minimum (on some browsers, the minimum is not honored
+      // when directly typing a value).
+      if((input.attr("min") !== undefined) && (value < input.attr("min")))
+      {
+        value = input.attr("min");
+      }
+
+      // If there is a maximum value, bump the value down to the maximum if it
+      // is greater than the maximum (on some browsers, the maximum is not
+      // honored hwne directly typing a value).
+      if((input.attr("max") !== undefined) && (value > input.attr("max")))
+      {
+        value = input.attr("max");
+      }
+
+      // Save the value into the scoresheet state.
+      result[mission.id] = value;
+
+      // Go to the next mission item.
+      continue;
+    }
+
     // Get all of the buttons for this selection.
     var buttons = $(mission).find("button");
 
@@ -593,6 +650,18 @@ loadMatch(id, match)
           }
         }
 
+        // Otherwise, see if this item has a number input.
+        else if(item["type"] === "number")
+        {
+          // Get the minimum and maximum for this input, if they are provided.
+          let min = (item["min"] !== undefined) ? ` min="${item["min"]}"` : "";
+          let max = (item["max"] !== undefined) ? ` max="${item["max"]}"` : "";
+
+          // Add the input for this item to the HTML.
+          html += `<input type="number"${min}${max} oninput="itemChange();">` +
+                  `</input>`;
+        }
+
         // Otherwise, the selection type is unknown.
         else
         {
@@ -626,8 +695,18 @@ loadMatch(id, match)
       // Loop through the keys of the match data.
       for(var key of Object.keys(sheet))
       {
-        // Select the appropriate button.
-        $("#" + key + " button").eq(sheet[key]).addClass("selected");
+        // See if this item is a number input.
+        var input = $(`#${key} input[type="number"]`);
+        if(input.length !== 0)
+        {
+          // Set the value of the number input.
+          input.val(sheet[key]);
+        }
+        else
+        {
+          // Select the appropriate button.
+          $("#" + key + " button").eq(sheet[key]).addClass("selected");
+        }
       }
     }
 

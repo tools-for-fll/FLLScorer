@@ -20,7 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 interface MatchScoreMethod
 {
-  void accept(Integer match, Integer match_cv, String match_sheet);
+  void accept(Float score, Integer cv, String sheet);
 }
 
 /**
@@ -239,16 +239,16 @@ public class Database
                    "  season_id integer, " +
                    "  event_id integer, " +
                    "  team_id integer, " +
-                   "  match1 integer, " +
+                   "  match1 float, " +
                    "  match1_cv integer, " +
                    "  match1_sheet char, " +
-                   "  match2 integer, " +
+                   "  match2 float, " +
                    "  match2_cv integer, " +
                    "  match2_sheet char, " +
-                   "  match3 integer, " +
+                   "  match3 float, " +
                    "  match3_cv integer, " +
                    "  match3_sheet char, " +
-                   "  match4 integer, " +
+                   "  match4 float, " +
                    "  match4_cv integer, " +
                    "  match4_sheet char " +
                    ")";
@@ -1787,12 +1787,12 @@ public class Database
    */
   public boolean
   scoreEnumerate(int season_id, int event_id, ArrayList<Integer> ids,
-                 ArrayList<Integer> teams, ArrayList<Integer> match1,
+                 ArrayList<Integer> teams, ArrayList<Float> match1,
                  ArrayList<Integer> match1_cv, ArrayList<String> match1_sheet,
-                 ArrayList<Integer> match2, ArrayList<Integer> match2_cv,
-                 ArrayList<String> match2_sheet, ArrayList<Integer> match3,
+                 ArrayList<Float> match2, ArrayList<Integer> match2_cv,
+                 ArrayList<String> match2_sheet, ArrayList<Float> match3,
                  ArrayList<Integer> match3_cv, ArrayList<String> match3_sheet,
-                 ArrayList<Integer> match4, ArrayList<Integer> match4_cv,
+                 ArrayList<Float> match4, ArrayList<Integer> match4_cv,
                  ArrayList<String> match4_sheet)
   {
     // Catch (and ignore) any errors that may occur.
@@ -1823,7 +1823,7 @@ public class Database
         }
         if(match1 != null)
         {
-          Integer score = result.getInt("match1");
+          Float score = result.getFloat("match1");
           score = result.wasNull() ? null : score;
           match1.add(score);
         }
@@ -1841,7 +1841,7 @@ public class Database
         }
         if(match2 != null)
         {
-          Integer score = result.getInt("match2");
+          Float score = result.getFloat("match2");
           score = result.wasNull() ? null : score;
           match2.add(score);
         }
@@ -1859,7 +1859,7 @@ public class Database
         }
         if(match3 != null)
         {
-          Integer score = result.getInt("match3");
+          Float score = result.getFloat("match3");
           score = result.wasNull() ? null : score;
           match3.add(score);
         }
@@ -1877,7 +1877,7 @@ public class Database
         }
         if(match4 != null)
         {
-          Integer score = result.getInt("match4");
+          Float score = result.getFloat("match4");
           score = result.wasNull() ? null : score;
           match4.add(score);
         }
@@ -1929,7 +1929,7 @@ public class Database
    */
   public int
   scoreMatchAdd(int season_id, int event_id, int team_id, int match,
-                Integer score, Integer cv, String sheet)
+                Float score, Integer cv, String sheet)
   {
     int id = -1;
 
@@ -2008,7 +2008,8 @@ public class Database
   scoreMatchGet(int season_id, int event_id, int team_id, int match,
                 MatchScoreMethod callback)
   {
-    Integer score, cv;
+    Float score;
+    Integer cv;
     String sheet;
     boolean ret = false;
 
@@ -2031,7 +2032,7 @@ public class Database
       if(result.next())
       {
         // Extract the values from the result.
-        score = result.getInt("match" + match);
+        score = result.getFloat("match" + match);
         score = result.wasNull() ? null : score;
         cv = result.getInt("match" + match + "_cv");
         cv = result.wasNull() ? null : cv;

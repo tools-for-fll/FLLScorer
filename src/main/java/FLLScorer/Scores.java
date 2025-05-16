@@ -134,7 +134,7 @@ public class Scores
     int season_id = m_season.seasonIdGet();
     int event_id = m_event.eventIdGet();
 
-    ArrayList<Integer> a_score = new ArrayList<Integer>();
+    ArrayList<Float> a_score = new ArrayList<Float>();
     ArrayList<Integer> a_cv = new ArrayList<Integer>();
     ArrayList<String> a_sheet = new ArrayList<String>();
 
@@ -209,10 +209,10 @@ public class Scores
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
-    ArrayList<Integer> match1 = new ArrayList<Integer>();
-    ArrayList<Integer> match2 = new ArrayList<Integer>();
-    ArrayList<Integer> match3 = new ArrayList<Integer>();
-    ArrayList<Integer> match4 = new ArrayList<Integer>();
+    ArrayList<Float> match1 = new ArrayList<Float>();
+    ArrayList<Float> match2 = new ArrayList<Float>();
+    ArrayList<Float> match3 = new ArrayList<Float>();
+    ArrayList<Float> match4 = new ArrayList<Float>();
 
     // Enumerate the teams from the database for this season.
     m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
@@ -220,18 +220,18 @@ public class Scores
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)
     {
-      match1.add(idx, -1);
-      match2.add(idx, -1);
-      match3.add(idx, -1);
-      match4.add(idx, -1);
+      match1.add(idx, (float)-1);
+      match2.add(idx, (float)-1);
+      match3.add(idx, (float)-1);
+      match4.add(idx, (float)-1);
     };
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
-    ArrayList<Integer> score1 = new ArrayList<Integer>();
-    ArrayList<Integer> score2 = new ArrayList<Integer>();
-    ArrayList<Integer> score3 = new ArrayList<Integer>();
-    ArrayList<Integer> score4 = new ArrayList<Integer>();
+    ArrayList<Float> score1 = new ArrayList<Float>();
+    ArrayList<Float> score2 = new ArrayList<Float>();
+    ArrayList<Float> score3 = new ArrayList<Float>();
+    ArrayList<Float> score4 = new ArrayList<Float>();
 
     // Enumerate the scores for this event.
     m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
@@ -399,11 +399,12 @@ public class Scores
    *         are tied.
    */
   private int
-  scoresCompare(int a1, int a2, int a3, int a4, int b1, int b2, int b3, int b4)
+  scoresCompare(float a1, float a2, float a3, float a4, float b1, float b2,
+                float b3, float b4)
   {
     // Convert the scores into integer arrays.
-    Integer a[] = { a1, a2, a3, a4 };
-    Integer b[] = { b1, b2, b3, b4 };
+    Float a[] = { a1, a2, a3, a4 };
+    Float b[] = { b1, b2, b3, b4 };
 
     // Sort the array in descrending order.
     Arrays.sort(a, Collections.reverseOrder());
@@ -470,14 +471,14 @@ public class Scores
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
-    ArrayList<Integer> high = new ArrayList<Integer>();
-    ArrayList<Integer> match1 = new ArrayList<Integer>();
+    ArrayList<Float> high = new ArrayList<Float>();
+    ArrayList<Float> match1 = new ArrayList<Float>();
     ArrayList<Integer> cv1 = new ArrayList<Integer>();
-    ArrayList<Integer> match2 = new ArrayList<Integer>();
+    ArrayList<Float> match2 = new ArrayList<Float>();
     ArrayList<Integer> cv2 = new ArrayList<Integer>();
-    ArrayList<Integer> match3 = new ArrayList<Integer>();
+    ArrayList<Float> match3 = new ArrayList<Float>();
     ArrayList<Integer> cv3 = new ArrayList<Integer>();
-    ArrayList<Integer> match4 = new ArrayList<Integer>();
+    ArrayList<Float> match4 = new ArrayList<Float>();
     ArrayList<Integer> cv4 = new ArrayList<Integer>();
 
     // Enumerate the teams from the database for this season.
@@ -486,26 +487,26 @@ public class Scores
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)
     {
-      high.add(idx, -1);
-      match1.add(idx, -1);
+      high.add(idx, (float)-1);
+      match1.add(idx, (float)-1);
       cv1.add(idx, -1);
-      match2.add(idx, -1);
+      match2.add(idx, (float)-1);
       cv2.add(idx, -1);
-      match3.add(idx, -1);
+      match3.add(idx, (float)-1);
       cv3.add(idx, -1);
-      match4.add(idx, -1);
+      match4.add(idx, (float)-1);
       cv4.add(idx, -1);
     };
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
-    ArrayList<Integer> score1 = new ArrayList<Integer>();
+    ArrayList<Float> score1 = new ArrayList<Float>();
     ArrayList<Integer> core1 = new ArrayList<Integer>();
-    ArrayList<Integer> score2 = new ArrayList<Integer>();
+    ArrayList<Float> score2 = new ArrayList<Float>();
     ArrayList<Integer> core2 = new ArrayList<Integer>();
-    ArrayList<Integer> score3 = new ArrayList<Integer>();
+    ArrayList<Float> score3 = new ArrayList<Float>();
     ArrayList<Integer> core3 = new ArrayList<Integer>();
-    ArrayList<Integer> score4 = new ArrayList<Integer>();
+    ArrayList<Float> score4 = new ArrayList<Float>();
     ArrayList<Integer> core4 = new ArrayList<Integer>();
 
     // Enumerate the scores for this event.
@@ -516,7 +517,7 @@ public class Scores
     // Loop through all the scores
     for(int idx = 0; idx < teams.size(); idx++)
     {
-      int max = -1;
+      float max = -1;
 
       // Ignore this score if it is not for a team at this event (should not
       // happen).
@@ -674,14 +675,29 @@ public class Scores
       // Add this team's information and scores to the CSV string.
       csv += numbers.get(i);
       csv += "," + names.get(i);
-      csv += "," + ((high.get(i) == -1) ? "" : place.get(i));
-      csv += "," + ((high.get(i) == -1) ? "" : high.get(i));
-      csv += "," + ((match1.get(i) == -1) ? "" : match1.get(i));
-      csv += "," + ((match2.get(i) == -1) ? "" : match2.get(i));
-      csv += "," + ((match3.get(i) == -1) ? "" : match3.get(i));
+      float value = high.get(i);
+      csv += "," + ((value == -1) ? "" : place.get(i));
+      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
+                                          ("" + (int)Math.floor(value)) :
+                                          ("" + value)));
+      value = match1.get(i);
+      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
+                                          ("" + (int)Math.floor(value)) :
+                                          ("" + value)));
+      value = match2.get(i);
+      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
+                                          ("" + (int)Math.floor(value)) :
+                                          ("" + value)));
+      value = match3.get(i);
+      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
+                                          ("" + (int)Math.floor(value)) :
+                                          ("" + value)));
       if(matches == 4)
       {
-        csv += "," + ((match4.get(i) == -1) ? "" : match4.get(i));
+        value = match4.get(i);
+        csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
+                                            ("" + (int)Math.floor(value)) :
+                                            ("" + value)));
       }
       csv += "," + ((cv1.get(i) == -1) ? "" : cv1.get(i));
       csv += "," + ((cv2.get(i) == -1) ? "" : cv2.get(i));
