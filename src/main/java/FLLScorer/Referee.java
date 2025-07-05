@@ -237,7 +237,7 @@ public class Referee
     ArrayList<Integer> match4 = new ArrayList<Integer>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
+    m_database.teamEnumerate(season_id, event_id, ids, numbers, names, null);
 
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)

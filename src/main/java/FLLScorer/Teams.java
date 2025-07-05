@@ -39,6 +39,11 @@ public class Teams
   private Database m_database = null;
 
   /**
+   * The Config object.
+   */
+  private Config m_config = null;
+
+  /**
    * The Seasons object.
    */
   private Seasons m_season = null;
@@ -84,9 +89,11 @@ public class Teams
    * @param number The team number.
    *
    * @param name The team name.
+   *
+   * @param division The team's division.
    */
   private void
-  add(JSONObject result, int number, String name)
+  add(JSONObject result, int number, String name, int division)
   {
     // Get the season ID.
     int season_id = m_season.seasonIdGet();
@@ -99,7 +106,7 @@ public class Teams
     }
 
     // Add the team to the database.
-    else if(m_database.teamAdd(season_id, number, name) >= 0)
+    else if(m_database.teamAdd(season_id, number, name, division) >= 0)
     {
       // Return success since the team was added.
       result.set("result", "ok");
@@ -200,12 +207,14 @@ public class Teams
    * @param number The team number.
    *
    * @param name The team name.
+   *
+   * @param division The team's division.
    */
   private void
-  edit(JSONObject result, int id, int number, String name)
+  edit(JSONObject result, int id, int number, String name, int division)
   {
     // Edit the team in the database.
-    if(m_database.teamEdit(id, number, name) == true)
+    if(m_database.teamEdit(id, number, name, division) == true)
     {
       // Return success since the team was edited.
       result.set("result", "ok");
@@ -236,12 +245,13 @@ public class Teams
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> divisions = new ArrayList<Integer>();
     ArrayList<Boolean> inEvent = new ArrayList<Boolean>();
     ArrayList<Boolean> seasonScores = new ArrayList<Boolean>();
     ArrayList<Boolean> eventScores = new ArrayList<Boolean>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id, -1, ids, numbers, names);
+    m_database.teamEnumerate(season_id, -1, ids, numbers, names, divisions);
 
     // Add the other information about the teams.
     for(int idx = 0; idx < numbers.size(); idx++)
@@ -261,6 +271,7 @@ public class Teams
       team.set("id", ids.get(i));
       team.set("number", numbers.get(i));
       team.set("name", names.get(i));
+      team.set("division", divisions.get(i));
       team.set("inEvent", inEvent.get(i));
       team.set("seasonScores", seasonScores.get(i));
       team.set("eventScores", eventScores.get(i));
@@ -269,6 +280,18 @@ public class Teams
 
     // Add the team array to the JSON response.
     result.set("teams", teams);
+
+    // Add the division support to the JSON response.
+    result.set("divisions_enabled", m_config.divisionEnableGet());
+
+    // Add the count of divisions to the JSON response.
+    result.set("division_count", m_config.divisionCountGet());
+
+    // Add the names of the divisions to the JSON response.
+    for(int i = 1; i <= m_config.divisionCountGet(); i++)
+    {
+      result.set("division" + i + "_name", m_config.divisionNameGet(i));
+    }
   }
 
   /**
@@ -320,11 +343,13 @@ public class Teams
     {
       // See if the action is "add", for adding a team.
       if(paramMap.get("action").equals("add") &&
-         paramMap.containsKey("number") && paramMap.containsKey("name"))
+         paramMap.containsKey("number") && paramMap.containsKey("name") &&
+         paramMap.containsKey("division"))
       {
         // Add the team.
         add(result, Integer.parseInt(paramMap.get("number")),
-            URLDecoder.decode(paramMap.get("name"), StandardCharsets.UTF_8));
+            URLDecoder.decode(paramMap.get("name"), StandardCharsets.UTF_8),
+            Integer.parseInt(paramMap.get("division")));
       }
 
       // See if the action is "delete", for deleting a team.
@@ -338,12 +363,13 @@ public class Teams
       // See if the action is "edit", for editing a team.
       else if(paramMap.get("action").equals("edit") &&
               paramMap.containsKey("id") && paramMap.containsKey("number") &&
-              paramMap.containsKey("name"))
+              paramMap.containsKey("name") && paramMap.containsKey("division"))
       {
         // Edit the team.
         edit(result, Integer.parseInt(paramMap.get("id")),
              Integer.parseInt(paramMap.get("number")),
-             URLDecoder.decode(paramMap.get("name"), StandardCharsets.UTF_8));
+             URLDecoder.decode(paramMap.get("name"), StandardCharsets.UTF_8),
+             Integer.parseInt(paramMap.get("division")));
       }
 
       // See if the action is "in_event", for adding a team to the current
@@ -415,6 +441,7 @@ public class Teams
     // objects.
     m_webserver = WebServer.getInstance();
     m_database = Database.getInstance();
+    m_config = Config.getInstance();
     m_season = Seasons.getInstance();
     m_event = Events.getInstance();
 

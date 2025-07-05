@@ -3,11 +3,23 @@
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
+// Whether or not divisions are enabled.
+var divisions_enabled = false;
+
+// The number of divisions, when enabled.
+var division_count = 0;
+
+// The names of the divisions, when enabled.
+var division_name = [ "", "", "", "" ];
+
 // Generates the generic HTML for a team editor, supporting both adding new
 // teams and editing existing teams.
 function
-teamsEditorHtml(title, number, name)
+teamsEditorHtml(title, division, number, name)
 {
+  // Determine the division class for the editor.
+  division_class = divisions_enabled ? " have_divisions" : "";
+
   // Change the number input to an appropriate HTML input value specifier.
   if(number !== "")
   {
@@ -22,9 +34,23 @@ teamsEditorHtml(title, number, name)
 
   // Construct the HTML for the editor.
   var html = `
-<div class="teams_editor_container">
+<div class="teams_editor_container${division_class}">
   <div class="title">
     ${title}
+  </div>
+  <div class="division">
+    <div class="label">
+      <!--#str_teams_list_division-->:
+    </div>
+    <div class="input">
+      <select id="teams-editor-division">`;
+  for(var i = 0; i < division_count; i++)
+  {
+    var select = (division == (i + 1)) ? " selected" : "";
+    html += `<option value="${i + 1}"${select}>${division_name[i]}</option>`;
+  }
+  html += `</select>
+    </div>
   </div>
   <div class="number">
     <div class="label">
@@ -62,6 +88,7 @@ teamsEditorHtml(title, number, name)
 function
 teamsAdd()
 {
+  var division = "";
   var number = "";
   var name = "";
 
@@ -70,7 +97,8 @@ teamsAdd()
   onStart()
   {
     // Construct an editor for adding a team.
-    var html = teamsEditorHtml("<!--#str_teams_add-->", number, name);
+    var html =
+      teamsEditorHtml("<!--#str_teams_add-->", division, number, name);
 
     // Show the editor as a popup.
     showPopup(html,
@@ -85,6 +113,7 @@ teamsAdd()
   addTeam()
   {
     // Get the values from the editor.
+    division = $("#teams-editor-division").val();
     number = $("#teams-editor-number").val();
     name = $("#teams-editor-name").val();
 
@@ -119,13 +148,13 @@ teamsAdd()
     }
 
     // Fail if the number is invalid.
-    if(number == "")
+    if(number === "")
     {
       onFail("<!--#str_teams_invalid_number-->");
     }
 
     // Fail if the name is invalid.
-    else if(name == "")
+    else if(name === "")
     {
       onFail("<!--#str_teams_invalid_name-->");
     }
@@ -134,8 +163,8 @@ teamsAdd()
     else
     {
       // Send a request to the server to create the team.
-      $.getJSON("/admin/teams/teams.json?action=add&number=" + number_enc +
-                "&name=" + name_enc)
+      $.getJSON("/admin/teams/teams.json?action=add&division=" + division +
+                "&number=" + number_enc + "&name=" + name_enc)
         .done(onDone)
         .fail(onFail);
     }
@@ -164,6 +193,7 @@ teamsAddKeyUp(event)
 function
 teamsEdit(id)
 {
+  var division = $("#team" + id + "_division").data("division");
   var number = $("#team" + id + "_number").html().trim();
   var name = $("#team" + id + "_name").html().trim();
 
@@ -172,7 +202,8 @@ teamsEdit(id)
   onStart()
   {
     // Construct an editor for editing a team.
-    var html = teamsEditorHtml("<!--#str_teams_edit-->", number, name);
+    var html =
+      teamsEditorHtml("<!--#str_teams_edit-->", division, number, name);
 
     // Show the editor as a popup.
     showPopup(html,
@@ -187,6 +218,7 @@ teamsEdit(id)
   editTeam()
   {
     // Get the values from the editor.
+    division = $("#teams-editor-division").val();
     number = $("#teams-editor-number").val();
     name = $("#teams-editor-name").val();
 
@@ -236,8 +268,8 @@ teamsEdit(id)
     else
     {
       // Send a request to the server to edit the team.
-      $.getJSON("/admin/teams/teams.json?action=edit&id=" + id + "&number=" +
-                number_enc + "&name=" + name_enc)
+      $.getJSON("/admin/teams/teams.json?action=edit&id=" + id + "&division=" +
+                division + "&number=" + number_enc + "&name=" + name_enc)
         .done(onDone)
         .fail(onFail);
     }
@@ -409,6 +441,14 @@ teamsLoad()
   {
     var html = "";
 
+    // Update the division information.
+    divisions_enabled = result["divisions_enabled"];
+    division_count = result["division_count"];
+    division_name[0] = result["division1_name"];
+    division_name[1] = result["division2_name"];
+    division_name[2] = result["division3_name"];
+    division_name[3] = result["division4_name"];
+
     // See if there are any teams.
     if(result["teams"].length == 0)
     {
@@ -416,6 +456,7 @@ teamsLoad()
       // none.
       html += `
     <div class="row">
+      <span class="division">-</span>
       <span class="number">-</span>
       <span class="name"><!--#str_teams_none--></span>
       <span class="at_event">-</span>
@@ -433,6 +474,9 @@ teamsLoad()
       // Add the row for this team.
       html += `
     <div id="team${id}" class="row">
+      <span id="team${id}_division" class="division" data-division="${result["teams"][i]["division"]}">
+        ${division_name[result["teams"][i]["division"] - 1]}
+      </span>
       <span id="team${id}_number" class="number">
         ${result["teams"][i]["number"]}
       </span>

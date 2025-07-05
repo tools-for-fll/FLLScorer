@@ -5,6 +5,7 @@
 
 package FLLScorer;
 
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Locale;
@@ -26,20 +27,33 @@ public class Config
   private static final String m_accentKey = new String("accent-color");
 
   /**
+   * The database key used to store the division enable state.
+   */
+  private static final String m_divisionEnableKey =
+    new String("division-enable");
+
+  /**
+   * The database key prefix used to store the division colors.
+   */
+  private static final String m_divisionColorKeyPrefix =
+    new String("division-color");
+
+  /**
+   * The database key used to store the division count.
+   */
+  private static final String m_divisionCountKey =
+    new String("division-count");
+
+  /**
+   * The database key prefix used to store the division names.
+   */
+  private static final String m_divisionNameKeyPrefix =
+    new String("division-name");
+
+  /**
    * The database key used to store the error color.
    */
   private static final String m_errorKey = new String("error-color");
-
-  /**
-   * The database key used to store the timer enable state.
-   */
-  private static final String m_timerEnableKey = new String("timer-enable");
-
-  /**
-   * The database key used to store the timer location.
-   */
-  private static final String m_timerLocationKey =
-    new String("timer-location");
 
   /**
    * The database key used to store the current event.
@@ -66,6 +80,17 @@ public class Config
    */
   private static final String m_securityBypassKey =
     new String("securityBypass");
+
+  /**
+   * The database key used to store the timer enable state.
+   */
+  private static final String m_timerEnableKey = new String("timer-enable");
+
+  /**
+   * The database key used to store the timer location.
+   */
+  private static final String m_timerLocationKey =
+    new String("timer-location");
 
   /**
    * The database key used to store the WiFi password.
@@ -96,6 +121,16 @@ public class Config
    * The object for accessing the timer.
    */
   private Timer m_timer = null;
+
+  /**
+   * The number of divisions.
+   */
+  private int m_divisionCount = 1;
+
+  /**
+   * The division enable state.
+   */
+  private boolean m_divisionEnable = false;
 
   /**
    * The current event.
@@ -179,6 +214,208 @@ public class Config
   }
 
   /**
+   * Gets the color for a division.
+   *
+   * @param division The division to query.
+   *
+   * @return The name of the color for this division.
+   */
+  public String
+  divisionColorGet(int division)
+  {
+    // Get the color for this division from the database.
+    String color =
+      m_database.configValueGet(m_divisionColorKeyPrefix + division);
+
+    // If the division color does not exist in the database, replace it with
+    // the default division color.
+    if(color == null)
+    {
+      if(division == 1)
+      {
+        color = "--color-red";
+      }
+      else if(division == 2)
+      {
+        color = "--color-blue";
+      }
+      else if(division == 3)
+      {
+        color = "--color-yellow";
+      }
+      else
+      {
+        color = "--color-green";
+      }
+    }
+
+    // Return the division color.
+    return(color);
+  }
+
+  /**
+   * Sets the color for a division.
+   *
+   * @param division The division to set.
+   *
+   * @param color The name of the color for this division.
+   */
+  public void
+  divisionColorSet(int division, String color)
+  {
+    // Save the color for this division to the database.
+    m_database.configValueSet(m_divisionColorKeyPrefix + division, color);
+  }
+
+  /**
+   * Gets the number of divisions selected.
+   *
+   * @return The currently selected number of divisions.
+   */
+  public int
+  divisionCountGet()
+  {
+    // Return the division count.
+    return(m_divisionCount);
+  }
+
+  /**
+   * Initializes the division count state.
+   */
+  void
+  divisionCountInit()
+  {
+    String count;
+
+    // Get the division enable state from the database.
+    count = m_database.configValueGet(m_divisionCountKey);
+
+    // Set the default division count if there is not one specified in the
+    // database.
+    if(count == null)
+    {
+      count = "2";
+    }
+
+    // Set the division count.
+    m_divisionCount = Integer.parseInt(count);
+  }
+
+  /**
+   * Sets the division count.
+   *
+   * @param count The division count.
+   */
+  public void
+  divisionCountSet(int count)
+  {
+    // Save the division count.
+    m_divisionCount = count;
+
+    // Set or add the configuration value.
+    m_database.configValueSet(m_divisionCountKey, Integer.toString(count));
+  }
+
+  /**
+   * Gets the currently selected division enable state.
+   *
+   * @return The currently selected division enable state.
+   */
+  public boolean
+  divisionEnableGet()
+  {
+    // Return the division enable.
+    return(m_divisionEnable);
+  }
+
+  /**
+   * Initializes the division enable state.
+   */
+  void
+  divisionEnableInit()
+  {
+    String enable;
+
+    // Get the division enable state from the database.
+    enable = m_database.configValueGet(m_divisionEnableKey);
+
+    // Set the default division enable state if there is not one specified in
+    // the database.
+    if(enable == null)
+    {
+      enable = "0";
+    }
+
+    // Set the division enable state.
+    m_divisionEnable = enable.equals("0") ? false : true;
+
+    // Update the SSI for division support.
+    m_webserver.registerSSI("support_divisions",
+                            m_divisionEnable ? " have_divisions" : "");
+  }
+
+  /**
+   * Sets the division enable state.
+   *
+   * @param enable The division enable state.
+   */
+  public void
+  divisionEnableSet(boolean enable)
+  {
+    // Save the division enable state.
+    m_divisionEnable = enable;
+
+    // Set or add the configuration value.
+    m_database.configValueSet(m_divisionEnableKey, enable ? "1" : "0");
+
+    // Update the SSI for division support.
+    m_webserver.registerSSI("support_divisions",
+                            m_divisionEnable ? " have_divisions" : "");
+  }
+
+  /**
+   * Gets the name of a division.
+   *
+   * @param division The division to get.
+   *
+   * @return The name of the division.
+   */
+  public String
+  divisionNameGet(int division)
+  {
+    // Get the division name from the database.
+    var name = m_database.configValueGet(m_divisionNameKeyPrefix + division);
+
+    // If the division name is not present in the database, use the default
+    // name.
+    if(name == null)
+    {
+      name = m_webserver.getSSI("str_config_division_name" + division +
+                                "_default");
+    }
+
+    // Return the division name.
+    return(name);
+  }
+
+  /**
+   * Sets the name of a division.
+   *
+   * @param division The division to set.
+   *
+   * @param name The name for the division.
+   */
+  public void
+  divisionNameSet(int division, String name)
+  {
+    // Save the division name in the database.
+    m_database.configValueSet(m_divisionNameKeyPrefix + division, name);
+
+    // Update the SSI for the division name.
+    m_webserver.registerSSI("division" + division + "_name", name);
+  }
+
+  /**
    * Gets the currently selected error color.
    *
    * @return The currently selected error color.
@@ -215,110 +452,6 @@ public class Config
 
     // Update the SSI for the error color.
     m_webserver.registerSSI("error-color", error_color);
-  }
-
-  /**
-   * Gets the currently selected timer enable state.
-   *
-   * @return The currently selected timer enable state.
-   */
-  public boolean
-  timerEnableGet()
-  {
-    String enable;
-
-    // Get the timer enable state from the database.
-    enable = m_database.configValueGet(m_timerEnableKey);
-
-    // Set the default timer enable state if there is not one specified in the
-    // database.
-    if(enable == null)
-    {
-      enable = "0";
-    }
-
-    // Return the timer enable state.
-    return(enable.equals("0") ? false : true);
-  }
-
-  /**
-   * Sets the timer enable state.
-   *
-   * @param enable The timer enable state.
-   */
-  public void
-  timerEnableSet(boolean enable)
-  {
-    // Set or add the configuration value.
-    m_database.configValueSet(m_timerEnableKey, enable ? "1" : "0");
-
-    // Update the SSI for the timer enable.
-    m_webserver.registerSSI("timer-enable", enable ? "1" : "0");
-
-    // Get an instance pointer to the Timer object if it does not yet exist.
-    if(m_timer == null)
-    {
-      m_timer = Timer.getInstance();
-    }
-
-    // If the Timer object exists, inform it of the new timer display enable
-    // state.
-    if(m_timer != null)
-    {
-      m_timer.displayEnable(enable);
-    }
-  }
-
-  /**
-   * Gets the currently selected timer location.
-   *
-   * @return The currently selected timer location.
-   */
-  public String
-  timerLocationGet()
-  {
-    String location;
-
-    // Get the timer location from the database.
-    location = m_database.configValueGet(m_timerLocationKey);
-
-    // Set the default timer location if there is not one specified in the
-    // database.
-    if(location == null)
-    {
-      location = "top";
-    }
-
-    // Return the timer location.
-    return(location);
-  }
-
-  /**
-   * Sets the timer location.
-   *
-   * @param location The timer location.
-   */
-  public void
-  timerLocationSet(String location)
-  {
-    // Set or add the configuration value.
-    m_database.configValueSet(m_timerLocationKey, location);
-
-    // Update the SSI for the timer location.
-    m_webserver.registerSSI("timer-location", location);
-
-    // Get an instance pointer to the Timer object if it does not yet exist.
-    if(m_timer == null)
-    {
-      m_timer = Timer.getInstance();
-    }
-
-    // If the Timer object exists, inform it of the new timer display enable
-    // state.
-    if(m_timer != null)
-    {
-      m_timer.displayLocation(location);
-    }
   }
 
   /**
@@ -513,6 +646,110 @@ public class Config
   }
 
   /**
+   * Gets the currently selected timer enable state.
+   *
+   * @return The currently selected timer enable state.
+   */
+  public boolean
+  timerEnableGet()
+  {
+    String enable;
+
+    // Get the timer enable state from the database.
+    enable = m_database.configValueGet(m_timerEnableKey);
+
+    // Set the default timer enable state if there is not one specified in the
+    // database.
+    if(enable == null)
+    {
+      enable = "0";
+    }
+
+    // Return the timer enable state.
+    return(enable.equals("0") ? false : true);
+  }
+
+  /**
+   * Sets the timer enable state.
+   *
+   * @param enable The timer enable state.
+   */
+  public void
+  timerEnableSet(boolean enable)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_timerEnableKey, enable ? "1" : "0");
+
+    // Update the SSI for the timer enable.
+    m_webserver.registerSSI("timer-enable", enable ? "1" : "0");
+
+    // Get an instance pointer to the Timer object if it does not yet exist.
+    if(m_timer == null)
+    {
+      m_timer = Timer.getInstance();
+    }
+
+    // If the Timer object exists, inform it of the new timer display enable
+    // state.
+    if(m_timer != null)
+    {
+      m_timer.displayEnable(enable);
+    }
+  }
+
+  /**
+   * Gets the currently selected timer location.
+   *
+   * @return The currently selected timer location.
+   */
+  public String
+  timerLocationGet()
+  {
+    String location;
+
+    // Get the timer location from the database.
+    location = m_database.configValueGet(m_timerLocationKey);
+
+    // Set the default timer location if there is not one specified in the
+    // database.
+    if(location == null)
+    {
+      location = "top";
+    }
+
+    // Return the timer location.
+    return(location);
+  }
+
+  /**
+   * Sets the timer location.
+   *
+   * @param location The timer location.
+   */
+  public void
+  timerLocationSet(String location)
+  {
+    // Set or add the configuration value.
+    m_database.configValueSet(m_timerLocationKey, location);
+
+    // Update the SSI for the timer location.
+    m_webserver.registerSSI("timer-location", location);
+
+    // Get an instance pointer to the Timer object if it does not yet exist.
+    if(m_timer == null)
+    {
+      m_timer = Timer.getInstance();
+    }
+
+    // If the Timer object exists, inform it of the new timer display enable
+    // state.
+    if(m_timer != null)
+    {
+      m_timer.displayLocation(location);
+    }
+  }
+
+  /**
    * Gets the WiFi password value.
    *
   * @return The password of the WiFi network.
@@ -590,11 +827,21 @@ public class Config
     {
       // Return the configuration values.
       result.set("accent", accentColorGet());
+      result.set("division_count", divisionCountGet());
+      result.set("division_enable", divisionEnableGet());
+      result.set("division1_color", divisionColorGet(1));
+      result.set("division1_name", divisionNameGet(1));
+      result.set("division2_color", divisionColorGet(2));
+      result.set("division2_name", divisionNameGet(2));
+      result.set("division3_color", divisionColorGet(3));
+      result.set("division3_name", divisionNameGet(3));
+      result.set("division4_color", divisionColorGet(4));
+      result.set("division4_name", divisionNameGet(4));
       result.set("error", errorColorGet());
       result.set("timer_enable", timerEnableGet());
       result.set("timer_location", timerLocationGet());
-      result.set("wifi_ssid", wifiSSIDGet());
       result.set("wifi_password", wifiPasswordGet());
+      result.set("wifi_ssid", wifiSSIDGet());
 
       // This request was successful.
       result.set("result", "ok");
@@ -611,6 +858,108 @@ public class Config
       {
         accentColorSet(paramMap.get("accent"));
         result.set("result", "ok");
+      }
+
+      // Save the division count if it was provided.
+      if(paramMap.containsKey("division_count"))
+      {
+        divisionCountSet(Integer.parseInt(paramMap.get("division_count")));
+        result.set("result", "ok");
+      }
+
+      // Save the division enable if it was provided.
+      if(paramMap.containsKey("division_enable"))
+      {
+        divisionEnableSet(paramMap.get("division_enable").equals("1"));
+        result.set("result", "ok");
+      }
+
+      // Save the division 1 color if it was provided.
+      if(paramMap.containsKey("division1_color"))
+      {
+        divisionColorSet(1, paramMap.get("division1_color"));
+        result.set("result", "ok");
+      }
+
+      // Save the division 1 name if it was provided.
+      if(paramMap.containsKey("division1_name"))
+      {
+        try
+        {
+          divisionNameSet(1, URLDecoder.decode(paramMap.get("division1_name"),
+                                               "UTF-8"));
+          result.set("result", "ok");
+        }
+        catch (Exception e)
+        {
+          result.set("result", "error");
+        }
+      }
+
+      // Save the division 2 color if it was provided.
+      if(paramMap.containsKey("division2_color"))
+      {
+        divisionColorSet(2, paramMap.get("division2_color"));
+        result.set("result", "ok");
+      }
+
+      // Save the division 2 name if it was provided.
+      if(paramMap.containsKey("division2_name"))
+      {
+        try
+        {
+          divisionNameSet(2, URLDecoder.decode(paramMap.get("division2_name"),
+                                               "UTF-8"));
+          result.set("result", "ok");
+        }
+        catch (Exception e)
+        {
+          result.set("result", "error");
+        }
+      }
+
+      // Save the division 3 color if it was provided.
+      if(paramMap.containsKey("division3_color"))
+      {
+        divisionColorSet(3, paramMap.get("division3_color"));
+        result.set("result", "ok");
+      }
+
+      // Save the division 3 name if it was provided.
+      if(paramMap.containsKey("division3_name"))
+      {
+        try
+        {
+          divisionNameSet(3, URLDecoder.decode(paramMap.get("division3_name"),
+                                               "UTF-8"));
+          result.set("result", "ok");
+        }
+        catch (Exception e)
+        {
+          result.set("result", "error");
+        }
+      }
+
+      // Save the division 4 color if it was provided.
+      if(paramMap.containsKey("division4_color"))
+      {
+        divisionColorSet(4, paramMap.get("division4_color"));
+        result.set("result", "ok");
+      }
+
+      // Save the division 4 name if it was provided.
+      if(paramMap.containsKey("division4_name"))
+      {
+        try
+        {
+          divisionNameSet(4, URLDecoder.decode(paramMap.get("division4_name"),
+                                               "UTF-8"));
+          result.set("result", "ok");
+        }
+        catch (Exception e)
+        {
+          result.set("result", "error");
+        }
       }
 
       // Save the error color if it was provided.
@@ -634,18 +983,33 @@ public class Config
         result.set("result", "ok");
       }
 
-      // Save the WiFi SSID if it was provided.
-      if(paramMap.containsKey("wifi_ssid"))
-      {
-        wifiSSIDSet(paramMap.get("wifi_ssid"));
-        result.set("result", "ok");
-      }
-
       // Save the WiFi password if it was provided.
       if(paramMap.containsKey("wifi_password"))
       {
-        wifiPasswordSet(paramMap.get("wifi_password"));
-        result.set("result", "ok");
+        try
+        {
+          wifiPasswordSet(URLDecoder.decode(paramMap.get("wifi_password"),
+                                            "UTF-8"));
+          result.set("result", "ok");
+        }
+        catch (Exception e)
+        {
+          result.set("result", "error");
+        }
+      }
+
+      // Save the WiFi SSID if it was provided.
+      if(paramMap.containsKey("wifi_ssid"))
+      {
+        try
+        {
+          wifiSSIDSet(URLDecoder.decode(paramMap.get("wifi_ssid"), "UTF-8"));
+          result.set("result", "ok");
+        }
+        catch (Exception e)
+        {
+          result.set("result", "error");
+        }
       }
     }
     else
@@ -678,7 +1042,7 @@ public class Config
 
     // Get the stored value, if any, of the event.
     m_event = m_database.configValueGet(m_eventKey);
-
+ 
     // Get the stored value of the locale.  If one does not exist, use the
     // default system locale.
     m_locale = m_database.configValueGet(m_localeKey);
@@ -689,7 +1053,7 @@ public class Config
 
     // Get the stored value, if any, of the season.
     m_season = m_database.configValueGet(m_seasonKey);
-  }
+ }
 
   /**
    * Finishes the setup for the configuration settings.  This should be called
@@ -701,8 +1065,16 @@ public class Config
     // Get a reference to the web server.
     m_webserver = WebServer.getInstance();
 
+    // Get the stored value, if any, of the division count and enable.
+    divisionCountInit();
+    divisionEnableInit();
+
     // Set the accent and error colors as a Server Side Includes.
     m_webserver.registerSSI("accent-color", accentColorGet());
+    m_webserver.registerSSI("division1_name", divisionNameGet(1));
+    m_webserver.registerSSI("division2_name", divisionNameGet(2));
+    m_webserver.registerSSI("division3_name", divisionNameGet(3));
+    m_webserver.registerSSI("division4_name", divisionNameGet(4));
     m_webserver.registerSSI("error-color", errorColorGet());
     m_webserver.registerSSI("timer-enable", timerEnableGet() ? "1" : "0");
     m_webserver.registerSSI("timer-location", timerLocationGet());

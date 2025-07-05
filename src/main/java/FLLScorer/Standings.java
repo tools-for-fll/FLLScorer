@@ -543,7 +543,7 @@ public class Standings
     ArrayList<Integer> place = new ArrayList<Integer>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id, -1, ids, numbers, names);
+    m_database.teamEnumerate(season_id, -1, ids, numbers, names, null);
 
     // Give each team a "no event score" indicator for the two events, which
     // will be replace by an event score when one is found.
@@ -561,7 +561,7 @@ public class Standings
       ArrayList<Integer> eventTeams = new ArrayList<Integer>();
       ArrayList<Integer> eventNumbers = new ArrayList<Integer>();
       m_database.teamEnumerate(season_id, events.get(idx), eventTeams,
-                               eventNumbers, null);
+                               eventNumbers, null, null);
 
       // Get the robot ranking for this event.
       ArrayList<Integer> robotRanks = new ArrayList<Integer>();

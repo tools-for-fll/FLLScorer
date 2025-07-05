@@ -66,6 +66,7 @@ str_menu_teams:Teams
 str_menu_users:Users
 
 // Strings for the status bar
+str_status_divisions:Divisions
 str_status_event:Event
 str_status_season:Season
 str_status_teams:Teams
@@ -95,6 +96,17 @@ str_links_wifi:WiFi
 // Strings for the configuration page
 str_config_accent_color:Accent Color
 str_config_appearance:Appearance
+str_config_division_count:Division count
+str_config_division_enable:Support divisions?
+str_config_division_name1:Name 1
+str_config_division_name1_default:Division 1
+str_config_division_name2:Name 2
+str_config_division_name2_default:Division 2
+str_config_division_name3:Name 3
+str_config_division_name3_default:Division 3
+str_config_division_name4:Name 4
+str_config_division_name4_default:Division 4
+str_config_divisions_section:Divisions
 str_config_error_color:Error Color
 str_config_load_failed:Failed to fetch the configuration!
 str_config_scoreboard_section:Scoreboard
@@ -200,6 +212,7 @@ str_teams_invalid_number:The number of the team is not valid!
 str_teams_load_failed:Failed to fetch the team list!
 str_teams_list_actions:Actions
 str_teams_list_at_event:At Event
+str_teams_list_division:Division
 str_teams_list_name:Name
 str_teams_list_number:Team #
 str_teams_none:None

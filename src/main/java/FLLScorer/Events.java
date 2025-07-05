@@ -162,8 +162,8 @@ public class Events
   {
     int season_id = m_season.seasonIdGet();
 
-    // See if there is already an event with the given date and number.
-    if(m_database.eventGetId(season_id, date, matches, name) >= 0)
+    // See if there is already an event with the given date and name.
+    if(m_database.eventGetId(season_id, date, name) >= 0)
     {
       // Return an error since the event already exists.
       result.set("result", m_webserver.getSSI("str_events_already_exists"));
@@ -343,7 +343,6 @@ public class Events
         add(result, paramMap.get("date"),
             Integer.parseInt(paramMap.get("matches")),
             URLDecoder.decode(paramMap.get("name"), StandardCharsets.UTF_8));
-
       }
 
       // See if the action is "delete", for deleting an event.
@@ -457,8 +456,8 @@ public class Events
     m_config = Config.getInstance();
     m_season = Seasons.getInstance();
 
-   // Register the dynamic handler for the events.json file.
-   m_webserver.registerDynamicFile("/admin/events/events.json",
-                                   this::serveEvents);
+    // Register the dynamic handler for the events.json file.
+    m_webserver.registerDynamicFile("/admin/events/events.json",
+                                    this::serveEvents);
   }
 }

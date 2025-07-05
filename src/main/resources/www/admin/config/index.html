@@ -19,14 +19,14 @@
         </td>
         <td>
           <div class="colors">
-            <button id="btn_accent_red"></button>
-            <button id="btn_accent_orange"></button>
-            <button id="btn_accent_yellow"></button>
-            <button id="btn_accent_green"></button>
-            <button id="btn_accent_cyan"></button>
-            <button id="btn_accent_blue"></button>
-            <button id="btn_accent_violet"></button>
-            <button id="btn_accent_magenta"></button>
+            <button id="btn_accent_red" class="color_red"></button>
+            <button id="btn_accent_orange" class="color_orange"></button>
+            <button id="btn_accent_yellow" class="color_yellow"></button>
+            <button id="btn_accent_green" class="color_green"></button>
+            <button id="btn_accent_cyan" class="color_cyan"></button>
+            <button id="btn_accent_blue" class="color_blue"></button>
+            <button id="btn_accent_violet" class="color_violet"></button>
+            <button id="btn_accent_magenta" class="color_magenta"></button>
           </div>
         </td>
       </tr>
@@ -36,14 +36,116 @@
         </td>
         <td>
           <div class="colors">
-            <button id="btn_error_red"></button>
-            <button id="btn_error_orange"></button>
-            <button id="btn_error_yellow"></button>
-            <button id="btn_error_green"></button>
-            <button id="btn_error_cyan"></button>
-            <button id="btn_error_blue"></button>
-            <button id="btn_error_violet"></button>
-            <button id="btn_error_magenta"></button>
+            <button id="btn_error_red" class="color_red"></button>
+            <button id="btn_error_orange" class="color_orange"></button>
+            <button id="btn_error_yellow" class="color_yellow"></button>
+            <button id="btn_error_green" class="color_green"></button>
+            <button id="btn_error_cyan" class="color_cyan"></button>
+            <button id="btn_error_blue" class="color_blue"></button>
+            <button id="btn_error_violet" class="color_violet"></button>
+            <button id="btn_error_magenta" class="color_magenta"></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <div class="section">
+    <span class="fa fa-fw fa-chevron-down" tabindex="0"></span>
+    <span><!--#str_config_divisions_section--></span>
+  </div>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <span><!--#str_config_division_enable--></span>
+        </td>
+        <td class="flex">
+          <span id="btn_divisions" class="fa-stack fa-lg" tabindex="0">
+            <span class="fa fa-check fa-stack-1x" style="display: none"></span>
+            <span class="fa fa-square-o fa-stack-2x"></span>
+          </span>
+        </td>
+      </tr>
+      <tr id="row_division_count" style="display: none">
+        <td>
+          <span><!--#str_config_division_count--></span>
+        </td>
+        <td class="flex">
+          <button id="btn_divisions_2">2</button>
+          <button id="btn_divisions_3">3</button>
+          <button id="btn_divisions_4">4</button>
+        </td>
+      </tr>
+      <tr id="row_division_name1" style="display: none">
+        <td>
+          <span><!--#str_config_division_name1--></span>
+        </td>
+        <td class="flex">
+          <input id="divname1" type="text">
+          <div class="colors">
+            <button id="btn_divcolor1_red" class="color_red"></button>
+            <button id="btn_divcolor1_orange" class="color_orange"></button>
+            <button id="btn_divcolor1_yellow" class="color_yellow"></button>
+            <button id="btn_divcolor1_green" class="color_green"></button>
+            <button id="btn_divcolor1_cyan" class="color_cyan"></button>
+            <button id="btn_divcolor1_blue" class="color_blue"></button>
+            <button id="btn_divcolor1_violet" class="color_violet"></button>
+            <button id="btn_divcolor1_magenta" class="color_magenta"></button>
+          </div>
+        </td>
+      </tr>
+      <tr id="row_division_name2" style="display: none">
+        <td>
+          <span><!--#str_config_division_name2--></span>
+        </td>
+        <td class="flex">
+          <input id="divname2" type="text">
+          <div class="colors">
+            <button id="btn_divcolor2_red" class="color_red"></button>
+            <button id="btn_divcolor2_orange" class="color_orange"></button>
+            <button id="btn_divcolor2_yellow" class="color_yellow"></button>
+            <button id="btn_divcolor2_green" class="color_green"></button>
+            <button id="btn_divcolor2_cyan" class="color_cyan"></button>
+            <button id="btn_divcolor2_blue" class="color_blue"></button>
+            <button id="btn_divcolor2_violet" class="color_violet"></button>
+            <button id="btn_divcolor2_magenta" class="color_magenta"></button>
+          </div>
+        </td>
+      </tr>
+      <tr id="row_divname3" style="display: none">
+        <td>
+          <span><!--#str_config_division_name3--></span>
+        </td>
+        <td class="flex">
+          <input id="division3_name" type="text">
+          <div class="colors">
+            <button id="btn_divcolor3_red" class="color_red"></button>
+            <button id="btn_divcolor3_orange" class="color_orange"></button>
+            <button id="btn_divcolor3_yellow" class="color_yellow"></button>
+            <button id="btn_divcolor3_green" class="color_green"></button>
+            <button id="btn_divcolor3_cyan" class="color_cyan"></button>
+            <button id="btn_divcolor3_blue" class="color_blue"></button>
+            <button id="btn_divcolor3_violet" class="color_violet"></button>
+            <button id="btn_divcolor3_magenta" class="color_magenta"></button>
+          </div>
+        </td>
+      </tr>
+      <tr id="row_division_name4" style="display: none">
+        <td>
+          <span><!--#str_config_division_name4--></span>
+        </td>
+        <td class="flex">
+          <input id="divname4" type="text">
+          <div class="colors">
+            <button id="btn_divcolor4_red" class="color_red"></button>
+            <button id="btn_divcolor4_orange" class="color_orange"></button>
+            <button id="btn_divcolor4_yellow" class="color_yellow"></button>
+            <button id="btn_divcolor4_green" class="color_green"></button>
+            <button id="btn_divcolor4_cyan" class="color_cyan"></button>
+            <button id="btn_divcolor4_blue" class="color_blue"></button>
+            <button id="btn_divcolor4_violet" class="color_violet"></button>
+            <button id="btn_divcolor4_magenta" class="color_magenta"></button>
           </div>
         </td>
       </tr>
@@ -72,20 +174,8 @@
           <span><!--#str_config_scoreboard_timer_location--></span>
         </td>
         <td class="flex">
-          <span id="btn_timer_top" class="fa-stack fa-lg" tabindex="0">
-            <span class="fa fa-check fa-stack-1x" style="display: none"></span>
-            <span class="fa fa-circle-o fa-stack-2x"></span>
-          </span>
-          <span id="label_timer_top">
-            <!--#str_config_scoreboard_timer_top-->
-          </span>
-          <span id="btn_timer_center" class="fa-stack fa-lg" tabindex="0">
-            <span class="fa fa-check fa-stack-1x" style="display: none"></span>
-            <span class="fa fa-circle-o fa-stack-2x"></span>
-          </span>
-          <span id="label_timer_center">
-            <!--#str_config_scoreboard_timer_center-->
-          </span>
+          <button id="btn_timer_top"><!--#str_config_scoreboard_timer_top--></button>
+          <button id="btn_timer_center"><!--#str_config_scoreboard_timer_center--></button>
         </td>
       </tr>
     </tbody>

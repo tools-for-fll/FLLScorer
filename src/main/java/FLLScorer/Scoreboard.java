@@ -156,7 +156,8 @@ public class Scoreboard
     ArrayList<Float> a_match4 = new ArrayList<Float>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id, event_id, a_ids, a_numbers, a_names);
+    m_database.teamEnumerate(season_id, event_id, a_ids, a_numbers, a_names,
+                             null);
 
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < a_numbers.size(); idx++)

@@ -193,96 +193,106 @@ public class Database
   }
 
   /**
-   * Creates the tables in the database.
+   * Creates version 1 of the database schema.
    *
-   * @return <b>true</b> if the tables are created successfully.
+   * @return <b>true</b> if the database schema is created successfully.
    */
   private boolean
-  createTables()
+  createTablesV1()
   {
     // The SQL commands to create the tables.
-    String config = "create table if not exists config " +
-                    "( " +
-                    "  key char, " +
-                    "  value char " +
-                    ")";
-    String season = "create table if not exists season " +
-                    "( " +
-                    "  id integer primary key, " +
-                    "  year char, " +
-                    "  name char " +
-                    ")";
-    String event = "create table if not exists event " +
-                    "( " +
-                    "  id integer primary key, " +
-                    "  season_id integer, " +
-                    "  date char, " +
-                    "  matches integer, " +
-                    "  name char " +
-                    ")";
-    String team = "create table if not exists team " +
-                  "( " +
-                  "  id integer primary key, " +
-                  "  season_id integer, " +
-                  "  number integer, " +
-                  "  name char " +
-                  ")";
-    String teamAtEvent = "create table if not exists teamAtEvent " +
-                         "( " +
-                         "  season_id integer, " +
-                         "  event_id integer, " +
-                         "  team_id integer " +
-                         ")";
-    String score = "create table if not exists score " +
-                   "( " +
-                   "  id integer primary key, " +
-                   "  season_id integer, " +
-                   "  event_id integer, " +
-                   "  team_id integer, " +
-                   "  match1 float, " +
-                   "  match1_cv integer, " +
-                   "  match1_sheet char, " +
-                   "  match2 float, " +
-                   "  match2_cv integer, " +
-                   "  match2_sheet char, " +
-                   "  match3 float, " +
-                   "  match3_cv integer, " +
-                   "  match3_sheet char, " +
-                   "  match4 float, " +
-                   "  match4_cv integer, " +
-                   "  match4_sheet char " +
-                   ")";
-    String judging = "create table if not exists judging " +
-                     "( " +
-                     "  id integer primary key, " +
-                     "  season_id integer, " +
-                     "  event_id integer, " +
-                     "  team_id integer, " +
-                     "  project integer, " +
-                     "  robot_design integer, " +
-                     "  core_values integer, " +
-                     "  rubric char " +
-                     ")";
-    String user = "create table if not exists user " +
-                  "( " +
-                  "  id integer primary key, " +
-                  "  name char, " +
-                  "  password char, " +
-                  "  admin integer, " +
-                  "  host integer, " +
-                  "  judge integer, " +
-                  "  referee integer, " +
-                  "  timekeeper integer " +
-                  ")";
-    String admin_check = "select " +
-                         "  id " +
-                         "from " +
-                         "  user " +
-                         "where " +
-                         "  name = 'admin'";
+    String config = """
+      create table config
+      (
+        key char,
+        value char
+      )
+      """;
+    String season = """
+      create table season
+      (
+        id integer primary key,
+        year char,
+        name char
+      )
+      """;
+    String event = """
+      create table event
+      (
+        id integer primary key,
+        season_id integer,
+        date char,
+        matches integer,
+        name char
+      )
+      """;
+    String team = """
+      create table team
+      (
+        id integer primary key,
+        season_id integer,
+        number integer,
+        name char
+      )
+      """;
+    String teamAtEvent = """
+      create table teamAtEvent
+      (
+        season_id integer,
+        event_id integer,
+        team_id integer
+      )
+      """;
+    String score = """
+      create table score
+      (
+        id integer primary key,
+        season_id integer,
+        event_id integer,
+        team_id integer,
+        match1 float,
+        match1_cv integer,
+        match1_sheet char,
+        match2 float,
+        match2_cv integer,
+        match2_sheet char,
+        match3 float,
+        match3_cv integer,
+        match3_sheet char,
+        match4 float,
+        match4_cv integer,
+        match4_sheet char
+      )
+      """;
+    String judging = """
+      create table judging
+      (
+        id integer primary key,
+        season_id integer,
+        event_id integer,
+        team_id integer,
+        project integer,
+        robot_design integer,
+        core_values integer,
+        rubric char
+      )
+      """;
+    String user = """
+      create table user
+      (
+        id integer primary key,
+        name char,
+        password char,
+        admin integer,
+        host integer,
+        judge integer,
+        referee integer,
+        timekeeper integer
+      )
+      """;
 
-    // Attempt to create the tables, catching (and ignoring) any errors that
-    // may occur.
+    // Attempt to create the database schema, catching (and ignoring) any
+    // errors that may occur.
     try
     {
       // Create a SQL statement.
@@ -311,6 +321,117 @@ public class Database
 
       // Execute the SQL statement to create the user table.
       executeUpdate(stmt, user);
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Updates version 1 of the database schema to version 2.
+   *
+   * @return <b>true</b> if the database schema is updated successfully.
+   */
+  private boolean
+  createTablesV2()
+  {
+    // The SQL commands to create/update the tables.
+    String teamDivisionAdd = """
+      alter table
+        team
+      add column
+        division integer
+      """;
+    String teamUpdate = """
+      update
+        team
+      set
+        division = 1
+      where
+        division is null
+      """;
+
+    // Attempt to update the database schema, catching (and ignoring) any
+    // errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // Update the team table.
+      executeUpdate(stmt, teamDivisionAdd);
+      executeUpdate(stmt, teamUpdate);
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+      return(false);
+    }
+
+    // Indicate that the database is at schema 2.
+    configValueSet("schema", "2");
+
+    // Success.
+    return(true);
+  }
+
+  /**
+   * Creates the tables in the database.
+   *
+   * @return <b>true</b> if the tables are created successfully.
+   */
+  private boolean
+  createTables()
+  {
+    // The SQL commands to check the database schema.
+    String configV1 = """
+      select
+        *
+      from
+        config
+      """;
+    String admin_check = """
+      select
+        id
+      from
+        user
+      where
+        name = 'admin'
+      """;
+
+    // Attempt to create the tables, catching (and ignoring) any errors that
+    // may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // Create the V1 database schema if it does not exist.
+      try
+      {
+        executeQuery(stmt, configV1);
+      }
+      catch (Exception e)
+      {
+        createTablesV1();
+      }
+
+      // Update the database to the V2 schema if necessary.
+      if(configValueGet("schema") == null)
+      {
+        createTablesV2();
+      }
 
       // Execute the SQL statement to check for the admin user.
       ResultSet result = executeQuery(stmt, admin_check);
@@ -636,8 +757,7 @@ public class Database
       // The SQL commands to check for and insert an event.
       String sql1 = "select id from event where season_id = " + season_id +
                     " and date = " + stmt.enquoteLiteral(date) +
-                    " and matches = " + matches + " and name = " +
-                    stmt.enquoteLiteral(name);
+                    " and name = " + stmt.enquoteLiteral(name);
       String sql2 = "insert into event (season_id, date, matches, name) " +
                     "values (" + season_id + ", " + stmt.enquoteLiteral(date) +
                     ", " + matches + ", " + stmt.enquoteLiteral(name) + ")";
@@ -853,14 +973,12 @@ public class Database
    *
    * @param date The date of the event.
    *
-   * @param matches The number of robot game matches at the event.
-   *
    * @param name The name of the event.
    *
    * @return The event ID for the event.
    */
   public int
-  eventGetId(int season_id, String date, int matches, String name)
+  eventGetId(int season_id, String date, String name)
   {
     int id = -1;
 
@@ -873,8 +991,7 @@ public class Database
       // The SQL commands to look up the event.
       String sql = "select id from event where season_id = " + season_id +
                    " and date = " + stmt.enquoteLiteral(date) +
-                   " and matches = " + matches + " and name = " +
-                   stmt.enquoteLiteral(name);
+                   " and name = " + stmt.enquoteLiteral(name);
 
       // Get the ID of the event from the database.
       ResultSet result = executeQuery(stmt, sql);
@@ -1069,10 +1186,12 @@ public class Database
    *
    * @param name The team's name.
    *
+   * @param division The team's division.
+   *
    * @return The team ID for the team.
    */
   public int
-  teamAdd(int season_id, int number, String name)
+  teamAdd(int season_id, int number, String name, int division)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -1084,9 +1203,9 @@ public class Database
       String sql1 = "select id from team where season_id = " + season_id +
                     " and number = " + number + " and name = " +
                     stmt.enquoteLiteral(name);
-      String sql2 = "insert into team (season_id, number, name) values (" +
-                    season_id + ", " + number + ", " +
-                    stmt.enquoteLiteral(name) + ")";
+      String sql2 = "insert into team (season_id, number, name, division) " +
+                    "values (" + season_id + ", " + number + ", " +
+                    stmt.enquoteLiteral(name) + ", " + division + ")";
 
       // See if the team already exists in the database.
       ResultSet result = executeQuery(stmt, sql1);
@@ -1127,10 +1246,12 @@ public class Database
    *
    * @param name The team's name.
    *
+   * @param division The team's division.
+   *
    * @return <b>true</b> if the team is edited successfully.
    */
   public boolean
-  teamEdit(int team_id, int number, String name)
+  teamEdit(int team_id, int number, String name, int division)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -1140,7 +1261,8 @@ public class Database
 
       // The SQL command to edit the team.
       String sql = "update team set number = " + number + ", name = " +
-                   stmt.enquoteLiteral(name) + " where id = " + team_id;
+                   stmt.enquoteLiteral(name) + ", division = " + division +
+                   " where id = " + team_id;
 
       // Edit the team.
       executeUpdate(stmt, sql);
@@ -1174,11 +1296,15 @@ public class Database
    * @param names The array for the names of the teams; can be <b>null</b> if
    *              the names are not required.
    *
+   * @param divisions The array for the divisions of the teams; can be
+   *                  <b>null</b> if the divisions are not required.
+   *
    * @return <b>true</b> if the teams are enumerated successfully.
    */
   public boolean
   teamEnumerate(int season_id, int event_id, ArrayList<Integer> ids,
-                ArrayList<Integer> numbers, ArrayList<String> names)
+                ArrayList<Integer> numbers, ArrayList<String> names,
+                ArrayList<Integer> divisions)
   {
     int idx;
 
@@ -1226,6 +1352,10 @@ public class Database
         if(names != null)
         {
           names.add(idx, result.getString("name"));
+        }
+        if(divisions != null)
+        {
+          divisions.add(idx, result.getInt("division"));
         }
       }
 
@@ -1424,7 +1554,7 @@ public class Database
    *
    * @param team_id The ID of the team.
    *
-   * @return The name of the team.
+   * @return The number of the team.
    */
   public int
   teamNumberGet(int season_id, int team_id)
@@ -1458,6 +1588,49 @@ public class Database
 
     // Return the team number.
     return(number);
+  }
+
+  /**
+   * Gets the division of a team.
+   *
+   * @param season_id The ID of the season.
+   *
+   * @param team_id The ID of the team.
+   *
+   * @return The division of the team.
+   */
+  public int
+  teamDivisionGet(int season_id, int team_id)
+  {
+    int division = -1;
+
+    // Catch (and ignore) any errors that may occur.
+    try
+    {
+      // Create a SQL statement.
+      Statement stmt = m_connection.createStatement();
+
+      // The SQL command to get the name of the team.
+      String sql = "select division from team where season_id = " + season_id +
+                   " and id = " + team_id;
+
+      // Get the name of this team from the database.
+      ResultSet result = executeQuery(stmt, sql);
+      if(result.next())
+      {
+        division = result.getInt("division");
+      }
+
+      // Close the SQL statement.
+      stmt.close();
+    }
+    catch (Exception e)
+    {
+      System.out.println("JDBC error: " + e);
+    }
+
+    // Return the team division.
+    return(division);
   }
 
   /**

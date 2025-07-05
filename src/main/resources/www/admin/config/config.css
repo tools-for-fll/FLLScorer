@@ -19,7 +19,7 @@
 
   .section
   {
-    font-size: 1.5em;
+    font-size: 1.75em;
     margin-bottom: 0.5em;
 
     .fa-chevron-down,
@@ -71,9 +71,7 @@
 
         button
         {
-          font-size: 1.5em;
-          height: 2em;
-          margin: 0 0.25em;
+          border: none;
           width: 2em;
 
           &.selected
@@ -82,50 +80,42 @@
           }
         }
 
-        #btn_accent_red,
-        #btn_error_red
+        .color_red
         {
           background-color: var(--color-red);
         }
 
-        #btn_accent_orange,
-        #btn_error_orange
+        .color_orange
         {
           background-color: var(--color-orange);
         }
 
-        #btn_accent_yellow,
-        #btn_error_yellow
+        .color_yellow
         {
           background-color: var(--color-yellow);
         }
 
-        #btn_accent_green,
-        #btn_error_green
+        .color_green
         {
           background-color: var(--color-green);
         }
 
-        #btn_accent_cyan,
-        #btn_error_cyan
+        .color_cyan
         {
           background-color: var(--color-cyan);
         }
 
-        #btn_accent_blue,
-        #btn_error_blue
+        .color_blue
         {
           background-color: var(--color-blue);
         }
 
-        #btn_accent_violet,
-        #btn_error_violet
+        .color_violet
         {
           background-color: var(--color-violet);
         }
 
-        #btn_accent_magenta,
-        #btn_error_magenta
+        .color_magenta
         {
           background-color: var(--color-magenta);
         }
@@ -142,11 +132,29 @@
         font-size: 1.5em;
       }
 
+      #divname1,
+      #divname2,
+      #divname3,
+      #divname4,
       #wifi_ssid,
       #wifi_password
       {
         font-size: 1.5em;
       }
+    }
+  }
+
+  button
+  {
+    background-color: var(--color-gray3);
+    color: var(--foreground-color);
+    font-size: 1.5em;
+    height: 2em;
+    margin: 0 0.25em;
+
+    &.selected
+    {
+      background-color: var(--accent-color);
     }
   }
 }

@@ -200,7 +200,7 @@ public class Judge
     ArrayList<String> names = new ArrayList<String>();
 
     // Enumerate the teams from the database for this season/event.
-    m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
+    m_database.teamEnumerate(season_id, event_id, ids, numbers, names, null);
 
     // A list of information about team rubrics.
     ArrayList<Integer> ids2 = new ArrayList<Integer>();

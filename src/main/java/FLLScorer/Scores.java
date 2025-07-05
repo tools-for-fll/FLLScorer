@@ -215,7 +215,7 @@ public class Scores
     ArrayList<Float> match4 = new ArrayList<Float>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
+    m_database.teamEnumerate(season_id, event_id, ids, numbers, names, null);
 
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)
@@ -471,6 +471,7 @@ public class Scores
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> divisions = new ArrayList<Integer>();
     ArrayList<Float> high = new ArrayList<Float>();
     ArrayList<Float> match1 = new ArrayList<Float>();
     ArrayList<Integer> cv1 = new ArrayList<Integer>();
@@ -482,7 +483,10 @@ public class Scores
     ArrayList<Integer> cv4 = new ArrayList<Integer>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id, event_id, ids, numbers, names);
+    m_database.teamEnumerate(season_id, event_id, ids, numbers, names,
+                             divisions);
+
+    // TODO Actually use the divisions...
 
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)

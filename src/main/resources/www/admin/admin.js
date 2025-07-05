@@ -100,6 +100,7 @@ function
 updateStatus()
 {
   var seasonName = null;
+  var divisions = null;
   var eventName = null;
   var teamCount = null;
 
@@ -120,16 +121,21 @@ updateStatus()
       teamCount = result["count"];
     }
 
-    // Update the status bar with the season name, event name, and team count.
-    $(".main_container .status").html("<span class=\"label\">" +
-                                      "<!--#str_status_season-->:</span>" +
-                                      "<span>" + seasonName + "</span>" +
-                                      "<span class=\"label\">" +
-                                      "<!--#str_status_event-->:</span>" +
-                                      "<span>" + eventName + "</span>" +
-                                      "<span class=\"label\">" +
-                                      "<!--#str_status_teams-->:</span>" +
-                                      "<span>" + teamCount + "</span>");
+    // Construct the HTML for the status bar.
+    var html = "<span class=\"label\"><!--#str_status_season-->:</span>" +
+               "<span>" + seasonName + "</span>";
+    if(divisions !== null)
+    {
+      html += "<span class=\"label\"><!--#str_status_divisions-->:</span>" +
+              "<span>" + divisions + "</span>";
+    }
+    html += "<span class=\"label\"><!--#str_status_event-->:</span>" +
+            "<span>" + eventName + "</span>" +
+            "<span class=\"label\"><!--#str_status_teams-->:</span>" +
+            "<span>" + teamCount + "</span>"
+
+    // Update the status bar.
+    $(".main_container .status").html(html);
   }
 
   // Called when the fetch of the team count fails.
@@ -184,6 +190,33 @@ updateStatus()
     eventDone("<Unknown>");
   }
 
+  function
+  divisionsDone(result)
+  {
+    // See if the result is a string (therefore redirected from divisionsFail)
+    // or a JSON object from the server.
+    if(typeof(result) != "string")
+    {
+      // Extract the season year and name from the JSON object.
+      if(result["division_enable"] == true)
+      {
+        divisions = result["division_count"];
+      }
+    }
+
+    // Fetch the event name from the server.
+    $.getJSON("/admin/events/events.json")
+      .done(eventDone)
+      .fail(eventFail);
+  }
+
+  function
+  divisionsFail(result)
+  {
+    // Handle this as a completed transaction with division support disabled.
+    divisionsDone("<Unknown>");
+  }
+
   // Called when the fecth of a season name completes.
   function
   seasonDone(result)
@@ -201,10 +234,10 @@ updateStatus()
       seasonName = htmlEncode(result["year"] + " " + result["name"]);
     }
 
-    // Fetch the event name from the server.
-    $.getJSON("/admin/events/events.json")
-      .done(eventDone)
-      .fail(eventFail);
+    // Fetch the divisions from the server.
+    $.getJSON("/admin/config/config.json?action=get")
+      .done(divisionsDone)
+      .fail(divisionsFail);
   }
 
   // Called when the fetch of the season name fails.
