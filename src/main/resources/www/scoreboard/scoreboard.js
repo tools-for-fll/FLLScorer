@@ -16,6 +16,13 @@ const match4Score = "<!--#str_scoreboard_match4-->";
 // The data to display on the scoreboard.
 var data = null;
 
+// The division that is being displayed; is null when divisions are not
+// enabled.
+var division = null;
+
+// The scores that are being displayed.
+var scores = null;
+
 // The timer.
 var timer = null;
 
@@ -44,6 +51,19 @@ loadData()
   {
     // Save the newly retreived data.
     data = newData;
+
+    // See if divisions are enabled, and set the division and scores
+    // appropriately.
+    if(data["divisions"] == null)
+    {
+      division = null;
+      scores = data["scores"];
+    }
+    else
+    {
+      division = 0;
+      scores = data["scores"][0];
+    }
   }
 
   // Called when the scoreboard fetch fails.
@@ -52,6 +72,8 @@ loadData()
   {
     // Since the fetch failed, clear the data since it is stale.
     data = null;
+    division = null;
+    scores = null;
   }
 
   // Called after every scoreboard fetch, regardless of status.
@@ -87,7 +109,26 @@ runTimer()
     // Set the event title.
     if((data != null) && (data["event"] != null))
     {
-      $(".event").html(data["event"]);
+      if(data["divisions"] != null)
+      {
+        var html = "<div class='divisions'>";
+        html += "<span>" + data["event"] + "</span>";
+        html += "<span class='division'>" + data["divisions"][division] +
+                "</span>";
+        html += "</div>";
+        $(".event").html(html);
+        document.documentElement.style.setProperty("--accent-color",
+                                                   "var(" +
+                                                   data["colors"][division] +
+                                                   ")");
+      }
+      else
+      {
+        $(".event").html(data["event"]);
+        document.documentElement.style.setProperty("--accent-color",
+                                                   "var(" + data["color"] +
+                                                   ")");
+      }
     }
     else
     {
@@ -181,32 +222,31 @@ runTimer()
     $(".m4" + i).html("").removeClass("gray");
 
     // See if there is an entry for this position.
-    if((data != null) && (data["scores"] != null) &&
-       (data["scores"][index + i] != null))
+    if((data != null) && (scores != null) && (scores[index + i] != null))
     {
       // Update this row with this entry's information.
-      $(".pl" + i).html(data["scores"][index + i]["place"]);
-      $(".num" + i).html(data["scores"][index + i]["num"]);
-      $(".name" + i).html(data["scores"][index + i]["name"]);
-      if(data["scores"][index + i]["high"] != null)
+      $(".pl" + i).html(scores[index + i]["place"]);
+      $(".num" + i).html(scores[index + i]["num"]);
+      $(".name" + i).html(scores[index + i]["name"]);
+      if(scores[index + i]["high"] != null)
       {
-        $(".high" + i).html(parseInt(data["scores"][index + i]["high"]));
+        $(".high" + i).html(parseInt(scores[index + i]["high"]));
       }
-      if(data["scores"][index + i]["m1"] != null)
+      if(scores[index + i]["m1"] != null)
       {
-        $(".m1" + i).html(parseInt(data["scores"][index + i]["m1"]));
+        $(".m1" + i).html(parseInt(scores[index + i]["m1"]));
       }
-      if(data["scores"][index + i]["m2"] != null)
+      if(scores[index + i]["m2"] != null)
       {
-        $(".m2" + i).html(parseInt(data["scores"][index + i]["m2"]));
+        $(".m2" + i).html(parseInt(scores[index + i]["m2"]));
       }
-      if(data["scores"][index + i]["m3"] != null)
+      if(scores[index + i]["m3"] != null)
       {
-        $(".m3" + i).html(parseInt(data["scores"][index + i]["m3"]));
+        $(".m3" + i).html(parseInt(scores[index + i]["m3"]));
       }
-      if(data["scores"][index + i]["m4"] != null)
+      if(scores[index + i]["m4"] != null)
       {
-        $(".m4" + i).html(parseInt(data["scores"][index + i]["m4"]));
+        $(".m4" + i).html(parseInt(scores[index + i]["m4"]));
       }
 
       // If this is an odd row, set the background to gray.
@@ -227,14 +267,23 @@ runTimer()
   // The next timer iteration should show the next screen, or the first screen
   // if all of the teams have been displayed.
   index += 8;
-  if((data == null) || (data["scores"] == null) ||
-     (data["scores"][index] == null))
+  if((data == null) || (scores == null) || (scores[index] == null))
   {
-    // Go back to the first screen.
-    index = 0;
+    if((data != null) && (division != null) &&
+       (data["divisions"][division + 1] != null))
+    {
+      division++;
+      scores = data["scores"][division];
+      index = 0;
+    }
+    else
+    {
+      // Go back to the first screen.
+      index = 0;
 
-    // Fetch updated scoreboard data from the server.
-    loadData();
+      // Fetch updated scoreboard data from the server.
+      loadData();
+    }
   }
 }
 
