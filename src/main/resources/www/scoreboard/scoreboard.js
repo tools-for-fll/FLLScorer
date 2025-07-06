@@ -29,6 +29,9 @@ var timer = null;
 // The current screen of data to display.
 var index = 0;
 
+// Whether the score display is paused.
+var paused = false;
+
 // The current enable state for the timer display.
 var timer_enable = "<!--#timer-enable-->";
 
@@ -103,6 +106,12 @@ loadData()
 function
 runTimer()
 {
+  // Do nothing if the scoreboard update is paused.
+  if(paused)
+  {
+    return;
+  }
+
   // See if the first screen of scores is about to be displayed.
   if(index == 0)
   {
@@ -494,6 +503,26 @@ onKeydown(e)
     else
     {
       document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+
+  // See if Ctrl-P was pressed.
+  if(((e.key == 'p') || (e.key == 'P')) && (e.ctrlKey == true))
+  {
+    // Toggle the pause state.
+    paused = !paused;
+
+    // Toggle the state of the pause indicator.
+    if(paused)
+    {
+      $(".paused").css("display", "flex");
+    }
+    else
+    {
+      $(".paused").css("display", "none");
     }
 
     // Do not allow this key event to further propagated.

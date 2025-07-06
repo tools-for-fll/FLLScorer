@@ -445,3 +445,28 @@ html, body
 .o73 { grid-area: o73; }
 .o74 { grid-area: o74; }
 .o75 { grid-area: o75; }
+
+.paused
+{
+  animation: color_change 1s infinite alternate;
+  color: var(--color-red);
+  display: none;
+  font-size: 3em;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 1rem;
+}
+
+@keyframes color_change
+{
+  from
+  {
+    color: red;
+  }
+  to
+  {
+    color: blue;
+  }
+}
