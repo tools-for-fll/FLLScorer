@@ -9,6 +9,16 @@ str_button_change:Change
 str_button_delete:Delete
 str_button_ok:OK
 str_connect_error:Could not connect to the server!
+str_match_1s:M1
+str_match_1:Match 1
+str_match_2s:M2
+str_match_2:Match 2
+str_match_3s:M3
+str_match_3:Match 3
+str_match_4s:M4
+str_match_4:Match 4
+str_match_ps:P
+str_match_p:Practice
 str_no:No
 str_title:FLLScorer
 str_yes:Yes
@@ -96,7 +106,7 @@ str_links_wifi:WiFi
 // Strings for the configuration page
 str_config_accent_color:Accent Color
 str_config_appearance:Appearance
-str_config_division_count:Division count
+str_config_division_count:Number of divisions
 str_config_division_enable:Support divisions?
 str_config_division_name1:Name 1
 str_config_division_name1_default:Division 1
@@ -132,14 +142,6 @@ str_referee_discard_conf:Are you sure you want to discard the changes to this sc
 str_referee_error:There is an error in the score sheet!
 str_referee_errors:There are ${count} errors in the score sheet!
 str_referee_heading:Referee : Team List
-str_referee_m1:M1
-str_referee_match1:Match 1
-str_referee_m2:M2
-str_referee_match2:Match 2
-str_referee_m3:M3
-str_referee_match3:Match 3
-str_referee_m4:M4
-str_referee_match4:Match 4
 str_referee_parse_fail:Failed to parse scoresheet selections!
 str_referee_publish:Publish
 str_referee_save:Save
@@ -151,10 +153,6 @@ str_referee_too_many_pieces:There are too many ${piece} in use.
 
 // Strings for the scoreboard page
 str_scoreboard_high:High
-str_scoreboard_match1:Match 1
-str_scoreboard_match2:Match 2
-str_scoreboard_match3:Match 3
-str_scoreboard_match4:Match 4
 str_scoreboard_name:Name
 str_scoreboard_number:Team #
 str_scoreboard_place:Place
@@ -184,16 +182,16 @@ str_events_edit:Edit Event
 str_events_edit_failed:Could not edit the event!
 str_events_invalid_date:The date of the event is not valid!
 str_events_invalid_name:The name of the event is not valid!
-str_events_invalid_matches:The number of matches is not valid!
 str_events_load_failed:Failed to fetch the event list!
 str_events_list_actions:Actions
 str_events_list_date:Date
-str_events_list_four:4
 str_events_list_matches:Matches
+str_events_list_matches_2:2
+str_events_list_matches_3:3
+str_events_list_matches_4:4
+str_events_list_matches_103:3 w/ practice
 str_events_list_name:Name
 str_events_list_select:Select
-str_events_list_three:3
-str_events_list_two:2
 str_events_none:None
 
 // Strings for the teams page
@@ -223,10 +221,6 @@ str_scores_delete_error:Failed to remove the score!
 str_scores_exchange:Exchange Scores
 str_scores_exchange_error:Failed to exchange scores!
 str_scores_load_failed:Failed to fetch the scores list!
-str_scores_match1:Match 1
-str_scores_match2:Match 2
-str_scores_match3:Match 3
-str_scores_match4:Match 4
 str_scores_name:Name
 str_scores_none:None
 str_scores_number:Team #

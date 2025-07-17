@@ -3,16 +3,6 @@
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
-// Strings for the headings.
-const placeHeading = "<!--#str_scoreboard_place-->";
-const teamNumber = "<!--#str_scoreboard_number-->";
-const teamName = "<!--#str_scoreboard_name-->";
-const highestScore = "<!--#str_scoreboard_high-->";
-const match1Score = "<!--#str_scoreboard_match1-->";
-const match2Score = "<!--#str_scoreboard_match2-->";
-const match3Score = "<!--#str_scoreboard_match3-->";
-const match4Score = "<!--#str_scoreboard_match4-->";
-
 // The data to display on the scoreboard.
 var data = null;
 
@@ -57,7 +47,7 @@ loadData()
 
     // See if divisions are enabled, and set the division and scores
     // appropriately.
-    if(data["divisions"] == null)
+    if(data["divisions"] === undefined)
     {
       division = null;
       scores = data["scores"];
@@ -84,7 +74,7 @@ loadData()
   onAlways()
   {
     // See if the timer has been started.
-    if(timer == null)
+    if(timer === null)
     {
       // "Trigger" the timer so that the display is updated immediately.
       runTimer();
@@ -106,6 +96,8 @@ loadData()
 function
 runTimer()
 {
+  let matches;
+
   // Do nothing if the scoreboard update is paused.
   if(paused)
   {
@@ -113,12 +105,12 @@ runTimer()
   }
 
   // See if the first screen of scores is about to be displayed.
-  if(index == 0)
+  if(index === 0)
   {
     // Set the event title.
-    if((data != null) && (data["event"] != null))
+    if((data !== null) && (data["event"] !== null))
     {
-      if(data["divisions"] != null)
+      if(data["divisions"] !== undefined)
       {
         var html = "<div class='divisions'>";
         html += "<span>" + data["event"] + "</span>";
@@ -145,76 +137,17 @@ runTimer()
     }
 
     // Set the number of matches in the scoreboard.
-    if((data != null) && (data["matches"] != null) && (data["matches"] == 4))
+    if((data === null) || (data["matches"] === null))
     {
-      $(".scores").removeClass("container2").removeClass("container3").
-        addClass("container4");
-      $(".m3t").show()
-      $(".m30").show();
-      $(".m31").show();
-      $(".m32").show();
-      $(".m33").show();
-      $(".m34").show();
-      $(".m35").show();
-      $(".m36").show();
-      $(".m37").show();
-      $(".m4t").show();
-      $(".m40").show();
-      $(".m41").show();
-      $(".m42").show();
-      $(".m43").show();
-      $(".m44").show();
-      $(".m45").show();
-      $(".m46").show();
-      $(".m47").show();
-    }
-    else if((data != null) && (data["matches"] != null) &&
-            (data["matches"] == 3))
-    {
-      $(".scores").removeClass("container2").addClass("container3").
-        removeClass("container4");
-      $(".m3t").show()
-      $(".m30").show();
-      $(".m31").show();
-      $(".m32").show();
-      $(".m33").show();
-      $(".m34").show();
-      $(".m35").show();
-      $(".m36").show();
-      $(".m37").show();
-      $(".m4t").hide();
-      $(".m40").hide();
-      $(".m41").hide();
-      $(".m42").hide();
-      $(".m43").hide();
-      $(".m44").hide();
-      $(".m45").hide();
-      $(".m46").hide();
-      $(".m47").hide();
+      matches = 3;
     }
     else
     {
-      $(".scores").addClass("container2").removeClass("container3").
-        removeClass("container4");
-      $(".m3t").hide()
-      $(".m30").hide();
-      $(".m31").hide();
-      $(".m32").hide();
-      $(".m33").hide();
-      $(".m34").hide();
-      $(".m35").hide();
-      $(".m36").hide();
-      $(".m37").hide();
-      $(".m4t").hide();
-      $(".m40").hide();
-      $(".m41").hide();
-      $(".m42").hide();
-      $(".m43").hide();
-      $(".m44").hide();
-      $(".m45").hide();
-      $(".m46").hide();
-      $(".m47").hide();
+      matches = data["matches"];
     }
+    $(".scores").removeClass("matches2").removeClass("matches3").
+      removeClass("matches103").removeClass("matches4").
+      addClass("matches" + matches);
   }
 
   // Loop through the eight possible scores on this screen.
@@ -225,46 +158,53 @@ runTimer()
     $(".num" + i).html("").removeClass("gray");
     $(".name" + i).html("").removeClass("gray");
     $(".high" + i).html("").removeClass("gray");
+    $(".m0" + i).html("").removeClass("gray");
     $(".m1" + i).html("").removeClass("gray");
     $(".m2" + i).html("").removeClass("gray");
     $(".m3" + i).html("").removeClass("gray");
     $(".m4" + i).html("").removeClass("gray");
 
     // See if there is an entry for this position.
-    if((data != null) && (scores != null) && (scores[index + i] != null))
+    if((data !== null) && (scores !== null) &&
+       (scores[index + i] !== undefined))
     {
       // Update this row with this entry's information.
       $(".pl" + i).html(scores[index + i]["place"]);
       $(".num" + i).html(scores[index + i]["num"]);
       $(".name" + i).html(scores[index + i]["name"]);
-      if(scores[index + i]["high"] != null)
+      if(scores[index + i]["high"] !== null)
       {
         $(".high" + i).html(parseInt(scores[index + i]["high"]));
       }
-      if(scores[index + i]["m1"] != null)
+      if(scores[index + i]["m0"] !== null)
+      {
+        $(".m0" + i).html(parseInt(scores[index + i]["m0"]));
+      }
+      if(scores[index + i]["m1"] !== null)
       {
         $(".m1" + i).html(parseInt(scores[index + i]["m1"]));
       }
-      if(scores[index + i]["m2"] != null)
+      if(scores[index + i]["m2"] !== null)
       {
         $(".m2" + i).html(parseInt(scores[index + i]["m2"]));
       }
-      if(scores[index + i]["m3"] != null)
+      if(scores[index + i]["m3"] !== null)
       {
         $(".m3" + i).html(parseInt(scores[index + i]["m3"]));
       }
-      if(scores[index + i]["m4"] != null)
+      if(scores[index + i]["m4"] !== null)
       {
         $(".m4" + i).html(parseInt(scores[index + i]["m4"]));
       }
 
       // If this is an odd row, set the background to gray.
-      if(i & 1)
+      if((i & 1) !== 0)
       {
         $(".pl" + i).addClass("gray");
         $(".num" + i).addClass("gray");
         $(".name" + i).addClass("gray");
         $(".high" + i).addClass("gray");
+        $(".m0" + i).addClass("gray");
         $(".m1" + i).addClass("gray");
         $(".m2" + i).addClass("gray");
         $(".m3" + i).addClass("gray");
@@ -276,10 +216,10 @@ runTimer()
   // The next timer iteration should show the next screen, or the first screen
   // if all of the teams have been displayed.
   index += 8;
-  if((data == null) || (scores == null) || (scores[index] == null))
+  if((data === null) || (scores === null) || (scores[index] === undefined))
   {
-    if((data != null) && (division != null) &&
-       (data["divisions"][division + 1] != null))
+    if((data != null) && (division !== null) &&
+       (data["divisions"][division + 1] !== undefined))
     {
       division++;
       scores = data["scores"][division];
@@ -322,7 +262,7 @@ displayTime(time)
 
   // Delete the timer style sheet if it exists.
   sheet = document.getElementById("timer_css");
-  if(sheet != null)
+  if(sheet !== null)
   {
     sheet.parentNode.removeChild(sheet);
   }
@@ -346,7 +286,7 @@ displayTime(time)
   }
 
   // Set the styles based on the current values of the time digits.
-  if(time == -1)
+  if(time === -1)
   {
     sheet.innerHTML = ".nc {background-color: " + color +
                       ";margin: 0.1vw;border-radius: 1vw;}";
@@ -493,7 +433,7 @@ function
 onKeydown(e)
 {
   // See if Ctrl-F was pressed.
-  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  if(((e.key === 'f') || (e.key === 'F')) && (e.ctrlKey === true))
   {
     // Toggle the full screen state of the window.
     if(!document.fullscreenElement)
@@ -510,7 +450,7 @@ onKeydown(e)
   }
 
   // See if Ctrl-P was pressed.
-  if(((e.key == 'p') || (e.key == 'P')) && (e.ctrlKey == true))
+  if(((e.key === 'p') || (e.key === 'P')) && (e.ctrlKey === true))
   {
     // Toggle the pause state.
     paused = !paused;
@@ -534,16 +474,6 @@ onKeydown(e)
 function
 ready()
 {
-  // Insert the headings for the scoreboard.
-  $(".plt").html(placeHeading);
-  $(".numt").html(teamNumber);
-  $(".namet").html(teamName);
-  $(".hight").html(highestScore);
-  $(".m1t").html(match1Score);
-  $(".m2t").html(match2Score);
-  $(".m3t").html(match3Score);
-  $(".m4t").html(match4Score);
-
   // Add a keydown event listener.
   document.addEventListener("keydown", onKeydown);
 

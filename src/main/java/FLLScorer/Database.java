@@ -344,6 +344,24 @@ public class Database
   createTablesV2()
   {
     // The SQL commands to create/update the tables.
+    String scoreAddMatch0 = """
+      alter table
+        score
+      add column
+        match0 integer
+      """;
+    String scoreAddMatch0CV = """
+      alter table
+        score
+      add column
+        match0_cv integer
+      """;
+    String scoreAddMatch0Sheet = """
+      alter table
+        score
+      add column
+        match0_sheet char
+      """;
     String teamDivisionAdd = """
       alter table
         team
@@ -365,6 +383,11 @@ public class Database
     {
       // Create a SQL statement.
       Statement stmt = m_connection.createStatement();
+
+      // Update the score table.
+      executeQuery(stmt, scoreAddMatch0);
+      executeQuery(stmt, scoreAddMatch0CV);
+      executeQuery(stmt, scoreAddMatch0Sheet);
 
       // Update the team table.
       executeUpdate(stmt, teamDivisionAdd);
@@ -1912,6 +1935,17 @@ public class Database
    * @param teams The array for the IDs of the teams; can be <b>null</b> if the
    *              team IDs are not required.
    *
+   * @param match0 The array for the match 0 scores; can be <b>null</b> if the
+   *               match 0 scores are not required.
+   *
+   * @param match0_cv The array for the match 0 core values scores; can be
+   *                  <b>null</b> if the match 0 core values scores are not
+   *                  required.
+   *
+   * @param match0_sheet The array for the match 0 JSON scoresheets; can be
+   *                     <b>null</b> if the match 0 JSON scoresheets are not
+   *                     required.
+   *
    * @param match1 The array for the match 1 scores; can be <b>null</b> if the
    *               match 1 scores are not required.
    *
@@ -1960,13 +1994,14 @@ public class Database
    */
   public boolean
   scoreEnumerate(int season_id, int event_id, ArrayList<Integer> ids,
-                 ArrayList<Integer> teams, ArrayList<Float> match1,
-                 ArrayList<Integer> match1_cv, ArrayList<String> match1_sheet,
-                 ArrayList<Float> match2, ArrayList<Integer> match2_cv,
-                 ArrayList<String> match2_sheet, ArrayList<Float> match3,
-                 ArrayList<Integer> match3_cv, ArrayList<String> match3_sheet,
-                 ArrayList<Float> match4, ArrayList<Integer> match4_cv,
-                 ArrayList<String> match4_sheet)
+                 ArrayList<Integer> teams, ArrayList<Float> match0,
+                 ArrayList<Integer> match0_cv, ArrayList<String> match0_sheet,
+                 ArrayList<Float> match1, ArrayList<Integer> match1_cv,
+                 ArrayList<String> match1_sheet, ArrayList<Float> match2,
+                 ArrayList<Integer> match2_cv, ArrayList<String> match2_sheet,
+                 ArrayList<Float> match3, ArrayList<Integer> match3_cv,
+                 ArrayList<String> match3_sheet, ArrayList<Float> match4,
+                 ArrayList<Integer> match4_cv, ArrayList<String> match4_sheet)
   {
     // Catch (and ignore) any errors that may occur.
     try
@@ -1993,6 +2028,24 @@ public class Database
         if(teams != null)
         {
           teams.add(result.getInt("team_id"));
+        }
+        if(match0 != null)
+        {
+          Float score = result.getFloat("match0");
+          score = result.wasNull() ? null : score;
+          match0.add(score);
+        }
+        if(match0_cv != null)
+        {
+          Integer score = result.getInt("match0_cv");
+          score = result.wasNull() ? null : score;
+          match0_cv.add(score);
+        }
+        if(match0_sheet != null)
+        {
+          String sheet = result.getString("match0_sheet");
+          sheet = result.wasNull() ? null : sheet;
+          match0_sheet.add(sheet);
         }
         if(match1 != null)
         {

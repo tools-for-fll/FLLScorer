@@ -8,8 +8,6 @@
 function
 eventsEditorHtml(title, date, matches, name)
 {
-  var select2, select3, select4;
-
   // Change the date input to an appropriate HTML input value specifier.
   if(date !== "")
   {
@@ -18,26 +16,6 @@ eventsEditorHtml(title, date, matches, name)
   else
   {
     date = "value=\"" + new Date().toLocaleDateString("en-CA") + "\" ";
-  }
-
-  // Set the selected attributes based on the number of matches.
-  if(matches == "4")
-  {
-    select2 = "";
-    select3 = "";
-    select4 = " selected";
-  }
-  else if(matches == "3")
-  {
-    select2 = "";
-    select3 = " selected";
-    select4 = "";
-  }
-  else
-  {
-    select2 = " selected";
-    select3 = "";
-    select4 = "";
   }
 
   // Change the name input to an appropriate HTML input value specifier.
@@ -66,9 +44,17 @@ eventsEditorHtml(title, date, matches, name)
     </div>
     <div class="input">
       <select id="events-editor-matches">
-        <option value=2${select2}><!--#str_events_list_two--></option>
-        <option value=3${select3}><!--#str_events_list_three--></option>
-        <option value=4${select4}><!--#str_events_list_four--></option>
+  `;
+  for(var idx = 0; idx < matchList.length; idx++)
+  {
+    html += `<option value="${matchList[idx].value}"`;
+    if(matches === matchList[idx].value)
+    {
+      html += ` selected`;
+    }
+    html += `>${matchList[idx].name}</option>`
+  }
+  html += `
       </select>
     </div>
   </div>
@@ -129,7 +115,6 @@ eventsAdd()
 
     // Encode the values for safe transmission to the server.
     var date_enc = encodeURIComponent(date);
-    var matches_enc = encodeURIComponent(matches);
     var name_enc = encodeURIComponent(name);
 
     // Called when the query to the server has completed.
@@ -137,7 +122,7 @@ eventsAdd()
     onDone(result)
     {
       // See if the request was successful.
-      if(result["result"] != "ok")
+      if(result["result"] !== "ok")
       {
         // It was not, so call the failure function.
         onFail(result["result"]);
@@ -159,23 +144,17 @@ eventsAdd()
     {
       // Display an error message.
       showError((typeof(result) === "string") ? result :
-                "<!--#str_connect_error-->", start);
+                "<!--#str_connect_error-->", onStart);
     }
 
     // Fail if the date is invalid.
-    if(date == "")
+    if(date === "")
     {
       onFail("<!--#str_events_invalid_date-->");
     }
 
-    // Fail if the number of matches is invalid.
-    else if((matches != 2) && (matches != 3) && (matches != 4))
-    {
-      onFail("<!--#str_events_invalid_matches-->");
-    }
-
     // Fail if the name is invalid.
-    else if(name == "")
+    else if(name === "")
     {
       onFail("<!--#str_events_invalid_name-->");
     }
@@ -185,7 +164,7 @@ eventsAdd()
     {
       // Send a request to the server to create the event.
       $.getJSON("/admin/events/events.json?action=add&date=" + date_enc +
-                "&matches=" + matches_enc + "&name=" + name_enc)
+                "&matches=" + matches + "&name=" + name_enc)
         .done(onDone)
         .fail(onFail);
     }
@@ -200,7 +179,7 @@ function
 eventsAddKeyUp(event)
 {
   // See if the enter key was pressed.
-  if(event.key == "Enter")
+  if(event.key === "Enter")
   {
     // Translate this into a click.
     $("#events-add").click();
@@ -215,7 +194,7 @@ function
 eventsEdit(id)
 {
   var date = $("#event" + id + "_date").html().trim();
-  var matches = $("#event" + id + "_matches").html().trim();
+  var matches = $("#event" + id + "_matches").data("value");
   var name = $("#event" + id + "_name").html().trim();
 
   // Starts, or restarts, the event edit process.
@@ -245,7 +224,6 @@ eventsEdit(id)
 
     // Encode the values for safe transmission to the server.
     var date_enc = encodeURIComponent(date);
-    var matches_enc = encodeURIComponent(matches);
     var name_enc = encodeURIComponent(name);
 
     // Called when the query to the server has completed.
@@ -253,7 +231,7 @@ eventsEdit(id)
     onDone(result)
     {
       // See if the request was successful.
-      if(result["result"] != "ok")
+      if(result["result"] !== "ok")
       {
         // It was not, so call the failure function.
         onFail(result["result"]);
@@ -275,23 +253,17 @@ eventsEdit(id)
     {
       // Display an error message.
       showError((typeof(result) === "string") ? result :
-                "<!--#str_connect_error-->", start);
+                "<!--#str_connect_error-->", onStart);
     }
 
     // Fail if the date is invalid.
-    if(date == "")
+    if(date === "")
     {
       onFail("<!--#str_events_invalid_date-->");
     }
 
-    // Fail if the number of matches is invalid.
-    else if((matches != 2) && (matches != 3) && (matches != 4))
-    {
-      onFail("<!--#str_events_invalid_matches-->");
-    }
-
     // Fail if the name is invalid.
-    else if(name == "")
+    else if(name === "")
     {
       onFail("<!--#str_events_invalid_name-->");
     }
@@ -301,7 +273,7 @@ eventsEdit(id)
     {
       // Send a request to the server to edit the event.
       $.getJSON("/admin/events/events.json?action=edit&id=" + id + "&date=" +
-                date + "&matches=" + matches + "&name=" + name)
+                date_enc + "&matches=" + matches + "&name=" + name_enc)
         .done(onDone)
         .fail(onFail);
     }
@@ -326,7 +298,7 @@ eventsDelete(id)
     onDone(result)
     {
       // See if the request was successful.
-      if(result["result"] != "ok")
+      if(result["result"] !== "ok")
       {
         // It was not, so call the failure function.
         onFail(result["result"]);
@@ -357,7 +329,7 @@ eventsDelete(id)
   };
 
   // Get the appropriate warning message, based on the presence of scores.
-  if($("#event" + id + "_hasScores").length != 0)
+  if($("#event" + id + "_hasScores").length !== 0)
   {
     warning = "<!--#str_events_delete_score_warning-->";
   }
@@ -381,7 +353,7 @@ eventsSelect(id)
   onDone(result)
   {
     // See if the request was successful.
-    if(result["result"] != "ok")
+    if(result["result"] !== "ok")
     {
       // It was not, so call the failure function.
       onFail(result["result"]);
@@ -429,7 +401,7 @@ eventsLoad()
     var html = "";
 
     // See if there are any events.
-    if(result["events"].length == 0)
+    if(result["events"].length === 0)
     {
       // There are no events, so add an "empty event" to indicate that there
       // are none.
@@ -457,10 +429,19 @@ eventsLoad()
     <div class="row">
       <span id="event${id}_date" class="date">
         ${result["events"][i]["date"]}
-      </span>
-      <span id="event${id}_matches" class="matches">
-        ${result["events"][i]["matches"]}
-      </span>
+      </span>`;
+      for(var idx = 0; idx < matchList.length; idx++)
+      {
+        if(matchList[idx].value === result["events"][i]["matches"])
+        {
+          html += `
+      <span id="event${id}_matches" class="matches" 
+            data-value="${matchList[idx].value}">
+        ${matchList[idx].name}
+      </span>`;
+        }
+      }
+      html += `
       <span id="event${id}_name" class="name">
         ${result["events"][i]["name"]}
       </span>
@@ -501,7 +482,7 @@ eventsLoad()
         $(tag).on("keyup", (event) =>
                            {
                              // See if the enter key was pressed.
-                             if(event.key == "Enter")
+                             if(event.key === "Enter")
                              {
                                // "Convert" the key press to a mouse click.
                                $(tag).click();
@@ -557,7 +538,7 @@ eventsSearch()
         if(index < 3)
         {
           // See if this filter item exists in this cell.
-          if($(this).html().toLowerCase().indexOf(filters[idx]) != -1)
+          if($(this).html().toLowerCase().indexOf(filters[idx]) !== -1)
           {
             // The filter item was found.
             found = true;
@@ -573,7 +554,7 @@ eventsSearch()
     }
 
     // Show this row if all the filter items were found.
-    if(idx == filters.length)
+    if(idx === filters.length)
     {
       row.show();
     }
@@ -585,15 +566,15 @@ function
 eventsKeydown(e)
 {
   // See if Ctrl-A was pressed.
-  if(((e.key == 'a') || (e.key == 'A')) && (e.ctrlKey == true) &&
-     ($("dialog:visible").length == 0))
+  if(((e.key === 'a') || (e.key === 'A')) && (e.ctrlKey === true) &&
+     ($("dialog:visible").length === 0))
   {
     // Add an event.
     eventsAdd();
   }
 
   // See if Ctrl-F was pressed.
-  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  if(((e.key === 'f') || (e.key === 'F')) && (e.ctrlKey === true))
   {
     // Toggle the full screen state of the window.
     if(!document.fullscreenElement)
@@ -610,15 +591,15 @@ eventsKeydown(e)
   }
 
   // See if Ctrl-S was pressed.
-  if(((e.key == 's') || (e.key == 'S')) && (e.ctrlKey == true) &&
-     ($("dialog:visible").length == 0))
+  if(((e.key === 's') || (e.key === 'S')) && (e.ctrlKey === true) &&
+     ($("dialog:visible").length === 0))
   {
     // Move the focus to the search bar.
     $("#events-search").focus();
   }
 
   // See if Escape was pressed while the search bar is active.
-  if((e.key == "Escape") && $("#events-search").is(":focus"))
+  if((e.key === "Escape") && $("#events-search").is(":focus"))
   {
     // Clear the search bar.
     $("#events-search").val("");

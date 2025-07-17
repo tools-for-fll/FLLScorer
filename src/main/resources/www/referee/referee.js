@@ -440,21 +440,9 @@ loadScores()
     }
 
     // Set the number of matches based on the response.
-    if(result["matches"] == 2)
-    {
-      $(".body").addClass("two_matches");
-      $(".body").removeClass("three_matches");
-    }
-    else if(result["matches"] == 3)
-    {
-      $(".body").removeClass("two_matches");
-      $(".body").addClass("three_matches");
-    }
-    else
-    {
-      $(".body").removeClass("two_matches");
-      $(".body").removeClass("three_matches");
-    }
+    $("body").removeClass("matches2").removeClass("matches3").
+      removeClass("matches103").removeClass("matches4").
+      addClass("matches" + result["matches"]);
 
     // Start constructing the HTML for the list of scores.
     var html = "";
@@ -466,6 +454,7 @@ loadScores()
       var id = result["scores"][i]["id"];
 
       // Get the match statuses for this team.
+      var m0 = result["scores"][i]["match0"];
       var m1 = result["scores"][i]["match1"];
       var m2 = result["scores"][i]["match2"];
       var m3 = result["scores"][i]["match3"];
@@ -474,10 +463,11 @@ loadScores()
       // Convert the match statuses into the color for each match; red for a
       // scoresheet without a score, green for a scoresheet and a score, and
       // yellow for a match that has not been scored.
-      m1 = (m1 == 1) ? "red" : ((m1 == 2) ? "green" : "yellow");
-      m2 = (m2 == 1) ? "red" : ((m2 == 2) ? "green" : "yellow");
-      m3 = (m3 == 1) ? "red" : ((m3 == 2) ? "green" : "yellow");
-      m4 = (m4 == 1) ? "red" : ((m4 == 2) ? "green" : "yellow");
+      m0 = (m0 === 1) ? "red" : ((m0 === 2) ? "green" : "yellow");
+      m1 = (m1 === 1) ? "red" : ((m1 === 2) ? "green" : "yellow");
+      m2 = (m2 === 1) ? "red" : ((m2 === 2) ? "green" : "yellow");
+      m3 = (m3 === 1) ? "red" : ((m3 === 2) ? "green" : "yellow");
+      m4 = (m4 === 1) ? "red" : ((m4 === 2) ? "green" : "yellow");
 
       // Add the HTML for this row/team.
       html += `
@@ -486,6 +476,9 @@ loadScores()
             <span>
               ${result["scores"][i]["number"]} : ${result["scores"][i]["name"]}
             </span>
+          </div>
+          <div class="match0">
+            <button class="${m0}" onclick="loadMatch(${id}, 0);"></button>
           </div>
           <div class="match1">
             <button class="${m1}" onclick="loadMatch(${id}, 1);"></button>
@@ -781,8 +774,9 @@ wsMessage(e)
   var fields = e.data.split(":");
 
   // See if there are the correct number of fields and a valid match number.
-  if((fields.length == 4) && ((fields[0] === "m1") || (fields[0] === "m2") ||
-                              (fields[0] === "m3") || (fields[0] === "m4")))
+  if((fields.length == 4) && ((fields[0] === "m0") || (fields[0] === "m1") ||
+                              (fields[0] === "m2") || (fields[0] === "m3") ||
+                              (fields[0] === "m4")))
   {
     // Get the button corresponding to this team/match.
     var button = $("#team" + fields[1] + " .match" +

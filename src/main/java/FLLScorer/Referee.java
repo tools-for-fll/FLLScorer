@@ -231,6 +231,7 @@ public class Referee
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> match0 = new ArrayList<Integer>();
     ArrayList<Integer> match1 = new ArrayList<Integer>();
     ArrayList<Integer> match2 = new ArrayList<Integer>();
     ArrayList<Integer> match3 = new ArrayList<Integer>();
@@ -242,6 +243,7 @@ public class Referee
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)
     {
+      match0.add(idx, 0);
       match1.add(idx, 0);
       match2.add(idx, 0);
       match3.add(idx, 0);
@@ -250,6 +252,8 @@ public class Referee
 
     // A list of information about scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Float> score0 = new ArrayList<Float>();
+    ArrayList<String> match0_sheet = new ArrayList<String>();
     ArrayList<Float> score1 = new ArrayList<Float>();
     ArrayList<String> match1_sheet = new ArrayList<String>();
     ArrayList<Float> score2 = new ArrayList<Float>();
@@ -260,9 +264,10 @@ public class Referee
     ArrayList<String> match4_sheet = new ArrayList<String>();
 
     // Enumerate the scores for this event.
-    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
-                              match1_sheet, score2, null, match2_sheet, score3,
-                              null, match3_sheet, score4, null, match4_sheet);
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score0, null,
+                              match0_sheet, score1, null, match1_sheet, score2,
+                              null, match2_sheet, score3, null, match3_sheet,
+                              score4, null, match4_sheet);
 
     // Loop through all the scores.
     for(int idx = 0; idx < teams.size(); idx++)
@@ -272,6 +277,16 @@ public class Referee
       if(team_idx == -1)
       {
         continue;
+      }
+
+      // Determine the correct indicator for the match0 score.
+      if(score0.get(idx) != null)
+      {
+        match0.set(team_idx, 2);
+      }
+      else if(match0_sheet.get(idx) != null)
+      {
+        match0.set(team_idx, 1);
       }
 
       // Determine the correct indicator for the match1 score.
@@ -324,6 +339,7 @@ public class Referee
       score.set("id", ids.get(i));
       score.set("number", numbers.get(i));
       score.set("name", names.get(i));
+      score.set("match0", match0.get(i));
       score.set("match1", match1.get(i));
       score.set("match2", match2.get(i));
       score.set("match3", match3.get(i));
@@ -370,7 +386,7 @@ public class Referee
 
     // Save the scoresheet for this team/match.
     if(m_database.scoreMatchAdd(m_season.seasonIdGet(), m_event.eventIdGet(),
-                               id, match, null, null, json) == -1)
+                                id, match, null, null, json) == -1)
     {
       // Return an error since the scoresheet couldn't be saved.
       result.set("result", m_webserver.getSSI("str_referee_save_fail"));
@@ -857,7 +873,7 @@ public class Referee
     run()
     {
       // Loop while the session is still active.
-      while (m_session != null)
+      while(m_session != null)
       {
         // Get the current time.
         long now = java.lang.System.currentTimeMillis();
@@ -870,6 +886,8 @@ public class Referee
 
           // Arrays to hold the score data from the database.
           ArrayList<Integer> teamNumber = new ArrayList<Integer>();
+          ArrayList<String> match0Sheet = new ArrayList<String>();
+          ArrayList<Float> match0Score = new ArrayList<Float>();
           ArrayList<String> match1Sheet = new ArrayList<String>();
           ArrayList<Float> match1Score = new ArrayList<Float>();
           ArrayList<String> match2Sheet = new ArrayList<String>();
@@ -883,15 +901,36 @@ public class Referee
           m_instance.m_database.
             scoreEnumerate(m_instance.m_season.seasonIdGet(),
                            m_instance.m_event.eventIdGet(), null, teamNumber,
-                           match1Score, null, match1Sheet, match2Score, null,
-                           match2Sheet, match3Score, null, match3Sheet,
-                           match4Score, null, match4Sheet);
+                           match0Score, null, match0Sheet, match1Score, null,
+                           match1Sheet, match2Score, null, match2Sheet,
+                           match3Score, null, match3Sheet, match4Score, null,
+                           match4Sheet);
 
           // Loop through the tests that have scores (or scoresheets).
           for(int idx = 0; idx < teamNumber.size(); idx++)
           {
             Integer state;
             Float score;
+
+            // Determine the state of this team's practice round.
+            score = match0Score.get(idx);
+            if(match0Sheet.get(idx) == null)
+            {
+              state = 0;
+            }
+            else if(score == null)
+            {
+              state = 1;
+            }
+            else
+            {
+              state = 2;
+            }
+
+            // Send this team's first round state to the client.
+            m_session.sendText("m0:" + teamNumber.get(idx) + ":" + state +
+                               ":" + ((score == null) ? "" : score),
+                               Callback.NOOP);
 
             // Determine the state of this team's first round.
             score = match1Score.get(idx);

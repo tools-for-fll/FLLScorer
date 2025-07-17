@@ -3,15 +3,27 @@
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
-// Strings for the menu items.
-const configButton = "<!--#str_menu_config-->";
-const seasonsButton = "<!--#str_menu_seasons-->";
-const eventsButton = "<!--#str_menu_events-->";
-const teamsButton = "<!--#str_menu_teams-->";
-const scoresButton = "<!--#str_menu_scores-->";
-const rubricsButton = "<!--#str_menu_rubrics-->";
-const usersButton = "<!--#str_menu_users-->";
-const aboutButton = "<!--#str_menu_about-->";
+// The text to describe each of the matches options, in the order they are to
+// be presented.
+const matchList =
+[
+  {
+    value: 2,
+    name: "<!--#str_events_list_matches_2-->"
+  },
+  {
+    value: 3,
+    name: "<!--#str_events_list_matches_3-->"
+  },
+  {
+    value: 103,
+    name: "<!--#str_events_list_matches_103-->"
+  },
+  {
+    value: 4,
+    name: "<!--#str_events_list_matches_4-->"
+  }
+];
 
 // HTML encodes an input string.
 function
@@ -324,16 +336,6 @@ ready()
       }
     }
   }
-
-  // Insert the button names.
-  $("#btn_config").html(configButton);
-  $("#btn_seasons").html(seasonsButton);
-  $("#btn_events").html(eventsButton);
-  $("#btn_teams").html(teamsButton);
-  $("#btn_scores").html(scoresButton);
-  $("#btn_rubrics").html(rubricsButton);
-  $("#btn_users").html(usersButton);
-  $("#btn_about").html(aboutButton);
 
   // Add the click handlers for the various tabs.
   $("#btn_menu").click(showMenu);

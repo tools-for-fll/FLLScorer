@@ -68,14 +68,24 @@
   height: 8em;
 }
 
-.list_container .three_matches .row
+.matches2 .list_container .row
 {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 0 1fr 1fr 0 0;
 }
 
-.list_container .two_matches .row
+.matches3 .list_container .row
 {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 0 1fr 1fr 1fr 0;
+}
+
+.matches103 .list_container .row
+{
+  grid-template-columns: 1fr 1fr 1fr 1fr 0;
+}
+
+.matches4 .list_container .row
+{
+  grid-template-columns: 0 1fr 1fr 1fr 1fr;
 }
 
 .list_container .body .row:nth-child(even of :not([style*="display: none"]))
@@ -95,12 +105,12 @@
   align-items: center;
   display: flex;
   font-size: 2em;
-  grid-column: 1 / span 4;
+  grid-column: 1 / span 5;
   grid-row: 1;
   justify-content: center;
 }
 
-.list_container .body .row .match1
+.list_container .body .row .match0
 {
   align-items: center;
   display: flex;
@@ -109,12 +119,19 @@
   justify-content: center;
 }
 
-.list_container .body .row .match1 button::after
+.list_container .body .row .match0 button::after
 {
-  content: "<!--#str_referee_m1-->"
+  content: "<!--#str_match_ps-->";
 }
 
-.list_container .body .row .match2
+.matches2 .list_container .body .row .match0,
+.matches3 .list_container .body .row .match0,
+.matches4 .list_container .body .row .match0
+{
+  display: none;
+}
+
+.list_container .body .row .match1
 {
   align-items: center;
   display: flex;
@@ -123,12 +140,12 @@
   justify-content: center;
 }
 
-.list_container .body .row .match2 button::after
+.list_container .body .row .match1 button::after
 {
-  content: "<!--#str_referee_m2-->"
+  content: "<!--#str_match_1s-->";
 }
 
-.list_container .body .row .match3
+.list_container .body .row .match2
 {
   align-items: center;
   display: flex;
@@ -137,17 +154,12 @@
   justify-content: center;
 }
 
-.list_container .body .row .match3 button::after
+.list_container .body .row .match2 button::after
 {
-  content: "<!--#str_referee_m3-->"
+  content: "<!--#str_match_2s-->";
 }
 
-.list_container .two_matches .row .match3
-{
-  display: none;
-}
-
-.list_container .body .row .match4
+.list_container .body .row .match3
 {
   align-items: center;
   display: flex;
@@ -156,13 +168,33 @@
   justify-content: center;
 }
 
-.list_container .body .row .match4 button::after
+.list_container .body .row .match3 button::after
 {
-  content: "<!--#str_referee_m4-->"
+  content: "<!--#str_match_3s-->";
 }
 
-.list_container .two_matches .row .match4,
-.list_container .three_matches .row .match4
+.matches2 .list_container .row .match3
+{
+  display: none;
+}
+
+.list_container .body .row .match4
+{
+  align-items: center;
+  display: flex;
+  grid-column: 5;
+  grid-row: 2;
+  justify-content: center;
+}
+
+.list_container .body .row .match4 button::after
+{
+  content: "<!--#str_match_4s-->";
+}
+
+.matches2 .list_container .row .match4,
+.matches3 .list_container .row .match4,
+.matches103 .list_container .row .match4
 {
   display: none;
 }
@@ -216,6 +248,16 @@
   overflow-x: auto;
 }
 
+.score_container .header .match0
+{
+  display: none;
+}
+
+.score_container .header .match0::after
+{
+  content: "<!--#str_match_ps-->";
+}
+
 .score_container .header .match1
 {
   display: none;
@@ -223,7 +265,7 @@
 
 .score_container .header .match1::after
 {
-  content: "<!--#str_referee_m1-->";
+  content: "<!--#str_match_1s-->";
 }
 
 .score_container .header .match2
@@ -233,7 +275,7 @@
 
 .score_container .header .match2::after
 {
-  content: "<!--#str_referee_m2-->";
+  content: "<!--#str_match_2s-->";
 }
 
 .score_container .header .match3
@@ -243,7 +285,7 @@
 
 .score_container .header .match3::after
 {
-  content: "<!--#str_referee_m3-->";
+  content: "<!--#str_match_3s-->";
 }
 
 .score_container .header .match4
@@ -253,7 +295,7 @@
 
 .score_container .header .match4::after
 {
-  content: "<!--#str_referee_m4-->";
+  content: "<!--#str_match_4s-->";
 }
 
 .score_container .body
@@ -436,19 +478,28 @@
   .list_container .body .row
   {
     display: grid;
-    grid-template-columns: 4fr repeat(4, 1fr);
     grid-template-rows: 4em;
     height: 4em;
   }
 
-  .list_container .three_matches .row
+  .matches2 .list_container .row
   {
-    grid-template-columns: 3fr repeat(3, 1fr);
+    grid-template-columns: 2fr 0 1fr 1fr 0 0;
   }
 
-  .list_container .two_matches .row
+  .matches3 .list_container .row
   {
-    grid-template-columns: 2fr repeat(2, 1fr);
+    grid-template-columns: 3fr 0 1fr 1fr 1fr 0;
+  }
+
+  .matches103 .list_container .row
+  {
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr 0;
+  }
+
+  .matches4 .list_container .row
+  {
+    grid-template-columns: 4fr 0 1fr 1fr 1fr 1fr;
   }
 
   .list_container .body .row .name
@@ -459,59 +510,59 @@
     margin-left: 0.25em;
   }
 
-  .list_container .body .row .match1
+  .list_container .body .row .match0
   {
     grid-column: 2;
     grid-row: 1;
   }
 
-  .list_container .body .row .match2
+  .list_container .body .row .match1
   {
     grid-column: 3;
     grid-row: 1;
   }
 
-  .list_container .body .row .match3
+  .list_container .body .row .match2
   {
     grid-column: 4;
     grid-row: 1;
   }
 
-  .list_container .two_matches .row .match3
-  {
-    display: none;
-  }
-
-  .list_container .body .row .match4
+  .list_container .body .row .match3
   {
     grid-column: 5;
     grid-row: 1;
   }
 
-  .list_container .two_matches .row .match4,
-  .list_container .three_matches .row .match4
+  .list_container .body .row .match4
   {
-    display: none;
+    grid-column: 6;
+    grid-row: 1;
+  }
+
+  .score_container .header .match0::after
+  {
+    content: "<!--#str_match_p-->";
   }
 
   .score_container .header .match1::after
   {
-    content: "<!--#str_referee_match1-->";
+    content: "<!--#str_match_1-->";
   }
 
   .score_container .header .match2::after
   {
-    content: "<!--#str_referee_match2-->";
+    content: "<!--#str_match_2-->";
   }
 
   .score_container .header .match3::after
   {
-    content: "<!--#str_referee_match3-->";
+    content: "<!--#str_match_3-->";
   }
 
   .score_container .header .match4::after
   {
-    content: "<!--#str_referee_match4-->";
+    content: "<!--#str_match_4-->";
   }
 
   .score_container .footer #discard::before
@@ -573,19 +624,28 @@
   .list_container .body .row
   {
     display: grid;
-    grid-template-columns: 4fr repeat(4, 1fr);
     grid-template-rows: 3em;
     height: 3em;
   }
 
-  .list_container .three_matches .row
+  .matches2 .list_container .row
   {
-    grid-template-columns: 3fr repeat(3, 1fr);
+    grid-template-columns: 2fr 0 1fr 1fr 0 0;
   }
 
-  .list_container .two_matches .row
+  .matches3 .list_container .row
   {
-    grid-template-columns: 2fr repeat(2, 1fr);
+    grid-template-columns: 3fr 0 1fr 1fr 1fr 0;
+  }
+
+  .matches103 .list_container .row
+  {
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr 0;
+  }
+
+  .matches4 .list_container .row
+  {
+    grid-template-columns: 4fr 0 1fr 1fr 1fr 1fr;
   }
 
   .list_container .body .row button
@@ -602,59 +662,59 @@
     margin-left: 0.25em;
   }
 
-  .list_container .body .row .match1
+  .list_container .body .row .match0
   {
     grid-column: 2;
     grid-row: 1;
   }
 
-  .list_container .body .row .match1 button::after
+  .list_container .body .row .match0 button::after
   {
-    content: "<!--#str_referee_match1-->"
+    content: "<!--#str_match_p-->"
   }
 
-  .list_container .body .row .match2
+  .list_container .body .row .match1
   {
     grid-column: 3;
     grid-row: 1;
   }
 
-  .list_container .body .row .match2 button::after
+  .list_container .body .row .match1 button::after
   {
-    content: "<!--#str_referee_match2-->"
+    content: "<!--#str_match_1-->"
   }
 
-  .list_container .body .row .match3
+  .list_container .body .row .match2
   {
     grid-column: 4;
     grid-row: 1;
   }
 
-  .list_container .body .row .match3 button::after
+  .list_container .body .row .match2 button::after
   {
-    content: "<!--#str_referee_match3-->"
+    content: "<!--#str_match_2-->"
   }
 
-  .list_container .two_matches .row .match3
-  {
-    display: none;
-  }
-
-  .list_container .body .row .match4
+  .list_container .body .row .match3
   {
     grid-column: 5;
     grid-row: 1;
   }
 
-  .list_container .body .row .match4 button::after
+  .list_container .body .row .match3 button::after
   {
-    content: "<!--#str_referee_match4-->"
+    content: "<!--#str_match_3-->"
   }
 
-  .list_container .two_matches .row .match4,
-  .list_container .three_matches .row .match4
+  .list_container .body .row .match4
   {
-    display: none;
+    grid-column: 6;
+    grid-row: 1;
+  }
+
+  .list_container .body .row .match4 button::after
+  {
+    content: "<!--#str_match_4-->"
   }
 
   .list_container .search .input
@@ -667,24 +727,29 @@
     font-size: 1.5em;
   }
 
+  .score_container .header .match0::after
+  {
+    content: "<!--#str_match_p-->";
+  }
+
   .score_container .header .match1::after
   {
-    content: "<!--#str_referee_match1-->";
+    content: "<!--#str_match_1-->";
   }
 
   .score_container .header .match2::after
   {
-    content: "<!--#str_referee_match2-->";
+    content: "<!--#str_match_2-->";
   }
 
   .score_container .header .match3::after
   {
-    content: "<!--#str_referee_match3-->";
+    content: "<!--#str_match_3-->";
   }
 
   .score_container .header .match4::after
   {
-    content: "<!--#str_referee_match4-->";
+    content: "<!--#str_match_4-->";
   }
 
   .score_container .footer #discard::before

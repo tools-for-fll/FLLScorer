@@ -24,6 +24,7 @@ scoresExchange(id, match)
   onStart()
   {
     // Get the details on the first score.
+    var number = $("#score" + id + "_number").html().trim();
     var team = $("#score" + id + "_name").html().trim();
     var match_name = $(".match" + match).html().trim();
     var score = $("#score" + id + "_match" + match + "_score").html().trim();
@@ -39,7 +40,7 @@ scoresExchange(id, match)
   </div>
   <div class="team1">
     <span>
-      ${team}
+      ${number} : ${team}
     </span>
   </div>
   <div class="match1">
@@ -55,27 +56,34 @@ scoresExchange(id, match)
     for(var i of $(".scores_container .row"))
     {
       var l_id = i.id.substring(5);
+      var number = $(i).find("[id$=_number]").html().trim();
       var name = $(i).find("[id$=_name]").html().trim();
       var selected = (l_id == new_id) ? " selected" : "";
       html += `
-      <option value="${l_id}"${selected}>${name}</option>`;
+      <option value="${l_id}"${selected}>${number} : ${name}</option>`;
     }
     html += `
     </select>
   </div>
   <div class="match2">
     <select>`;
-    for(var i = 1; i <= 4; i++)
+    for(var i = 0; i <= 4; i++)
     {
-      if((i == 3) && $(".scores_container .heading").hasClass("two_matches"))
+      if((i === 0) && !$(".scores_container").hasClass("matches103"))
+      {
+        continue;
+      }
+      if((i === 3) && $(".scores_container").hasClass("matches2"))
       {
         break;
       }
-      if((i == 4) && $(".scores_container .heading").hasClass("three_matches"))
+      if((i === 4) && ($(".scores_container").hasClass("matches3") ||
+                       $(".scores_container").hasClass("matches103")))
       {
         break;
       }
-      var match_name = $(".match" + i).html().trim();
+      var match_name = $(".scores_container .heading .match" + i).html().
+        trim();
       var selected = (i == new_match) ? " selected" : "";
       html += `
       <option value="${i}"${selected}>${match_name}</option>`;
@@ -209,27 +217,9 @@ scoresLoad()
 
     // Set the number of matches in the score list based on the number of
     // matches at this event.
-    if(result["matches"] == 2)
-    {
-      $(".scores_container .heading").addClass("two_matches");
-      $(".scores_container .heading").removeClass("three_matches");
-      $(".scores_container .body").addClass("two_matches");
-      $(".scores_container .body").removeClass("three_matches");
-    }
-    else if(result["matches"] == 3)
-    {
-      $(".scores_container .heading").removeClass("two_matches");
-      $(".scores_container .heading").addClass("three_matches");
-      $(".scores_container .body").removeClass("two_matches");
-      $(".scores_container .body").addClass("three_matches");
-    }
-    else
-    {
-      $(".scores_container .heading").removeClass("two_matches");
-      $(".scores_container .heading").removeClass("three_matches");
-      $(".scores_container .body").removeClass("two_matches");
-      $(".scores_container .body").removeClass("three_matches");
-    }
+    $(".scores_container").removeClass("matches2").removeClass("matches3").
+      removeClass("matches103").removeClass("matches4").
+      addClass("matches" + result["matches"]);
 
     // See if there are any scores.
     if(result["scores"].length == 0)
@@ -240,6 +230,7 @@ scoresLoad()
     <div class="row">
       <span class="number">-</span>
       <span class="name"><!--#str_scores_none--></span>
+      <span class="match0">-</span>
       <span class="match1">-</span>
       <span class="match2">-</span>
       <span class="match3">-</span>
@@ -303,6 +294,7 @@ scoresLoad()
       <span id="score${id}_name" class="name">
         ${result["scores"][i]["name"]}
       </span>`;
+      addScore(i, id, 0);
       addScore(i, id, 1);
       addScore(i, id, 2);
       addScore(i, id, 3);
@@ -397,8 +389,9 @@ wsMessage(e)
   var fields = e.data.split(":");
 
   // See if there are the correct number of fields and a valid match number.
-  if((fields.length == 4) && ((fields[0] === "m1") || (fields[0] === "m2") ||
-                              (fields[0] === "m3") || (fields[0] === "m4")))
+  if((fields.length == 4) && ((fields[0] === "m0" || (fields[0] === "m1") ||
+                              (fields[0] === "m2") || (fields[0] === "m3") ||
+                              (fields[0] === "m4"))))
   {
     // Get the score from the update.
     var score = fields[3];

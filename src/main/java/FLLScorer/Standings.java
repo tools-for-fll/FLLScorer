@@ -172,9 +172,9 @@ public class Standings
     ArrayList<Integer> core4 = new ArrayList<Integer>();
 
     // Enumerate the scores for this event.
-    m_database.scoreEnumerate(season_id, event_id, null, ids2, score1, core1,
-                              null, score2, core2, null, score3, core3, null,
-                              score4, core4, null);
+    m_database.scoreEnumerate(season_id, event_id, null, ids2, null, null,
+                              null, score1, core1, null, score2, core2, null,
+                              score3, core3, null, score4, core4, null);
 
     // Loop through all the scores.
     for(int idx = 0; idx < ids2.size(); idx++)
@@ -537,13 +537,16 @@ public class Standings
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Integer> divisions = new ArrayList<Integer>();
     ArrayList<Integer> scores = new ArrayList<Integer>();
     ArrayList<Integer> event1 = new ArrayList<Integer>();
     ArrayList<Integer> event2 = new ArrayList<Integer>();
     ArrayList<Integer> place = new ArrayList<Integer>();
 
     // Enumerate the teams from the database for this season.
-    m_database.teamEnumerate(season_id, -1, ids, numbers, names, null);
+    m_database.teamEnumerate(season_id, -1, ids, numbers, names, divisions);
+
+    // TODO Actually use the divisions...
 
     // Give each team a "no event score" indicator for the two events, which
     // will be replace by an event score when one is found.

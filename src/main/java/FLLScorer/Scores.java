@@ -40,6 +40,11 @@ public class Scores
   private Database m_database = null;
 
   /**
+   * The Config object.
+   */
+  private Config m_config = null;
+
+  /**
    * The Seasons object.
    */
   private Seasons m_season = null;
@@ -209,6 +214,7 @@ public class Scores
     ArrayList<Integer> ids = new ArrayList<Integer>();
     ArrayList<Integer> numbers = new ArrayList<Integer>();
     ArrayList<String> names = new ArrayList<String>();
+    ArrayList<Float> match0 = new ArrayList<Float>();
     ArrayList<Float> match1 = new ArrayList<Float>();
     ArrayList<Float> match2 = new ArrayList<Float>();
     ArrayList<Float> match3 = new ArrayList<Float>();
@@ -220,23 +226,25 @@ public class Scores
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)
     {
-      match1.add(idx, (float)-1);
-      match2.add(idx, (float)-1);
-      match3.add(idx, (float)-1);
-      match4.add(idx, (float)-1);
+      match0.add(idx, (float)-100);
+      match1.add(idx, (float)-100);
+      match2.add(idx, (float)-100);
+      match3.add(idx, (float)-100);
+      match4.add(idx, (float)-100);
     };
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Float> score0 = new ArrayList<Float>();
     ArrayList<Float> score1 = new ArrayList<Float>();
     ArrayList<Float> score2 = new ArrayList<Float>();
     ArrayList<Float> score3 = new ArrayList<Float>();
     ArrayList<Float> score4 = new ArrayList<Float>();
 
     // Enumerate the scores for this event.
-    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
-                              null, score2, null, null, score3, null, null,
-                              score4, null, null);
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score0, null,
+                              null, score1, null, null, score2, null, null,
+                              score3, null, null, score4, null, null);
 
     // Loop through all the scores
     for(int idx = 0; idx < teams.size(); idx++)
@@ -247,6 +255,12 @@ public class Scores
       if(team_idx == -1)
       {
         continue;
+      }
+
+      // Save the match 0 score, if it exists.
+      if(score0.get(idx) != null)
+      {
+        match0.set(team_idx, score0.get(idx));
       }
 
       // Save the match 1 score, if it exists.
@@ -283,10 +297,11 @@ public class Scores
       score.set("id", ids.get(i));
       score.set("number", numbers.get(i));
       score.set("name", names.get(i));
-      score.set("match1", (match1.get(i) == -1) ? "" : match1.get(i));
-      score.set("match2", (match2.get(i) == -1) ? "" : match2.get(i));
-      score.set("match3", (match3.get(i) == -1) ? "" : match3.get(i));
-      score.set("match4", (match4.get(i) == -1) ? "" : match4.get(i));
+      score.set("match0", (match0.get(i) == -100) ? "" : match0.get(i));
+      score.set("match1", (match1.get(i) == -100) ? "" : match1.get(i));
+      score.set("match2", (match2.get(i) == -100) ? "" : match2.get(i));
+      score.set("match3", (match3.get(i) == -100) ? "" : match3.get(i));
+      score.set("match4", (match4.get(i) == -100) ? "" : match4.get(i));
       scores.addEntry(score);
     }
 
@@ -378,6 +393,8 @@ public class Scores
   /**
    * Compares two sets of team scores to determine the placement order.
    *
+   * @param ad The division of the first team.
+   *
    * @param a1 The match 1 score for the first team.
    *
    * @param a2 The match 2 scores for the first team.
@@ -385,6 +402,8 @@ public class Scores
    * @param a3 The match 3 score for the first team.
    *
    * @param a4 The match 4 score for the first team.
+   *
+   * @param bd The division of the second team.
    *
    * @param b1 The match 1 score for the second team.
    *
@@ -399,9 +418,23 @@ public class Scores
    *         are tied.
    */
   private int
-  scoresCompare(float a1, float a2, float a3, float a4, float b1, float b2,
-                float b3, float b4)
+  scoresCompare(int ad, float a1, float a2, float a3, float a4, int bd,
+                float b1, float b2, float b3, float b4)
   {
+    // See if the second team "places" higher than the first team, based on
+    // their divisions.
+    if(ad > bd)
+    {
+      return(-1);
+    }
+
+    // See if the first team "places" higher than the second team, based on
+    // their diviison.
+    if(ad < bd)
+    {
+      return(1);
+    }
+
     // Convert the scores into integer arrays.
     Float a[] = { a1, a2, a3, a4 };
     Float b[] = { b1, b2, b3, b4 };
@@ -473,6 +506,8 @@ public class Scores
     ArrayList<String> names = new ArrayList<String>();
     ArrayList<Integer> divisions = new ArrayList<Integer>();
     ArrayList<Float> high = new ArrayList<Float>();
+    ArrayList<Float> match0 = new ArrayList<Float>();
+    ArrayList<Integer> cv0 = new ArrayList<Integer>();
     ArrayList<Float> match1 = new ArrayList<Float>();
     ArrayList<Integer> cv1 = new ArrayList<Integer>();
     ArrayList<Float> match2 = new ArrayList<Float>();
@@ -486,24 +521,26 @@ public class Scores
     m_database.teamEnumerate(season_id, event_id, ids, numbers, names,
                              divisions);
 
-    // TODO Actually use the divisions...
-
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < numbers.size(); idx++)
     {
-      high.add(idx, (float)-1);
-      match1.add(idx, (float)-1);
-      cv1.add(idx, -1);
-      match2.add(idx, (float)-1);
-      cv2.add(idx, -1);
-      match3.add(idx, (float)-1);
-      cv3.add(idx, -1);
-      match4.add(idx, (float)-1);
-      cv4.add(idx, -1);
+      high.add(idx, (float)-100);
+      match0.add(idx, (float)-100);
+      cv0.add(idx, -100);
+      match1.add(idx, (float)-100);
+      cv1.add(idx, -100);
+      match2.add(idx, (float)-100);
+      cv2.add(idx, -100);
+      match3.add(idx, (float)-100);
+      cv3.add(idx, -100);
+      match4.add(idx, (float)-100);
+      cv4.add(idx, -100);
     };
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Float> score0 = new ArrayList<Float>();
+    ArrayList<Integer> core0 = new ArrayList<Integer>();
     ArrayList<Float> score1 = new ArrayList<Float>();
     ArrayList<Integer> core1 = new ArrayList<Integer>();
     ArrayList<Float> score2 = new ArrayList<Float>();
@@ -514,9 +551,9 @@ public class Scores
     ArrayList<Integer> core4 = new ArrayList<Integer>();
 
     // Enumerate the scores for this event.
-    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, core1,
-                              null, score2, core2, null, score3, core3, null,
-                              score4, core4, null);
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score0, core0,
+                              null, score1, core1, null, score2, core2, null,
+                              score3, core3, null, score4, core4, null);
 
     // Loop through all the scores
     for(int idx = 0; idx < teams.size(); idx++)
@@ -529,6 +566,16 @@ public class Scores
       if(team_idx == -1)
       {
         continue;
+      }
+
+      // Save the match 0 score, if it exists.
+      if(score0.get(idx) != null)
+      {
+        match0.set(team_idx, score0.get(idx));
+      }
+      if(core0.get(idx) != null)
+      {
+        cv0.set(team_idx, core0.get(idx));
       }
 
       // Save the match 1 score, if it exists.
@@ -602,6 +649,10 @@ public class Scores
       place.add(numbers.size() + idx, -1);
     }
 
+    // Determine which scores to consider.
+    boolean bScore3 = (matches == 3) || (matches == 103) || (matches == 4);
+    boolean bScore4 = (matches == 4);
+
     // Loop through all the teams, placing them into the correct placement
     // order.
     for(int idx1 = 0; idx1 < (numbers.size() - 1); idx1++)
@@ -614,9 +665,12 @@ public class Scores
         int p2 = place.get(idx2);
 
         // See if the first team has a lower score than the second team.
-        if(scoresCompare(match1.get(p1), match2.get(p1), match3.get(p1),
-                         match4.get(p1), match1.get(p2), match2.get(p2),
-                         match3.get(p2), match4.get(p2)) < 0)
+        if(scoresCompare(divisions.get(p1), match1.get(p1), match2.get(p1),
+                         bScore3 ? match3.get(p1) : 0,
+                         bScore4 ? match4.get(p1) : 0, divisions.get(p2),
+                         match1.get(p2), match2.get(p2),
+                         bScore3 ? match3.get(p2) : 0,
+                         bScore4 ? match4.get(p2) : 0) < 0)
         {
           // Swap the places of the two teams.
           place.set(idx1, p2);
@@ -627,33 +681,48 @@ public class Scores
 
     // Loop through all the teams converting the ordering of the teams into
     // their assigned places (giving tying teams the same place).
+    int placenum = 1;
     for(int idx = 0; idx < numbers.size(); idx++)
     {
       // If this is the first team, set it to first place.
       if(idx == 0)
       {
-        place.set(numbers.size() + place.get(idx), 1);
-        continue;
-      }
-
-      // Get the index of this team and the previous team.
-      int p1 = place.indexOf(idx - 1);
-      int p2 = place.indexOf(idx);
-
-      // See if these two teams have the same scores.
-      if(scoresCompare(match1.get(p1), match2.get(p1), match3.get(p1),
-                       match4.get(p1), match1.get(p2), match2.get(p2),
-                       match3.get(p2), match4.get(p2)) == 0)
-      {
-        // Give this team the same place as the previous team.
-        place.set(numbers.size() + place.get(idx),
-                  place.get(numbers.size() + place.get(idx - 1)));
+        place.set(numbers.size() + place.get(idx), placenum);
       }
       else
       {
-        // Give this team the current place.
-        place.set(numbers.size() + place.get(idx), idx + 1);
+        // Get the index of this team and the previous team.
+        int p1 = place.indexOf(idx - 1);
+        int p2 = place.indexOf(idx);
+
+        // See if these two teams have the same scores.
+        if(scoresCompare(divisions.get(p1), match1.get(p1), match2.get(p1),
+                         bScore3 ? match3.get(p1) : 0,
+                         bScore4 ? match4.get(p1) : 0, divisions.get(p2),
+                         match1.get(p2), match2.get(p2),
+                         bScore3 ? match3.get(p2) : 0,
+                         bScore4 ? match4.get(p2) : 0) == 0)
+        {
+          // Give this team the same place as the previous team.
+          place.set(numbers.size() + place.get(idx),
+                    place.get(numbers.size() + place.get(idx - 1)));
+        }
+        else
+        {
+          // See if there is a change in division.
+          if(divisions.get(p1) != divisions.get(p2))
+          {
+            // Reset the place back to one with the change in division.
+            placenum = 1;
+          }
+
+          // Give this team the current place.
+          place.set(numbers.size() + place.get(idx), placenum);
+        }
       }
+
+      // Increment the place.
+      placenum++;
     }
 
     // Removing the mapping from the start of the placement array.
@@ -663,52 +732,85 @@ public class Scores
     }
 
     // Add the header to the CSV string.
-    if(matches == 3)
+    if(m_config.divisionEnableGet())
     {
-      csv += "Number,Name,Place,High,Match 1,Match 2,Match 3,CV 1,CV 2,CV 3\n";
+      csv += "Division,";
+    }
+    csv += "Number,Name,Place,High,";
+    if(matches == 2)
+    {
+      csv += "Match 1,Match 2,CV 1,CV 2\n";
+    }
+    else if(matches == 3)
+    {
+      csv += "Match 1,Match 2,Match 3,CV 1,CV 2,CV 3\n";
+    }
+    else if(matches == 103)
+    {
+      csv += "Practice,Match 1,Match 2,Match 3,CV Practice,CV 1,CV 2,CV 3\n";
     }
     else
     {
-      csv += "Number,Name,Place,High,Match 1,Match 2,Match 3,Match 4,CV 1," +
-             "CV 2,CV 3,CV 4\n";
+      csv += "Match 1,Match 2,Match 3,Match 4,CV 1,CV 2,CV 3,CV 4\n";
     }
 
     // Loop through the teams.
     for(int i = 0; i < numbers.size(); i++)
     {
       // Add this team's information and scores to the CSV string.
+      if(m_config.divisionEnableGet())
+      {
+        csv += divisions.get(i) + ",";
+      }
       csv += numbers.get(i);
       csv += "," + names.get(i);
       float value = high.get(i);
-      csv += "," + ((value == -1) ? "" : place.get(i));
-      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
-                                          ("" + (int)Math.floor(value)) :
-                                          ("" + value)));
-      value = match1.get(i);
-      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
-                                          ("" + (int)Math.floor(value)) :
-                                          ("" + value)));
-      value = match2.get(i);
-      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
-                                          ("" + (int)Math.floor(value)) :
-                                          ("" + value)));
-      value = match3.get(i);
-      csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
-                                          ("" + (int)Math.floor(value)) :
-                                          ("" + value)));
-      if(matches == 4)
-      {
-        value = match4.get(i);
-        csv += "," + ((value == -1) ? "" : ((value == Math.floor(value)) ?
+      csv += "," + ((value == -100) ? "" : place.get(i));
+      csv += "," + ((value == -100) ? "" : ((value == Math.floor(value)) ?
                                             ("" + (int)Math.floor(value)) :
                                             ("" + value)));
-      }
-      csv += "," + ((cv1.get(i) == -1) ? "" : cv1.get(i));
-      csv += "," + ((cv2.get(i) == -1) ? "" : cv2.get(i));
-      csv += "," + ((cv3.get(i) == -1) ? "" : cv3.get(i));
-      if(matches == 4)
+      if(matches == 103)
       {
-        csv += "," + ((cv4.get(i) == -1) ? "" : cv4.get(i));
+        value = match0.get(i);
+        csv += "," + ((value == -100) ? "" : ((value == Math.floor(value)) ?
+                                              ("" + (int)Math.floor(value)) :
+                                              ("" + value)));
+      }
+      value = match1.get(i);
+      csv += "," + ((value == -100) ? "" : ((value == Math.floor(value)) ?
+                                            ("" + (int)Math.floor(value)) :
+                                            ("" + value)));
+      value = match2.get(i);
+      csv += "," + ((value == -100) ? "" : ((value == Math.floor(value)) ?
+                                            ("" + (int)Math.floor(value)) :
+                                            ("" + value)));
+      if(bScore3)
+      {
+        value = match3.get(i);
+        csv += "," + ((value == -100) ? "" : ((value == Math.floor(value)) ?
+                                              ("" + (int)Math.floor(value)) :
+                                              ("" + value)));
+      }
+      if(bScore4)
+      {
+        value = match4.get(i);
+        csv += "," + ((value == -100) ? "" : ((value == Math.floor(value)) ?
+                                              ("" + (int)Math.floor(value)) :
+                                              ("" + value)));
+      }
+      if(matches == 103)
+      {
+        csv += "," + ((cv0.get(i) == -100) ? "" : cv0.get(i));
+      }
+      csv += "," + ((cv1.get(i) == -100) ? "" : cv1.get(i));
+      csv += "," + ((cv2.get(i) == -100) ? "" : cv2.get(i));
+      if(bScore3)
+      {
+        csv += "," + ((cv3.get(i) == -100) ? "" : cv3.get(i));
+      }
+      if(bScore4)
+      {
+        csv += "," + ((cv4.get(i) == -100) ? "" : cv4.get(i));
       }
       csv += "\n";
     }
@@ -726,6 +828,7 @@ public class Scores
     // Get references to the web server, database, seasons, and events objects.
     m_webserver = WebServer.getInstance();
     m_database = Database.getInstance();
+    m_config = Config.getInstance();
     m_season = Seasons.getInstance();
     m_event = Events.getInstance();
 

@@ -175,6 +175,17 @@ public class Scoreboard
     JSONObject result = new SimpleJSONObject();
     int season_id = m_season.seasonIdGet();
     int event_id = m_event.eventIdGet();
+    int matches;
+
+    // Get the number of matches at this event.
+    if(event_id != -1)
+    {
+      matches = m_database.eventGetMatches(event_id);
+    }
+    else
+    {
+      matches = 3;
+    }
 
     // A list of information about teams, maintained in team number order.
     ArrayList<Integer> a_ids = new ArrayList<Integer>();
@@ -183,6 +194,7 @@ public class Scoreboard
     ArrayList<String> a_names = new ArrayList<String>();
     ArrayList<Integer> a_divisions = new ArrayList<Integer>();
     ArrayList<Float> a_high = new ArrayList<Float>();
+    ArrayList<Float> a_match0 = new ArrayList<Float>();
     ArrayList<Float> a_match1 = new ArrayList<Float>();
     ArrayList<Float> a_match2 = new ArrayList<Float>();
     ArrayList<Float> a_match3 = new ArrayList<Float>();
@@ -205,6 +217,7 @@ public class Scoreboard
     // Set the score indicator for each team to no score available.
     for(int idx = 0; idx < a_numbers.size(); idx++)
     {
+      a_match0.add(idx, (float)-100);
       a_match1.add(idx, (float)-100);
       a_match2.add(idx, (float)-100);
       a_match3.add(idx, (float)-100);
@@ -214,15 +227,16 @@ public class Scoreboard
 
     // A list of information about the scores.
     ArrayList<Integer> teams = new ArrayList<Integer>();
+    ArrayList<Float> score0 = new ArrayList<Float>();
     ArrayList<Float> score1 = new ArrayList<Float>();
     ArrayList<Float> score2 = new ArrayList<Float>();
     ArrayList<Float> score3 = new ArrayList<Float>();
     ArrayList<Float> score4 = new ArrayList<Float>();
 
     // Enumerate the scores for this event.
-    m_database.scoreEnumerate(season_id, event_id, null, teams, score1, null,
-                              null, score2, null, null, score3, null, null,
-                              score4, null, null);
+    m_database.scoreEnumerate(season_id, event_id, null, teams, score0, null,
+                              null, score1, null, null, score2, null, null,
+                              score3, null, null, score4, null, null);
 
     // Loop through all the scores
     for(int idx = 0; idx < teams.size(); idx++)
@@ -233,6 +247,12 @@ public class Scoreboard
       if(team_idx == -1)
       {
         continue;
+      }
+
+      // Save the match 0 score, if it exists.
+      if(score0.get(idx) != null)
+      {
+        a_match0.set(team_idx, score0.get(idx));
       }
 
       // Save the match 1 score, if it exists.
@@ -260,14 +280,24 @@ public class Scoreboard
       }
     }
 
+    // Determine which scores to consider.
+    boolean bScore3 = (matches == 3) || (matches == 103) || (matches == 4);
+    boolean bScore4 = (matches == 4);
+
     // Loop through all the teams to find their high score.
     for(int idx = 0; idx < a_ids.size(); idx++)
     {
       // Get the high score.
       float high = a_match1.get(idx);
       high = (a_match2.get(idx) > high) ? a_match2.get(idx) : high;
-      high = (a_match3.get(idx) > high) ? a_match3.get(idx) : high;
-      high = (a_match4.get(idx) > high) ? a_match4.get(idx) : high;
+      if(bScore3)
+      {
+        high = (a_match3.get(idx) > high) ? a_match3.get(idx) : high;
+      }
+      if(bScore4)
+      {
+        high = (a_match4.get(idx) > high) ? a_match4.get(idx) : high;
+      }
       a_high.set(idx, high);
     }
 
@@ -283,9 +313,11 @@ public class Scoreboard
         // than the current team.
         if((a_high.get(j) == -1) ||
            (scoresCompare(a_divisions.get(i), a_match1.get(i), a_match2.get(i),
-                          a_match3.get(i), a_match4.get(i), a_divisions.get(j),
-                          a_match1.get(j), a_match2.get(j), a_match3.get(j),
-                          a_match4.get(j)) > 0))
+                          bScore3 ? a_match3.get(i) : 0,
+                          bScore4 ? a_match4.get(i) : 0, a_divisions.get(j),
+                          a_match1.get(j), a_match2.get(j),
+                          bScore3 ? a_match3.get(j) : 0,
+                          bScore4 ? a_match4.get(j) : 0) > 0))
         {
           // Remove the current team from it's location in the arrays and then
           // insert it back into the position where the preceeding team is
@@ -295,6 +327,7 @@ public class Scoreboard
           a_names.add(j, a_names.remove(i));
           a_divisions.add(j, a_divisions.remove(i));
           a_high.add(j, a_high.remove(i));
+          a_match0.add(j, a_match0.remove(i));
           a_match1.add(j, a_match1.remove(i));
           a_match2.add(j, a_match2.remove(i));
           a_match3.add(j, a_match3.remove(i));
@@ -323,10 +356,12 @@ public class Scoreboard
       // loop index.
       else if((i == 0) ||
               (scoresCompare(a_divisions.get(i), a_match1.get(i),
-                             a_match2.get(i), a_match3.get(i), a_match4.get(i),
+                             a_match2.get(i), bScore3 ? a_match3.get(i) : 0,
+                             bScore4 ? a_match4.get(i) : 0,
                              a_divisions.get(i - 1), a_match1.get(i - 1),
-                             a_match2.get(i - 1), a_match3.get(i - 1),
-                             a_match4.get(i - 1)) != 0))
+                             a_match2.get(i - 1),
+                             bScore3 ? a_match3.get(i - 1) : 0,
+                             bScore4 ? a_match4.get(i - 1) : 0) != 0))
       {
         // See if there is a change in division.
         if((i != 0) && (a_divisions.get(i) != a_divisions.get(i - 1)))
@@ -367,6 +402,11 @@ public class Scoreboard
       if(points != -100)
       {
         score.set("high", (points < 0) ? 0 : points);
+      }
+      points = a_match0.get(i);
+      if(points != -100)
+      {
+        score.set("m0", (points < 0) ? 0 : points);
       }
       points = a_match1.get(i);
       if(points != -100)
