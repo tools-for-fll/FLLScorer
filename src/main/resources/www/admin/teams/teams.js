@@ -428,7 +428,196 @@ teamsSelect(id)
 function
 teamsImport()
 {
-  // TBD...
+  let data;
+  let division = null;
+  let number = null;
+  let name = null;
+  let idx;
+
+  // Called when a failure occurs.
+  function
+  onFail(result)
+  {
+    // See if the result exists and contains a result string.
+    if((result !== undefined) && (result["result"] !== undefined))
+    {
+      // Display the error returned by the server.
+      showError(result["result"], null);
+    }
+    else
+    {
+      // Display a generic server connection error.
+      showError("<!--#str_connect_error-->", null);
+    }
+  }
+
+  // Called when adding a team to the current event is complete.
+  function
+  onTeamAtEventDone()
+  {
+    // Increment to the next team.
+    idx++;
+
+    // See if there are more teams to process.
+    if(idx < data.data.length)
+    {
+      // Add the next team.
+      teamNext();
+    }
+    else
+    {
+      // All the teams are added, so reload the team list.
+      teamsLoad();
+
+      // Update the status bar.
+      updateStatus();
+    }
+  }
+
+  // Called when a team action (add or edit) is complete.
+  function
+  onTeamDone(result)
+  {
+    // See if the team already exists.
+    if(result["result"] === "<!--#str_teams_already_exists-->")
+    {
+      // Get the details about this team.
+      let id = result["id"];
+      let division_enc = divisions_enabled ? data.data[idx][division] : 1;
+      let number_enc = encodeURIComponent(data.data[idx][number]);
+      let name_enc = encodeURIComponent(data.data[idx][name]);
+
+      // Send a request to the server to edit the team.
+      $.getJSON("/admin/teams/teams.json?action=edit&id=" + id + "&division=" +
+                division_enc + "&number=" + number_enc + "&name=" + name_enc)
+        .done(onTeamDone)
+        .fail(onFail);
+    }
+
+    // Otherwise, see if the request was successful.
+    else if(result["result"] === "ok")
+    {
+      // Send a request to the server to add this team to the current event.
+      $.getJSON("/admin/teams/teams.json?action=in_event&id=" + result["id"])
+        .done(onTeamAtEventDone)
+        .fail(onFail);
+    }
+
+    // Otherwise, another failure occurred.
+    else
+    {
+      // Handle the failure.
+      onFail(result);
+    }
+  }
+
+  // Loads the next team into the database.
+  function
+  teamNext()
+  {
+    // Get the details about this team.
+    let division_enc = divisions_enabled ? data.data[idx][division] : 1;
+    let number_enc = encodeURIComponent(data.data[idx][number]);
+    let name_enc = encodeURIComponent(data.data[idx][name]);
+
+    // Send a request to the server to create the team.
+    $.getJSON("/admin/teams/teams.json?action=add&division=" + division_enc +
+              "&number=" + number_enc + "&name=" + name_enc)
+      .done(onTeamDone)
+      .fail(onFail);
+  }
+
+  // Called when the CSV file has been read and parsed.
+  function
+  fileLoaded(result)
+  {
+    // Save the result for importing in the teams.
+    data = result;
+
+    // Fail if there were errors parsing the CSV file.
+    if(result.errors.length !== 0)
+    {
+      showError("<!--#str_teams_csv_error--><br>" + result.errors[0].message,
+                null);
+      return;
+    }
+
+    // Loop through the fields in this CSV file.
+    for(var i = 0; i < result.meta.fields.length; i++)
+    {
+      // See if this is the division column.
+      if(result.meta.fields[i].normalize("NFD").toLowerCase() ===
+         "<!--#str_teams_csv_division_heading-->")
+      {
+        // Save the name of the division column.
+        division = result.meta.fields[i];
+      }
+
+      // See if this is the number column.
+      if(result.meta.fields[i].normalize("NFD").toLowerCase() ===
+         "<!--#str_teams_csv_number_heading-->")
+      {
+        // Save the name of the number column.
+        number = result.meta.fields[i];
+      }
+
+      // See if this is the name column.
+      if(result.meta.fields[i].normalize("NFD").toLowerCase() ===
+         "<!--#str_teams_csv_name_heading-->")
+      {
+        // Save the name of the name column.
+        name = result.meta.fields[i];
+      }
+    }
+
+    // Generate an error if divisions are enabled and a division column is not
+    // present.
+    if(divisions_enabled && (division === null))
+    {
+      showError("<!--#str_teams_csv_division_error-->", null);
+      return;
+    }
+
+    // Generate an error if the number column is not present.
+    if(number === null)
+    {
+      showError("<!--#str_teams_csv_number_error-->", null);
+      return;
+    }
+
+    // Generate an error if the name column is not present.
+    if(name === null)
+    {
+      showError("<!--#str_teams_csv_name_error-->", null);
+      return;
+    }
+
+    // Start the team import process.
+    idx = 0;
+    teamNext();
+  }
+
+  // Called when a CSV file has been selected.
+  function
+  fileSelected()
+  {
+    // Read and parse this CSV file.
+    $(this).parse({
+      config: {
+        complete: fileLoaded,
+        dynamicTyping: true,
+        header: true
+      }
+    });
+  }
+
+  // Create a file input element and click on it, allowing the user to select
+  // the CSV file to import.
+  const link = document.createElement("input");
+  link.type = "file";
+  link.accept = ".csv";
+  link.addEventListener("change", fileSelected);
+  link.click();
 }
 
 // Fetches the team list from the server.
@@ -664,9 +853,6 @@ teamsSetup()
   $("#teams-search").on("keyup", teamsSearch);
   $("#teams-add").on("click", teamsAdd);
   $("#teams-import").on("click", teamsImport);
-
-  // Import isn't available yet, so hide the icon.
-  $("#teams-import").remove();
 
   // Add a click handler for the add button.
   $("#teams-add").on("keyup", teamsAddKeyUp);

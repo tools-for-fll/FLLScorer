@@ -198,6 +198,13 @@ str_events_none:None
 str_teams_add:Add Team
 str_teams_add_failed:Could not add the new team!
 str_teams_already_exists:The team already exists!
+str_teams_csv_division_error:Could not find the '<!--#str_teams_csv_division_heading-->' column.
+str_teams_csv_division_heading:division
+str_teams_csv_error:Error parsing the CSV file!
+str_teams_csv_name_error:Could not find the '<!--#str_teams_csv_name_heading-->' column.
+str_teams_csv_name_heading:name
+str_teams_csv_number_error:Could not find the '<!--#str_teams_csv_number_heading-->' column.
+str_teams_csv_number_heading:number
 str_teams_delete_season_score_warning:This team has scores, which will be deleted with the team. Are you sure you want to delete this team?
 str_teams_delete_warning:Are you sure you want to delete this team?
 str_teams_edit:Edit Team

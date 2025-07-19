@@ -95,21 +95,25 @@ public class Teams
   private void
   add(JSONObject result, int number, String name, int division)
   {
+    int id;
+
     // Get the season ID.
     int season_id = m_season.seasonIdGet();
 
     // See if there is already a team with the given number.
-    if(m_database.teamGet(season_id, number) >= 0)
+    if((id = m_database.teamGet(season_id, number)) >= 0)
     {
       // Return an error since the team already exists.
       result.set("result", m_webserver.getSSI("str_teams_already_exists"));
+      result.set("id", id);
     }
 
     // Add the team to the database.
-    else if(m_database.teamAdd(season_id, number, name, division) >= 0)
+    else if((id = m_database.teamAdd(season_id, number, name, division)) >= 0)
     {
       // Return success since the team was added.
       result.set("result", "ok");
+      result.set("id", id);
     }
 
     // Otherwise, an error occurred when adding the team.
@@ -218,6 +222,7 @@ public class Teams
     {
       // Return success since the team was edited.
       result.set("result", "ok");
+      result.set("id", id);
     }
 
     // Otherwise, an error occurred when editing the team.
