@@ -385,9 +385,9 @@ public class Database
       Statement stmt = m_connection.createStatement();
 
       // Update the score table.
-      executeQuery(stmt, scoreAddMatch0);
-      executeQuery(stmt, scoreAddMatch0CV);
-      executeQuery(stmt, scoreAddMatch0Sheet);
+      executeUpdate(stmt, scoreAddMatch0);
+      executeUpdate(stmt, scoreAddMatch0CV);
+      executeUpdate(stmt, scoreAddMatch0Sheet);
 
       // Update the team table.
       executeUpdate(stmt, teamDivisionAdd);

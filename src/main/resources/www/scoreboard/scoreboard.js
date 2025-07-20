@@ -56,6 +56,12 @@ loadData()
     {
       division = 0;
       scores = data["scores"][0];
+      while(((scores === undefined) || (scores.length === 0)) &&
+            (data["divisions"][division + 1] !== undefined))
+      {
+        division++;
+        scores = data["scores"][division];
+      }
     }
   }
 
@@ -224,6 +230,16 @@ runTimer()
       division++;
       scores = data["scores"][division];
       index = 0;
+      while(((scores === undefined) || (scores.length === 0)) &&
+            (data["divisions"][division + 1] !== undefined))
+      {
+        division++;
+        scores = data["scores"][division];
+      }
+      if((scores === undefined) || (scores.length === 0))
+      {
+        loadData();
+      }
     }
     else
     {
