@@ -270,12 +270,13 @@ updateStatus()
 function
 showAbout()
 {
+  const color = $("link[rel*='icon']").attr("href");
   var html = "";
 
   // Construct the HTML for the about popup.
   html += `
 <div class="about_container">
-  <img src="favicon.ico">
+  <img src="${color}">
   <div>
     <span>
       <!--#str_about_title-->

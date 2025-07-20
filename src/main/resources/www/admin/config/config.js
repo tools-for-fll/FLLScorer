@@ -17,7 +17,8 @@ configAccent(evt)
   }
 
   // Get the new accent color name.
-  const color = "--color-" + $(evt.target).attr("id").substring(11);
+  const name = $(evt.target).attr("id").substring(11);
+  const color = "--color-" + name;
 
   // Called when the query to the server has completed.
   function
@@ -37,6 +38,9 @@ configAccent(evt)
     // Add the requested color to the style sheet.
     document.documentElement.style.setProperty("--accent-color",
                                                "var(" + color + ")");
+
+    // Change the favicon to match the new accent color.
+    $("link[rel*='icon']").attr("href", "/favicon_" + name + ".ico");
   }
 
   // Called when the query to the server fails.

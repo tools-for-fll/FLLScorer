@@ -211,6 +211,7 @@ public class Config
 
     // Update the SSI for the accent color.
     m_webserver.registerSSI("accent-color", accent_color);
+    m_webserver.registerSSI("icon-color", accent_color.substring(8));
   }
 
   /**
@@ -1076,6 +1077,7 @@ public class Config
     m_webserver.registerSSI("division3_name", divisionNameGet(3));
     m_webserver.registerSSI("division4_name", divisionNameGet(4));
     m_webserver.registerSSI("error-color", errorColorGet());
+    m_webserver.registerSSI("icon-color", accentColorGet().substring(8));
     m_webserver.registerSSI("timer-enable", timerEnableGet() ? "1" : "0");
     m_webserver.registerSSI("timer-location", timerLocationGet());
 
