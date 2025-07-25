@@ -18,6 +18,13 @@ eventsEditorHtml(title, date, matches, name)
     date = "value=\"" + new Date().toLocaleDateString("en-CA") + "\" ";
   }
 
+  // If the number of matches is not set (as is the case for adding an event),
+  // default to 3 matches with a practice match.
+  if(matches === "")
+  {
+    matches = 103;
+  }
+
   // Change the name input to an appropriate HTML input value specifier.
   if(name !== "")
   {
