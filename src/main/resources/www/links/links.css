@@ -8,31 +8,46 @@
 .links_tile
 {
   float: left;
-  width: 20em;
-  height: 23em;
+  width: 26em;
+  height: 26em;
   margin: 0.5em;
   border: 0.1em solid var(--accent-color);
   border-radius: 0.75em;
   padding: 0.375em;
   display: grid;
-  grid-template-rows: 20em 3em;
+  grid-template-rows: 3em 20em 3em;
   grid-gap: 0px 0px;
   grid-auto-flow: row;
   justify-content: center;
   align-items: center;
 }
 
-.links_tile img
+.links_tile .title
 {
+  color: var(--foreground-color);
+  font-size: 1.5em;
   grid-row: 1;
+  text-align: center;
+}
+
+.links_tile .qr
+{
+  align-items: center;
+  display: flex;
+  grid-row: 2;
+  justify-content: center;
+}
+
+.links_tile .qr img
+{
   max-width: 19em;
   max-height: 19em;
 }
 
-.links_tile p
+.links_tile .link
 {
   color: var(--foreground-color);
   font-size: 1.5em;
-  grid-row: 2;
+  grid-row: 3;
   text-align: center;
 }

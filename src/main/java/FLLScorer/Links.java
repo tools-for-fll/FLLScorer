@@ -76,7 +76,7 @@ public class Links
    *
    * @return The String representation of the IP address.
    */
-  private String
+  public static String
   getIP()
   {
     // Catch (and ignore) any errors that may occur.
@@ -344,6 +344,10 @@ public class Links
 
     // Get the hostname or IP of the local machine.
     m_localIP = getIP();
+
+    // Register the SSI for the base URL and the WiFi SSID.
+    m_webserver.registerSSI("base_url", "https://" + m_localIP + ":8443");
+    m_webserver.registerSSI("wifi_ssid", m_config.wifiSSIDGet());
 
     // Register the dynamic SSI handler for the WiFi links panel.
     m_webserver.registerDynamicSSI("links_wifi", this::serveSSI);

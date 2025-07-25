@@ -796,6 +796,9 @@ public class Config
   {
     // Set or add the configuration value.
     m_database.configValueSet(m_wifiSSID, ssid);
+
+    // Register the SSID for the WiFi SSID.
+    m_webserver.registerSSI("wifi_ssid", ssid);
   }
 
   /**

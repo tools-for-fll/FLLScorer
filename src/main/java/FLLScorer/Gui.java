@@ -155,7 +155,7 @@ public class Gui
       try
       {
         // Create a URI to the web site served by this application.
-        URI uri = new URI("https://localhost:8443");
+        URI uri = new URI("https://" + Links.getIP() + ":8443");
 
         // Get the Desktop object for this computer, if one is supported.
         Desktop desktop =
