@@ -206,7 +206,6 @@ public class TimeKeeper
   public long
   startTime()
   {
-    //
     // Return the start time.
     return(m_startTimeMillis);
   }
@@ -306,7 +305,11 @@ public class TimeKeeper
     private TimerState m_state = m_instance.state();
 
     /**
-     * The time, in milliseconds, at which the match time was last checked.
+     * When the timer is running, this is the time, in milliseconds, at which
+     * the match time was last checked.
+     *
+     * When the timer is stopped, this is the time, in milliseconds, at which
+     * the timer was stopped.
      */
     private long m_lastCheck = 0;
 
@@ -347,7 +350,7 @@ public class TimeKeeper
             m_playedEndGame = false;
 
             // Set the last time the timer was checked to zero, so that a new
-            // determination of of the timer state is made immediately.
+            // determination of the timer state is made immediately.
             m_lastCheck = 0;
           }
 
@@ -367,12 +370,23 @@ public class TimeKeeper
             {
               m_instance.play("cancel.wav");
             }
+
+            // Save the time that the timer was stopped.
+            m_lastCheck = now;
           }
         }
 
         // See if the timer is not running.
         if((m_state == TimerState.STOP) || (m_state == TimerState.RESET))
         {
+          // Reset the timer if it has been stopped for 15 seconds.
+          if((m_state == TimerState.STOP) &&
+             (m_instance.m_matchTime != m_instance.m_matchLen) &&
+             ((now - m_lastCheck) >= 15000))
+          {
+            m_instance.reset();
+          }
+
           // The timer is not running, so delay for 10 ms (so that it will be
           // responsive to requests to start the timer).
           try
