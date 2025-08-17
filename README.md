@@ -56,4 +56,4 @@ The system consists of two main components:
 
 ## Documentation
 
-Complete documentation is found [here](src/main/resources/www/docs/index.html).
+Complete documentation is found [here](https://tools-for-fll.github.io/FLLScorer/).
