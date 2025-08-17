@@ -10,7 +10,7 @@
       "problemMatcher": [],
       "group": {
         "kind": "build",
-        "isDefault": true
+        "isDefault": false
       }
     },
     {
@@ -21,6 +21,16 @@
       "group": {
         "kind": "build",
         "isDefault": true
+      }
+    },
+    {
+      "label": "docs",
+      "type": "shell",
+      "command": "cd docs; sphinx-build . ../src/main/resources/www/docs -E -a --doctree-dir _doctrees",
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
       }
     }
   ]

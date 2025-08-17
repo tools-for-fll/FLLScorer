@@ -649,6 +649,17 @@ public class WebServer extends HttpServlet
       return;
     }
 
+    // See if this is a request for "docs".
+    if(path.equals("docs"))
+    {
+      // Redirect the browser to the HTML file for the root of the
+      // documentation.
+      response.sendRedirect("/docs/index.html");
+
+      // There is nothing further to be done.
+      return;
+    }
+
     // Prepend the path with "www/" (so that only those resources are served)
     // and append "/index.html" if there is not a file name extension in the
     // request.

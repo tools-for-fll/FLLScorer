@@ -348,7 +348,7 @@ public class Database
       alter table
         score
       add column
-        match0 integer
+        match0 float
       """;
     String scoreAddMatch0CV = """
       alter table

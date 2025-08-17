@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scoresheet Format &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rubric Format" href="rubric.html" />
+    <link rel="prev" title="Database Design" href="database.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database Design</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scoresheet Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rule-syntax">Rule Syntax</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#validation-rule">Validation Rule</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#score-rule">Score Rule</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mathematical-encoding">Mathematical Encoding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Scoresheet Format</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="scoresheet-format">
+<h1>Scoresheet Format<a class="headerlink" href="#scoresheet-format" title="Link to this heading"></a></h1>
+<p>The scoresheet is contained in a JSON structure that provides detailed
+information about each mission, including its objectives, scoring criteria,
+constraints, and game pieces used (when there are fewer game pieces than
+scoring locations for that game piece).</p>
+<p>Within the scoresheet, all strings that are presented to the user are
+represented as an associative array where the key (referred to as the locale)
+is the ISO language code (ISO-639) followed by the ISO country code (ISO-3166),
+and the values are the corresponding string translated to that locale.  When a
+string is requested for a particular locale and that locale does not exist, the
+<code class="docutils literal notranslate"><span class="pre">en_US</span></code> locale is used as the default.</p>
+<section id="description">
+<h2>Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>The structure of the scoresheet is as follows:</p>
+<dl>
+<dt>missions</dt><dd><p>An array of missions</p>
+<dl>
+<dt>mission</dt><dd><p>The short identifier for the mission, for example <code class="docutils literal notranslate"><span class="pre">M01</span></code>, <code class="docutils literal notranslate"><span class="pre">M02</span></code>, and
+so on.</p>
+</dd>
+<dt>name</dt><dd><p>An associative array containing the name of the mission name in various
+languages.</p>
+</dd>
+<dt>items</dt><dd><p>An array of scoring criteria for this mission.</p>
+<dl>
+<dt>id</dt><dd><p>A unique identifier for the item within the mission.</p>
+</dd>
+<dt>description</dt><dd><p>An associative array containing the description of this mission
+item in various languages.</p>
+</dd>
+<dt>type</dt><dd><p>Type of item, such as <code class="docutils literal notranslate"><span class="pre">yesno</span></code> (yes/no question) or <code class="docutils literal notranslate"><span class="pre">enum</span></code>
+(multiple-choice question).</p>
+</dd>
+<dt>choices</dt><dd><p>If the item type is <code class="docutils literal notranslate"><span class="pre">enum</span></code>, this associative array lists the
+available choices in various languages.</p>
+</dd>
+<dt>score</dt><dd><p>(Optional) Scoring for the item, represented as an array indicating
+the score for each possible choice (with two entries for a
+<code class="docutils literal notranslate"><span class="pre">yesno</span></code> type and N entries for an <code class="docutils literal notranslate"><span class="pre">enum</span></code> type, where N is the
+length of the <code class="docutils literal notranslate"><span class="pre">choices</span></code> array).</p>
+</dd>
+<dt>pieces</dt><dd><p>(Optional) An array of information about specific game pieces
+required for the item, such as quantity and name.</p>
+<dl class="simple">
+<dt>name</dt><dd><p>The name of the game piece.</p>
+</dd>
+<dt>quantity</dt><dd><p>An array of the number of the game piece corresponding to each
+of the choices.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>score</dt><dd><p>(Optional) Scoring for this mission, where each item can not be scored
+individually (because the scoring is dependent upon the various items).
+Each entry in this array indicates the score based on a mathematical
+encoding of the item choices (see <a class="reference internal" href="#mathematical-encoding"><span class="std std-ref">Mathematical Encoding</span></a>). For
+invalid choices (as encoded via the constraints), the score should be
+entered as zero.</p>
+</dd>
+<dt>score_rule</dt><dd><p>(Optional) An expression that computes the score for this mission (see
+<a class="reference internal" href="#score-rule"><span class="std std-ref">Score Rule</span></a>).</p>
+</dd>
+<dt>constraints</dt><dd><p>(Optional) An array of constraints for the mission.</p>
+<dl class="simple">
+<dt>description</dt><dd><p>An associative array containing the description of the error
+condition when this constraint is not met, in various languages.</p>
+</dd>
+<dt>rule</dt><dd><p>An expression that evalutes to 0 or more when the constraint is met
+and less than 0 when the constraint is violated (see
+<a class="reference internal" href="#validation-rule"><span class="std std-ref">Validation Rule</span></a>).</p>
+</dd>
+</dl>
+</dd>
+<dt>no_touch</dt><dd><p>(Optional) A boolean that indicates that team equipment is not allowed
+to touch the mission model for this mission to score. This is used as a
+reminder to the referee during scoring.</p>
+</dd>
+</dl>
+</dd>
+<dt>pieces</dt><dd><p>An array of the constrained quantity game pieces.</p>
+<dl class="simple">
+<dt>name</dt><dd><p>The name of the game piece.</p>
+</dd>
+<dt>description</dt><dd><p>An associative array containing the description of the game piece in
+various languages.</p>
+</dd>
+<dt>mission</dt><dd><p>The mission identifier for the mission where an error is placed if this
+game piece is over allocated in the scoring of the scoresheet.</p>
+</dd>
+<dt>quantity</dt><dd><p>The number of instances of this game piece.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+<section id="rule-syntax">
+<h2>Rule Syntax<a class="headerlink" href="#rule-syntax" title="Link to this heading"></a></h2>
+<p>A set of variables is made available for the rules to perform calculations
+based on the scoresheet selections that have been made.  They take the form
+<code class="docutils literal notranslate"><span class="pre">mission_id</span></code>; for example, <code class="docutils literal notranslate"><span class="pre">M01_1</span></code> is the variable that represents the
+choice made on M01 for the item with an ID of 1, and its value is the selection
+that was made.</p>
+<p>For the <code class="docutils literal notranslate"><span class="pre">yesno</span></code> item type, <strong>no</strong> has a value of <strong>0</strong> and <strong>yes</strong> has a
+value of <strong>1</strong>.  For the <code class="docutils literal notranslate"><span class="pre">enum</span></code> item type, the choices are numbered <strong>0</strong>
+through <strong>N - 1</strong>, in order, for the <strong>N</strong> choices provided in the scoresheet.</p>
+<p><a class="reference external" href="https://github.com/fathzer/javaluator">Javaulator</a> is used to evaluate the rule expression; it can be consulted for
+details on what expressions are available (if something more complicated than
+addition, subtraction, multiplication, division, and parenthesis is needed).</p>
+<section id="validation-rule">
+<span id="id1"></span><h3>Validation Rule<a class="headerlink" href="#validation-rule" title="Link to this heading"></a></h3>
+<p>Using these variables, any mathmatical expression is constructed to validate
+the state of a particular mission, where a positive result is a valid state and
+a negative result is an invalid state.  For example, if a mission (M) has two
+yes/no questions, and the second answer can only be <strong>yes</strong> if the first answer
+is <strong>yes</strong>, a rule of <code class="docutils literal notranslate"><span class="pre">M_1</span> <span class="pre">-</span> <span class="pre">M_2</span></code> validates the mission.  To see how, it is
+easy to list all the possiblities, the computed value, and the validation
+state:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>M_1</p></th>
+<th class="head"><p>M_2</p></th>
+<th class="head"><p>M_1 - M_2</p></th>
+<th class="head"><p>Valid?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>no (0)</p></td>
+<td><p>no (0)</p></td>
+<td><p>0 - 0 = 0</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-odd"><td><p>yes (1)</p></td>
+<td><p>no (0)</p></td>
+<td><p>1 - 0 = 1</p></td>
+<td><p>true</p></td>
+</tr>
+<tr class="row-even"><td><p>no (0)</p></td>
+<td><p>yes (1)</p></td>
+<td><p>0 - 1 = -1</p></td>
+<td><p>false</p></td>
+</tr>
+<tr class="row-odd"><td><p>yes (1)</p></td>
+<td><p>yes (1)</p></td>
+<td><p>1 - 1 = 0</p></td>
+<td><p>true</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Only the <strong>M_1</strong> = <strong>0</strong> and <strong>M_2</strong> = <strong>1</strong> case results in a negative number,
+which is invalid as desired.  All the other cases are valid.</p>
+</section>
+<section id="score-rule">
+<span id="id2"></span><h3>Score Rule<a class="headerlink" href="#score-rule" title="Link to this heading"></a></h3>
+<p>Similarly, an expression is constructed using these variables to compute the
+score of a mission based on their values. Since this is evaluated after all the
+mission variables have been determined, a scoring rule can evalute based on all
+the other missions (as needed by the Engagement model from World Class, for
+example).</p>
+</section>
+</section>
+<section id="mathematical-encoding">
+<span id="id3"></span><h2>Mathematical Encoding<a class="headerlink" href="#mathematical-encoding" title="Link to this heading"></a></h2>
+<p>A mathematical encoding of the item choices is used to minimize the size of the
+scoring table for missions that have interdependent item scores. The process is
+best understood by taking a hypothetical mission with a yes/no choice for its
+first item and a three choice enumeration for its second item. There are six
+possible outcomes, and the two choices are combined via the formula:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">(b</span> <span class="pre">*</span> <span class="pre">2)</span> <span class="pre">+</span> <span class="pre">a</span></code></p>
+</div></blockquote>
+<p>Where <code class="docutils literal notranslate"><span class="pre">a</span></code> is the choice for the first item (yes/no) and <code class="docutils literal notranslate"><span class="pre">b</span></code> is the choice
+for the second item. <code class="docutils literal notranslate"><span class="pre">b</span></code> is multiplied by <code class="docutils literal notranslate"><span class="pre">2</span></code> since the first item has two
+possible choices. This provides 6 unique values (0..5) for the possible choices
+for the two mission items.</p>
+<p>For a slightly more complicated set of items, if the first item is an enum with
+three choices, the second item is a yes/no choice, and the third item is an
+enum with three choices, the choices are combined via the formula:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">(c</span> <span class="pre">*</span> <span class="pre">3</span> <span class="pre">*</span> <span class="pre">2)</span> <span class="pre">+</span> <span class="pre">(b</span> <span class="pre">*</span> <span class="pre">3)</span> <span class="pre">+</span> <span class="pre">a</span></code></p>
+</div></blockquote>
+<p>In this, <code class="docutils literal notranslate"><span class="pre">b</span></code> is multiplied by the number of choices for <code class="docutils literal notranslate"><span class="pre">a</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> is
+multiplied by the number of choices for <code class="docutils literal notranslate"><span class="pre">a</span></code> times the number of choices for
+<code class="docutils literal notranslate"><span class="pre">b</span></code>. Therefore, any combination of valid values for <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code>
+encode to a unique value, and there are no “holes” in the sequence of values.</p>
+<p>To extract the values of <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> from the resulting value
+(<code class="docutils literal notranslate"><span class="pre">n</span></code>), using integer arithmetic:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">%</span> <span class="pre">3</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">/</span> <span class="pre">3</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">%</span> <span class="pre">2</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">c</span> <span class="pre">=</span> <span class="pre">n</span> <span class="pre">/</span> <span class="pre">2</span></code></p>
+</div></blockquote>
+<p>This can be extended to any number of items in a mission.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="database.html" class="btn btn-neutral float-left" title="Database Design" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rubric.html" class="btn btn-neutral float-right" title="Rubric Format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

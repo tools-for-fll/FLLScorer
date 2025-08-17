@@ -95,6 +95,7 @@ str_about_version:Version <!--#version-->
 
 // Strings for the links page
 str_links_admin:Admin
+str_links_docs:Documentation
 str_links_judge:Judge
 str_links_referee:Referee
 str_links_scoreboard:Scoreboard

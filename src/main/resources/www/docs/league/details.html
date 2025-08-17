@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ranking Details &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Developer Details" href="../internals/developer.html" />
+    <link rel="prev" title="League Model" href="league.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="league.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Ranking Details</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#robot-game-ranking">Robot Game Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#innovation-project-ranking">Innovation Project Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#robot-design-ranking">Robot Design Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-values-ranking">Core Values Ranking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#assigning-points">Assigning Points</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Ranking Details</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ranking-details">
+<h1>Ranking Details<a class="headerlink" href="#ranking-details" title="Link to this heading"></a></h1>
+<p>The following describes how points are awarded for each of the four sections of
+a competition.  The team’s overall score is the sum of their points for each
+section.</p>
+<p>In each section, there are two steps; determine the ranking of the teams (from
+first to last), then assign points based on the placements.  Assigning points
+is done in the same way for each section.</p>
+<section id="robot-game-ranking">
+<h2>Robot Game Ranking<a class="headerlink" href="#robot-game-ranking" title="Link to this heading"></a></h2>
+<p>The ranking for robot game are based on the team’s best score.  If there is a
+tie, the second best scores are used as a tie-breaker.  If there is still a
+tie, the third best score, and so on for as many matches as there are at the
+event.  If more than one team has the same set of scores, they all are given
+the same ranking (there is no coin-toss, playoff, or other means to separate
+the tie).  In that case, the next ranking simply “doesn’t exist”.  For example,
+if two teams tie for first place, the next best team is awarded third place (as
+if there were a tie-breaker and the two first place teams were actually first
+and second).</p>
+</section>
+<section id="innovation-project-ranking">
+<h2>Innovation Project Ranking<a class="headerlink" href="#innovation-project-ranking" title="Link to this heading"></a></h2>
+<p>A team’s score in the innovation project is the sum of the values for each the
+items on their innovation project rubric.  So, for example, if a team scored a
+1 on all twelve of the innovation rubric items, their innovation project score
+is 12; if they scored a 3 on all of them, their score is 36.</p>
+<p>Once each team’s innovation project score is determined (these are actually
+listed on the <a class="reference internal" href="../admin/rubrics/rubrics.html"><span class="doc">Rubrics</span></a> panel), the teams are ranked from
+first to last based on score; the highest score is first, and the lowest score
+is last.  There is no tie-breaker; if more than one team has the same score,
+they share a ranking, and the subsequent ranking “doesn’t exist”.  For example,
+if two teams tie for first place, the next best team is awarded third place (as
+if there were a tie-breaker and the two first place teams were actually first
+and second).</p>
+</section>
+<section id="robot-design-ranking">
+<h2>Robot Design Ranking<a class="headerlink" href="#robot-design-ranking" title="Link to this heading"></a></h2>
+<p>Robot design ranking is done the exact same way as innovation project ranking.</p>
+</section>
+<section id="core-values-ranking">
+<h2>Core Values Ranking<a class="headerlink" href="#core-values-ranking" title="Link to this heading"></a></h2>
+<p>Core Values ranking is done the exact same way as innovation project ranking,
+with the addition that the Core Values scores from the referees are also
+included in the score (but are not displayed in the
+<a class="reference internal" href="../admin/rubrics/rubrics.html"><span class="doc">Rubrics</span></a> panel).</p>
+</section>
+<section id="assigning-points">
+<h2>Assigning Points<a class="headerlink" href="#assigning-points" title="Link to this heading"></a></h2>
+<p>For each individual ranking above, points are assigned to each team based on
+the following formula:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">+</span> <span class="pre">(100</span> <span class="pre">*</span> <span class="pre">(N</span> <span class="pre">-</span> <span class="pre">R)</span> <span class="pre">/</span> <span class="pre">(N</span> <span class="pre">-</span> <span class="pre">1))</span></code></p>
+</div></blockquote>
+<p>Where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of teams at the event, and <code class="docutils literal notranslate"><span class="pre">R</span></code> is the team’s rank.</p>
+<p>Taking some simple examples:</p>
+<ul>
+<li><p>There are three teams, and they ranked 1, 2, and 3.  The first team scores:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">+</span> <span class="pre">(100</span> <span class="pre">*</span> <span class="pre">(3</span> <span class="pre">-</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">(3</span> <span class="pre">-</span> <span class="pre">1))</span> <span class="pre">=</span> <span class="pre">100</span> <span class="pre">+</span> <span class="pre">(100</span> <span class="pre">*</span> <span class="pre">2</span> <span class="pre">/</span> <span class="pre">2)</span> <span class="pre">=</span> <span class="pre">200</span></code></p>
+</div></blockquote>
+<p>The second team scores:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">+</span> <span class="pre">(100</span> <span class="pre">*</span> <span class="pre">(3</span> <span class="pre">-</span> <span class="pre">2)</span> <span class="pre">/</span> <span class="pre">(3</span> <span class="pre">-</span> <span class="pre">1))</span> <span class="pre">=</span> <span class="pre">100</span> <span class="pre">+</span> <span class="pre">(100</span> <span class="pre">*</span> <span class="pre">1</span> <span class="pre">/</span> <span class="pre">2)</span> <span class="pre">=</span> <span class="pre">150</span></code></p>
+</div></blockquote>
+<p>The third team scores:</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">100</span> <span class="pre">+</span> <span class="pre">(100</span> <span class="pre">*</span> <span class="pre">(3</span> <span class="pre">-</span> <span class="pre">3)</span> <span class="pre">/</span> <span class="pre">(3</span> <span class="pre">-1</span> <span class="pre">))</span> <span class="pre">=</span> <span class="pre">100</span> <span class="pre">+</span> <span class="pre">(100</span> <span class="pre">*</span> <span class="pre">0</span> <span class="pre">/</span> <span class="pre">2)</span> <span class="pre">=</span> <span class="pre">100</span></code></p>
+</div></blockquote>
+</li>
+<li><p>There are three teams, and they ranked 1, 1, and 3 (a two-way tie for first
+place).  The first and second team both score 200 (as in the above example),
+and the third team scores 100 (as above).</p></li>
+<li><p>There are three teams, and they ranked 1, 2, and 2 (a two-way tie for second
+place).  The first team scores 200, and the two place teams in second both
+score 150.</p></li>
+</ul>
+<p>A team that is in first place in all four sections receives 800 points, and a
+team that is in last place in all four sections receives 400 points.  The
+thinking being that there is no possibility of a team scoring 0, and the
+separation between first (800) and last (400) is not quite as overwhelming as
+it would be if first received 400 points and last received 0 points (even
+though the point difference is identical).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="league.html" class="btn btn-neutral float-left" title="League Model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../internals/developer.html" class="btn btn-neutral float-right" title="Developer Details" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

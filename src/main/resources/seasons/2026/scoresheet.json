@@ -1,0 +1,470 @@
+{
+  "missions":
+  [
+    {
+      "mission": "EI",
+      "name":
+      {
+        "en_US": "Equipment Inspection"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "(Prematch) The robot and all equipment fit completely in one launch area and under the height limit"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        }
+      ]
+    },
+    {
+      "mission": "M01",
+      "name":
+      {
+        "en_US": "Surface Brushing"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Soil deposits completely cleared, touching the mat"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2" ]
+          },
+          "score": [ 0, 10, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Archaeologist’s brush is not touching the dig site"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M02",
+      "name":
+      {
+        "en_US": "Map Reveal"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Topsoil sections completely cleared"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M03",
+      "name":
+      {
+        "en_US": "Mineshaft Explorer"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Your team’s minecart is on the opposing team’s field"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Bonus: And the opposing team’s minecart is on your team’s field"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "Your minecart must be on the opposite team's field to score the bonus."
+          },
+          "rule": "M03_1 - M03_2"
+        }
+      ]
+    },
+    {
+      "mission": "M04",
+      "name":
+      {
+        "en_US": "Careful Recovery"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Precious artifact is not touching the mine"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Both support structures are standing"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M05",
+      "name":
+      {
+        "en_US": "Who Lived Here?"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Structure floor is completely upright"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M06",
+      "name":
+      {
+        "en_US": "Forge"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Ore blocks not touching the forge"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M07",
+      "name":
+      {
+        "en_US": "Heavy Lifting"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Millstone is no longer touching its base"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M08",
+      "name":
+      {
+        "en_US": "Silo"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Preserved pieces outside the silo"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "M09",
+      "name":
+      {
+        "en_US": "What’s on Sale?"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Roof is completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Market wares are raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M10",
+      "name":
+      {
+        "en_US": "Tip the Scales"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Scale is tipped and touching the mat"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Scale pan is completely removed"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ]
+    },
+    {
+      "mission": "M11",
+      "name":
+      {
+        "en_US": "Angler Artifacts"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Artifacts are raised above the ground layer"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Bonus: And the crane flag is at least partly lowered"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "constraints":
+      [
+        {
+          "description":
+          {
+            "en_US": "The artifacts must be raised for the crane flag to be lowered."
+          },
+          "rule": "M11_1 - M11_2"
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M12",
+      "name":
+      {
+        "en_US": "Salvage Operation"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Sand is completely cleared"
+          },
+          "type": "yesno",
+          "score": [ 0, 20 ]
+        },
+        {
+          "id": 2,
+          "description":
+          {
+            "en_US": "Ship is completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 10 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M13",
+      "name":
+      {
+        "en_US": "Statue Rebuild"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Satue is completely raised"
+          },
+          "type": "yesno",
+          "score": [ 0, 30 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M14",
+      "name":
+      {
+        "en_US": "Forum"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Artifacts touching the mat and at least partly in the forum"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6", "7" ]
+          },
+          "score": [ 0, 5, 10, 15, 20, 25, 30, 35 ]
+        }
+      ],
+      "no_touch": true
+    },
+    {
+      "mission": "M15",
+      "name":
+      {
+        "en_US": "Site Marking"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Sites with a flag at least partly inside and touching the mat"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3" ]
+          },
+          "score": [ 0, 10, 20, 30 ]
+        }
+      ]
+    },
+    {
+      "mission": "PT",
+      "name":
+      {
+        "en_US": "Precision Tokens"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Number of precision tokens remaining"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "0", "1", "2", "3", "4", "5", "6" ]
+          },
+          "score": [ 0, 10, 15, 25, 35, 50, 50 ]
+        }
+      ]
+    },
+    {
+      "mission": "GP",
+      "name":
+      {
+        "en_US": "Gracious Professionalism<sup>&reg;</sup>"
+      },
+      "items":
+      [
+        {
+          "id": 1,
+          "description":
+          {
+            "en_US": "Gracious Professionalism<sup>&reg;</sup> displayed at the robot game table"
+          },
+          "type": "enum",
+          "choices":
+          {
+            "en_US": [ "1", "2", "3", "4" ]
+          },
+          "score": [ 0, 0, 0, 0 ]
+        }
+      ]
+    }
+  ]
+}

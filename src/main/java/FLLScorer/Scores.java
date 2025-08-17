@@ -98,7 +98,7 @@ public class Scores
     int event_id = m_event.eventIdGet();
 
     // Ensure that the match number is valid.
-    if((match >= 1) && (match <= 4))
+    if((match >= 0) && (match <= 4))
     {
       // Delete the score from the database.
       if(m_database.scoreMatchRemove(season_id, event_id, id, match) == true)

@@ -23,6 +23,12 @@ scoresExchange(id, match)
   function
   onStart()
   {
+    // Skip this request if the button is disabled.
+    if($("#score" + id + "_exchange" + match).hasClass("disabled"))
+    {
+      return;
+    }
+
     // Get the details on the first score.
     var number = $("#score" + id + "_number").html().trim();
     var team = $("#score" + id + "_name").html().trim();
@@ -195,6 +201,12 @@ scoresDelete(id, match)
       .fail(onFail);
   }
 
+  // Skip this request if the button is disabled.
+  if($("#score" + id + "_delete" + match).hasClass("disabled"))
+  {
+    return;
+  }
+
   // Show a confirmation to make sure this event should be deleted.
   showConfirmation($("#score" + id + "_number").html().trim() + " : " +
                    $("#score" + id + "_name").html().trim() + " : " +
@@ -248,6 +260,7 @@ scoresLoad()
       {
         score = parseInt(score);
       }
+      var disabled = (score !== "") ? "" : " disabled";
 
       // Add the HTML for this score column.
       html += `
@@ -256,24 +269,13 @@ scoresLoad()
           <span id="score${id}_match${match}_score">${score}</span>
           <span class="match_action">
             <span id="score${id}_edit${match}" class="fa fa-pencil"
-                  onclick="scoresEdit(${id}, ${match});" tabindex="0"></span>`;
-      if(score !== "")
-      {
-        html += `
-            <span id="score${id}_exchange${match}" class="fa fa-exchange"
+                  onclick="scoresEdit(${id}, ${match});" tabindex="0"></span>
+            <span id="score${id}_exchange${match}" class="fa fa-exchange${disabled}"
                   onclick="scoresExchange(${id}, ${match});" tabindex="0">
             </span>
-            <span id="score${id}_delete${match}" class="fa fa-trash"
+            <span id="score${id}_delete${match}" class="fa fa-trash${disabled}"
                   onclick="scoresDelete(${id}, ${match});" tabindex="0">
-            </span>`;
-      }
-      else
-      {
-        html += `
-            <span class="fa fa-exchange disabled"></span>
-            <span class="fa fa-trash disabled"></span>`;
-      }
-      html += `
+            </span>
           </span>
         </div>
       </div>`;
@@ -403,6 +405,22 @@ wsMessage(e)
     // Update the score.
     $("#score" + fields[1] + "_match" + fields[0].substring(1, 2) + "_score").
       html(score);
+
+    // Update the enable state of the score exchange and delete buttons.
+    if(score !== "")
+    {
+      $(`#score${fields[1]}_exchange${fields[0].substring(1, 2)}`).
+        removeClass("disabled");
+      $(`#score${fields[1]}_delete${fields[0].substring(1, 2)}`).
+        removeClass("disabled");
+    }
+    else
+    {
+      $(`#score${fields[1]}_exchange${fields[0].substring(1, 2)}`).
+        addClass("disabled");
+      $(`#score${fields[1]}_delete${fields[0].substring(1, 2)}`).
+        addClass("disabled");
+    }
   }
 }
 

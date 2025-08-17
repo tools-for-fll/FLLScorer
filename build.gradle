@@ -45,6 +45,10 @@ application {
   mainClass = 'FLLScorer.FLLScorer'
 }
 
+compileJava {
+  options.release = 17
+}
+
 tasks.named('test') {
   // Use JUnit Platform for unit tests.
   useJUnitPlatform()

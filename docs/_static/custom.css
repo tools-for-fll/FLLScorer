@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2025 Brian Kircher
+ *
+ * Open Source Software; you can modify and/or share it under the terms of BSD
+ * license file in the root directory of this project.
+ */
+
+body
+{
+	text-align: justify;
+}
+
+.rst-content .align-center
+{
+	margin: unset;
+	margin-bottom: 24px;
+	margin-left: auto;
+	margin-right: auto;
+}

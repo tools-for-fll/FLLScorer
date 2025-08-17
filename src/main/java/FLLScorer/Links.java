@@ -186,6 +186,22 @@ public class Links
   }
 
   /**
+   * Serve a PNG with a QR code for the web page for documentation.
+   *
+   * @param path The path from the request.
+   *
+   * @param paramMap The parameters from the request.
+   *
+   * @return An array of bytes to return to the client.
+   */
+  private byte[]
+  serveDocs(String path, HashMap<String, String> paramMap)
+  {
+    // Generate a QR code for the admin web page.
+    return(serveQrCode("https://" + m_localIP + ":8443/docs"));
+  }
+
+  /**
    * Serve a PNG with a QR code for the web page for judges.
    *
    * @param path The path from the request.
@@ -354,6 +370,7 @@ public class Links
 
     // Register the dynamic handlers for the various QR code PNGs.
     m_webserver.registerDynamicFile("/links/admin.png", this::serveAdmin);
+    m_webserver.registerDynamicFile("/links/docs.png", this::serveDocs);
     m_webserver.registerDynamicFile("/links/judge.png", this::serveJudge);
     m_webserver.registerDynamicFile("/links/referee.png", this::serveReferee);
     m_webserver.registerDynamicFile("/links/scoreboard.png",
