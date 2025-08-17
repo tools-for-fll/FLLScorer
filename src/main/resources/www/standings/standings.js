@@ -20,6 +20,9 @@ var timer = null;
 // The current screen of data to display.
 var index = 0;
 
+// Whether the standings display is paused.
+var paused = false;
+
 // Loads the standings data from the server.
 function
 loadData()
@@ -67,6 +70,12 @@ loadData()
 function
 runTimer()
 {
+  // Do nothing if the standings update is paused.
+  if(paused)
+  {
+    return;
+  }
+
   // See if the first screen of standings is about to be displayed.
   if(index == 0)
   {
@@ -140,6 +149,48 @@ runTimer()
   }
 }
 
+// Handles keydown events.
+function
+onKeydown(e)
+{
+  // See if Ctrl-F was pressed.
+  if(((e.key == 'f') || (e.key == 'F')) && (e.ctrlKey == true))
+  {
+    // Toggle the full screen state of the window.
+    if(!document.fullscreenElement)
+    {
+      document.documentElement.requestFullscreen();
+    }
+    else
+    {
+      document.exitFullscreen();
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+
+  // See if Ctrl-P was pressed.
+  if(((e.key == 'p') || (e.key == 'P')) && (e.ctrlKey == true))
+  {
+    // Toggle the pause state.
+    paused = !paused;
+
+    // Toggle the state of the pause indicator.
+    if(paused)
+    {
+      $(".paused").css("display", "flex");
+    }
+    else
+    {
+      $(".paused").css("display", "none");
+    }
+
+    // Do not allow this key event to further propagated.
+    e.stopPropagation();
+  }
+}
+
 // Handles setup of the standings.
 function
 ready()
@@ -152,22 +203,8 @@ ready()
   $(".e1t").html(event1Heading);
   $(".e2t").html(event2Heading);
 
-  // A key listener to enter/exit fullscreen mode when Ctrl+F is pressed.
-  $(document).keypress(function(e)
-  {
-    if(e.keyCode == 6)
-    {
-      if(!document.fullscreenElement)
-      {
-        document.documentElement.requestFullscreen();
-      }
-      else
-      {
-        document.exitFullscreen();
-      }
-      return(false);
-    }
-  });
+  // Add a keydown event listener.
+  document.addEventListener("keydown", onKeydown);
 
   // Manually run the standings the first time.
   runTimer();
