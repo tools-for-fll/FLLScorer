@@ -48,6 +48,11 @@ public class Rubrics
   private Events m_event = null;
 
   /**
+   * The Judge object.
+   */
+  private Judge m_judge = null;
+
+  /**
    * Gets the Rubrics singleton object, creating it if necessary.
    *
    * @return Returns the Rubrics singleton.
@@ -91,6 +96,9 @@ public class Rubrics
     // Delete the rubric from the database.
     if(m_database.judgingRemove(season_id, event_id, id) == true)
     {
+      // Request a refresh of the judge clients.
+      m_judge.refresh();
+
       // Return successs since the match score was deleted.
       result.set("result", "ok");
     }
@@ -169,6 +177,9 @@ public class Rubrics
         result.set("result", m_webserver.getSSI("str_rubrics_exchange_error"));
         return;
     }
+
+    // Request a refresh of the judge clients.
+    m_judge.refresh();
 
     // Success.
     result.set("result", "ok");
@@ -348,11 +359,13 @@ public class Rubrics
   public void
   setup()
   {
-    // Get references to the web server, database, seasons, and events objects.
+    // Get references to the web server, database, seasons, events, and judge
+    // objects.
     m_webserver = WebServer.getInstance();
     m_database = Database.getInstance();
     m_season = Seasons.getInstance();
     m_event = Events.getInstance();
+    m_judge = Judge.getInstance();
 
     // Register the dynamic handler for the rubrics.json file.
     m_webserver.registerDynamicFile("/admin/rubrics/rubrics.json",

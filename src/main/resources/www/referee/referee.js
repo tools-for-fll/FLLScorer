@@ -16,6 +16,9 @@ var theMatch = null;
 // (instead of returning to the score list).
 var closeOnExit = false;
 
+// The web socket for communicating with the server.
+var ws = null;
+
 // Enable/disable the compute button based on the completeness of the
 // scoresheet.
 function

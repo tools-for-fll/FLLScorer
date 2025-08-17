@@ -813,7 +813,7 @@ public class Referee
   }
 
   /**
-   * The WebSocket for the referee.
+   * The WebSocket for the referees.
    */
   @WebSocket
   public static class RefereeSocket implements Runnable
@@ -906,7 +906,7 @@ public class Referee
                            match3Score, null, match3Sheet, match4Score, null,
                            match4Sheet);
 
-          // Loop through the tests that have scores (or scoresheets).
+          // Loop through the teams that have scores (or scoresheets).
           for(int idx = 0; idx < teamNumber.size(); idx++)
           {
             Integer state;

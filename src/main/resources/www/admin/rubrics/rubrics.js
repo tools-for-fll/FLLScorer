@@ -201,6 +201,8 @@ rubricsLoad()
       var core = result["rubrics"][i]["core"];
 
       // Add the row for this team.
+      var disabled = ((project === "-") && (robot === "-") && (core === "-")) ?
+                     " disabled" : "";
       html += `
     <div id="rubrics${id}" class="row">
       <span id="rubrics${id}_number" class="number">
@@ -209,35 +211,24 @@ rubricsLoad()
       <span id="rubrics${id}_name" class="name">
         ${result["rubrics"][i]["name"]}
       </span>
-      <span class="project">
-          ${project}
+      <span id="rubrics${id}_project" class="project">
+        ${project}
       </span>
-      <span class="robot">
+      <span id="rubrics${id}_robot" class="robot">
         ${robot}
       </span>
-      <span class="core">
+      <span id="rubrics${id}_core" class="core">
         ${core}
       </span>
       <div class="action">
         <span id="rubrics${id}_edit" class="fa fa-pencil"
-              onclick="rubricsEdit(${id});" tabindex="0"></span>`;
-      if((project != "-") || (robot != "-") || (core != "-"))
-      {
-        html += `
-        <span id="rubrics${id}_exchange" class="fa fa-exchange"
+              onclick="rubricsEdit(${id});" tabindex="0"></span>
+        <span id="rubrics${id}_exchange" class="fa fa-exchange${disabled}"
               onclick="rubricsExchange(${id});" tabindex="0">
         </span>
-        <span id="rubrics${id}_delete" class="fa fa-trash"
+        <span id="rubrics${id}_delete" class="fa fa-trash${disabled}"
               onclick="rubricsDelete(${id});" tabindex="0">
-        </span>`;
-      }
-      else
-      {
-        html += `
-        <span class="fa fa-exchange disabled"></span>
-        <span class="fa fa-trash disabled"></span>`;
-      }
-      html += `
+        </span>
       </div>
     </div>`;
     }
@@ -288,6 +279,81 @@ rubricsLoad()
   $.getJSON("/admin/rubrics/rubrics.json")
     .done(onDone)
     .fail(onFail);
+}
+
+// Connects to the server WebSocket interface.
+function
+wsConnect()
+{
+  // Create a new WebSocket.
+  ws = new WebSocket(window.location.origin.replace("https", "wss") +
+                     "/judge/judge.ws");
+
+  // Set the functions to call when a message is received for the WebSocket is
+  // closed.
+  ws.onmessage = wsMessage;
+  ws.onclose = wsClose;
+}
+
+// Called when a message is received from the WebSocket.
+function
+wsMessage(e)
+{
+  // Split the message into based on a colon as a separator.
+  var fields = e.data.split(":");
+
+  // Ensure the message has the correct number of fields.
+  if(fields.length === 3)
+  {
+    // See if this is a project score update.
+    if(fields[0] === "ip")
+    {
+      // Update the project score.
+      $("#rubrics" + fields[1] + "_project").
+        html(fields[2] === "" ? "-" : fields[2]);
+    }
+
+    // See if this is a robot design score update.
+    if(fields[0] === "rd")
+    {
+      // Update the robot design score.
+      $("#rubrics" + fields[1] + "_robot").
+        html(fields[2] === "" ? "-" : fields[2]);
+    }
+
+    // See if this is a Core Values score update.
+    if(fields[0] === "cv")
+    {
+      // Update the Core Values score.
+      $("#rubrics" + fields[1] + "_core").
+        html(fields[2] === "" ? "-" : fields[2]);
+    }
+
+    // See if this is a rubric state update.
+    if(fields[0] === "r")
+    {
+      // Update the action buttons based on the rubric state.
+      if(fields[2] === "0")
+      {
+        $("#rubrics" + fields[1] + "_exchange").addClass("disabled");
+        $("#rubrics" + fields[1] + "_delete").addClass("disabled");
+      }
+      else
+      {
+        $("#rubrics" + fields[1] + "_exchange").removeClass("disabled");
+        $("#rubrics" + fields[1] + "_delete").removeClass("disabled");
+      }
+    }
+  }
+}
+
+// Called when the WebSocket closes.
+function
+wsClose()
+{
+  // Attempt to reconnect to the server after a second (to avoid flooding the
+  // network with requests).
+  setTimeout(wsConnect, 1000);
 }
 
 // Searches for items in the team list.
@@ -410,6 +476,9 @@ rubricsSetup()
 
   // Add a keydown event listener.
   document.addEventListener("keydown", rubricsKeydown);
+
+  // Connect to the server via a WebSocket.
+  wsConnect();
 }
 
 // Handles cleanup of the rubrics tab.

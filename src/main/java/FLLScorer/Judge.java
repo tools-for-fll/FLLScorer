@@ -10,12 +10,21 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.bspfsystems.simplejson.JSONArray;
 import org.bspfsystems.simplejson.JSONObject;
 import org.bspfsystems.simplejson.SimpleJSONArray;
 import org.bspfsystems.simplejson.SimpleJSONObject;
 import org.bspfsystems.simplejson.parser.JSONParser;
+import org.eclipse.jetty.ee10.websocket.server.JettyServerUpgradeRequest;
+import org.eclipse.jetty.ee10.websocket.server.JettyServerUpgradeResponse;
+import org.eclipse.jetty.ee10.websocket.server.JettyWebSocketCreator;
+import org.eclipse.jetty.websocket.api.Callback;
+import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
+import org.eclipse.jetty.websocket.api.annotations.OnWebSocketOpen;
+import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
 /**
  * Handles the jugde page.
@@ -63,6 +72,12 @@ public class Judge
    * The season for the currently loaded JSON rubric.
    */
   private String m_rubricSeason = null;
+
+  /**
+   * The time of the last rubric update; used to determine when to push changes
+   * to the active judges.
+   */
+  private long m_lastUpdate = 0;
 
   /**
    * Gets the Judge singleton object, creating it if necessary.
@@ -293,6 +308,9 @@ public class Judge
       {
         // Success.
         result.set("result", "ok");
+
+        // There are changes that need to be sent to the active judges.
+        m_lastUpdate = java.lang.System.currentTimeMillis();
       }
 
       // This request has been handled.
@@ -425,6 +443,9 @@ public class Judge
     {
       // Success.
       result.set("result", "ok");
+
+      // There are changes that need to be sent to the active judges.
+      m_lastUpdate = java.lang.System.currentTimeMillis();
     }
   }
 
@@ -495,6 +516,236 @@ public class Judge
   }
 
   /**
+   * The WebSocket for the judges.
+   */
+  @WebSocket
+  public static class JudgeSocket implements Runnable
+  {
+    /**
+     * The object for the Judge singleton.
+     */
+    private Judge m_instance = Judge.getInstance();
+
+    /**
+     * The session for this WebSocket.
+     */
+    private Session m_session;
+
+    /**
+     * The time, in milliseconds, at which the update was sent to the
+     * WebSocket.
+     */
+    private long m_lastSend = 0;
+
+    /**
+     * Called when the WebSocket is first opened.
+     *
+     * @param session The session for this WebSocket.
+     */
+    @OnWebSocketOpen
+    public void
+    onOpen(Session session)
+    {
+      // Save the session.
+      m_session = session;
+
+      // Start the thread that handles sending updates via the WebSocket.
+      new Thread(this).start();
+    }
+
+    /**
+     * Called when the WebSocket is closed.
+     *
+     * @param closeCode The code for why the WebSocket was closed.
+     *
+     * @param closeReasonPhrase The reason the WebSocket was closed.
+     */
+    @OnWebSocketClose
+    public void
+    onClose(int closeCode, String closeReasonPhrase)
+    {
+      // Clear the stored session, which causes the background thread to exit.
+      m_session = null;
+    }
+
+    /**
+     * The code that runs in the judge thread.
+     */
+    @Override
+    public void
+    run()
+    {
+      // Loop while the session is still active.
+      while(m_session != null)
+      {
+        // Get the current time.
+        long now = java.lang.System.currentTimeMillis();
+
+        // See if there are score updates to be sent.
+        if(m_instance.m_lastUpdate > m_lastSend)
+        {
+          // Capture the time of the update that is being performed.
+          now = m_instance.m_lastUpdate;
+
+          // Arrays to hold the rubric data from the database.
+          ArrayList<Integer> teamNumber = new ArrayList<Integer>();
+          ArrayList<Integer> project = new ArrayList<Integer>();
+          ArrayList<Integer> robotDesign = new ArrayList<Integer>();
+          ArrayList<Integer> coreValues = new ArrayList<Integer>();
+          ArrayList<String> rubric = new ArrayList<String>();
+
+          // Get the rubrics for this event.
+          m_instance.m_database.
+            judgingEnumerate(m_instance.m_season.seasonIdGet(),
+                             m_instance.m_event.eventIdGet(), null, null, null,
+                             teamNumber, project, robotDesign, coreValues,
+                             rubric);
+
+          // Loop through the teams that have rubrics.
+          for(int idx = 0; idx < teamNumber.size(); idx++)
+          {
+            boolean complete = true;
+            Integer ip, rd, cv, state;
+
+            // Get this team's project score.
+            ip = project.get(idx);
+            if(ip == -1)
+            {
+              complete = false;
+            }
+
+            // Get this team's robot design score.
+            rd = robotDesign.get(idx);
+            if(rd == -1)
+            {
+              complete = false;
+            }
+
+            // Get this team's Core Values score.
+            cv = coreValues.get(idx);
+            if(cv == -1)
+            {
+              complete = false;
+            }
+
+            // Determine the state of this team's rubric.
+            if(rubric.get(idx) == null)
+            {
+              state = 0;
+            }
+            else if(!complete)
+            {
+              state = 1;
+            }
+            else
+            {
+              state = 2;
+            }
+
+            // Send this team's project score to the client.
+            m_session.sendText("ip:" + teamNumber.get(idx) + ":" +
+                               ((ip == -1) ? ((state == 1) ? "***" : "") : ip),
+                               Callback.NOOP);
+
+            // Send this team's robot design score to the client.
+            m_session.sendText("rd:" + teamNumber.get(idx) + ":" +
+                               ((rd == -1) ? ((state == 1) ? "***" : "") : rd),
+                               Callback.NOOP);
+
+            // Send this team's Core Values score to the client.
+            m_session.sendText("cv:" + teamNumber.get(idx) + ":" +
+                               ((cv == -1) ? ((state == 1) ? "***" : "") : cv),
+                               Callback.NOOP);
+
+            // Send this team's rubric state to the client.
+            m_session.sendText("r:" + teamNumber.get(idx) + ":" + state,
+                               Callback.NOOP);
+          }
+
+          // Get the teams at this event.
+          ArrayList<Integer> teamsAtEvent = new ArrayList<Integer>();
+          m_instance.m_database.
+            teamAtEventEnumerate(m_instance.m_season.seasonIdGet(),
+                                 m_instance.m_event.eventIdGet(), -1, null,
+                                 null, teamsAtEvent);
+
+          // Loop through all the teams at this event.
+          for(int idx = 0; idx < teamsAtEvent.size(); idx++)
+          {
+            // Skip this team if it has a rubric and therefore has already been
+            // handled.
+            if(teamNumber.contains(teamsAtEvent.get(idx)))
+            {
+              continue;
+            }
+
+            // Send messages indicating that there is no rubric for this team.
+            m_session.sendText("ip:" + teamsAtEvent.get(idx) + ":",
+                               Callback.NOOP);
+            m_session.sendText("rd:" + teamsAtEvent.get(idx) + ":",
+                               Callback.NOOP);
+            m_session.sendText("cv:" + teamsAtEvent.get(idx) + ":",
+                               Callback.NOOP);
+            m_session.sendText("r:" + teamsAtEvent.get(idx) + ":0",
+                               Callback.NOOP);
+          }
+
+          // Set the last send time to the update time.  It is possible that
+          // another update came in during the time it took to send this
+          // update, but it will get sent out the next time through the loop.
+          m_lastSend = now;
+        }
+        else if((now - m_lastSend) > 1000)
+        {
+          // Send a NOP via the WebSocket (to keep it from timing out and
+          // closing).
+          m_session.sendText("nop", Callback.NOOP);
+
+          // Increment the last send time by a second.  This effectively
+          // precludes the possibility of a missed update.
+          m_lastSend += 1000;
+        }
+
+        // Delay for half a second.
+        try
+        {
+          TimeUnit.MILLISECONDS.sleep(500);
+        }
+        catch(InterruptedException e)
+        {
+        }
+      }
+    }
+  }
+
+  /**
+   * A creator for judging WebSockets.
+   */
+  private static class JudgeSocketCreator implements JettyWebSocketCreator
+  {
+    // Creates a WebSocket for the incoming request.
+    @Override
+    public Object
+    createWebSocket(JettyServerUpgradeRequest jettyServerUpgradeRequest,
+                    JettyServerUpgradeResponse jettyServerUpgradeResponse)
+    {
+      // Create a new judge WebSocket for this request.
+      return(new JudgeSocket());
+    }
+  }
+
+  /**
+   * Requests an update of the judge displays.
+   */
+  public void
+  refresh()
+  {
+    // Set the last update time to now, forcing an update to be sent to all
+    // connected clients.
+    m_lastUpdate = java.lang.System.currentTimeMillis();
+  }
+
+  /**
    * Performs initial setup for the judge page.
    */
   public void
@@ -510,5 +761,9 @@ public class Judge
 
     // Register the dynamic handler for the judge.json file.
     m_webserver.registerDynamicFile("/judge/judge.json", this::serveJudgeJson);
-  }
+ 
+    // Register the WebSocket that supports the judge page.
+    m_webserver.addWebSocket("/judge/judge.ws", new JudgeSocketCreator(),
+                             5000);
+ }
 }

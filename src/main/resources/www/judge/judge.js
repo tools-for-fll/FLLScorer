@@ -13,6 +13,9 @@ var teamID = null;
 // returning to the team list).
 var closeOnExit = false;
 
+// The web socket for communicating with the server.
+var ws = null;
+
 // Selects a rubric area.
 function
 areaSelect(area)
@@ -141,7 +144,8 @@ save()
     }
     else
     {
-      loadTeams();
+      $("#rubric").addClass("hidden");
+      $("#list").removeClass("hidden");
     }
   }
 
@@ -199,7 +203,7 @@ loadTeams()
       var team = result["teams"][idx];
 
       // Generate the HTML fragment for this team.
-      html += `<div class="row">`;
+      html += `<div class="row" id="team${team["id"]}">`;
       html += `<div class="name">`;
       html += `<span>`;
       html += `${team["number"]} : ${team["name"]}`;
@@ -511,6 +515,61 @@ loadRubric(id)
     .fail(fail);
 }
 
+// Connects to the server WebSocket interface.
+function
+wsConnect()
+{
+  // Create a new WebSocket.
+  ws = new WebSocket(window.location.origin.replace("https", "wss") +
+                     "/judge/judge.ws");
+
+  // Set the functions to call when a message is received for the WebSocket is
+  // closed.
+  ws.onmessage = wsMessage;
+  ws.onclose = wsClose;
+}
+
+// Called when a message is received from the WebSocket.
+function
+wsMessage(e)
+{
+  // Split the message into based on a colon as a separator.
+  var fields = e.data.split(":");
+
+  // See if this message represents the state of a rubric.
+  if((fields.length == 3) && (fields[0] === "r"))
+  {
+    // Get the button corresponding to this team.
+    var button = $("#team" + fields[1] + " button");
+
+    // Remove any colors from this button.
+    button.removeClass("red yellow green");
+
+    // Set the button color based on this rubric's state.
+    if(fields[2] == 2)
+    {
+      button.addClass("green");
+    }
+    else if(fields[2] == 1)
+    {
+      button.addClass("red");
+    }
+    else
+    {
+      button.addClass("yellow");
+    }
+  }
+}
+
+// Called when the WebSocket closes.
+function
+wsClose()
+{
+  // Attempt to reconnect to the server after a second (to avoid flooding the
+  // network with requests).
+  setTimeout(wsConnect, 1000);
+}
+
 // Searches for items in the team list.
 function
 search()
@@ -652,6 +711,9 @@ ready()
 
   // Add a keydown event listener.
   document.addEventListener("keydown", keydown);
+
+  // Connect to the server via a WebSocket.
+  wsConnect();
 }
 
 // Set the function to call when the page is ready.
