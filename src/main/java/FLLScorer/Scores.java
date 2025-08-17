@@ -55,6 +55,11 @@ public class Scores
   private Events m_event = null;
 
   /**
+   * The Referee object.
+   */
+  private Referee m_referee = null;
+
+  /**
    * Gets the Scores singleton object, creating it if necessary.
    *
    * @return Returns the Scores singleton.
@@ -103,6 +108,9 @@ public class Scores
       // Delete the score from the database.
       if(m_database.scoreMatchRemove(season_id, event_id, id, match) == true)
       {
+        // Request a refresh of the referee clients.
+        m_referee.refresh();
+
         // Return successs since the match score was deleted.
         result.set("result", "ok");
       }
@@ -193,6 +201,9 @@ public class Scores
     }
     else
     {
+      // Request a refresh of the referee clients.
+      m_referee.refresh();
+
       // Return success since the scores were exchanged.
       result.set("result", "ok");
     }
@@ -825,12 +836,14 @@ public class Scores
   public void
   setup()
   {
-    // Get references to the web server, database, seasons, and events objects.
+    // Get references to the web server, database, seasons, events, and referee
+    // objects.
     m_webserver = WebServer.getInstance();
     m_database = Database.getInstance();
     m_config = Config.getInstance();
     m_season = Seasons.getInstance();
     m_event = Events.getInstance();
+    m_referee = Referee.getInstance();
 
     // Register the dynamic handler for the scores.json file.
     m_webserver.registerDynamicFile("/admin/scores/scores.json",

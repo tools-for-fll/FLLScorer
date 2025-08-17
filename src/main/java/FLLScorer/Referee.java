@@ -1058,6 +1058,17 @@ public class Referee
   }
 
   /**
+   * Requests an update of the referee displays.
+   */
+  public void
+  refresh()
+  {
+    // Set the last update time to now, forcing an update to be sent to all
+    // connected clients.
+    m_lastUpdate = java.lang.System.currentTimeMillis();
+  }
+
+  /**
    * Performs initial setup for the referee page.
    */
   public void
