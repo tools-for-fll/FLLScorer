@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seasons &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Events" href="../events/events.html" />
+    <link rel="prev" title="Config" href="../config/config.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../admin.html">Admin</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../config/config.html">Config</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Seasons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/events.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../teams/teams.html">Teams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scores/scores.html">Scores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rubrics/rubrics.html">Rubrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../users/users.html">Users</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../admin.html">Admin</a></li>
+      <li class="breadcrumb-item active">Seasons</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="seasons">
+<h1>Seasons<a class="headerlink" href="#seasons" title="Link to this heading"></a></h1>
+<p>The seasons panel allows the game that is used at the event to be selected.
+The vast majority of the time, it will be the most recent game; older games are
+available for possible use in an off-season fun competition (where an old game
+is revisited, preferably one old enough that none of the current participants
+actually worked on that game in the past!).</p>
+<img alt="Seasons panel" class="align-center" src="../../_images/seasons.webp" />
+<p>Clicking on one of the seasons selects it, as indicated by the gray background
+and the accent color outline (as well as it being listed in the status line at
+the bottom as the season).  Everything else about the system (events, teams,
+scores, and so on) are unique to the season; changing the seasons hides the
+details of the previously selected season, but they are still available by
+simply selecting the previous season again.</p>
+<p>Every season of FLL is listed, though not all of them have scoresheets
+available in the system.  If the logo is grayed out (and therefore
+unclickable), there is not a scoresheet available and it can not be scored.
+Some seasons have alternate games available, such as the World Festival Encore
+challenge.  While they can be selected and the scoresheet used, the challenge
+rules must be obtained via other methods (or good guesses made based on the
+scoresheet!).</p>
+<p>The following seasons are supported:</p>
+<ul class="simple">
+<li><p>2025-2026 Unearthed</p></li>
+<li><p>2024-2025 Submerged</p>
+<ul>
+<li><p>Official game</p></li>
+<li><p>World Festival Encore game</p></li>
+</ul>
+</li>
+<li><p>2023-2024 Master Piece</p>
+<ul>
+<li><p>Offical game</p></li>
+<li><p>World Festival Encore game</p></li>
+</ul>
+</li>
+<li><p>2022-2023 Super Powered</p></li>
+<li><p>2021-2022 Cargo connection</p></li>
+<li><p>2020-2021 RePlay</p></li>
+<li><p>2019-2020 City Shaper</p></li>
+<li><p>2018-2019 Into Orbit</p></li>
+<li><p>2017-2018 Hydro Dynamics</p></li>
+<li><p>2016-2017 Animal Allies</p></li>
+<li><p>2015-2016 Trash Trek</p></li>
+<li><p>2014-2015 World Class</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../config/config.html" class="btn btn-neutral float-left" title="Config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../events/events.html" class="btn btn-neutral float-right" title="Events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

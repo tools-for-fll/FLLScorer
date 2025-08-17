@@ -1,0 +1,207 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>League Model &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Ranking Details" href="details.html" />
+    <link rel="prev" title="Timer" href="../timer/timer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">League Model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="league-model">
+<h1>League Model<a class="headerlink" href="#league-model" title="Link to this heading"></a></h1>
+<p>In official FLL competitions, teams attend a qualifing event.  At that event,
+roughly 35% of the teams advance to the next round (area championship, state
+championship, and so on).  For the remaining 65% of teams, their season ends
+after a single competition.  These percentages vary from region to region of
+course.</p>
+<p>With such a large percentage attending just a single competition, they do not
+have the opportunity to learn from their experience and the judge’s feedback,
+make improvements, and attend another competition.  This is a missed learning
+opportunity for the students.</p>
+<p>FTC has a league model and FRC has a district model, where teams have the
+opportunity to compete in more than one event.  The results from two events are
+combined to determine the league/district rankings, and those are used to
+determine the teams that advance.</p>
+<p>The FLL league model supported by FLL Scorer is inspired by the FTC and FRC
+systems.  It provides teams a second chance to complete, enabling that extra
+learning opportunity of improving their project and robot based on feedback at
+an event.</p>
+<p>The league model may not work at a large scale.  Imagine the number of official
+qualifiers in your region, the number of venues required, the number of event
+days, the number of volunteers, and so on…then double that!  However, it is
+quite doable at a smaller scale, such as in a series of “unoffical events”
+(that would be officially classified as scrimmages).</p>
+<p>If all of the events are scored with the same scoring computer, as a set of
+events within the system, the league model portion of the system gathers the
+scores from the first two events a team attends, assigns a composite score to
+each event, then sums them for the team’s league score.  The
+<a class="reference internal" href="../standings/standings.html"><span class="doc">Standings</span></a> page shows those scores (both the individual
+event scores and the sum of the two event scores), along with a ranking of
+teams based on the sumed score.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is probably best to not display the league standings during an event.  It
+changes too dramatically (especially if judges are entering rubrics as part
+of judging; some teams will have full judging rubrics while others have
+nothing) and is more likely to induce added stress during the event.</p>
+</div>
+<p>If there are enough teams that participate in a league system like this, the
+standings could be used to invite some number of the top teams in the league to
+attend a league championship event (again, akin to the league championship
+event in FTC or the distrct championship event in FRC). Or, the league rankings
+can be used just for fun.  It is entirely up to the organizers how far they
+want to go with the league model, and how much of their time they want to put
+into it.</p>
+<p>When using the league model, the team’s rubrics must be captured in the
+<a class="reference internal" href="../admin/rubrics/rubrics.html"><span class="doc">Rubrics</span></a> panel of the <a class="reference internal" href="../admin/admin.html"><span class="doc">Admin</span></a> page.  This
+does not mean that the judges must use FLL Scorer to perform their judging,
+just that the results need to be entered by someone.  The composite score is
+based on the robot game results, the project judging rubric, the robot design
+judging rubric, and the Core Values judging rubric (combined with the Core
+Values scores awarded by referees at each match).  In other words, it is akin
+to the Champions Award criteria.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The team’s composite score from an event is not necessarily computed in the
+same manner as OJS, Event Hub, and so on.  It is <em>possible</em> that the
+rankings computed here are not in 100% agreement with the official rankings.
+Given that the rankings of the individual judging areas are used by not
+shown to teams, just like the judging rankings are not shared with teams, it
+is unlikely to be noticed.</p>
+</div>
+<p>In the unlikely case that a team is disqualified at an event, the only way to
+reflect that here is to change their judging rubrics to all 1’s.  Either for
+all rubrics, or only one of them (if they were disqualified from only one
+judging area).  This places them into “last place” in those judging areas,
+awarding them the least number of composite points.</p>
+<p>Displaying the <a class="reference internal" href="../standings/standings.html"><span class="doc">Standings</span></a> page at the end of an event, after
+awards have been announced, could be fun for the teams.  Or, the final results
+can be shared with all the teams at the conclusion of all of the league events.
+If or how this is utilized is up to your discretion and creativity!</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../timer/timer.html" class="btn btn-neutral float-left" title="Timer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="details.html" class="btn btn-neutral float-right" title="Ranking Details" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

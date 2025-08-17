@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Config &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Seasons" href="../seasons/seasons.html" />
+    <link rel="prev" title="Admin" href="../admin.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../admin.html">Admin</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Config</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#appearance">Appearance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#divisions">Divisions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scoreboard">Scoreboard</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wifi-information">WiFi Information</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../seasons/seasons.html">Seasons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/events.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../teams/teams.html">Teams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scores/scores.html">Scores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rubrics/rubrics.html">Rubrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../users/users.html">Users</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../admin.html">Admin</a></li>
+      <li class="breadcrumb-item active">Config</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="config">
+<h1>Config<a class="headerlink" href="#config" title="Link to this heading"></a></h1>
+<p>The configuration panel provides some high-level controls for the application.
+These are typically setup one time and then left alone, though it is possible
+to change them whenever.</p>
+<p>Clicking on the carot before the various headings expand and hide the detailed
+configuration of that section, making it easier to navigate through the various
+items.</p>
+<img alt="Configuration panel" class="align-center" src="../../_images/config.webp" />
+<section id="appearance">
+<h2>Appearance<a class="headerlink" href="#appearance" title="Link to this heading"></a></h2>
+<p>The appearance section allows the accent and error colors to be selected.</p>
+<img alt="Selections for accent and error color" class="align-center" src="../../_images/appearance.webp" />
+<p>The accent color is used for highlighting certain portions of the pages;
+outlines, selected items, and so on.  Each season, this can be changed based on
+“matching” or complementing the season’s logo, or it can be stay the same from
+season to season.</p>
+<p>The error color is used to highlight errors in the robot game scoresheet.  In
+addition to being a different color, it is inverted (the error color is the
+background, and the text is white).  It is best if the error color complements
+the accent color, so that errors stand out.  Generally, picking a color that is
+four colors away from the accent color is a good complement (and looks good as
+well).</p>
+</section>
+<section id="divisions">
+<h2>Divisions<a class="headerlink" href="#divisions" title="Link to this heading"></a></h2>
+<p>Some regions use divisions to separate teams such that 4th graders do not
+compete against 8th graders.  By default, division support is not enabled (so
+there are no divisions).</p>
+<img alt="Selections for division support" class="align-center" src="../../_images/divisions.webp" />
+<p>Clicking on the <code class="docutils literal notranslate"><span class="pre">Support</span> <span class="pre">divisions?</span></code> check box clicked, division support is
+enabled the remaining division configuration fields are displayed.  If division
+support is enabled, it is still possible to have an event with teams from only
+one division in attendance; all the audience displays still show as being that
+division.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">divisions</span></code> allows a selection of two to four divisions for the
+events.  Based on the selection, there are two to four division configurations
+shown.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Name</span> <span class="pre">1</span></code> though <code class="docutils literal notranslate"><span class="pre">Name</span> <span class="pre">N</span></code> allows the name of the division to be entered (if
+something other than the default of “Division 1”, “Division 2”, and so on) is
+used.  Additionally, each division has a color selection, which shows up on the
+scoreboard as the background color for the headings (instead of the accent
+color); this helps to quickly visualize which division is being shown on the
+scoreboard.</p>
+</section>
+<section id="scoreboard">
+<h2>Scoreboard<a class="headerlink" href="#scoreboard" title="Link to this heading"></a></h2>
+<p>The scoreboard can optionally have the timer displayed on it as well, making it
+possible to run an event with only a single audience display (if resources are
+limited).</p>
+<img alt="Selections for timer configuration on the scoreboard" class="align-center" src="../../_images/scoreboard.webp" />
+<p>The <code class="docutils literal notranslate"><span class="pre">Show</span> <span class="pre">timer?</span></code> checkbox enables the timer on the scoreboard when clicked.
+When enabled, the further configuration is shown.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Location</span></code> allows the placing the timer at the top of the scoreboard (over
+the location name, between the logos) or in the center of the scoreboard (over
+the scores).</p>
+</section>
+<section id="wifi-information">
+<h2>WiFi Information<a class="headerlink" href="#wifi-information" title="Link to this heading"></a></h2>
+<p>This allows for entry of the WiFi credentials for the WiFi network in use at
+the event.  This does not affect the scoring computer (or any other device)
+connecting to the WiFi network, it simply gets encoded into the WiFi
+<a class="reference internal" href="../../qr_codes/qr_codes.html"><span class="doc">QR Codes</span></a> so that other devices (typically mobile devices)
+can more easily connect to the network (since they do not have to type the
+credentials).</p>
+<img alt="WiFi credentials entry" class="align-center" src="../../_images/wifi.webp" />
+<p>The <code class="docutils literal notranslate"><span class="pre">SSID</span></code> is the name of the WiFi network.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Password</span></code> is the password required to gain access to the WiFi network.</p>
+<p>Whenever these values have been changed, the <a class="reference internal" href="../../qr_codes/qr_codes.html"><span class="doc">QR Codes</span></a>
+page must be refreshed in order to re-generate the WiFi QR code.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../admin.html" class="btn btn-neutral float-left" title="Admin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../seasons/seasons.html" class="btn btn-neutral float-right" title="Seasons" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

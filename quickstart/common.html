@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Common Setup &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Events with a Scorekeeper" href="scorekeeper.html" />
+    <link rel="prev" title="Quickstart" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Common Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#select-a-season">Select a Season</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-the-event">Create the event</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-the-teams">Add the Teams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#showing-the-scoreboard">Showing the Scoreboard</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#showing-the-timer">Showing the Timer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Common Setup</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="common-setup">
+<h1>Common Setup<a class="headerlink" href="#common-setup" title="Link to this heading"></a></h1>
+<p>There is some event-specific common setup that must be performed, no matter how
+the event is run.  Those steps are described here, and are a prerequisite to
+the following quickstart guides.</p>
+<p>If an event has already been run using the scoring computer, it is possible
+that the first two steps can be skipped, and the <a class="reference internal" href="#create-the-event"><span class="std std-ref">Create the event</span></a> step
+is the first that is needed.</p>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading"></a></h2>
+<p>The first thing to do is some basic configuration of the scoring software to
+match the region or event’s needs.  Start from the QR code page:</p>
+<img alt="The QR code page, providing links to all the event tools" class="align-center" src="../_images/qr_codes.webp" />
+<p>Click on the <a class="reference internal" href="../admin/admin.html"><span class="doc">Admin</span></a> QR code to access the admin page, bringing
+up the login screen:</p>
+<img alt="The login page" class="align-center" src="../_images/login.webp" />
+<p>Log in as the admin user; the user name is <code class="docutils literal notranslate"><span class="pre">admin</span></code> and the default password
+is <code class="docutils literal notranslate"><span class="pre">FLLRocks!</span></code> (use the actual password if it has been changed!).  Once
+logged in, click on the <a class="reference internal" href="../admin/config/config.html"><span class="doc">Config</span></a> button at the top:</p>
+<img alt="The Config panel, showing the configuration settings" class="align-center" src="../_images/config.webp" />
+<p>There are two configuration values that require attention:</p>
+<dl class="simple">
+<dt>Divisions</dt><dd><p>If the region uses a division model, division support can be enabled via
+this checkbox.  Further configuration of the division is then exposed,
+allowing the number of divisions, the division names, and the division
+colors (in order to easily distinguish them on the scoreboard) to be
+configured.  If the defaults are not suitable, they can be changed;
+otherwise, no further configuration is needed.</p>
+</dd>
+<dt>Scoreboard</dt><dd><p>To support having a single audience display, the timer can optionally be
+displayed on the scoreboard.  By default, it is disabled, but it can be
+enabled via this checkbox.  When enabled, the timer can be placed at the top
+of the scoreboard (over the event name), making it easy to still see the
+scoreboard; alternatively, it can be placed in the middle of the screen
+(overlapping part of the scoreboard), making it easier to see the timer but
+partially obscuring the scoreboard (only during a match though).</p>
+</dd>
+</dl>
+<p>The other configuration options can be adjusted if desired, though it is not
+necessary.</p>
+</section>
+<section id="select-a-season">
+<h2>Select a Season<a class="headerlink" href="#select-a-season" title="Link to this heading"></a></h2>
+<p>The next thing to do is to select the season (in the majority of cases, the
+correct season is already selected, since the latest season is the default).
+In the admin panel, click on the <a class="reference internal" href="../admin/seasons/seasons.html"><span class="doc">Seasons</span></a> button at the
+top:</p>
+<img alt="The Seasons panel, showing all the seasons" class="align-center" src="../_images/seasons1.webp" />
+<p>Simply click on the desired season; it is highlighted, and it appears in the
+status line at the bottom of the page.  The status line is always helpful to
+ensure that the correct season, event, and number of teams are correct (in case
+one of them is inadvertently changed).</p>
+<p>Some seasons have alternate games/scoresheets.  In this case, the name below
+the season logo is a dropdown selection; select an alternate game if desired
+(the rules for the alternate games must be separately acquired!).</p>
+</section>
+<section id="create-the-event">
+<span id="id1"></span><h2>Create the event<a class="headerlink" href="#create-the-event" title="Link to this heading"></a></h2>
+<p>The next thing to do is to create the event.  In the admin panel, click on the
+<a class="reference internal" href="../admin/events/events.html"><span class="doc">Events</span></a> button at the top:</p>
+<img alt="The Events panel, showing all the events" class="align-center" src="../_images/events1.webp" />
+<p>Click on the add event <em class="fa fa-plus"></em> button in the lower right corner of the
+page to add an event:</p>
+<img alt="The add event panel, allowing a new event to be added" class="align-center" src="../_images/add_event.webp" />
+<p>Enter the details for the event; the name of the event (for example, <code class="docutils literal notranslate"><span class="pre">Kickoff</span>
+<span class="pre">Spectacular</span></code>), the date of the event, and the number of matches in the event
+(in most cases, it is <code class="docutils literal notranslate"><span class="pre">3</span> <span class="pre">w/</span> <span class="pre">practice</span></code>, which is a practice match and then
+three official matches).  Click on <code class="docutils literal notranslate"><span class="pre">OK</span></code> when done to create the event.  Then
+click on the box in the <code class="docutils literal notranslate"><span class="pre">Select</span></code> column for the newly created event to make
+it the current event.</p>
+<p>The status line at the bottom of the admin panel always shows the currently
+active event, and can always be consulted to ensure that the active event has
+not been inadvertently changed (which would cause confusion for everyone
+involved!).</p>
+</section>
+<section id="add-the-teams">
+<h2>Add the Teams<a class="headerlink" href="#add-the-teams" title="Link to this heading"></a></h2>
+<p>The next step is to add the teams.  Depending on previous uses of the computer,
+some or all of the teams at the event may already be entered (for example, at
+a championship event where all the teams have previously competed at a
+qualifier event).  Or, they may all need to be entered.  Start by clicking on
+the <a class="reference internal" href="../admin/teams/teams.html"><span class="doc">Teams</span></a> button at the top of the admin panel:</p>
+<img alt="The teams panel, showing all the teams" class="align-center" src="../_images/teams1.webp" />
+<p>Teams can be entered in one of two way:</p>
+<ol class="arabic">
+<li><p>Teams can be individually entered by clicking on the add team <em class="fa fa-plus"></em>
+button in the lower right, bring up the add team dialog:</p>
+<img alt="The add team panel, allowing a new team to be added" class="align-center" src="../_images/add_team.webp" />
+<p>Enter the team number, team name, and their division (if divisions are
+enabled; the division select does not appear when divisions are disabled).
+Click on <code class="docutils literal notranslate"><span class="pre">OK</span></code> when done to add them.  After returning to the list of
+teams, the square under the <code class="docutils literal notranslate"><span class="pre">At</span> <span class="pre">Event</span></code> column must be checked to add them
+to the currently selected event.</p>
+</li>
+<li><p>Teams can be bulk added via a CSV file by clicking on the upload
+<em class="fa fa-upload"></em> button in the lower right.  The CSV file must contain at least
+a team number column (labeled <code class="docutils literal notranslate"><span class="pre">number</span></code>) and a team name column (labeled
+<code class="docutils literal notranslate"><span class="pre">name</span></code>); and must also have a division column (labeled <code class="docutils literal notranslate"><span class="pre">division</span></code>) if
+divisions are enabled.  As an example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">number</span><span class="p">,</span><span class="n">name</span>
+<span class="mi">37350</span><span class="p">,</span><span class="s2">&quot;Bricks r&#39; Us&quot;</span>
+<span class="mi">43157</span><span class="p">,</span><span class="s2">&quot;Motors of Mayhem&quot;</span>
+<span class="mi">47654</span><span class="p">,</span><span class="s2">&quot;LEGO Legion&quot;</span>
+<span class="mi">52528</span><span class="p">,</span><span class="s2">&quot;Friends of LEGO&quot;</span>
+<span class="mi">53342</span><span class="p">,</span><span class="s2">&quot;We V3&quot;</span>
+<span class="mi">55578</span><span class="p">,</span><span class="s2">&quot;Crazy Gyros&quot;</span>
+<span class="mi">55699</span><span class="p">,</span><span class="s2">&quot;Block Stars&quot;</span>
+<span class="mi">57773</span><span class="p">,</span><span class="s2">&quot;Blockenspiel&quot;</span>
+<span class="mi">57873</span><span class="p">,</span><span class="s2">&quot;Beams &amp; Axles&quot;</span>
+<span class="mi">58405</span><span class="p">,</span><span class="s2">&quot;Snapped Together&quot;</span>
+<span class="mi">63979</span><span class="p">,</span><span class="s2">&quot;Spike Storms&quot;</span>
+<span class="mi">64057</span><span class="p">,</span><span class="s2">&quot;Gearheads&quot;</span>
+</pre></div>
+</div>
+<p>This adds twelve teams to the event.  The columns in the CSV can be in any
+order, and additional columns are ignored.  The names of the columns must
+match these labels, but can be capitalized in any manner.</p>
+<p>When adding teams via a CSV file, they are all added to the current event
+automatically.  If the team already exists, it is simply added to the
+current event, so it is safe to re-upload the CSV file (for example if there
+are any late additions to the event, and a master CSV is updated).</p>
+</li>
+</ol>
+</section>
+<section id="showing-the-scoreboard">
+<h2>Showing the Scoreboard<a class="headerlink" href="#showing-the-scoreboard" title="Link to this heading"></a></h2>
+<p>In order to show the scoreboard, start from the QR code page:</p>
+<img alt="The QR code page, providing links to all the event tools" class="align-center" src="../_images/qr_codes.webp" />
+<p>Click on the <a class="reference internal" href="../scoreboard/scoreboard.html"><span class="doc">Scoreboard</span></a> QR code to bring up the
+scoreboard.  Alternatively, as would happen if a different computer is being
+used to display the scoreboard, the URL under the QR code can be typed into the
+browser on the other computer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If using a different computer, additional steps may be needed to ensure that
+there is a network connection between the two computers so that they can
+communicate; see <a class="reference internal" href="networking.html"><span class="doc">Networking</span></a> for details.</p>
+</div>
+<img alt="The scoreboard display" class="align-center" src="../_images/scoreboard1.webp" />
+<p>This page displays the current scoreboard.  Eight teams are displayed at a
+time, periodically updating to the next eight teams and wrapping back to the
+start after the final teams are displayed.  New scores do not appear on the
+scoreboard until it starts the cycle back over at the first team, which may add
+to the suspense of teams waiting to see their score!  If divisions are enabled,
+the scoreboard cycles through the score for the divisions in order (in other
+words, the first division, then the second division, and so on).</p>
+<p>This is a display-only page, so it is safe to have out where participants may
+be able to access it (though hopefully they demonstrate good Gracious
+Professionalism and leave it alone!).  It is also worth noting that no game
+sounds are produced by the scoreboard page (even when the timer is enabled);
+they are only played on the computer that runs the main application.</p>
+<p>Once the scoreboard is displayed and moved to the appropriate screen (for
+example, if a secondary output from the comptuer is being used to display the
+scoreboard), pressing <em>Ctrl-F</em> when the scoreboard window is selected makes the
+scoreboard be fullscreen.  This hides the window decorations, tool bars, and so
+on, so that just the scoreboard is visible.  Pressing <em>Escape</em> or <em>Ctrl-F</em>
+leaves fullscreen mode.</p>
+</section>
+<section id="showing-the-timer">
+<h2>Showing the Timer<a class="headerlink" href="#showing-the-timer" title="Link to this heading"></a></h2>
+<p>If the scoreboard is configured to show the timer, it is likely that this step
+can be skipped!  If, however, a separate timer is being displayed (either in
+conjunction with a timer on the scoreboard, or instead of a timer on the
+scoreboard), the timer needs to be displayed.</p>
+<p>Like showing the scoreboard, start from the QR code page:</p>
+<img alt="The QR code page, providing links to all the event tools" class="align-center" src="../_images/qr_codes.webp" />
+<p>Click on the <a class="reference internal" href="../timer/timer.html"><span class="doc">Timer</span></a> QR code to bring up the timer.
+Alternatively, especially if a different computer is being used to display the
+timer, the URL under the QR code can be typed into the browser on the other
+computer.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The same network connection requirement exists here!</p>
+</div>
+<img alt="The timer page" class="align-center" src="../_images/timer.webp" />
+<p>This page displays the current state of the timer.  It is a display-only page,
+so it is safe to have out where participants maybe able to access it (though
+hopefully they demonstrate good Gracious Professionalism and leave it alone!).
+It is also worth noting that no game sounds are produced by the timer page;
+they are only played on the computer that runs the main application.</p>
+<p>Once the timer is displayed and moved to the appropriate screen (for example,
+if a secondary output from the comptuer is being used to display the timer),
+pressing <em>Ctrl-F</em> when the timer window is selected makes the timer page be
+fullscreen.  This hides the window decorations, tool bars, and so on, so that
+just the match timer is visible.  Pressing <em>Escape</em> or <em>Ctrl-F</em> leaves
+fullscreen mode.</p>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<p>The next steps depends on how the event is being scored.  There are two main
+choices:</p>
+<dl class="simple">
+<dt><a class="reference internal" href="scorekeeper.html"><span class="doc">Events with a Scorekeeper</span></a></dt><dd><p>An event with the referees filling out paper scoresheets and a scorekeeper
+entering them into the computer.</p>
+</dd>
+<dt><a class="reference internal" href="referee.html"><span class="doc">Events with Referees Scoring</span></a></dt><dd><p>An event with the referees filling out the electronic scoresheet on a tablet
+or phone.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="Quickstart" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scorekeeper.html" class="btn btn-neutral float-right" title="Events with a Scorekeeper" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

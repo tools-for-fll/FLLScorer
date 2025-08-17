@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Judge" href="../../judge/judge.html" />
+    <link rel="prev" title="Rubrics" href="../rubrics/rubrics.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../admin.html">Admin</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../config/config.html">Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../seasons/seasons.html">Seasons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../events/events.html">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../teams/teams.html">Teams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scores/scores.html">Scores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rubrics/rubrics.html">Rubrics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Users</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#permissions">Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#login-types">Login Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#admin-login">Admin Login</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#role-based-logins">Role-based Logins</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-based-logins">User-based Logins</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../admin.html">Admin</a></li>
+      <li class="breadcrumb-item active">Users</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="users">
+<h1>Users<a class="headerlink" href="#users" title="Link to this heading"></a></h1>
+<p>User management is accomplished using the user pane.  Users can be added,
+deleted, renamed, have their password changed, and have their permissions
+updated.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>The user panel shows the set of users in the system, the permissions that they
+each have, and provides a means to add, edit, and delete users.</p>
+<img alt="Users panel" class="align-center" src="../../_images/users.webp" />
+<p>Beside each user is a set of check boxes for adding (when checked) or removing
+(when empty) the corresponding permission.  The edit user <em class="fa fa-pencil"></em> button
+allows the user name and/or password to be changed, and the delete user
+<em class="fa fa-trash"></em> button provides a way to delete a user.</p>
+<p>Clicking the add user <em class="fa fa-plus"></em> button in the lower right, or pressing
+<em>Ctrl-A</em> on the keyboard, brings up the Add User dialog:</p>
+<img alt="Add/Edit User dialog" class="align-center" src="../../_images/add_user.webp" />
+<p>When editing a user, the dialog is almost identical (except it says <code class="docutils literal notranslate"><span class="pre">Edit</span>
+<span class="pre">User</span></code>, and the Name is pre-populated with the current user name).</p>
+</section>
+<section id="permissions">
+<h2>Permissions<a class="headerlink" href="#permissions" title="Link to this heading"></a></h2>
+<p>There are five permissions in the FLL Scoring system:</p>
+<dl class="simple">
+<dt>Admin</dt><dd><p>This permission has no restrictions; is allows any action to be performed.</p>
+</dd>
+<dt>Host</dt><dd><p>This permission is only slightly less restricted than the <code class="docutils literal notranslate"><span class="pre">Admin</span></code>
+permission, and it intended for an event host, tournament director, and so
+on.</p>
+</dd>
+<dt>Judge</dt><dd><p>Allows access to the <a class="reference internal" href="../../judge/judge.html"><span class="doc">Judge</span></a> page, allowing entry,
+modification, and viewing of rubrics.</p>
+</dd>
+<dt>Referee</dt><dd><p>Allows access to the <a class="reference internal" href="../../referee/referee.html"><span class="doc">Referee</span></a> page, allowing entry,
+modification, and viewing of robot game scoresheets and scores.</p>
+</dd>
+<dt>Timekeeper</dt><dd><p>Allows access to the <a class="reference internal" href="../../timekeeper/timekeeper.html"><span class="doc">Time Keeper</span></a> page, allowing the match
+timer to be started, stopped, and reset.</p>
+</dd>
+</dl>
+<p>Each user can have as many of these permissions as required to allow the
+volunteers to perform the role that is asked of them.</p>
+</section>
+<section id="login-types">
+<h2>Login Types<a class="headerlink" href="#login-types" title="Link to this heading"></a></h2>
+<p>There two ways to setup users in the system; either role-based logins or
+user-based logins.  Or, a combination of the two can be used, with some
+volunteers using role-based logins with others using user-based logins.</p>
+<section id="admin-login">
+<h3>Admin Login<a class="headerlink" href="#admin-login" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">admin</span></code> user is a special user.  This user can not be renamed or deleted,
+and its permissions can not be changed; it is a permanent user.  The password
+can be changed, however; the default password is <code class="docutils literal notranslate"><span class="pre">FLLRocks!</span></code>.  When run for
+the first time, the <code class="docutils literal notranslate"><span class="pre">admin</span></code> user is created with the default password;
+clicking the <code class="docutils literal notranslate"><span class="pre">Reset</span> <span class="pre">Admin</span> <span class="pre">Password</span></code> on the main application window resets the
+<code class="docutils literal notranslate"><span class="pre">admin</span></code> user to the default password (in case it is changed to something that
+no-one remembers!).</p>
+<p>Changing the <code class="docutils literal notranslate"><span class="pre">admin</span></code> user password at the start of an event is recommended to
+ensure that only authorized volunteers have access (in case someone who
+volunteered at the previous event is a coach at the current event).  This
+allows the volunteers to say in good conscience that the coach in question did
+not have access to the system, should the unfortunate situation arises that
+someone makes accusations of impropriety.  Of course, whether this precaution
+is needed is entirely up to the judgement of the event organizers.</p>
+</section>
+<section id="role-based-logins">
+<span id="id1"></span><h3>Role-based Logins<a class="headerlink" href="#role-based-logins" title="Link to this heading"></a></h3>
+<p>When using role-based logins, volunteers with the same role all login using the
+same credentials. The suggested logins are as follows (with each login having
+the permission that matches the login name):</p>
+<dl class="simple">
+<dt>host</dt><dd><p>Used by the tournament director, and by the scorekeeper when the tournament
+is run with paper scoresheets that are entered by a scorekeeper (or two!).</p>
+</dd>
+<dt>judge</dt><dd><p>Used by the JA and the judges (if capturing the judging rubrics).  More
+typically, the capture of rubrics would happen at the conclusion of the
+event, and the JA/judges would not use this during the event.</p>
+</dd>
+<dt>referee</dt><dd><p>Used by the head referee and the table referees.  The table referees use
+this to be able to fill in the scoresheets with the team at the end of
+each match, and the head referee uses this to track the scoresheets/scores
+as the event progresses (to make sure scoresheets/scores are entered in
+the correct round, a team isn’t missed, and so on).</p>
+</dd>
+<dt>timekeeper</dt><dd><p>Used by the time keeper to start the official match timer (if using the
+one provided by FLL Scorer) at the start of each match.</p>
+</dd>
+</dl>
+<p>When these logins are created, their password is set as well.  Like the
+<code class="docutils literal notranslate"><span class="pre">admin</span></code> password, these should probably be changed from event to event.</p>
+</section>
+<section id="user-based-logins">
+<h3>User-based Logins<a class="headerlink" href="#user-based-logins" title="Link to this heading"></a></h3>
+<p>When using user-based logins, each person has their own login, and are
+individually granted the permissions they need to perform their volunteer role.
+For example, some volunteers may be trading time as table referees (and
+therefore need the <code class="docutils literal notranslate"><span class="pre">Referee</span></code> permission), but double as the time keeper when
+not being a table referee (and therefore need the <code class="docutils literal notranslate"><span class="pre">Timekeeper</span></code> permission).
+Other volunteers may be table referees only, and are only granted the
+<code class="docutils literal notranslate"><span class="pre">Referee</span></code> permission.</p>
+<p>If there is a coach who was a volunteer at a previous event, it is probably
+best to remove all their permissions for the duration of the event.</p>
+<p>While providing more flexibility, user-based logins also require more logins to
+be created (one per volunteer).  Many times, those can be created prior to the
+event, but inevitably some will need to be created at the event (based on who
+shows up to help!).</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rubrics/rubrics.html" class="btn btn-neutral float-left" title="Rubrics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../judge/judge.html" class="btn btn-neutral float-right" title="Judge" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

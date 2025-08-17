@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Networking &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="QR Codes" href="../qr_codes/qr_codes.html" />
+    <link rel="prev" title="Events with Referees Scoring" href="referee.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Networking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-the-venue-s-wifi">Using the Venue’s WiFi</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-onto-the-venue-s-wifi-network">Getting onto the Venue’s WiFi network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#peer-to-peer-access">Peer-to-peer Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#downsides">Downsides</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-a-wifi-network">Setting up a WiFi Network</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuring-the-wifi-ap">Configuring the WiFi AP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deploying-the-wifi-ap">Deploying the WiFi AP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#retrieving-the-wifi-ap">Retrieving the WiFi AP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#allowing-teams-onto-the-wifi-ap">Allowing Teams onto the WiFi AP</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sharing-wifi-credentials">Sharing WiFi credentials</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Networking</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="networking">
+<h1>Networking<a class="headerlink" href="#networking" title="Link to this heading"></a></h1>
+<p>Computer networking/WiFi at an event can be easy or it can be really
+challenging, depending on the venue and the equipment available to bring to the
+venue.  Let’s look at two different setups:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#using-the-venues-wifi"><span class="std std-ref">Using the Venue’s WiFi</span></a></p></li>
+<li><p><a class="reference internal" href="#setting-up-a-wifi-network"><span class="std std-ref">Setting up a WiFi Network</span></a></p></li>
+</ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This guide presumes some knowledge and understanding of WiFi networks and
+configuration.  Consult <a class="reference external" href="https://google.com">Google</a> or someone within the local FLL community
+for assistance if necessary.</p>
+</div>
+<p>Whichever method is used to access WiFi, refer to
+<a class="reference internal" href="#sharing-wifi-credentials"><span class="std std-ref">Sharing WiFi credentials</span></a> for assistance with getting devices onto the
+WiFi network in use (especially important if referees are using their own
+devices/phones to score matches).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>FLL Scorer uses a self-signed SSL certificate, which means that its validity
+can not be verified by browsers.  Browsers tend to put very scary sounding
+warnings when encountering self-signed SSL certificates (and rightfully so,
+as on the public Internet that is a good sign that you’re about to get
+scammed); in this case the browser should be told to visit the site anyway
+(the mechanics of how to do this vary from browser to browser).</p>
+</div>
+<section id="using-the-venue-s-wifi">
+<span id="using-the-venues-wifi"></span><h2>Using the Venue’s WiFi<a class="headerlink" href="#using-the-venue-s-wifi" title="Link to this heading"></a></h2>
+<p>The benefit of using a venue’s WiFi is coverage; it is a fixed installation
+that has been designed and engineering to provide acceptable coverage
+throughout the venue.  There are two challenges to using the venue’s WiFi:</p>
+<ol class="arabic simple">
+<li><p>Getting onto the venue’s WiFi network</p></li>
+<li><p>Accessing a local peer computer once on the venue’s WiFi network</p></li>
+</ol>
+<section id="getting-onto-the-venue-s-wifi-network">
+<h3>Getting onto the Venue’s WiFi network<a class="headerlink" href="#getting-onto-the-venue-s-wifi-network" title="Link to this heading"></a></h3>
+<p>Depending on the venue, there may or may not be a public/guest WiFi network
+available.  If one is available, getting onto it is usually fairly easy; one of
+several methods are employeed by the venue’s network:</p>
+<ul class="simple">
+<li><p>There is no password for the network, but once you connect it takes you
+through a temporary account registration process.  The details of how this
+works is beyond the scope of this document; there are too many different
+schemes that are used by different WiFi equipment manufacturers!</p></li>
+<li><p>The WiFi credentials are posted around the venue.</p></li>
+<li><p>The venue personnel provides the WiFi credentials for use during the event.</p></li>
+</ul>
+<p>In any case, getting onto the venue’s WiFi network starts with a conversation
+with the site coordinator, hopefully during the pre-event planning.</p>
+</section>
+<section id="peer-to-peer-access">
+<h3>Peer-to-peer Access<a class="headerlink" href="#peer-to-peer-access" title="Link to this heading"></a></h3>
+<p>Once onto the venue’s WiFi, the next challenge is being able to perform
+peer-to-peer communication.  In most/all schools, for example, peer-to-peer
+communication is explicitly disabled on the WiFi networks (to prevent chatting,
+cheating, bullying, and so on).  If the venue’s IT department is willing to
+disable the peer-to-peer restriction for the duration of the event, that is
+great!</p>
+<p>If the venue’s IT department does not want to carte blanche enable peer-to-peer
+communication, they may be willing to enable peer-to-peer on just TCP port
+8443, the only port used by the FLL Scorer system.</p>
+<p>If they are unwilling (or unable) to enable any peer-to-peer communication, the
+only option is to bring in and setup your own WiFi network.</p>
+</section>
+<section id="downsides">
+<span id="wifi-downsides"></span><h3>Downsides<a class="headerlink" href="#downsides" title="Link to this heading"></a></h3>
+<p>One potential downside to using the venue’s WiFi network is that teams,
+coaches, spectators, and so on may be able to get onto the same WiFi network.
+<em>Maybe</em> this is a good thing; they would be able to pull up the scoreboard on
+their own device (assuming of course the scoreboard URL is shared!).  This may
+reduce the crowding around the public scoreboard (but let’s be honest, isn’t
+that part of the fun!).</p>
+<p>However, if there are 100 team devices pulling the scoreboard, the extra load
+on the scoring computer might cause problems for efficiently running the event.
+Furthermore, a nosey child/adult may find their way into the login-protected
+portion of the system, and may guess a password, or hack their way into the
+system.  At which point they could actually change the outcome of the event.
+Hopefully, Gracious Professionalism will prevail and this won’t be a concern!</p>
+</section>
+</section>
+<section id="setting-up-a-wifi-network">
+<span id="id1"></span><h2>Setting up a WiFi Network<a class="headerlink" href="#setting-up-a-wifi-network" title="Link to this heading"></a></h2>
+<p>Bringing your own WiFi network is in many ways easier, but requires more setup
+at the start of the event and teardown at the end.  However, a big benefit is
+the ability to set it up and test it ahead of time, prior to going to the
+venue (in fact, the setup can be tested at the start of the season and simply
+deployed at the events).</p>
+<p>The big challenge with this approach is WiFi coverage.  If the pits are in the
+cafeteria (for example) and the competition floor is in the gym, it may be
+difficult (or impossible) to cover both with a single WiFi access point.  Which
+means that either a scoreboard can not be displayed in the pits (which is not a
+show-stopper, but it is usually nice to have a scoreboard in the pits) or a
+WiFi mesh network would need to be deployed.</p>
+<p>This setup covers using a single WiFi AP for the network; the same concepts
+apply when using a WiFi mesh network (simply follow the the mesh setup steps
+provided by the device manufacturer).</p>
+<section id="configuring-the-wifi-ap">
+<h3>Configuring the WiFi AP<a class="headerlink" href="#configuring-the-wifi-ap" title="Link to this heading"></a></h3>
+<p>There are two things that need to be done to configure the WiFi AP:</p>
+<ul class="simple">
+<li><p>Set the WiFi SSID and password.  These are the credentials for getting onto
+the WiFi network.  It is recommended to keep the credentials fairly simple so
+that it not too difficult to get devices onto the WiFi network (though see
+<a class="reference internal" href="#sharing-wifi-credentials"><span class="std std-ref">Sharing WiFi credentials</span></a> for how to make it simple).</p></li>
+<li><p>Enable the 2.4 GHz WiFi signalling (likely referred to as 802.11b/g/n mode).
+5 GHz WiFi signalling is great for high data rate or low latency needs (such
+as video streaming or playing games), but the scoring system needs neither of
+those capabilities.  It benefits much more from the longer ranges that is
+achievable with 2.4 GHz signalling.</p></li>
+</ul>
+<p>Optionally, a static IP address can be configured in the AP’s DNS server for
+the scoring computer with a host name of <strong>fllscorer.local</strong>.  If done, the
+QR code links will all be <strong>https://fllscorer.local:8443/…</strong>, which is nicer
+than <strong>https://192.168.1.42:8443/…</strong>.  The self-signed SSL certificate used
+by FLL Scorer is for <strong>fllscorer.local</strong>, so it also removes one of the
+certificate warnings from a browser (the browsers likely still warn about it
+being a self-signed certificate).</p>
+</section>
+<section id="deploying-the-wifi-ap">
+<h3>Deploying the WiFi AP<a class="headerlink" href="#deploying-the-wifi-ap" title="Link to this heading"></a></h3>
+<p>The ideal placement for the WiFi AP is in the middle of the places where it is
+accessed.  Take the location of the scoring computer, the locations of the
+referees at the tables, and the location of the scoreboard(s) and timer(s); the
+center of the smallest circle that encloses all of those locations is the ideal
+placement.  This is easier to estimate than it may seem…pick the point midway
+between the two locations that are furthest apart.</p>
+<p>Stepping out of fantasy land into reality, it is rarely possible to place the
+WiFi AP in that location (if nothing else, the chances of a power outlet at
+that precise location is really small!).  Starting from that ideal location,
+find the viable location that is closest to that location.</p>
+<p>If a separate timer is used (in addition to or instead of a timer on the
+scoreboard), it is probably better to disregard the scoreboard when placing the
+AP (in order to get better coverage for the scoring computer, the referees, and
+the timer).</p>
+<p>Once the AP is deployed, test it out from the various places to ensure that it
+is working well.  Be willing to move it if required to get good performance.
+Placing the AP in an elevated place can help a lot; when it is low, the signals
+have to travel through and around all the intervening people.  The 2.4 GHz
+signalling used for older WiFi (which also has a greater operational distance
+than the newer 5 GHz signalling) is very effectively blocked by water…and
+people are 60-65% water!</p>
+<p>The scoring computer can also be used to play music in the venue (it is already
+connected to the sound system for playing the game sounds), in which case the
+WiFi AP needs to be connected to the venue’s wired network to provide Internet
+access (if using a streaming service such as Spotify).  This requires an
+additional network cable running to the WiFi AP.  If the music to be played is
+stored locally on the scoring computer, this requirement goes away (making for
+an easier install).</p>
+</section>
+<section id="retrieving-the-wifi-ap">
+<h3>Retrieving the WiFi AP<a class="headerlink" href="#retrieving-the-wifi-ap" title="Link to this heading"></a></h3>
+<p>This may seem obvious, but if the AP is simply plugged into power in a location
+away from the scoring computer (for example, to provide better WiFi coverage),
+it is more easily forgotten during the cleanup process!  If the AP is next to
+the scoring computer, this probably isn’t a concern; if it is located
+elsewhere, it is a good idea to put a reminder on the scoring computer to
+retrieve the AP!</p>
+</section>
+<section id="allowing-teams-onto-the-wifi-ap">
+<h3>Allowing Teams onto the WiFi AP<a class="headerlink" href="#allowing-teams-onto-the-wifi-ap" title="Link to this heading"></a></h3>
+<p>It is possible to share the WiFi credentials and the scoreboard URL with teams,
+so they can join the network and view the scoreboard on their own device.  This
+has its dangers though, just like using the venue’s public/guest WiFi (see
+<a class="reference internal" href="#wifi-downsides"><span class="std std-ref">Downsides</span></a>).</p>
+</section>
+</section>
+<section id="sharing-wifi-credentials">
+<span id="id2"></span><h2>Sharing WiFi credentials<a class="headerlink" href="#sharing-wifi-credentials" title="Link to this heading"></a></h2>
+<p>The <a class="reference internal" href="../admin/config/config.html"><span class="doc">Config</span></a> panel has a WiFi “configuration” to assist
+with sharing the WiFi credentials for the network in use at an event:</p>
+<img alt="WiFi credentials entry" class="align-center" src="../_images/wifi.webp" />
+<p>Enter the WiFi credentials (in this example, the SSID is <strong>fll</strong> and the
+password is <strong>firstlegoleague</strong>) and refresh the QR code page.  The WiFi QR
+code encodes the provided WiFi credentials; scanning the QR code on a device
+brings up an option to join that WiFi network.  Super easy, no typing required
+on each device that is added to the network (and more importantly, no
+<em>mistyping</em> of the WiFi credentials on devices!).</p>
+<p>This is the power of the QR code page; a volunteer can scan the WiFi QR code to
+get their device onto the competition network, then scan their role-specific QR
+code to get to the interface that allows them to perform their role.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="referee.html" class="btn btn-neutral float-left" title="Events with Referees Scoring" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../qr_codes/qr_codes.html" class="btn btn-neutral float-right" title="QR Codes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

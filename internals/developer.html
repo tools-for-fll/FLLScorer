@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Developer Details &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Database Design" href="database.html" />
+    <link rel="prev" title="Ranking Details" href="../league/details.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Developer Details</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#development-cycle">Development cycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ux-design">UX design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-conveniences">Configuration conveniences</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Developer Details</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="developer-details">
+<h1>Developer Details<a class="headerlink" href="#developer-details" title="Link to this heading"></a></h1>
+<p>The following describes the development process for the application, both the
+mechanisms of developing code and the philosophy/intent behind the various
+portions of the application.</p>
+<section id="development-cycle">
+<h2>Development cycle<a class="headerlink" href="#development-cycle" title="Link to this heading"></a></h2>
+<p>Despite the majority of the application being a web server and a large quantity
+of HTML/CSS/Javascript, it is not possible to edit web content and then refresh
+the browser to see the changes.  The entire application must be re-built and
+re-launched in order to try out changes (an obvious requirement for the Java
+portion of the application, but not so obvious for the web content).</p>
+<p>There are two VS Code build tasks to ease the development cycle:</p>
+<ul class="simple">
+<li><p><em>run</em> - This builds the application and then runs it.  This is the most
+common task to use.</p></li>
+<li><p><em>build</em> - This builds a new JAR file that can be run manually, or shared with
+someone else.</p></li>
+</ul>
+<p>The process is therefore edit code, use the <em>run</em> build task, test the code,
+close the application window, repeat.</p>
+<p>A third VS Code build task exists; the <em>docs</em> build task; it is used to
+generate this documentation.</p>
+</section>
+<section id="ux-design">
+<h2>UX design<a class="headerlink" href="#ux-design" title="Link to this heading"></a></h2>
+<p>There are three main “display” targets for the application, each of which
+guides the design of the corresponding sections of the application.</p>
+<ul class="simple">
+<li><p>Desktop - This is where the main adminstration and configuration occurs.  The
+<a class="reference internal" href="../admin/admin.html"><span class="doc">Admin</span></a> page, with all of its sub-pages, is intended for desktop
+use, and is therefore designed with that as a target (meaning that it is not
+necessarily mobile-friendly).  Given that the activities handled within the
+<a class="reference internal" href="../admin/admin.html"><span class="doc">Admin</span></a> page are typically performed on the same computer that
+runs the application (and are much easier to accomplish with a physical
+keyboard), this is not seen as overly problematic.</p></li>
+<li><p>Mobile - This is where the majority of the work during the running of an
+event takes place.  The <a class="reference internal" href="../judge/judge.html"><span class="doc">Judge</span></a> page, <a class="reference internal" href="../referee/referee.html"><span class="doc">Referee</span></a>
+page, and <a class="reference internal" href="../timekeeper/timekeeper.html"><span class="doc">Time Keeper</span></a> pages are all used by the
+corresponding volunteers during an event, and are therefore designed to work
+well on a modile device (following mobile-first design practices).  CSS media
+queries (<code class="docutils literal notranslate"><span class="pre">&#64;media</span></code>) are used to adjust these pages to better utilize larger
+displays (such as a tablet, or desktop, instead of a phone), but the design
+is done first for a phone in portrait mode (the most horizontally-space
+restrictive environment).</p></li>
+<li><p>Projector - There are two audience displays, allowing the attendees to see
+pertinent information about the event.  These are the
+<a class="reference internal" href="../scoreboard/scoreboard.html"><span class="doc">Scoreboard</span></a> page and the <a class="reference internal" href="../timer/timer.html"><span class="doc">Timer</span></a> page.
+Additionally, there is the <a class="reference internal" href="../standings/standings.html"><span class="doc">Standings</span></a> page for displaying
+the league standings, if that feature is utilized by an organizer (and would
+normally be displayed at the end of the event).  Similar to desktop, they are
+intended for projection onto a large screen (or wall), and are not
+necessarily mobile-friendly.</p></li>
+</ul>
+<p>There are a common set of colors in the base CSS file (<code class="docutils literal notranslate"><span class="pre">styles.css</span></code>) that are
+used throughout the remainder of the CSS to select colors.  The web interface
+is primarily black and white, with a accent and error colors (defined as such
+in the CSS); utilizing the accent and error color names allows those colors to
+be changed across the entire web interface with a one-line change in the base
+CSS.</p>
+</section>
+<section id="configuration-conveniences">
+<h2>Configuration conveniences<a class="headerlink" href="#configuration-conveniences" title="Link to this heading"></a></h2>
+<p>There are three configuration values that can be stored in the <em>config</em> table
+in the database to assist with development:</p>
+<ul class="simple">
+<li><p><em>bypassSecurity</em> - If this is set to <strong>1</strong>, all of the security in the web
+interface (logins and roles) are bypassed.  In this case, anyone can access
+anything; helpful when developing!  If this value is set to <strong>0</strong> or is
+missing, the normal login and role controls are present.</p></li>
+<li><p><em>dbDebug</em> - If this is set to <strong>1</strong>, every SQL statement that is executed on
+the SQLite database is printed out to the terminal
+(<code class="docutils literal notranslate"><span class="pre">System.out.println()</span></code>).  This can be helpful when trying to get data into
+or out of the database, and making sure that the correct SQL is used. If this
+value is set to <strong>0</strong> or is missing, no logging occurs.</p></li>
+<li><p><em>httpDebug</em> - If this is set to <strong>1</strong>, every HTTP request that is received is
+printed out to the terminal (<code class="docutils literal notranslate"><span class="pre">System.out.println()</span></code>).  This can be helpful
+when trying to validate web requests that are generated by the application’s
+Javascript in the browser.  If this value is set to <strong>0</strong> or is missing, no
+logging occurs.</p></li>
+</ul>
+<p>When run from within a development environment (the <em>build</em> task), there are
+check boxes on the main application allowing these to be easily toggled.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../league/details.html" class="btn btn-neutral float-left" title="Ranking Details" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="database.html" class="btn btn-neutral float-right" title="Database Design" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

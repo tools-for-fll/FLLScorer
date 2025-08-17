@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Design &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Scoresheet Format" href="scoresheet.html" />
+    <link rel="prev" title="Developer Details" href="developer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/common.html">Common Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/scorekeeper.html">Events with a Scorekeeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="developer.html">Developer Details</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database Design</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#season-table">Season table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#event-table">Event table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#team-table">Team table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#team-at-event-table">Team at Event table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#score-table">Score table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#judging-table">Judging table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#users-table">Users table</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Database Design</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="database-design">
+<h1>Database Design<a class="headerlink" href="#database-design" title="Link to this heading"></a></h1>
+<p>The system is broken up into a set of unique seasons (challenges), each having
+a set of teams and events.  Even though the same team may participate for
+multiple seasons, it is treated as unique each season since some/many teams
+change their name to match the challenge theme.</p>
+<p>Given a season, event, and team, there are robot game scores and judging
+scores for that season/event/team combination.</p>
+<p>The tables are setup to support this structure, and to only provide entries
+for teams that participate in a given season and at a given event.</p>
+<section id="season-table">
+<h2>Season table<a class="headerlink" href="#season-table" title="Link to this heading"></a></h2>
+<p>Each row of the <em>season</em> table contains details about a single season.  The
+columns are:</p>
+<dl>
+<dt>id</dt><dd><p>Definition: <em>integer primary key</em></p>
+<p>A unique ID for each row of the table; other tables link to this ID with a
+<strong>season_id</strong> column</p>
+</dd>
+<dt>year</dt><dd><p>Definition: <em>char</em></p>
+<p>The year for the season.  Examples are <em>2023-2024</em>, <em>2024-2025</em>, and so on.</p>
+</dd>
+<dt>name</dt><dd><p>Definition: <em>char</em></p>
+<p>The name of the game for the season.  Examples are <em>MasterPiece</em>,
+<em>Submerged</em>, and so on.</p>
+</dd>
+</dl>
+</section>
+<section id="event-table">
+<h2>Event table<a class="headerlink" href="#event-table" title="Link to this heading"></a></h2>
+<p>Each row of the <em>event</em> table contains details about a single event.  The
+columns are:</p>
+<dl>
+<dt>id</dt><dd><p>Definition: <em>integer primary key</em></p>
+<p>A unique ID for each row of the table; other tables link to this ID with an
+<strong>event_id</strong> column.</p>
+</dd>
+<dt>season_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the season table for this event.</p>
+</dd>
+<dt>date</dt><dd><p>Definition: <em>date</em></p>
+<p>The date on which the event was held.  Examples are <em>Nov 11, 2023</em>,
+<em>Nov 18, 2023</em>, and so on.</p>
+</dd>
+<dt>matches</dt><dd><p>Definition: <em>integer</em></p>
+<p>The number of robot game matches at this event. The units digit contains
+the number of scoring rounds, and the hundreds digit contains the number of
+practice rounds. For example, <em>4</em> is an event with four scoring rounds and
+no practice round, while <em>103</em> is an event with three scoring rounds and
+one practice round.</p>
+</dd>
+<dt>name</dt><dd><p>Definition: <em>char</em></p>
+<p>The name of the event.</p>
+</dd>
+</dl>
+</section>
+<section id="team-table">
+<h2>Team table<a class="headerlink" href="#team-table" title="Link to this heading"></a></h2>
+<p>Each row of the <em>team</em> table contains details about a single team.  The columns
+are:</p>
+<dl>
+<dt>id</dt><dd><p>Definition: <em>integer primary key</em></p>
+<p>A unique ID for each row of the table; other tables link to this ID with a
+<strong>team_id</strong> column.</p>
+</dd>
+<dt>season_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the season table for this team.</p>
+</dd>
+<dt>division</dt><dd><p>Definition: <em>integer</em></p>
+<p>The team’s division (stored as <strong>1</strong> if divisions are not enabled).</p>
+</dd>
+<dt>number</dt><dd><p>Definition: <em>integer</em></p>
+<p>The team’s number, as assigned by FIRST.</p>
+</dd>
+<dt>name</dt><dd><p>Definition: <em>char</em></p>
+<p>The team’s name.</p>
+</dd>
+</dl>
+</section>
+<section id="team-at-event-table">
+<h2>Team at Event table<a class="headerlink" href="#team-at-event-table" title="Link to this heading"></a></h2>
+<p>Each row of the <em>teamAtEvent</em> table contains an assignment of a team to an
+event. The columns are:</p>
+<dl>
+<dt>season_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID of the season.</p>
+</dd>
+<dt>event_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID of the event.</p>
+</dd>
+<dt>team_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID of the team.</p>
+</dd>
+</dl>
+</section>
+<section id="score-table">
+<h2>Score table<a class="headerlink" href="#score-table" title="Link to this heading"></a></h2>
+<p>Each row of the <em>score</em> table contains details about a single team’s robot game
+scores at a single event.  The columns are:</p>
+<dl>
+<dt>id</dt><dd><p>Definition: <em>integer primnary key</em></p>
+<p>A unique ID for each row of the table.</p>
+</dd>
+<dt>season_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the season table for ths score.</p>
+</dd>
+<dt>event_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the event table for this score.</p>
+</dd>
+<dt>team_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the team table for this score.</p>
+</dd>
+<dt>match0</dt><dd><p>Definition: <em>float</em></p>
+<p>The robot game score for the practice match.</p>
+</dd>
+<dt>match0_cv</dt><dd><p>Definition: <em>integer</em></p>
+<p>The robot game core values score for the practice match.</p>
+</dd>
+<dt>match0_sheet</dt><dd><p>Definition: <em>char</em></p>
+<p>The robot game scoresheet (JSON) for the practice match.</p>
+</dd>
+<dt>match1</dt><dd><p>Definition: <em>float</em></p>
+<p>The robot game score for the first match.</p>
+</dd>
+<dt>match1_cv</dt><dd><p>Definition: <em>integer</em></p>
+<p>The robot game core values score for the first match.</p>
+</dd>
+<dt>match1_sheet</dt><dd><p>Definition: <em>char</em></p>
+<p>The robot game scoresheet (JSON) for the first match.</p>
+</dd>
+<dt>match2</dt><dd><p>Definition: <em>float</em></p>
+<p>The robot game score for the second match.</p>
+</dd>
+<dt>match2_cv</dt><dd><p>Definition: <em>integer</em></p>
+<p>The robot game core values score for the second match.</p>
+</dd>
+<dt>match2_sheet</dt><dd><p>Definition: <em>char</em></p>
+<p>The robot game scoresheet (JSON) for the second match.</p>
+</dd>
+<dt>match3</dt><dd><p>Definition: <em>float</em></p>
+<p>The robot game score for the third match.</p>
+</dd>
+<dt>match3_cv</dt><dd><p>Definition: <em>integer</em></p>
+<p>The robot game core values score for the third match.</p>
+</dd>
+<dt>match3_sheet</dt><dd><p>Definition: <em>char</em></p>
+<p>The robot game scoresheet (JSON) for the third match.</p>
+</dd>
+<dt>match4</dt><dd><p>Definition: <em>float</em></p>
+<p>The robot game score for the fourth match.</p>
+</dd>
+<dt>match4_cv</dt><dd><p>Definition: <em>integer</em></p>
+<p>The robot game core values score for the fourth match.</p>
+</dd>
+<dt>match4_sheet</dt><dd><p>Definition: <em>char</em></p>
+<p>The robot game scoresheet (JSON) for the fourth match.</p>
+</dd>
+</dl>
+<p>Note that the <em>score</em> table supports up to one practice round and four scoring
+rounds; supporting more requires adding additional columns to this table (in
+addition to changes in the application itself).</p>
+</section>
+<section id="judging-table">
+<h2>Judging table<a class="headerlink" href="#judging-table" title="Link to this heading"></a></h2>
+<p>Each row of the <em>judging</em> table contains details about a single team’s judging
+scores at a single event.  The columns are:</p>
+<dl>
+<dt>id</dt><dd><p>Definition: <em>integer primnary key</em></p>
+<p>A unique ID for each row of the table.</p>
+</dd>
+<dt>season_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the season table for ths score.</p>
+</dd>
+<dt>event_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the event table for this score.</p>
+</dd>
+<dt>team_id</dt><dd><p>Definition: <em>integer</em></p>
+<p>The ID for an entry in the team table for this score.</p>
+</dd>
+<dt>project</dt><dd><p>Definition: <em>integer</em></p>
+<p>The innovation project score.</p>
+</dd>
+<dt>robot_design</dt><dd><p>Definition: <em>integer</em></p>
+<p>The robot design score.</p>
+</dd>
+<dt>core_values</dt><dd><p>Definition: <em>integer</em></p>
+<p>The core values score.</p>
+</dd>
+<dt>rubric</dt><dd><p>Definition: <em>char</em></p>
+<p>The judging rubric (JSON).</p>
+</dd>
+</dl>
+</section>
+<section id="users-table">
+<h2>Users table<a class="headerlink" href="#users-table" title="Link to this heading"></a></h2>
+<p>Each row of the <em>user</em> table contains details about a single user.  The columns
+are:</p>
+<dl>
+<dt>id</dt><dd><p>Definition: <em>integer primnary key</em></p>
+<p>A unique ID for each row of the table.</p>
+</dd>
+<dt>name</dt><dd><p>Definition: <em>char</em></p>
+<p>The user’s name.</p>
+</dd>
+<dt>password</dt><dd><p>Definition: <em>char</em></p>
+<p>The user’s password, hashed.</p>
+</dd>
+<dt>admin</dt><dd><p>Definition: <em>integer</em></p>
+<p><em>True</em> if the user has the <em>admin</em> role.</p>
+</dd>
+<dt>host</dt><dd><p>Definition: <em>integer</em></p>
+<p><em>True</em> if the user has the <em>host</em> role.</p>
+</dd>
+<dt>judge</dt><dd><p>Definition: <em>integer</em></p>
+<p><em>True</em> if the user has the <em>judge</em> role.</p>
+</dd>
+<dt>referee</dt><dd><p>Definition: <em>integer</em></p>
+<p><em>True</em> if the user has the <em>referee</em> role.</p>
+</dd>
+<dt>timekeeper</dt><dd><p>Definition: <em>integer</em></p>
+<p><em>True</em> if the user has the <em>timekeeper</em> role.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="developer.html" class="btn btn-neutral float-left" title="Developer Details" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="scoresheet.html" class="btn btn-neutral float-right" title="Scoresheet Format" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

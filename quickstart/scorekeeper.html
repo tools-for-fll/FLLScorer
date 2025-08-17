@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events with a Scorekeeper &mdash; FLL Scorer</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=5c691863" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=7f41d439"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Events with Referees Scoring" href="referee.html" />
+    <link rel="prev" title="Common Setup" href="common.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FLL Scorer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Quickstart</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="common.html">Common Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Events with a Scorekeeper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-users">Adding Users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-timer">Running the Timer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-sound-system">Testing the Sound System</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#entering-scores">Entering Scores</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="referee.html">Events with Referees Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="networking.html">Networking</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Pages</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../qr_codes/qr_codes.html">QR Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../login/login.html">Login/Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin/admin.html">Admin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../judge/judge.html">Judge</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../referee/referee.html">Referee</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../scoreboard/scoreboard.html">Scoreboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../standings/standings.html">Standings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timekeeper/timekeeper.html">Time Keeper</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../timer/timer.html">Timer</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">League Model</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../league/league.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../league/details.html">Ranking Details</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Internals</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../internals/developer.html">Developer Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/database.html">Database Design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/scoresheet.html">Scoresheet Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../internals/rubric.html">Rubric Format</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FLL Scorer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Events with a Scorekeeper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="events-with-a-scorekeeper">
+<h1>Events with a Scorekeeper<a class="headerlink" href="#events-with-a-scorekeeper" title="Link to this heading"></a></h1>
+<p>Prior to the days of electronic scoring at the table, paper scoresheets were
+used to capture the state of each match, and a designated scorekeeper (or
+multiple scorekeepers at larger events) were used to calculate a score from the
+paper scoresheet and enter it into the scoreboard.  Even with the advent of
+electronic scoring, some regions still use this model, and it has some great
+benefits (most notably the scoresheets can be given to the teams at the end of
+the event, along with their judging rubrics, as a record of the event).</p>
+<p>FLL Scorer supports running an event in this manner; the designated
+scorekeeper(s) use a device (the computer that is running FLL Scorer, another
+computer, a tablet, and so on) to transcribe the scoresheets into the page
+intended for referees.</p>
+<p>This guide provides the quick step-by-step process of setting up an event to
+run this way.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Remember that this depends on the <a class="reference internal" href="common.html"><span class="doc">Common Setup</span></a>.</p>
+</div>
+<section id="adding-users">
+<h2>Adding Users<a class="headerlink" href="#adding-users" title="Link to this heading"></a></h2>
+<p>It is not strictly necessary to add users, as the scorekeeper can simply use
+the admin user to perform all of their responsibilitites.  However, a user can
+be added if desired (to reduce the permissions of the scorekeeper).  To add a
+user, click on the <a class="reference internal" href="../admin/users/users.html"><span class="doc">Users</span></a> button at the top of the admin
+panel:</p>
+<img alt="The users panel, showing all the users" class="align-center" src="../_images/users1.webp" />
+<p>Then, click on the add user <em class="fa fa-plus"></em> button in the lower right to add a user:</p>
+<img alt="The add user panel, allowing a new user to be added" class="align-center" src="../_images/add_user.webp" />
+<p>Provide the name for the user and the user’s password.  Click on <code class="docutils literal notranslate"><span class="pre">OK</span></code> to add
+the user, initially with no permissions.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a user forgets their password, the edit <em class="fa fa-pencil"></em> button on the right
+side of the user’s line in the list can be used to edit the user and change
+their password.</p>
+</div>
+<p>Once the user is added, the required permissions must be provided.  For this
+style of event, the Host permission allows the scorekeeper the ability to
+perform all the required actions (add/edit scores, and run the timer).</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The admin user must log out (the <em class="fa fa-bars"></em> button in the upper left, then
+the logout button) and the new user must log in in order to complete the
+reduction of permissions!</p>
+</div>
+</section>
+<section id="running-the-timer">
+<h2>Running the Timer<a class="headerlink" href="#running-the-timer" title="Link to this heading"></a></h2>
+<p>The scorekeeper usually also runs the match timer.  Go to the QR page and click
+on the <a class="reference internal" href="../timekeeper/timekeeper.html"><span class="doc">Time Keeper</span></a> button.</p>
+<img alt="The QR code page, providing links to all the event tools" class="align-center" src="../_images/qr_codes.webp" />
+<p>This brings up the timer control page:</p>
+<img alt="The timer control page, for starting and stopping the timer" class="align-center" src="../_images/control.webp" />
+<p>There is only one button enabled at a time, based on the allowable action at
+any given time.  Those actions are:</p>
+<dl class="simple">
+<dt>Start</dt><dd><p>This button starts the match timer.  Time starts counting down from the
+match time (2:30 for the official game, though it may be different for
+alternate games) as soon as this button is pressed, and the start sound is
+played.  All other sounds (30 second warning and end of match) are
+automatically played at the appropriate times.</p>
+</dd>
+<dt>Cancel</dt><dd><p>During a match, this button cancels the match and stop the timer.  This is
+only used in very extraordinary situations, and hopefully is never used at
+an event!  The timer immediately stops (turning red), and the match canceled
+sound is played.</p>
+</dd>
+<dt>Reset</dt><dd><p>When a match is over (either because the timer expired or the match was
+canceled), this button resets the timer, preparing it for the next match.
+The timer automatically resets 15 seconds after the match ends, so this is
+only necessary if the timer needs to be reset quicker.</p>
+</dd>
+</dl>
+<p>The majority of the time, the scorekeeper only uses the <code class="docutils literal notranslate"><span class="pre">Start</span></code> button at the
+start of a match (clicking it when the announcer says “Go” at the end of “3, 2,
+1, Go!”, or whatever appropriate point based on how matches are started at the
+event).</p>
+<p>Typically, the scorekeeper keeps the timer control page in a different tab or
+a different browser window.  When needing to start a match, they can quickly
+change to the timer control tab/window, start the match, and then change back
+to the tab/window where they are entering scores.</p>
+</section>
+<section id="testing-the-sound-system">
+<h2>Testing the Sound System<a class="headerlink" href="#testing-the-sound-system" title="Link to this heading"></a></h2>
+<p>Clicking on the settings <em class="fa fa-gear"></em> button in the upper left of the timer
+control page opens the sound system test page:</p>
+<img alt="Sound system test page" class="align-center" src="../_images/d_sound_test.webp" />
+<p>The four buttons (<code class="docutils literal notranslate"><span class="pre">Start</span></code>, <code class="docutils literal notranslate"><span class="pre">End</span> <span class="pre">Game</span></code>, <code class="docutils literal notranslate"><span class="pre">End</span></code>, and <code class="docutils literal notranslate"><span class="pre">Cancel</span></code>) play the
+corresponding sounds.  This is helpful to determine that the sound output is
+making into the venue’s sound system, and that it is loud enough to be heard by
+the participants (both volunteers and teams).</p>
+<p>Once done, click on the close <em class="fa fa-times"></em> button in the upper right to close
+the sound system test page.</p>
+</section>
+<section id="entering-scores">
+<h2>Entering Scores<a class="headerlink" href="#entering-scores" title="Link to this heading"></a></h2>
+<p>To enter scores, click on the <a class="reference internal" href="../admin/scores/scores.html"><span class="doc">Scores</span></a> button at the top
+of the admin panel:</p>
+<img alt="The scores panel, showing the scores for the teams." class="align-center" src="../_images/scores.webp" />
+<p>The teams are listed in team number order, making it easier to find the team.
+Alternatively, the search at the bottom of the page can be used to quickly find
+a team (by either their team number or their team name).</p>
+<p>Next to each team, there are three buttons under each robot game round:</p>
+<dl>
+<dt>Edit / <em class="fa fa-pencil"></em></dt><dd><p>This allows the scoresheet for this round to be entered or edited.  It opens
+a new window or tab (depending on the configuration of the browser) to view
+and/or edit the scoresheet.</p>
+</dd>
+<dt>Exchange / <em class="fa fa-exchange"></em></dt><dd><p>On occasion, a scoresheet is entered for the wrong team or round.  Instead
+of re-entering the scoresheet for the correct team/round, this allows the
+scoresheet (and score) to be swapped with another scoresheet.  It performs
+an exchange; so it is safe to use if two team’s scoresheets were entered for
+each other.</p>
+</dd>
+<dt>Delete / <em class="fa fa-trash"></em></dt><dd><p>This deletes the scoresheet (and score) for a team and round.  A
+confirmation dialog ensures that the scoresheet should be deleted, and if
+confirmed the scoresheet is permanently deleted.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>There is no undo!</p>
+</div>
+</dd>
+</dl>
+<p>Once a team is found, click on the edit <em class="fa fa-pencil"></em> button under the correct
+match column to enter the team’s scoresheet for that match.  It opens a new
+window/tab with the referee page for entering a scoresheet:</p>
+<img alt="The scoresheet page, allowing the scoresheet to be captured" class="align-center" src="../_images/d_scoresheet.webp" />
+<p>After making the selections for the missions, click on the Score button in the
+bottom right (the Score button is not enabled until a selection is made for
+each mission).  It either changes from <em class="fa fa-refresh"></em> to the match score,
+or if there are errors in the selections, a popup indicates that there are
+errors and error text appears below the mission(s) that are invalid.  In this
+case, the match can be re-scored after the errors are corrected.</p>
+<p>There are three buttons on the bottom left of the scoresheet page:</p>
+<dl class="simple">
+<dt>Discard</dt><dd><p>This closes the scoresheet, discarding changes (if any).  If there are
+changes, a confirmation dialog ensures that the changes should be discarded.
+If there are no changes, the scoresheet is closed immediately.</p>
+</dd>
+<dt>Save</dt><dd><p>This saves and then closes the scoresheet; the score is not published to the
+scoreboard.  This is useful if there are questions about the scoresheet, for
+either the head referee or the table referee.  The scoresheet can be saved
+even if it is not fully filled out.</p>
+</dd>
+<dt>Publish</dt><dd><p>This saves the scoresheet, publishes the score to the scoreboard, and closes
+the scoresheet.  This button is only enabled when the scoresheet has a valid
+score (obtained via the Score button).</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a scoresheet is reviewed and changed (for example, if a team questions
+their score and a mistake is found), the updated scoresheet must be
+published again for the score to update on the scoreboard.</p>
+</div>
+<p>Once fully entered, the scoresheet should be scored and then published.  Then,
+repeat for every scoresheet throughout the event.  Get a friend to help with
+entering scoresheets and be sure to eat snacks and drink lots of water!</p>
+<p>At the end of the robot game matches (and possibly before the end, typically
+during the third round), the judges need a copy of the robot game scores and
+ranks.  The download <em class="fa fa-download"></em> button in the bottom right corner of the
+page generates a CSV file with all the teams, their ranks, score, and robot
+game Core Values scores, and downloads that to the computer.  This provides all
+the information that the judges need; provide this CSV file to them (thumb
+drive, carrier pigeon, and so on…the details are left as an exercise for the
+reader!).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="common.html" class="btn btn-neutral float-left" title="Common Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="referee.html" class="btn btn-neutral float-right" title="Events with Referees Scoring" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Brian Kircher.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
