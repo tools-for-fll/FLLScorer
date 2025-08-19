@@ -299,7 +299,8 @@ public class Gui
     }
 
     // Create a frame, which is the main window for the application.
-    m_frame = new JFrame(m_webserver.getSSI("str_title"));
+    m_frame = new JFrame(m_webserver.getSSI("str_title") + " : " +
+                         m_webserver.getSSI("version"));
     m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     m_frame.setMinimumSize(new Dimension(frameWidth, frameHeight));
     m_frame.setPreferredSize(new Dimension(frameWidth, frameHeight));
