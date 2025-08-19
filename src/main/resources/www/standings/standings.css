@@ -76,6 +76,19 @@ html, body
   grid-area: event;
 }
 
+.event .divisions
+{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.event .divisions .division
+{
+  font-size: 75%;
+}
+
 .logo2
 {
   align-items: center;

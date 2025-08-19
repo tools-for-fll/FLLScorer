@@ -3,16 +3,15 @@
 // Open Source Software; you can modify and/or share it under the terms of BSD
 // license file in the root directory of this project.
 
-// Strings for the headings.
-const placeHeading = "<!--#str_standings_place-->";
-const teamNumber = "<!--#str_standings_number-->";
-const teamName = "<!--#str_standings_name-->";
-const scoreHeading = "<!--#str_standings_score-->";
-const event1Heading = "<!--#str_standings_event1-->";
-const event2Heading = "<!--#str_standings_event2-->";
-
 // The data to display on the standings.
 var data = null;
+
+// The division that is being displayed; is null when divisions are not
+// enabled.
+var division = null;
+
+// The standings that are being displayed.
+var standings = null;
 
 // The timer.
 var timer = null;
@@ -33,6 +32,19 @@ loadData()
   {
     // Save the newly retreived data.
     data = newData;
+
+    // See if divisions are enabled, and set the division and standings
+    // appropriately.
+    if(data["divisions"] == null)
+    {
+      division = null;
+      standings = data["standings"];
+    }
+    else
+    {
+      division = 0;
+      standings = data["standings"][0];
+    }
   }
 
   // Called when the standings fetch fails.
@@ -41,6 +53,8 @@ loadData()
   {
     // Since the fetch failed, clear the data since it is stale.
     data = null;
+    division = null;
+    standings = null;
   }
 
   // Called after every standings fetch, regardless of status.
@@ -82,11 +96,30 @@ runTimer()
     // Set the standings title.
     if(data != null)
     {
-      $(".event").html("<!--#str_standings_subtitle-->");
+      if(division != null)
+      {
+        var html = "<div class='divisions'>";
+        html += "<span><!--#str_standings_subtitle--></span>";
+        html += "<span class='division'>" + data["divisions"][division] +
+                "</span>";
+        html += "</div>";
+        $(".event").html(html);
+        document.documentElement.style.setProperty("--accent-color",
+                                                   "var(" +
+                                                   data["colors"][division] +
+                                                   ")");
+      }
+      else
+      {
+        $(".event").html("<!--#str_standings_subtitle-->");
+        document.documentElement.style.setProperty("--accent-color",
+                                                   "var(" + data["color"] +
+                                                   ")");
+      }
     }
     else
     {
-      $(".event").html("Connecting...");
+      $(".event").html("<!--#str_connecting-->");
     }
   }
 
@@ -102,24 +135,23 @@ runTimer()
     $(".e2" + i).html("").removeClass("gray");
 
     // See if there is an entry for this position.
-    if((data != null) && (data["standings"] != null) &&
-       (data["standings"][index + i] != null))
+    if((data != null) && (standings != null) && (standings[index + i] != null))
     {
       // Update this row with this entry's information.
-      $(".pl" + i).html(data["standings"][index + i]["place"]);
-      $(".num" + i).html(data["standings"][index + i]["num"]);
-      $(".name" + i).html(data["standings"][index + i]["name"]);
-      if(data["standings"][index + i]["score"] != null)
+      $(".pl" + i).html(standings[index + i]["place"]);
+      $(".num" + i).html(standings[index + i]["num"]);
+      $(".name" + i).html(standings[index + i]["name"]);
+      if(standings[index + i]["score"] != null)
       {
-        $(".scr" + i).html(data["standings"][index + i]["score"]);
+        $(".scr" + i).html(standings[index + i]["score"]);
       }
-      if(data["standings"][index + i]["event1"] != null)
+      if(standings[index + i]["event1"] != null)
       {
-        $(".e1" + i).html(data["standings"][index + i]["event1"]);
+        $(".e1" + i).html(standings[index + i]["event1"]);
       }
-      if(data["standings"][index + i]["event2"] != null)
+      if(standings[index + i]["event2"] != null)
       {
-        $(".e2" + i).html(data["standings"][index + i]["event2"]);
+        $(".e2" + i).html(standings[index + i]["event2"]);
       }
 
       // If this is an odd row, set the background to gray.
@@ -138,14 +170,25 @@ runTimer()
   // The next timer iteration should show the next screen, or the first screen
   // if all of the teams have been displayed.
   index += 8;
-  if((data == null) || (data["standings"] == null) ||
-     (data["standings"][index] == null))
+  if((data == null) || (standings == null) || (standings[index] == null))
   {
-    // Go back to the first screen.
-    index = 0;
+    // See if divisions are enabled and there is another division.
+    if((data != null) && (division != null) &&
+        (data["divisions"][division + 1] != null))
+    {
+      // Start at the beginning of the next division.
+      division++;
+      standings = data["standings"][division];
+      index = 0;
+    }
+    else
+    {
+      // Go back to the first screen.
+      index = 0;
 
-    // Fetch updated standings data from the server.
-    loadData();
+      // Fetch updated standings data from the server.
+      loadData();
+    }
   }
 }
 
@@ -195,14 +238,6 @@ onKeydown(e)
 function
 ready()
 {
-  // Insert the headings for the standings.
-  $(".plt").html(placeHeading);
-  $(".numt").html(teamNumber);
-  $(".namet").html(teamName);
-  $(".scrt").html(scoreHeading);
-  $(".e1t").html(event1Heading);
-  $(".e2t").html(event2Heading);
-
   // Add a keydown event listener.
   document.addEventListener("keydown", onKeydown);
 

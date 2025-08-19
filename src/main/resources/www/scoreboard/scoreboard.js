@@ -139,7 +139,7 @@ runTimer()
     }
     else
     {
-      $(".event").html("Connecting...");
+      $(".event").html("<!--#str_connecting-->");
     }
 
     // Set the number of matches in the scoreboard.
