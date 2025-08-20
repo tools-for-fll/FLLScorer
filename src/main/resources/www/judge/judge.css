@@ -93,6 +93,22 @@
       {
         padding: 0.25em 0;
         width: 90%;
+
+        &::before
+        {
+          font-family: FontAwesome;
+          margin-right: 0.25em;
+        }
+
+        &.red::before
+        {
+          content: "\f00d";
+        }
+
+        &.green::before
+        {
+          content: "\f00c";
+        }
       }
 
       .name

@@ -100,6 +100,22 @@
   width: 90%;
 }
 
+.list_container .body .row button::before
+{
+  font-family: FontAwesome;
+  margin-right: 0.25em;
+}
+
+.list_container .body .row button.red::before
+{
+  content: "\f00d";
+}
+
+.list_container .body .row button.green::before
+{
+  content: "\f00c";
+}
+
 .list_container .body .row .name
 {
   align-items: center;
